@@ -1,6 +1,7 @@
 import os
 import argparse
 import csv
+import json
 import logging
 from .code_smell_detector import CodeSmellDetector
 from .architectural_smell_detector import ArchitecturalSmellDetector
@@ -175,9 +176,11 @@ def analyze_project(debug=False, smell_type=None):
         base_name = os.path.splitext(args.output)[0]
         output_txt = f"{base_name}.txt"
         output_csv = f"{base_name}.csv"
+        output_json = f"{base_name}.json"
     else:
         output_txt = "code_quality_report.txt"
         output_csv = "code_quality_report.csv"
+        output_json = "code_quality_report.json"
 
     try:
         logger.info(f"Loading configuration from: {args.config}")
@@ -203,7 +206,7 @@ def analyze_project(debug=False, smell_type=None):
             structural_smells = analyze_structural_smells(args.directory, struct_detector)
 
         generate_report(code_smells, architectural_smells, structural_smells, 
-                       output_txt, output_csv)
+                       output_txt, output_csv, output_json)
 
     except Exception as e:
         logger.error(f"Error during analysis: {str(e)}", exc_info=True)
@@ -274,11 +277,13 @@ def analyze_structural_smells_only(directory_path, config_path="code_quality_con
             base_name = os.path.splitext(output)[0]
             txt_file = f"{base_name}.txt"
             csv_file = f"{base_name}.csv"
+            json_file = f"{base_name}.json"
         else:
             txt_file = "structural_smells_report.txt"
             csv_file = "structural_smells_report.csv"
+            json_file = "structural_smells_report.json"
             
-        generate_report([], [], structural_smells, txt_file, csv_file)
+        generate_report([], [], structural_smells, txt_file, csv_file, json_file)
         return structural_smells
     
     except Exception as e:
@@ -286,7 +291,7 @@ def analyze_structural_smells_only(directory_path, config_path="code_quality_con
         raise
 
 def generate_report(code_smells, architectural_smells, structural_smells, 
-                   output_txt=None, output_csv=None):
+                   output_txt=None, output_csv=None, output_json=None):
     """
     Generate a report of all detected smells in both text and CSV formats.
 
@@ -296,6 +301,7 @@ def generate_report(code_smells, architectural_smells, structural_smells,
         structural_smells (list): A list of detected StructuralSmell objects
         output_txt (str, optional): The path to the output text file
         output_csv (str, optional): The path to the output CSV file
+        output_json (str, optional): The path to the output JSON file
     """
     # Generate text report
     report = "Code Quality Analysis Report\n"
@@ -346,6 +352,11 @@ def generate_report(code_smells, architectural_smells, structural_smells,
         if output_csv:
             generate_csv_report(code_smells, architectural_smells, 
                               structural_smells, output_csv)
+        
+        # Generate JSON report with the specified filename
+        if output_json:
+            generate_json_report(code_smells, architectural_smells, 
+                              structural_smells, output_json)
     else:
         print(report)
 
@@ -401,6 +412,58 @@ def generate_csv_report(code_smells, architectural_smells, structural_smells, cs
             })
 
     logger.info(f"CSV report generated and saved to {csv_file}")
+
+def generate_json_report(code_smells, architectural_smells, structural_smells, json_file):
+    """
+    Generate a JSON report of all detected smells.
+
+    Args:
+        code_smells (list): A list of detected CodeSmell objects
+        architectural_smells (list): A list of detected ArchitecturalSmell objects
+        structural_smells (list): A list of detected StructuralSmell objects
+        json_file (str): The path to the output JSON file
+    """
+    all_smells_data = []
+
+    with open(json_file, 'w', newline='') as jsonfile:
+        # Write structural smells
+        for smell in structural_smells:
+            all_smells_data.append({
+                'Type': 'Structural',
+                'Name': smell.name,
+                'Description': smell.description,
+                'File': smell.file_path,
+                'Module/Class': smell.module_class,
+                'Line Number': smell.line_number,
+                'Severity': smell.severity
+            })
+
+        # Write code smells
+        for smell in code_smells:
+            all_smells_data.append({
+                'Type': 'Code',
+                'Name': smell.name,
+                'Description': smell.description,
+                'File': smell.file_path,
+                'Module/Class': smell.module_class,
+                'Line Number': smell.line_number,
+                'Severity': smell.severity
+            })
+
+        # Write architectural smells
+        for smell in architectural_smells:
+            all_smells_data.append({
+                'Type': 'Architectural',
+                'Name': smell.name,
+                'Description': smell.description,
+                'File': smell.file_path,
+                'Module/Class': smell.module_class,
+                'Line Number': smell.line_number,
+                'Severity': smell.severity
+            })
+        json.dump(all_smells_data, jsonfile, indent=4)
+
+    logger.info(f"JSON report generated and saved to {json_file}")
 
 def analyze_code_smells_only(directory_path, config_path="code_quality_config.yaml"):
     """
@@ -462,9 +525,11 @@ if __name__ == "__main__":
         base_name = os.path.splitext(args.output)[0]
         output_txt = f"{base_name}.txt"
         output_csv = f"{base_name}.csv"
+        output_json = f"{base_name}.json"
     else:
         output_txt = "code_quality_report.txt"
         output_csv = "code_quality_report.csv"
+        output_json = "code_quality_report.json"
     
     if args.type == 'structural':
         analyze_structural_smells_only(args.directory, args.config, args.output)
