@@ -90,6 +90,13 @@ pipeline {
             }
         }
 
+        stage('Archive Report') {
+            steps {
+                // Archive the generated JSON report as a build artifact for easy access
+                archiveArtifacts artifacts: 'combined_build_report.json', fingerprint: true
+            }
+        }
+
         stage('Post Combined Report') {
             steps {
                 script {
@@ -132,13 +139,6 @@ pipeline {
                         error "Error during POST request: ${e.message}"
                     }
                 }
-            }
-        }
-
-        stage('Archive Report') {
-            steps {
-                // Archive the generated JSON report as a build artifact for easy access
-                archiveArtifacts artifacts: 'combined_build_report.json', fingerprint: true
             }
         }
     }
