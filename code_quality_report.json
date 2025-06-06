@@ -1,0 +1,1181 @@
+[
+    {
+        "Type": "Structural",
+        "Name": "High Number of Methods (NOM)",
+        "Description": "Class 'src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector' has 15 methods (excluding special methods and properties)",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": null,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Number of Methods (NOM)",
+        "Description": "Class 'src.code_quality_analyzer.code_smell_detector.CodeSmellDetector' has 24 methods (excluding special methods and properties)",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Number of Methods (NOM)",
+        "Description": "Class 'src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector' has 34 methods (excluding special methods and properties)",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Response for a Class (RFC)",
+        "Description": "Class 'src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector' has RFC of 50 (methods: 15, external calls: 35)",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Response for a Class (RFC)",
+        "Description": "Class 'src.code_quality_analyzer.code_smell_detector.CodeSmellDetector' has RFC of 49 (methods: 24, external calls: 25)",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Response for a Class (RFC)",
+        "Description": "Class 'src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector' has RFC of 73 (methods: 34, external calls: 39)",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Lines of Code (LOC)",
+        "Description": "Module 'src.code_quality_analyzer.architectural_smell_detector' has 337 effective code lines\n(Total: 553, Code: 337, Doc: 85, Import: 11, Blank: 83)",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Lines of Code (LOC)",
+        "Description": "Module 'src.code_quality_analyzer.code_smell_detector' has 501 effective code lines\n(Total: 1161, Code: 501, Doc: 469, Import: 9, Blank: 138)",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Lines of Code (LOC)",
+        "Description": "Module 'src.code_quality_analyzer.structural_smell_detector' has 499 effective code lines\n(Total: 1325, Code: 499, Doc: 570, Import: 8, Blank: 192)",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Number of Classes (NOC)",
+        "Description": "Project has 8.0 weighted classes:\n- Regular classes: 8\n- Abstract/Interface classes: 0\n- Utility classes: 0\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7",
+        "File": "D:\\\uc591\uc9c4\ubaa8\\\ub300\ud559\uc6d0\\2025-1\\\uac00\uc2dc\ud654\\python_smells_detector",
+        "Module/Class": "Project",
+        "Line Number": null,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'analyze_file' has cyclomatic complexity of 20",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 128,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'resolve_external_dependencies' has cyclomatic complexity of 12",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 195,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_redundant_abstractions' has cyclomatic complexity of 12",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 331,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_long_methods' has cyclomatic complexity of 17",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 116,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_large_classes' has cyclomatic complexity of 23",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 153,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_primitive_obsession' has cyclomatic complexity of 13",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 200,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_data_clumps' has cyclomatic complexity of 14",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 273,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_switch_statements' has cyclomatic complexity of 13",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 313,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_temporary_fields' has cyclomatic complexity of 25",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 353,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_alternative_classes' has cyclomatic complexity of 22",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 415,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_divergent_change' has cyclomatic complexity of 35",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 474,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_parallel_inheritance' has cyclomatic complexity of 19",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 540,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_comments' has cyclomatic complexity of 13",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 620,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_data_class' has cyclomatic complexity of 17",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 707,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_dead_code' has cyclomatic complexity of 21",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 751,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_lazy_class' has cyclomatic complexity of 12",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 807,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_speculative_generality' has cyclomatic complexity of 13",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 841,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_feature_envy' has cyclomatic complexity of 25",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 884,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_inappropriate_intimacy' has cyclomatic complexity of 28",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 939,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_middle_man' has cyclomatic complexity of 26",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 1066,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'analyze_file' has cyclomatic complexity of 12",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 182,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_wmpc' has cyclomatic complexity of 11",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 328,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_lcom' has cyclomatic complexity of 14",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 439,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method '_build_field_usage_map' has cyclomatic complexity of 11",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 493,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_rfc' has cyclomatic complexity of 14",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 521,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_dit' has cyclomatic complexity of 18",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 624,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_loc' has cyclomatic complexity of 19",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 689,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_cbo' has cyclomatic complexity of 15",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 829,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "High Cyclomatic Complexity",
+        "Description": "Method 'detect_file_length' has cyclomatic complexity of 15",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1185,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Long File",
+        "Description": "File 'src.code_quality_analyzer.architectural_smell_detector' has 348 meaningful lines of code",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Long File",
+        "Description": "File 'src.code_quality_analyzer.code_smell_detector' has 510 meaningful lines of code",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Long File",
+        "Description": "File 'src.code_quality_analyzer.structural_smell_detector' has 507 meaningful lines of code",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector",
+        "Line Number": null,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'analyze_file' has 20 branches with max nesting of 15",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 128,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'resolve_external_dependencies' has 9 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 195,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_hub_like_dependency' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 260,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_scattered_functionality' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 305,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_redundant_abstractions' has 8 branches with max nesting of 8",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 331,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_improper_api_usage' has 4 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 391,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_cyclic_dependencies' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 443,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_unstable_dependencies' has 4 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.architectural_smell_detector.ArchitecturalSmellDetector",
+        "Line Number": 495,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_smells' has 8 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 46,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_long_methods' has 12 branches with max nesting of 11",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 116,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_large_classes' has 17 branches with max nesting of 15",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 153,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_primitive_obsession' has 9 branches with max nesting of 9",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 200,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_long_parameter_lists' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 237,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_data_clumps' has 8 branches with max nesting of 8",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 273,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_switch_statements' has 8 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 313,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_temporary_fields' has 18 branches with max nesting of 16",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 353,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_alternative_classes' has 16 branches with max nesting of 14",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 415,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_divergent_change' has 25 branches with max nesting of 21",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 474,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_parallel_inheritance' has 13 branches with max nesting of 13",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 540,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_shotgun_surgery' has 8 branches with max nesting of 8",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 587,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_comments' has 9 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 620,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_duplicate_code' has 6 branches with max nesting of 6",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 666,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_data_class' has 11 branches with max nesting of 9",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 707,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_dead_code' has 15 branches with max nesting of 14",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 751,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_lazy_class' has 6 branches with max nesting of 6",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 807,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_speculative_generality' has 9 branches with max nesting of 9",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 841,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_feature_envy' has 19 branches with max nesting of 16",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 884,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_inappropriate_intimacy' has 21 branches with max nesting of 19",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 939,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_message_chains' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 1011,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_middle_man' has 19 branches with max nesting of 17",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.code_smell_detector.CodeSmellDetector",
+        "Line Number": 1066,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_smells' has 6 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 88,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'analyze_directory' has 9 branches with max nesting of 6",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 137,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'analyze_file' has 13 branches with max nesting of 8",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 182,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'analyze_class' has 6 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 239,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_wmpc' has 7 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 328,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_wac' has 5 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 400,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_lcom' has 8 branches with max nesting of 8",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 439,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method '_build_field_usage_map' has 9 branches with max nesting of 9",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 493,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_rfc' has 11 branches with max nesting of 11",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 521,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_nocc' has 8 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 571,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_dit' has 14 branches with max nesting of 13",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 624,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_loc' has 17 branches with max nesting of 15",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 689,
+        "Severity": "High"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_mpc' has 7 branches with max nesting of 7",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 778,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_cbo' has 12 branches with max nesting of 11",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 829,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method '_get_base_object' has 5 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 885,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method '_is_excluded_dependency' has 4 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 903,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_noc' has 8 branches with max nesting of 6",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 950,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_cyclomatic_complexity' has 4 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1073,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'calculate_cyclomatic_complexity' has 8 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1098,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_file_length' has 13 branches with max nesting of 11",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1185,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method 'detect_branches' has 4 branches with max nesting of 4",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1240,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Structural",
+        "Name": "Too Many Branches",
+        "Description": "Method '_analyze_branches' has 7 branches with max nesting of 5",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "src.code_quality_analyzer.structural_smell_detector.StructuralSmellDetector",
+        "Line Number": 1269,
+        "Severity": "Medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Divergent Change",
+        "Description": "Class 'ArchitecturalSmellDetector' has 6 different method prefixes: analyze, resolve, print, load, add, detect in .\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "ArchitecturalSmellDetector",
+        "Line Number": 24,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'defaultdict' called in 4 different contexts across 7 locations in .\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "defaultdict",
+        "Line Number": 51,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'any' called in 7 different contexts across 9 locations in .\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "any",
+        "Line Number": 187,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Large Class",
+        "Description": "'CodeSmellDetector' has 24 non-trivial methods in .\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "CodeSmellDetector",
+        "Line Number": 23,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'CodeSmell' called in 13 different contexts across 13 locations in .\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "CodeSmell",
+        "Line Number": 145,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'any' called in 12 different contexts across 18 locations in .\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "any",
+        "Line Number": 176,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'defaultdict' called in 8 different contexts across 10 locations in .\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "defaultdict",
+        "Line Number": 277,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'set' called in 4 different contexts across 8 locations in .\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "set",
+        "Line Number": 379,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Long Method",
+        "Description": "'analyze_code_smells' has 63 lines in .\\src\\code_quality_analyzer\\main.py at line 23",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "analyze_code_smells",
+        "Line Number": 23,
+        "Severity": ""
+    },
+    {
+        "Type": "Code",
+        "Name": "Long Method",
+        "Description": "'analyze_architectural_smells' has 48 lines in .\\src\\code_quality_analyzer\\main.py at line 94",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "analyze_architectural_smells",
+        "Line Number": 94,
+        "Severity": ""
+    },
+    {
+        "Type": "Code",
+        "Name": "Long Method",
+        "Description": "'analyze_project' has 51 lines in .\\src\\code_quality_analyzer\\main.py at line 151",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "analyze_project",
+        "Line Number": 151,
+        "Severity": ""
+    },
+    {
+        "Type": "Code",
+        "Name": "Long Method",
+        "Description": "'generate_report' has 56 lines in .\\src\\code_quality_analyzer\\main.py at line 293",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "generate_report",
+        "Line Number": 293,
+        "Severity": ""
+    },
+    {
+        "Type": "Code",
+        "Name": "Long Parameter List",
+        "Description": "'generate_report' has 6 parameters in .\\src\\code_quality_analyzer\\main.py",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "generate_report",
+        "Line Number": 293,
+        "Severity": ""
+    },
+    {
+        "Type": "Code",
+        "Name": "Feature Envy",
+        "Description": "Method 'analyze_project' makes 9 calls to 'args' but only 0 local calls in .\\src\\code_quality_analyzer\\main.py",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "analyze_project",
+        "Line Number": 151,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Feature Envy",
+        "Description": "Method 'generate_report' makes 10 calls to 'smell' but only 0 local calls in .\\src\\code_quality_analyzer\\main.py",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "generate_report",
+        "Line Number": 293,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Feature Envy",
+        "Description": "Method 'generate_csv_report' makes 18 calls to 'smell' but only 0 local calls in .\\src\\code_quality_analyzer\\main.py",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "generate_csv_report",
+        "Line Number": 363,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Feature Envy",
+        "Description": "Method 'generate_json_report' makes 18 calls to 'smell' but only 0 local calls in .\\src\\code_quality_analyzer\\main.py",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "generate_json_report",
+        "Line Number": 416,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Large Class",
+        "Description": "'StructuralSmellDetector' has 34 non-trivial methods in .\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "StructuralSmellDetector",
+        "Line Number": 33,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Divergent Change",
+        "Description": "Class 'StructuralSmellDetector' has 7 different method prefixes: calculate, analyze, resolve, print, load, add, detect in .\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "StructuralSmellDetector",
+        "Line Number": 33,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'set' called in 6 different contexts across 8 locations in .\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "set",
+        "Line Number": 249,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'any' called in 13 different contexts across 20 locations in .\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "any",
+        "Line Number": 312,
+        "Severity": "high"
+    },
+    {
+        "Type": "Code",
+        "Name": "Potential Shotgun Surgery",
+        "Description": "Method 'sum' called in 6 different contexts across 8 locations in .\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "sum",
+        "Line Number": 354,
+        "Severity": "high"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Scattered Functionality",
+        "Description": "Function 'add_smell' appears in 3 modules: code_quality_analyzer.architectural_smell_detector, code_quality_analyzer.code_smell_detector, code_quality_analyzer.structural_smell_detector",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Scattered Functionality",
+        "Description": "Function 'detect_smells' appears in 3 modules: code_quality_analyzer.architectural_smell_detector, code_quality_analyzer.code_smell_detector, code_quality_analyzer.structural_smell_detector",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Scattered Functionality",
+        "Description": "Function 'print_report' appears in 3 modules: code_quality_analyzer.architectural_smell_detector, code_quality_analyzer.code_smell_detector, code_quality_analyzer.structural_smell_detector",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Scattered Functionality",
+        "Description": "Function 'load_thresholds' appears in 3 modules: code_quality_analyzer.architectural_smell_detector, code_quality_analyzer.config_handler, code_quality_analyzer.structural_smell_detector",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Scattered Functionality",
+        "Description": "Function 'config_handler' appears in 3 modules: tests.test_architectural_smell_detector, tests.test_code_smell_detector, tests.test_structural_smell_detector",
+        "File": ".\\tests\\test_architectural_smell_detector.py",
+        "Module/Class": "tests.test_architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "God Object",
+        "Description": "Module 'code_quality_analyzer.code_smell_detector' has too many public functions (30)",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.code_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "God Object",
+        "Description": "Module 'code_quality_analyzer.structural_smell_detector' has too many public functions (29)",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.structural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'code_quality_analyzer.architectural_smell_detector' has repetitive API calls: dirname(4x), append(7x), get(20x), nodes(7x), items(9x), values(3x), in_degree(3x), out_degree(3x), join(7x), add_smell(8x), split(6x), add(5x), lower(5x), startswith(5x)",
+        "File": ".\\src\\code_quality_analyzer\\architectural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'code_quality_analyzer.code_smell_detector' has repetitive API calls: items(9x), nodes_of_class(8x), append(30x), startswith(20x), sub(3x), node_ancestors(3x), error(4x), add_smell(9x), mymethods(8x), values(4x), add(8x), endswith(15x), join(16x), lower(3x)",
+        "File": ".\\src\\code_quality_analyzer\\code_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.code_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'code_quality_analyzer.config_handler' has repetitive API calls: get(5x), items(4x), error(3x)",
+        "File": ".\\src\\code_quality_analyzer\\config_handler.py",
+        "Module/Class": "code_quality_analyzer.config_handler",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'code_quality_analyzer.main' has repetitive API calls: add_argument(10x), info(4x), warning(4x), detect_smells(3x), append(9x), error(10x), splitext(3x), get_thresholds(6x), writerow(3x)",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "code_quality_analyzer.main",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'code_quality_analyzer.structural_smell_detector' has repetitive API calls: DiGraph(3x), info(6x), walk(11x), append(11x), get(24x), items(19x), nodes(5x), warning(7x), add_node(4x), values(4x), add_smell(17x), error(8x), endswith(7x), read(3x), splitlines(3x), rsplit(13x), lower(11x), add_edge(6x), startswith(25x), _get_base_object(5x), calculate_cyclomatic_complexity(3x), debug(3x), add(9x), _is_excluded_dependency(3x)",
+        "File": ".\\src\\code_quality_analyzer\\structural_smell_detector.py",
+        "Module/Class": "code_quality_analyzer.structural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'tests.test_architectural_smell_detector' has repetitive API calls: write_text(5x), detect_smells(4x), join(3x)",
+        "File": ".\\tests\\test_architectural_smell_detector.py",
+        "Module/Class": "tests.test_architectural_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Potential Improper API Usage",
+        "Description": "Module 'tests.test_code_smell_detector' has repetitive API calls: write_text(4x), detect_smells(4x)",
+        "File": ".\\tests\\test_code_smell_detector.py",
+        "Module/Class": "tests.test_code_smell_detector",
+        "Line Number": null,
+        "Severity": "medium"
+    },
+    {
+        "Type": "Architectural",
+        "Name": "Unstable Dependency",
+        "Description": "Module 'code_quality_analyzer.main' has high instability (0.91) with 10 outgoing and 1 incoming dependencies",
+        "File": ".\\src\\code_quality_analyzer\\main.py",
+        "Module/Class": "code_quality_analyzer.main",
+        "Line Number": null,
+        "Severity": "medium"
+    }
+]
