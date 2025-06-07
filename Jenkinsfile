@@ -20,7 +20,7 @@ pipeline {
                     def gitUrl = env.GIT_URL ?: ''
                     def repoName = gitUrl.tokenize('/').last().replace('.git', '')
                     def buildId = env.BUILD_ID
-                    def buildNumber = env.BUILD_NUMBER
+                    // def buildNumber = env.BUILD_NUMBER
 
                     // Get build start time in milliseconds
                     def buildStartTimeMillis = currentBuild.startTimeInMillis
@@ -70,7 +70,7 @@ pipeline {
                     def combinedJson = [
                         "repository_name": repoName,
                         "build_id": buildId,
-                        "build_number": buildNumber,
+                        // "build_number": buildNumber,
                         "build_start_time": buildStartTime, // Added build start time
                         "final_status": finalReportStatus,  // Custom status based on JSON file presence
                         "issue_report": issueReportData,            // Content from some2.json
