@@ -32,7 +32,7 @@ pipeline {
 
                     // 2. Read content from existing JSON files
                     def codeQualityData = [:] // Initialize as empty map
-                    def diagramData = [:]     // Initialize as empty map
+                    def issueReportData = [:]     // Initialize as empty map
 
                     try {
                         // Read code_quality_report.json (assuming it's in the workspace root)
@@ -48,10 +48,10 @@ pipeline {
 
                     try {
                         // Read some2.json (assuming it's in the workspace root)
-                        diagramData = readJSON(file: 'some2.json')
+                        issueReportData = readJSON(file: 'some2.json')
                         echo "Successfully read some2.json"
                     } catch (FileNotFoundException e) {
-                        echo "WARNING: some2.json NOT FOUND. Diagram data will be empty."
+                        echo "WARNING: some2.json NOT FOUND. Issue report data will be empty."
                         jsonFilesFoundSuccessfully = false // Mark failure if this file is missing
                     } catch (Exception e) { // Catch other potential parsing errors for robustness
                         echo "ERROR: Could not read or parse some2.json: ${e.message}"
@@ -73,7 +73,7 @@ pipeline {
                         "build_number": buildNumber,
                         "build_start_time": buildStartTime, // Added build start time
                         "final_status": finalReportStatus,  // Custom status based on JSON file presence
-                        "diagrams": diagramData,            // Content from some2.json
+                        "issue_report": issueReportData,            // Content from some2.json
                         "code_quality": codeQualityData     // Content from code_quality_report.json
                     ]
 
