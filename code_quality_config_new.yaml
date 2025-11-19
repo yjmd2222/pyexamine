@@ -35,6 +35,10 @@ code_smells:
     value: 4
     explanation: "Classes with this few methods or fewer may not be pulling their weight."
 
+  LAZY_CLASS_LINES:
+    value: 50
+    explanation: "Flag lazy classes whose non-trivial methods span no more than this many total lines."
+
   FEATURE_ENVY_CALLS:
     value: 3
     explanation: "Methods that call another object's methods/properties more than this many times may belong to that other object."
@@ -70,11 +74,15 @@ code_smells:
   SPECULATIVE_GENERALITY_THRESHOLD:
     value: 4
     explanation: "Abstract classes with no concrete implementations may indicate speculative generality."
-  
+
+  DATA_CLASS_METHODS:
+    value: 4
+    explanation: "Treat classes with at least this many trivial getter/setter methods and no other behavior as data classes."
+
   UNUSED_PARAMETERS_THRESHOLD:
     value: 6
     explanation: "An accumulation of unused method parameters suggests an interface is more complex than its current implementation requires, a common sign of over-engineering."
- 
+
   MIDDLE_MAN_RATIO:
     value: 0.5
     explanation: "Classes where more than this ratio of methods simply delegate to another class may be middle men."
@@ -100,25 +108,53 @@ architectural_smells:
     value: 20
     explanation: "Modules with more than this many functions may be trying to do too much and should be split."
 
+  MIN_GOD_OBJECT_FUNCTIONS:
+    value: 5
+    explanation: "Ignore god-object detection for modules with fewer than this many public functions."
+
   UNSTABLE_DEPENDENCY_THRESHOLD:
     value: 0.8
     explanation: "Modules with instability higher than this value may be too dependent on other modules and prone to changes."
 
-  HUB_LIKE_DEPENDENCY_RATIO:
-    value: 0.3
-    explanation: "Modules connected to more than this ratio of total modules may be hub-like dependencies."
+  MIN_DEPENDENCIES:
+    value: 5
+    explanation: "Only analyze instability for modules with at least this many total dependencies."
 
-  REDUNDANT_ABSTRACTION_SIMILARITY:
-    value: 0.7
-    explanation: "Modules with function similarity higher than this value may be redundant abstractions."
+  HUB_LIKE_DEPENDENCY_THRESHOLD:
+    value: 0.5
+    explanation: "Modules connected to more than this threshold of total modules may be hub-like dependencies."
 
-  IMPROPER_API_USAGE_RATIO:
-    value: 0.7
-    explanation: "Modules with more than this ratio of repeated API calls to total calls may have improper API usage."
+  MIN_HUB_CONNECTIONS:
+    value: 5
+    explanation: "Require at least this many total connections before flagging a hub-like dependency."
 
-  CYCLIC_DEPENDENCY_MAX_LENGTH:
+  REDUNDANT_SIMILARITY_THRESHOLD:
+    value: 0.8
+    explanation: "Minimum Jaccard similarity between module function sets to mark redundant abstractions."
+
+  MIN_SCATTERED_OCCURRENCES:
     value: 3
+    explanation: "Minimum number of distinct modules sharing the same function name to treat functionality as scattered."
+
+  MIN_API_CALLS:
+    value: 10
+    explanation: "Only evaluate improper API usage when a module makes at least this many API calls."
+
+  API_REPETITION_THRESHOLD:
+    value: 0.4
+    explanation: "Modules with more than this threshold of repeated API calls to total calls may have improper API usage."
+
+  MIN_CYCLE_SIZE:
+    value: 2
+    explanation: "Ignore dependency cycles smaller than this length."
+
+  MAX_CYCLE_SIZE:
+    value: 5
     explanation: "Cyclic dependencies involving more than this many modules are considered problematic."
+
+  MIN_PROJECT_SIZE:
+    value: 3
+    explanation: "Require at least this many modules in the dependency graph before searching for orphan modules."
 
 structural_smells:
   NOM_THRESHOLD:

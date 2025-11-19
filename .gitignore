@@ -59,3 +59,4 @@ docs/_build/
 code_quality_report.csv
 code_quality_report.json
 code_quality_report.txt
+code_analysis.log

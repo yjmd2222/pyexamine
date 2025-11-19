@@ -1252,9 +1252,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     
                 branch_info = self._analyze_branches(method)
                 threshold = self.thresholds.get('MAX_BRANCHES', 10)
+                max_nesting_threshold = self.thresholds.get('MAX_NESTING_DEPTH', 3)
                 
                 # Consider both count and nesting
-                if branch_info['count'] > threshold or branch_info['max_nesting'] > 3:
+                if (branch_info['count'] > threshold or 
+                    branch_info['max_nesting'] > max_nesting_threshold):
                     severity = 'High' if branch_info['count'] > threshold * 1.5 else 'Medium'
                     self.add_smell(
                         "Too Many Branches",
