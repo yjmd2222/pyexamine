@@ -262,9 +262,11 @@ class ArchitecturalSmellDetector:
         Detect hub-like dependencies in the project with improved accuracy.
         """
         total_modules = len(self.module_dependencies.nodes())
-        if total_modules < 3:  # Skip analysis for very small projects
+        # Skip analysis for very small projects
+        min_project_modules = self.thresholds.get('HUB_MIN_PROJECT_MODULES', 3)
+        if total_modules < min_project_modules:
             return
-            
+
         threshold = self.thresholds.get('HUB_LIKE_DEPENDENCY_THRESHOLD', 0.5)
         min_connections = self.thresholds.get('MIN_HUB_CONNECTIONS', 5)
         
@@ -288,9 +290,16 @@ class ArchitecturalSmellDetector:
                 # Exclude common infrastructure modules
                 if any(pattern in node.lower() for pattern in ['util', 'common', 'base', 'core']):
                     continue
-                    
+
                 # Check if the module has balanced dependencies
-                is_balanced = 0.2 <= fan_in_ratio / (fan_out_ratio + 0.0001) <= 5
+                bal_min = self.thresholds.get('HUB_BALANCE_RATIO_MIN', 0.2)
+                bal_max = self.thresholds.get('HUB_BALANCE_RATIO_MAX', 5)
+                # avoid division by zero by using conditional
+                if fan_out_ratio == 0:
+                    ratio = float('inf') if fan_in_ratio > 0 else 0
+                else:
+                    ratio = fan_in_ratio / fan_out_ratio
+                is_balanced = (bal_min <= ratio <= bal_max)
                 
                 if not is_balanced:
                     self.add_smell(
@@ -307,8 +316,8 @@ class ArchitecturalSmellDetector:
         Detect scattered functionality in the project.
         """
         function_modules = defaultdict(list)
-        min_function_length = 3  # Ignore very short function names
-        excluded_names = {'main', 'init', 'setup', 'test'}  # Common function names to exclude
+        min_function_length = self.thresholds.get('SCATTERED_MIN_FUNCTION_NAME_LENGTH', 3)
+        excluded_names = set(self.thresholds.get('SCATTERED_EXCLUDED_NAMES', ['main', 'init', 'setup', 'test']))
         
         for module, functions in self.module_functions.items():
             for func in functions:
@@ -333,7 +342,7 @@ class ArchitecturalSmellDetector:
         Detect potential redundant abstractions in the project.
         """
         similar_modules = defaultdict(list)
-        min_functions = 3  # Minimum number of functions to consider
+        min_functions = self.thresholds.get('REDUNDANT_MIN_FUNCTIONS', 3)  # Minimum number of functions to consider
         
         for module, functions in self.module_functions.items():
             # Only consider modules with sufficient functions
@@ -394,6 +403,7 @@ class ArchitecturalSmellDetector:
         """
         min_calls = self.thresholds.get('MIN_API_CALLS', 10)  # Minimum calls to consider
         repetition_threshold = self.thresholds.get('API_REPETITION_THRESHOLD', 0.4)
+        repetition_min_count = self.thresholds.get('API_REPETITION_MIN_COUNT', 3)
         
         for module, api_calls in self.api_usage.items():
             if len(api_calls) >= min_calls:
@@ -404,7 +414,7 @@ class ArchitecturalSmellDetector:
                 
                 # Check for highly repetitive calls
                 repetitive_calls = {call: count for call, count in call_frequency.items() 
-                                  if count >= 3}  # Ignore calls repeated less than 3 times
+                                  if count >= repetition_min_count}  # Ignore calls repeated less than configured
                 
                 if (repetitive_calls and 
                     sum(repetitive_calls.values()) / len(api_calls) > repetition_threshold):
@@ -420,7 +430,7 @@ class ArchitecturalSmellDetector:
         """
         Detect orphan modules in the project.
         """
-        excluded_modules = {'__init__', 'setup', 'tests', 'utils'}  # Common standalone modules
+        excluded_modules = set(self.thresholds.get('ORPHAN_EXCLUDED_MODULES', ['__init__', 'setup', 'tests', 'utils']))
         min_project_size = self.thresholds.get('MIN_PROJECT_SIZE', 3)
         
         if len(self.module_dependencies.nodes()) < min_project_size:
@@ -446,7 +456,7 @@ class ArchitecturalSmellDetector:
         """
         min_cycle_size = self.thresholds.get('MIN_CYCLE_SIZE', 2)
         max_cycle_size = self.thresholds.get('MAX_CYCLE_SIZE', 5)
-        excluded_modules = {'__init__', 'utils', 'common', 'base', 'core'}
+        excluded_modules = set(self.thresholds.get('CYCLE_EXCLUDED_MODULES', ['__init__', 'utils', 'common', 'base', 'core']))
         
         # Find all simple cycles
         cycles = list(nx.simple_cycles(self.module_dependencies))
@@ -480,7 +490,9 @@ class ArchitecturalSmellDetector:
             cycle, strength = strongest_cycle
             
             # Calculate severity based on cycle size and strength
-            severity = 'high' if len(cycle) >= 3 and strength >= 3 else 'medium'
+            cycle_high_size = self.thresholds.get('CYCLE_HIGH_MIN_SIZE', 3)
+            cycle_high_strength = self.thresholds.get('CYCLE_HIGH_MIN_STRENGTH', 3)
+            severity = 'high' if len(cycle) >= cycle_high_size and strength >= cycle_high_strength else 'medium'
             
             cycle_str = ' -> '.join(cycle + [cycle[0]])
             self.add_smell(

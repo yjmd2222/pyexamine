@@ -606,10 +606,15 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             
             # Adjust threshold based on average class complexity
             adjusted_threshold = self.thresholds['NOCC_THRESHOLD']
-            if avg_weight < 5:  # Simple classes
-                adjusted_threshold *= 1.5
-            elif avg_weight > 15:  # Complex classes
-                adjusted_threshold *= 0.7
+            low_bound = self.thresholds.get('NOCC_AVG_WEIGHT_BOUND_LOW', 5)
+            high_bound = self.thresholds.get('NOCC_AVG_WEIGHT_BOUND_HIGH', 15)
+            low_mult = self.thresholds.get('NOCC_MULTIPLIER_LOW', 1.5)
+            high_mult = self.thresholds.get('NOCC_MULTIPLIER_HIGH', 0.7)
+
+            if avg_weight < low_bound:  # Simple classes
+                adjusted_threshold *= low_mult
+            elif avg_weight > high_bound:  # Complex classes
+                adjusted_threshold *= high_mult
             
             if count > adjusted_threshold:
                 severity = 'High' if count > adjusted_threshold * 1.5 else 'Medium'
@@ -631,7 +636,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         - Abstract base classes
         """
         inheritance_graph = nx.DiGraph()
-        framework_bases = {'object', 'Exception', 'dict', 'list', 'set', 'tuple', 'str', 'int', 'float'}
+        framework_bases = set(self.thresholds.get('FRAMEWORK_BASES', ['object', 'Exception', 'dict', 'list', 'set', 'tuple', 'str', 'int', 'float']))
         
         for class_name, info in self.class_info.items():
             inheritance_graph.add_node(class_name)
@@ -756,9 +761,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 # Adjust threshold based on module type
                 adjusted_threshold = self.thresholds['LOC_THRESHOLD']
                 if 'test' in module_name.lower():
-                    adjusted_threshold *= 1.5  # Allow test files to be longer
-                if complexity_ratio < 0.5:
-                    adjusted_threshold *= 1.3  # Allow more lines if much of it is documentation
+                    adjusted_threshold *= self.thresholds.get('LOC_TEST_FILE_MULTIPLIER', 1.5)
+                if complexity_ratio < self.thresholds.get('LOC_DOC_COMPLEXITY_RATIO_BREAKPOINT', 0.5):
+                    adjusted_threshold *= self.thresholds.get('LOC_DOC_COMPLEXITY_MULTIPLIER', 1.3)
                 
                 if effective_loc > adjusted_threshold:
                     severity = 'High' if effective_loc > adjusted_threshold * 1.5 else 'Medium'
@@ -812,8 +817,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             # Calculate weighted MPC
             external_mpc = sum(freq for freq in method_calls.values())
             internal_mpc = len(internal_calls)
-            weighted_mpc = external_mpc * 1.5 + internal_mpc  # External calls weighted more heavily
-            
+            external_weight = self.thresholds.get('MPC_EXTERNAL_WEIGHT', 1.5)
+            weighted_mpc = external_mpc * external_weight + internal_mpc  # External calls weighted more heavily
+
             if weighted_mpc > self.thresholds['MPC_THRESHOLD']:
                 severity = 'High' if weighted_mpc > self.thresholds['MPC_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
@@ -867,8 +873,10 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             # Calculate weighted CBO
             direct_cbo = len(direct_coupling)
             indirect_cbo = len(indirect_coupling)
-            weighted_cbo = direct_cbo * 1.5 + indirect_cbo * 0.5
-            
+            direct_w = self.thresholds.get('CBO_DIRECT_WEIGHT', 1.5)
+            indirect_w = self.thresholds.get('CBO_INDIRECT_WEIGHT', 0.5)
+            weighted_cbo = direct_cbo * direct_w + indirect_cbo * indirect_w
+
             if weighted_cbo > self.thresholds['CBO_THRESHOLD']:
                 severity = self._calculate_cbo_severity(weighted_cbo, self.thresholds['CBO_THRESHOLD'])
                 self.add_smell(
@@ -1017,19 +1025,24 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             float: Adjusted threshold value
         """
         base_threshold = self.thresholds['NOC_THRESHOLD']
-        
+
         # Count total lines of production code
         total_loc = sum(info['loc'] for info in self.module_info.values()
                        if not any(pattern in name.lower() 
                                 for pattern in ['test', 'mock'] 
                                 for name in info))
-        
-        # Adjust based on project size
-        if total_loc > 10000:
-            base_threshold *= 1.5
-        elif total_loc > 5000:
-            base_threshold *= 1.2
-            
+
+        # Adjust based on project size using configurable breakpoints/multipliers
+        high_break = self.thresholds.get('NOC_LOC_BREAKPOINT_HIGH', 10000)
+        med_break = self.thresholds.get('NOC_LOC_BREAKPOINT_MEDIUM', 5000)
+        high_mult = self.thresholds.get('NOC_LOC_MULTIPLIER_HIGH', 1.5)
+        med_mult = self.thresholds.get('NOC_LOC_MULTIPLIER_MEDIUM', 1.2)
+
+        if total_loc > high_break:
+            base_threshold *= high_mult
+        elif total_loc > med_break:
+            base_threshold *= med_mult
+
         return base_threshold
 
     
@@ -1244,11 +1257,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         """
         for class_name, info in self.class_info.items():
             for method in info['methods']:
-                # Skip property methods and simple getters/setters
-                if (any(isinstance(d, ast.Name) and d.id == 'property' 
-                       for d in getattr(method, 'decorator_list', [])) or
-                    method.name.startswith(('get_', 'set_', 'is_'))):
-                    continue
+                     # Skip property methods and simple getters/setters
+                     exclude_prefixes = tuple(self.thresholds.get('BRANCH_EXCLUDE_METHOD_PREFIXES', ['get_', 'set_', 'is_']))
+                     exclude_decorators = set(self.thresholds.get('BRANCH_EXCLUDE_DECORATORS', ['property']))
+                     if (any(isinstance(d, ast.Name) and d.id in exclude_decorators 
+                              for d in getattr(method, 'decorator_list', [])) or
+                          method.name.startswith(exclude_prefixes)):
+                          continue
                     
                 branch_info = self._analyze_branches(method)
                 threshold = self.thresholds.get('MAX_BRANCHES', 10)

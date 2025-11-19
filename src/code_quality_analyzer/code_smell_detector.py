@@ -207,7 +207,7 @@ class CodeSmellDetector:
                 total_args = len(node.args.args)
                 
                 # Skip if it's a small number of total arguments
-                if total_args <= 3:
+                if total_args <= self.thresholds.get('PRIMITIVE_MIN_ARGS', 3):
                     continue
 
                 for i, arg in enumerate(node.args.args):
@@ -225,7 +225,7 @@ class CodeSmellDetector:
                 # Calculate primitive ratio
                 primitive_ratio = len(primitives) / (total_args - 1 if 'self' in node.args.args[0].name else total_args)
                 if (len(primitives) > self.thresholds["PRIMITIVE_OBSESSION_COUNT"] and 
-                    primitive_ratio > 0.7):  # More than 70% primitives
+                    primitive_ratio > self.thresholds.get('PRIMITIVE_RATIO_THRESHOLD', 0.7)):
                     self.code_smells.append(CodeSmell(
                         name="Primitive Obsession",
                         description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
@@ -292,7 +292,8 @@ class CodeSmellDetector:
                     continue
                     
                 # Create combinations of parameters that appear together
-                for size in range(3, len(params) + 1):
+                min_combo = self.thresholds.get('DATA_CLUMP_MIN_COMBO_SIZE', 3)
+                for size in range(min_combo, len(params) + 1):
                     for combo in combinations(sorted(params), size):
                         parameter_groups[combo].append(node.name)
         
@@ -571,7 +572,7 @@ class CodeSmellDetector:
                             union_size = len(class_info[h1[0]] | class_info[h2[0]])
                             if union_size > 0:  # Prevent division by zero
                                 similarity = len(class_info[h1[0]] & class_info[h2[0]]) / union_size
-                                if similarity > 0.3:  # More than 30% similar methods
+                                if similarity > self.thresholds.get('PARALLEL_INHERITANCE_SIMILARITY_THRESHOLD', 0.3):  # More than configured percent similar methods
                                     parallel_hierarchies.extend([h1, h2])
 
             if parallel_hierarchies:
@@ -593,7 +594,8 @@ class CodeSmellDetector:
             for call in node.nodes_of_class(nodes.Call):
                 if isinstance(call.func, nodes.Name):
                     # Skip common utility methods and logging
-                    if call.func.name.lower() in {'log', 'print', 'str', 'len', 'isinstance', 'super'}:
+                    exclude_names = set(self.thresholds.get('SHOTGUN_SURGERY_EXCLUDE_NAMES', ['log', 'print', 'str', 'len', 'isinstance', 'super']))
+                    if call.func.name.lower() in exclude_names:
                         continue
                         
                     # Store both line number and context
@@ -916,9 +918,9 @@ class CodeSmellDetector:
                         if sub_node.expr.name == 'self':
                             local_calls += 1
                         else:
-                            # Skip common utility objects
-                            if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
-                                class_calls[sub_node.expr.name] += 1
+                                    # Skip common utility objects
+                                    if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
+                                        class_calls[sub_node.expr.name] += 1
                 
                 if class_calls:
                     max_calls = max(class_calls.values())
@@ -926,7 +928,7 @@ class CodeSmellDetector:
                     
                     # Check if external calls significantly outnumber local calls
                     if (max_calls > self.thresholds["FEATURE_ENVY_CALLS"] and
-                        max_calls > local_calls * 2):  # At least twice as many external calls
+                        max_calls > local_calls * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
                         self.add_smell(
                             name="Feature Envy",
                             description=f"Method '{node.name}' makes {max_calls} calls to '{max_class}' but only {local_calls} local calls in {file_path}",
@@ -997,7 +999,7 @@ class CodeSmellDetector:
                     method_ratio = shared / len(methods) if methods else 0
 
                     if (shared > self.thresholds["INAPPROPRIATE_INTIMACY_SHARED"] and
-                        method_ratio > 0.3):  # More than 30% of methods are shared
+                        method_ratio > self.thresholds.get('INAPPROPRIATE_INTIMACY_METHOD_RATIO', 0.3)):
                         self.add_smell(
                             name="Inappropriate Intimacy",
                             description=f"Class '{class_name}' might be too intimate with '{other_class}' "
@@ -1114,7 +1116,7 @@ class CodeSmellDetector:
 
                 delegation_ratio = delegating_methods / total_methods if total_methods > 0 else 0
                 if (delegation_ratio > self.thresholds["MIDDLE_MAN_RATIO"] and
-                    len(delegate_targets) <= 2):  # Only flag if delegating to 1-2 objects
+                    len(delegate_targets) <= self.thresholds.get('MIDDLE_MAN_MAX_DELEGATE_TARGETS', 2)):
                     primary_delegate = max(delegate_targets.items(), key=lambda x: len(x[1]))
                     self.add_smell(
                         name="Middle Man",
