@@ -55,3 +55,7 @@ docs/_build/
 *.egg-info/
 
 
+# ignore analysis results
+code_quality_report.csv
+code_quality_report.json
+code_quality_report.txt
