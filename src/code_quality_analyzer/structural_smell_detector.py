@@ -315,14 +315,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             nom = len(regular_methods)
             if nom > threshold:
                 severity = 'High' if nom > threshold * 1.5 else 'Medium'
-                smell = StructuralSmell(
+                self.add_smell(
                     name="High Number of Methods (NOM)",
                     description=f"Class '{class_name}' has {nom} methods (excluding special methods and properties)",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     severity=severity
                 )
-                self.structural_smells.append(smell)
                 logger.info(f"Detected NOM smell in {class_name}: {nom} methods")
 
     def detect_wmpc(self):

@@ -142,13 +142,13 @@ class CodeSmellDetector:
                             actual_lines += 1
                 
                 if actual_lines > self.thresholds["LONG_METHOD_LINES"]:
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Long Method",
                         description=f"'{node.name}' has {actual_lines} lines in {file_path} at line {node.lineno}",
                         file_path=file_path,
                         module_class=node.name,
                         line_number=node.lineno
-                    ))
+                    )
 
     def detect_large_classes(self, module, file_path):
         """
@@ -226,13 +226,14 @@ class CodeSmellDetector:
                 primitive_ratio = len(primitives) / (total_args - 1 if 'self' in node.args.args[0].name else total_args)
                 if (len(primitives) > self.thresholds["PRIMITIVE_OBSESSION_COUNT"] and 
                     primitive_ratio > self.thresholds.get('PRIMITIVE_RATIO_THRESHOLD', 0.7)):
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Primitive Obsession",
                         description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno
-                    ))
+                        line_number=node.lineno,
+                        severity='medium'
+                    )
 
     def detect_long_parameter_lists(self, module, file_path):
         """
@@ -262,13 +263,14 @@ class CodeSmellDetector:
                 )
 
                 if len(args) > threshold:
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Long Parameter List",
                         description=f"'{node.name}' has {len(args)} parameters in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno
-                    ))
+                        line_number=node.lineno,
+                        severity='medium'
+                    )
 
     def detect_data_clumps(self, module, file_path):
         """
@@ -342,14 +344,14 @@ class CodeSmellDetector:
             if (condition_count > self.thresholds["COMPLEX_CONDITIONAL"] and 
                 not is_guard_clause and 
                 not is_type_check):
-                self.code_smells.append(CodeSmell(
+                self.add_smell(
                     name="Switch Statements",
                     description=f"Complex conditional with {condition_count} branches at line {node.lineno} in {file_path}",
                     file_path=file_path,
                     module_class=None,
                     line_number=node.lineno,
                     severity='medium'
-                ))
+                )
 
     def detect_temporary_fields(self, module, file_path):
         """
@@ -610,14 +612,14 @@ class CodeSmellDetector:
             unique_contexts = len(set(context for _, context in calls))
             if (len(calls) > self.thresholds["SHOTGUN_SURGERY_CALLS"] and
                 unique_contexts > self.thresholds["SHOTGUN_SURGERY_CONTEXTS"]):
-                self.code_smells.append(CodeSmell(
+                self.add_smell(
                     name="Potential Shotgun Surgery",
                     description=f"Method '{method}' called in {unique_contexts} different contexts across {len(calls)} locations in {file_path}",
                     file_path=file_path,
                     module_class=method,
                     line_number=calls[0][0],
                     severity='high'
-                ))
+                )
 
     def detect_comments(self, module, file_path):
         """
@@ -656,14 +658,14 @@ class CodeSmellDetector:
         
         if (comment_ratio > self.thresholds["EXCESSIVE_COMMENTS_RATIO"] and
             large_comment_blocks > self.thresholds["LARGE_COMMENT_BLOCKS"]):
-            self.code_smells.append(CodeSmell(
+            self.add_smell(
                 name="Excessive Comments",
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
                 module_class=None,
                 line_number=None,
                 severity='low'
-            ))
+            )
 
     def detect_duplicate_code(self, module, file_path):
         """
@@ -697,14 +699,14 @@ class CodeSmellDetector:
         for block, functions in code_blocks.items():
             if len(functions) >= self.thresholds["DUPLICATE_CODE_THRESHOLD"]:
                 total_lines = sum(lines for _, lines in functions)
-                self.code_smells.append(CodeSmell(
+                self.add_smell(
                     name="Duplicate Code",
                     description=f"Similar code found in functions: {', '.join(f[0] for f in functions)} ({total_lines} total lines) in {file_path}",
                     file_path=file_path,
                     module_class=', '.join(f[0] for f in functions),
                     line_number=None,
                     severity='high'
-                ))
+                )
 
     def detect_data_class(self, module, file_path):
         """
@@ -741,14 +743,14 @@ class CodeSmellDetector:
                 # Only flag if class is predominantly getters/setters
                 if (others == 0 and getters + setters >= self.thresholds["DATA_CLASS_METHODS"] and
                     not node.name.endswith(('DTO', 'Model', 'Entity', 'Record'))):  # Skip known data structures
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Data Class",
                         description=f"Class '{node.name}' has {getters} getters and {setters} setters with no other methods in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
                         line_number=node.lineno,
                         severity='medium'
-                    ))
+                    )
 
     def detect_dead_code(self, module, file_path):
         """
@@ -797,14 +799,14 @@ class CodeSmellDetector:
         
         if len(unused_functions) >= self.thresholds["DEAD_CODE_THRESHOLD"]:
             for func in unused_functions:
-                self.code_smells.append(CodeSmell(
+                self.add_smell(
                     name="Dead Code",
                     description=f"Potentially unused function '{func}' in {file_path}",
                     file_path=file_path,
                     module_class=func,
                     line_number=None,
                     severity='low'
-                ))
+                )
 
     def detect_lazy_class(self, module, file_path):
         """
@@ -831,14 +833,14 @@ class CodeSmellDetector:
                 total_lines = sum(m.tolineno - m.fromlineno for m in methods)
                 if (len(methods) <= self.thresholds["LAZY_CLASS_METHODS"] and
                     total_lines <= self.thresholds["LAZY_CLASS_LINES"]):
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Lazy Class",
                         description=f"Class '{node.name}' has only {len(methods)} non-trivial methods with {total_lines} total lines in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
                         line_number=node.lineno,
                         severity='low'
-                    ))
+                    )
 
     def detect_speculative_generality(self, module, file_path):
         """
@@ -874,14 +876,14 @@ class CodeSmellDetector:
                     if unused_params:
                         description.append(f"has {len(unused_params)} unused parameters: {', '.join(unused_params)}")
                     
-                    self.code_smells.append(CodeSmell(
+                    self.add_smell(
                         name="Speculative Generality",
                         description=f"Class '{node.name}' {' and '.join(description)} in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
                         line_number=node.lineno,
                         severity='medium'
-                    ))
+                    )
 
     def detect_feature_envy(self, module, file_path):
         """
@@ -1055,7 +1057,7 @@ class CodeSmellDetector:
                     context = parent.name
                     break
 
-            self.code_smells.append(CodeSmell(
+            self.add_smell(
                 name="Message Chains",
                 description=f"Long chain ({chain_length} calls: {' -> '.join(reversed(chain))}) "
                            f"in {context or 'unknown context'} at line {node.lineno} in {file_path}",
@@ -1063,7 +1065,7 @@ class CodeSmellDetector:
                 module_class=context,
                 line_number=node.lineno,
                 severity='medium'
-            ))
+            )
 
     def detect_middle_man(self, module, file_path):
         """
