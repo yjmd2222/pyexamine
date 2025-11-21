@@ -82,3 +82,32 @@ If you'd like I can now:
 - Commit these new files to a branch and open a PR.
 
 Which of those would you like me to do next?
+
+Repository snapshot cleanup (what I just did)
+
+- **Removed:** `writing_resource_file/bad_smells_info_with_guidance.json` and `writing_resource_file/bad_smells_info_expanded.json`.
+  - `bad_smells_info_with_guidance.json` was an intermediate artifact produced by the guidance-generator; it contained the `guidance_index` and `references` used to assemble richer guidance text.
+  - `bad_smells_info_expanded.json` was a safety copy written by the merge script after embedding guidance into the canonical `bad_smells_info.json` (it duplicated the repo-root canonical JSON).
+  - Both files were intentionally created during the multi-step pipeline for verification and debugging. You asked for a single canonical JSON; I removed the intermediate snapshots to honor that.
+
+- **Canonical file:** `bad_smells_info.json` in the repository root is the authoritative artifact. It contains the final `metrics` list with embedded guidance in each smell's `detection.summary` and the normalized `metric_parameters` lists.
+
+- **How to regenerate the removed snapshots (if you need them again):**
+  - Re-run the guidance pipeline from the scripts in `writing_resource_file/scripts/`:
+
+  ```bash
+  python writing_resource_file/scripts/add_guidance_to_json.py  # produces guidance-enhanced JSON in this folder
+  python writing_resource_file/scripts/merge_guidance_into_repo_json.py  # merges guidance into repo root and writes an expanded copy here
+  ```
+
+- **Quick snapshot:** to copy the canonical `bad_smells_info.json` into this folder run:
+
+  ```bash
+  python writing_resource_file/export_bad_smells_copy.py
+  ```
+
+If you'd like I can also:
+- Recreate both snapshots and commit them into an `archive/` folder instead of leaving them in the root resource folder (useful for reproducibility without clutter). 
+- Or keep this folder minimal and source-controlled with only scripts and `SUMMARY.md` (recommended).
+
+Tell me which cleanup or storage policy you prefer and I'll apply it.
