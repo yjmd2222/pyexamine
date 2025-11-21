@@ -1,0 +1,62 @@
+name: Push bad_smells_info.json to private repo
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 2 * * *"  # daily at 02:00 UTC
+  push:
+    branches:
+      - resources
+
+env:
+  SOURCE_FILE: bad_smells_info.json
+  TARGET_REPO: yjmd2222/master-thesis-materials
+  TARGET_BRANCH: knowledge
+  TARGET_DIR: knowledge
+  COMMIT_MESSAGE: "Sync bad_smells_info.json"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Clone target repo
+        env:
+          PAT: ${{ secrets.TARGET_REPO_PAT }}
+        run: |
+          if [ -z "$PAT" ]; then
+            echo "PAT not set; please add TARGET_REPO_PAT secret." >&2
+            exit 1
+          fi
+          git clone --depth 1 --branch "$TARGET_BRANCH" "https://x-access-token:${PAT}@github.com/${TARGET_REPO}.git" target-repo
+
+      - name: Copy file into target repo
+        run: |
+          mkdir -p "target-repo/${TARGET_DIR}"
+          cp "${SOURCE_FILE}" "target-repo/${TARGET_DIR}/"
+
+      - name: Commit changes
+        working-directory: target-repo
+        run: |
+          git status --short
+          if git status --short | grep .; then
+            git add "${TARGET_DIR}/${SOURCE_FILE}"
+            git commit -m "${COMMIT_MESSAGE} (${GITHUB_SHA})"
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Push changes
+        if: success()
+        env:
+          PAT: ${{ secrets.TARGET_REPO_PAT }}
+        working-directory: target-repo
+        run: |
+          git push origin "$TARGET_BRANCH"
