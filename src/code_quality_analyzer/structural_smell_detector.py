@@ -91,12 +91,17 @@ class StructuralSmellDetector:
         """
         detection_methods = [
             (self.detect_nom, "detect_nom"),
+            (self.detect_wmpc, "detect_wmpc"),
+            (self.detect_size2, "detect_size2"),
+            (self.detect_wac, "detect_wac"),
             (self.detect_lcom, "detect_lcom"),
             (self.detect_rfc, "detect_rfc"),
             (self.detect_nocc, "detect_nocc"),
             (self.detect_dit, "detect_dit"),
             (self.detect_loc, "detect_loc"),
             (self.detect_noc, "detect_noc"),
+            (self.detect_mpc, "detect_mpc"),
+            (self.detect_cbo, "detect_cbo"),
             (self.detect_cyclomatic_complexity, "detect_cyclomatic_complexity"),
             (self.detect_fanout, "detect_fanout"),
             (self.detect_fanin, "detect_fanin"),
