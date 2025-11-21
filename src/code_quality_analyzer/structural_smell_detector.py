@@ -1257,14 +1257,14 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         """
         for class_name, info in self.class_info.items():
             for method in info['methods']:
-                     # Skip property methods and simple getters/setters
-                     exclude_prefixes = tuple(self.thresholds.get('BRANCH_EXCLUDE_METHOD_PREFIXES', ['get_', 'set_', 'is_']))
-                     exclude_decorators = set(self.thresholds.get('BRANCH_EXCLUDE_DECORATORS', ['property']))
-                     if (any(isinstance(d, ast.Name) and d.id in exclude_decorators 
-                              for d in getattr(method, 'decorator_list', [])) or
-                          method.name.startswith(exclude_prefixes)):
-                          continue
-                    
+                # Skip property methods and simple getters/setters
+                exclude_prefixes = tuple(self.thresholds.get('BRANCH_EXCLUDE_METHOD_PREFIXES', ['get_', 'set_', 'is_']))
+                exclude_decorators = set(self.thresholds.get('BRANCH_EXCLUDE_DECORATORS', ['property']))
+                if (any(isinstance(d, ast.Name) and d.id in exclude_decorators 
+                        for d in getattr(method, 'decorator_list', [])) or
+                    method.name.startswith(exclude_prefixes)):
+                    continue
+
                 branch_info = self._analyze_branches(method)
                 threshold = self.thresholds.get('MAX_BRANCHES', 10)
                 max_nesting_threshold = self.thresholds.get('MAX_NESTING_DEPTH', 3)
