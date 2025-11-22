@@ -1,4 +1,4 @@
-﻿name: Push code_metric_info.json to private repo
+﻿name: Sync code metric info to private repo
 
 on:
   workflow_dispatch: {}
@@ -60,5 +60,4 @@ jobs:
         working-directory: target-repo
         run: |
           git push origin "$TARGET_BRANCH"
-
 

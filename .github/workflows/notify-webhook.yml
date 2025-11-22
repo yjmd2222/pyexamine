@@ -1,0 +1,32 @@
+﻿name: Notify webhook after code metric sync
+
+on:
+  workflow_run:
+    workflows:
+      - Sync code metric info to private repo
+    types:
+      - completed
+
+jobs:
+  notify-webhook:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post N8N webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          WEBHOOK_HEADER_NAME: ${{ secrets.N8N_WEBHOOK_HEADER_NAME }}
+          WEBHOOK_HEADER_VALUE: ${{ secrets.N8N_WEBHOOK_HEADER_VALUE }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "N8N_WEBHOOK_URL not set." >&2
+            exit 1
+          fi
+          HEADER_NAME=${WEBHOOK_HEADER_NAME:-"<header-name>"}
+          HEADER_VALUE=${WEBHOOK_HEADER_VALUE:-"<header-value>"}
+          curl --fail --silent --show-error \
+            -H "Content-Type: application/json" \
+            -H "${HEADER_NAME}: ${HEADER_VALUE}" \
+            -d "{\"workflow\":\"push-code-metric-info\",\"sha\":\"${SHA}\"}" \
+            "$WEBHOOK_URL"
