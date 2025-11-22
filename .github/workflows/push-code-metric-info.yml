@@ -40,14 +40,14 @@ jobs:
       - name: Copy file into target repo
         run: |
           mkdir -p "target-repo/${TARGET_DIR}"
-          cp "${SOURCE_FILE}" "target-repo/${TARGET_DIR}/"
+          cp "${SOURCE_FILE}" "target-repo/${TARGET_DIR}/$(basename "${SOURCE_FILE}")"
 
       - name: Commit changes
         working-directory: target-repo
         run: |
           git status --short
           if git status --short | grep .; then
-            git add "${TARGET_DIR}/${SOURCE_FILE}"
+            git add "${TARGET_DIR}/$(basename "${SOURCE_FILE}")"
             git commit -m "${COMMIT_MESSAGE} (${GITHUB_SHA})"
           else
             echo "No changes to commit."
