@@ -1,4 +1,4 @@
-name: Push bad_smells_info.json to private repo
+﻿name: Push code_metric_info.json to private repo
 
 on:
   workflow_dispatch: {}
@@ -9,11 +9,11 @@ on:
       - resources
 
 env:
-  SOURCE_FILE: bad_smells_info.json
+  SOURCE_FILE: code_metric_info.json
   TARGET_REPO: yjmd2222/master-thesis-materials
   TARGET_BRANCH: knowledge
   TARGET_DIR: knowledge
-  COMMIT_MESSAGE: "Sync bad_smells_info.json"
+  COMMIT_MESSAGE: "Sync code_metric_info.json"
 
 jobs:
   sync:
@@ -60,3 +60,5 @@ jobs:
         working-directory: target-repo
         run: |
           git push origin "$TARGET_BRANCH"
+
+
