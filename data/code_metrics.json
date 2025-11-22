@@ -1,7 +1,7 @@
-﻿{
+{
     "elements":  [
                   {
-                      "metric_id":  1,
+                      "id":  1,
                       "metric_name":  "Long Method",
                       "info":  {
                                    "metric_parameters":  [
@@ -67,7 +67,7 @@
                                }
                   },
                   {
-                      "metric_id":  2,
+                      "id":  2,
                       "metric_name":  "Large Class",
                       "info":  {
                                    "metric_parameters":  [
@@ -133,7 +133,7 @@
                                }
                   },
                   {
-                      "metric_id":  3,
+                      "id":  3,
                       "metric_name":  "Primitive Obsession",
                       "info":  {
                                    "metric_parameters":  [
@@ -208,7 +208,7 @@
                                }
                   },
                   {
-                      "metric_id":  4,
+                      "id":  4,
                       "metric_name":  "Long Parameter List",
                       "info":  {
                                    "metric_parameters":  [
@@ -269,7 +269,7 @@
                                }
                   },
                   {
-                      "metric_id":  5,
+                      "id":  5,
                       "metric_name":  "Data Clumps",
                       "info":  {
                                    "metric_parameters":  [
@@ -338,7 +338,7 @@
                                }
                   },
                   {
-                      "metric_id":  6,
+                      "id":  6,
                       "metric_name":  "Switch Statements",
                       "info":  {
                                    "metric_parameters":  [
@@ -399,7 +399,7 @@
                                }
                   },
                   {
-                      "metric_id":  7,
+                      "id":  7,
                       "metric_name":  "Temporary Field",
                       "info":  {
                                    "metric_parameters":  [
@@ -460,7 +460,7 @@
                                }
                   },
                   {
-                      "metric_id":  8,
+                      "id":  8,
                       "metric_name":  "Alternative Classes with Different Interfaces",
                       "info":  {
                                    "metric_parameters":  [
@@ -509,7 +509,7 @@
                                }
                   },
                   {
-                      "metric_id":  9,
+                      "id":  9,
                       "metric_name":  "Potential Divergent Change",
                       "info":  {
                                    "metric_parameters":  [
@@ -566,7 +566,7 @@
                                }
                   },
                   {
-                      "metric_id":  10,
+                      "id":  10,
                       "metric_name":  "Parallel Inheritance Hierarchies",
                       "info":  {
                                    "metric_parameters":  [
@@ -627,7 +627,7 @@
                                }
                   },
                   {
-                      "metric_id":  11,
+                      "id":  11,
                       "metric_name":  "Potential Shotgun Surgery",
                       "info":  {
                                    "metric_parameters":  [
@@ -714,7 +714,7 @@
                                }
                   },
                   {
-                      "metric_id":  12,
+                      "id":  12,
                       "metric_name":  "Excessive Comments",
                       "info":  {
                                    "metric_parameters":  [
@@ -740,7 +740,7 @@
                                                                             ],
                                                          "examples":  [
                                                                           {
-                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a 占쏙옙commented dump占쏙옙.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n# ... truncated ...",
+                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a ��commented dump��.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n# ... truncated ...",
                                                                               "example_output":  {
                                                                                                      "Type":  "Synthetic",
                                                                                                      "Name":  "Excessive Comments",
@@ -776,7 +776,7 @@
                                }
                   },
                   {
-                      "metric_id":  13,
+                      "id":  13,
                       "metric_name":  "Duplicate Code",
                       "info":  {
                                    "metric_parameters":  [
@@ -802,7 +802,7 @@
                                                                             ],
                                                          "examples":  [
                                                                           {
-                                                                              "example_input":  "# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a 占쏙옙commented dump占쏙옙.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n# ... truncated ...",
+                                                                              "example_input":  "# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a ��commented dump��.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n# ... truncated ...",
                                                                               "example_output":  {
                                                                                                      "Type":  "Synthetic",
                                                                                                      "Name":  "Duplicate Code",
@@ -838,7 +838,7 @@
                                }
                   },
                   {
-                      "metric_id":  14,
+                      "id":  14,
                       "metric_name":  "Data Class",
                       "info":  {
                                    "metric_parameters":  [
@@ -887,7 +887,7 @@
                                }
                   },
                   {
-                      "metric_id":  15,
+                      "id":  15,
                       "metric_name":  "Dead Code",
                       "info":  {
                                    "metric_parameters":  [
@@ -936,7 +936,7 @@
                                }
                   },
                   {
-                      "metric_id":  16,
+                      "id":  16,
                       "metric_name":  "Lazy Class",
                       "info":  {
                                    "metric_parameters":  [
@@ -1005,7 +1005,7 @@
                                }
                   },
                   {
-                      "metric_id":  17,
+                      "id":  17,
                       "metric_name":  "Speculative Generality",
                       "info":  {
                                    "metric_parameters":  [
@@ -1062,7 +1062,7 @@
                                }
                   },
                   {
-                      "metric_id":  18,
+                      "id":  18,
                       "metric_name":  "Feature Envy",
                       "info":  {
                                    "metric_parameters":  [
@@ -1131,7 +1131,7 @@
                                }
                   },
                   {
-                      "metric_id":  19,
+                      "id":  19,
                       "metric_name":  "Inappropriate Intimacy",
                       "info":  {
                                    "metric_parameters":  [
@@ -1188,7 +1188,7 @@
                                }
                   },
                   {
-                      "metric_id":  20,
+                      "id":  20,
                       "metric_name":  "Message Chains",
                       "info":  {
                                    "metric_parameters":  [
@@ -1249,7 +1249,7 @@
                                }
                   },
                   {
-                      "metric_id":  21,
+                      "id":  21,
                       "metric_name":  "Middle Man",
                       "info":  {
                                    "metric_parameters":  [
@@ -1318,7 +1318,7 @@
                                }
                   },
                   {
-                      "metric_id":  22,
+                      "id":  22,
                       "metric_name":  "Hub-like Dependency",
                       "info":  {
                                    "metric_parameters":  [
@@ -1393,7 +1393,7 @@
                                }
                   },
                   {
-                      "metric_id":  23,
+                      "id":  23,
                       "metric_name":  "Scattered Functionality",
                       "info":  {
                                    "metric_parameters":  [
@@ -1473,7 +1473,7 @@
                                }
                   },
                   {
-                      "metric_id":  24,
+                      "id":  24,
                       "metric_name":  "Potential Redundant Abstractions",
                       "info":  {
                                    "metric_parameters":  [
@@ -1530,7 +1530,7 @@
                                }
                   },
                   {
-                      "metric_id":  25,
+                      "id":  25,
                       "metric_name":  "God Object",
                       "info":  {
                                    "metric_parameters":  [
@@ -1592,7 +1592,7 @@
                                }
                   },
                   {
-                      "metric_id":  26,
+                      "id":  26,
                       "metric_name":  "Potential Improper API Usage",
                       "info":  {
                                    "metric_parameters":  [
@@ -1660,7 +1660,7 @@
                                }
                   },
                   {
-                      "metric_id":  27,
+                      "id":  27,
                       "metric_name":  "Orphan Module",
                       "info":  {
                                    "metric_parameters":  [
@@ -1734,7 +1734,7 @@
                                }
                   },
                   {
-                      "metric_id":  28,
+                      "id":  28,
                       "metric_name":  "Cyclic Dependency",
                       "info":  {
                                    "metric_parameters":  [
@@ -1815,7 +1815,7 @@
                                }
                   },
                   {
-                      "metric_id":  29,
+                      "id":  29,
                       "metric_name":  "Unstable Dependency",
                       "info":  {
                                    "metric_parameters":  [
@@ -1872,7 +1872,7 @@
                                }
                   },
                   {
-                      "metric_id":  30,
+                      "id":  30,
                       "metric_name":  "High Number of Methods (NOM)",
                       "info":  {
                                    "metric_parameters":  [
@@ -1890,7 +1890,7 @@
                                                          "parameter_refs":  "NOM_THRESHOLD",
                                                          "examples":  [
                                                                           {
-                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a 占쏙옙commented dump占쏙옙.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n\n    def get_child(self):\n        return self.child\n\n    def value(self):\n        return \"leaf\"\n\n\ndef chain_demo():\n    root = Node(Node(Node(Node())))\n    return root.get_child().get_child().get_child().value()",
+                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a ��commented dump��.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n\n    def get_child(self):\n        return self.child\n\n    def value(self):\n        return \"leaf\"\n\n\ndef chain_demo():\n    root = Node(Node(Node(Node())))\n    return root.get_child().get_child().get_child().value()",
                                                                               "example_output":  {
                                                                                                      "Type":  "Structural",
                                                                                                      "Name":  "High Number of Methods (NOM)",
@@ -1921,7 +1921,7 @@
                                }
                   },
                   {
-                      "metric_id":  31,
+                      "id":  31,
                       "metric_name":  "High Weighted Methods per Class (WMPC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -1978,7 +1978,7 @@
                                }
                   },
                   {
-                      "metric_id":  32,
+                      "id":  32,
                       "metric_name":  "Large Class (SIZE2)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2027,7 +2027,7 @@
                                }
                   },
                   {
-                      "metric_id":  33,
+                      "id":  33,
                       "metric_name":  "High Weight of a Class (WAC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2076,7 +2076,7 @@
                                }
                   },
                   {
-                      "metric_id":  34,
+                      "id":  34,
                       "metric_name":  "High Lack of Cohesion of Methods (LCOM)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2094,7 +2094,7 @@
                                                          "parameter_refs":  "LCOM_THRESHOLD",
                                                          "examples":  [
                                                                           {
-                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a 占쏙옙commented dump占쏙옙.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n\n    def get_child(self):\n        return self.child\n\n    def value(self):\n        return \"leaf\"\n\n\ndef chain_demo():\n    root = Node(Node(Node(Node())))\n    return root.get_child().get_child().get_child().value()",
+                                                                              "example_input":  "\"\"\"\nSynthetic code-smell fixtures for documentation/tests.\nEach block is intentionally naive to trip specific detectors.\n\"\"\"\n\n# Excessive Comments / Duplicate Code / Data Class / Lazy Class / Dead Code -----------------\n# Excessive comments: long comment block with little code following.\n# Duplicate code: foo_a and foo_b share the same body.\n# Data class \u0026 Lazy class: PlainContainer only holds fields/getters; MinimalService barely does work.\n# Dead code: unused_helper is never referenced.\n\n# A noisy comment block (excessive comments)\n# This function is intentionally wrapped in verbose comments.\n# It has multiple lines of mostly comments to resemble a ��commented dump��.\n# Another filler comment line.\n# Yet another comment line to increase the ratio.\n# A final comment line to exaggerate the smell.\ndef foo_a(x, y):\n    return (x * y) + (x - y)\n\n\n# Duplicate code sibling\ndef foo_b(x, y):\n    return (x * y) + (x - y)\n\n\nclass PlainContainer:\n    def __init__(self, name, value):\n        self.name = name\n        self.value = value\n\n    def get_name(self):\n        return self.name\n\n    def get_value(self):\n        return self.value\n\n\nclass MinimalService:\n    def ping(self):\n        return \"ok\"\n\n\ndef unused_helper(flag=False):\n    temp = [1, 2, 3]\n    if flag:\n        temp.reverse()\n    return temp\n\n\n# Inappropriate Intimacy / Middle Man / Large Class (SIZE2) ---------------------------------\nclass BillingProfile:\n    def __init__(self):\n        self.card_number = \"1234\"\n        self.expiry = \"01/30\"\n        self.cvv = \"999\"\n\n    def masked(self):\n        return f\"****-{self.card_number[-4:]}\"\n\n\nclass BillingFacade:\n    \"\"\"Thin wrapper delegating to BillingProfile (middle man flavor).\"\"\"\n\n    def __init__(self):\n        self.profile = BillingProfile()\n\n    def reveal_expiry(self):\n        # Intimate access into internal fields (inappropriate intimacy)\n        return self.profile.expiry\n\n    def reveal_cvv(self):\n        return self.profile.cvv\n\n    def masked_card(self):\n        return self.profile.masked()\n\n\nclass MonolithicHandler:\n    \"\"\"Large/SIZE2-ish: many small, disjoint methods collected here.\"\"\"\n\n    def step1(self): pass\n    def step2(self): pass\n    def step3(self): pass\n    def step4(self): pass\n    def step5(self): pass\n    def step6(self): pass\n    def step7(self): pass\n    def step8(self): pass\n    def step9(self): pass\n    def step10(self): pass\n    def step11(self): pass\n    def step12(self): pass\n    def step13(self): pass\n    def step14(self): pass\n    def step15(self): pass\n\n\n# Feature Envy / Speculative Generality ------------------------------------------------------\nclass Cart:\n    def __init__(self, items):\n        self.items = items\n\n    def total(self):\n        return sum(self.items)\n\n\ndef print_cart(cart: Cart):\n    # Feature envy: leans on cart internals instead of doing its own work.\n    for i in cart.items:\n        print(i)\n    print(cart.total())\n\n\nclass AbstractFutureProof:\n    \"\"\"Speculative: abstract-ish hooks that do nothing yet.\"\"\"\n\n    def hook_a(self):  # empty template hooks\n        pass\n\n    def hook_b(self):\n        pass\n\n\n# Message Chains -----------------------------------------------------------------------------\nclass Node:\n    def __init__(self, child=None):\n        self.child = child\n\n    def get_child(self):\n        return self.child\n\n    def value(self):\n        return \"leaf\"\n\n\ndef chain_demo():\n    root = Node(Node(Node(Node())))\n    return root.get_child().get_child().get_child().value()",
                                                                               "example_output":  {
                                                                                                      "Type":  "Structural",
                                                                                                      "Name":  "High Lack of Cohesion of Methods (LCOM)",
@@ -2125,7 +2125,7 @@
                                }
                   },
                   {
-                      "metric_id":  35,
+                      "id":  35,
                       "metric_name":  "High Response for a Class (RFC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2186,7 +2186,7 @@
                                }
                   },
                   {
-                      "metric_id":  36,
+                      "id":  36,
                       "metric_name":  "High Number of Classes per Module (NOCC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2261,7 +2261,7 @@
                                }
                   },
                   {
-                      "metric_id":  37,
+                      "id":  37,
                       "metric_name":  "Deep Inheritance Tree (DIT)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2328,7 +2328,7 @@
                                }
                   },
                   {
-                      "metric_id":  38,
+                      "id":  38,
                       "metric_name":  "High Lines of Code (LOC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2409,7 +2409,7 @@
                                }
                   },
                   {
-                      "metric_id":  39,
+                      "id":  39,
                       "metric_name":  "High Message Passing Coupling (MPC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2466,7 +2466,7 @@
                                }
                   },
                   {
-                      "metric_id":  40,
+                      "id":  40,
                       "metric_name":  "High Coupling Between Object Classes (CBO)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2529,7 +2529,7 @@
                                }
                   },
                   {
-                      "metric_id":  41,
+                      "id":  41,
                       "metric_name":  "High Number of Children (NOC)",
                       "info":  {
                                    "metric_parameters":  [
@@ -2604,7 +2604,7 @@
                                }
                   },
                   {
-                      "metric_id":  42,
+                      "id":  42,
                       "metric_name":  "High Cyclomatic Complexity",
                       "info":  {
                                    "metric_parameters":  [
@@ -2665,7 +2665,7 @@
                                }
                   },
                   {
-                      "metric_id":  43,
+                      "id":  43,
                       "metric_name":  "High Fan-out",
                       "info":  {
                                    "metric_parameters":  [
@@ -2726,7 +2726,7 @@
                                }
                   },
                   {
-                      "metric_id":  44,
+                      "id":  44,
                       "metric_name":  "High Fan-in",
                       "info":  {
                                    "metric_parameters":  [
@@ -2787,7 +2787,7 @@
                                }
                   },
                   {
-                      "metric_id":  45,
+                      "id":  45,
                       "metric_name":  "Long File",
                       "info":  {
                                    "metric_parameters":  [
@@ -2848,7 +2848,7 @@
                                }
                   },
                   {
-                      "metric_id":  46,
+                      "id":  46,
                       "metric_name":  "Too Many Branches",
                       "info":  {
                                    "metric_parameters":  [
@@ -2936,4 +2936,3 @@
                   }
               ]
 }
-
