@@ -61,18 +61,26 @@ jobs:
         run: |
           git push origin "$TARGET_BRANCH"
 
-      - name: Dispatch notify workflow
-        if: success()
+  notify-webhook:
+    needs: sync
+    if: ${{ needs.sync.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post N8N webhook
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          WEBHOOK_HEADER_NAME: ${{ secrets.N8N_WEBHOOK_HEADER_NAME }}
+          WEBHOOK_HEADER_VALUE: ${{ secrets.N8N_WEBHOOK_HEADER_VALUE }}
+          SHA: ${{ github.sha }}
         run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "GITHUB_TOKEN not available." >&2
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "N8N_WEBHOOK_URL not set." >&2
             exit 1
           fi
+          HEADER_NAME=${WEBHOOK_HEADER_NAME:-"<header-name>"}
+          HEADER_VALUE=${WEBHOOK_HEADER_VALUE:-"<header-value>"}
           curl --fail --silent --show-error \
-            -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
-            -d "{\"event_type\":\"code-metric-sync-completed\",\"client_payload\":{\"sha\":\"${GITHUB_SHA}\"}}"
+            -H "Content-Type: application/json" \
+            -H "${HEADER_NAME}: ${HEADER_VALUE}" \
+            -d "{\"workflow\":\"push-code-metric-info\",\"sha\":\"${SHA}\"}" \
+            "$WEBHOOK_URL"
