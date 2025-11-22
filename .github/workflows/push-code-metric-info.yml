@@ -9,11 +9,11 @@ on:
       - resources
 
 env:
-  SOURCE_FILE: data/code_metric_info.json
+  SOURCE_FILE: data/code_metrics.json
   TARGET_REPO: yjmd2222/master-thesis-materials
   TARGET_BRANCH: knowledge
   TARGET_DIR: knowledge
-  COMMIT_MESSAGE: "Sync code_metric_info.json"
+  COMMIT_MESSAGE: "Sync code_metrics.json"
 
 jobs:
   sync:
