@@ -61,3 +61,18 @@ jobs:
         run: |
           git push origin "$TARGET_BRANCH"
 
+      - name: Dispatch notify workflow
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "GITHUB_TOKEN not available." >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
+            -d "{\"event_type\":\"code-metric-sync-completed\",\"client_payload\":{\"sha\":\"${GITHUB_SHA}\"}}"
