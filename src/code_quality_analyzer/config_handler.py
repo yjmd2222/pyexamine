@@ -52,6 +52,7 @@ class ConfigHandler:
         """
         Validate that all required thresholds are present and have valid values.
         """
+        # Validate presence of core structural thresholds
         required_structural_thresholds = [
             'NOM_THRESHOLD', 'WMPC1_THRESHOLD', 'WMPC2_THRESHOLD', 
             'SIZE2_THRESHOLD', 'WAC_THRESHOLD', 'LCOM_THRESHOLD',
@@ -69,8 +70,13 @@ class ConfigHandler:
         if missing_thresholds:
             logger.warning(f"Missing required structural thresholds: {missing_thresholds}")
 
-        for threshold, value in structural_thresholds.items():
-            if not isinstance(value, (int, float)) or value <= 0:
+        # Validate all threshold sections, allowing list-valued exclusions
+        for section_name, section in self.thresholds.items():
+            for threshold, value in section.items():
+                if isinstance(value, (int, float)) and value > 0:
+                    continue
+                if isinstance(value, list):
+                    continue
                 logger.warning(f"Invalid threshold value for {threshold}: {value}")
 
     def get_thresholds(self, smell_type):

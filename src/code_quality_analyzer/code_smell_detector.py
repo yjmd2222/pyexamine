@@ -72,9 +72,20 @@ class CodeSmellDetector:
         ]
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
-            
+            content = None
+            for enc in ['utf-8', 'utf-8-sig', 'latin-1', 'cp949']:
+                try:
+                    with open(file_path, 'r', encoding=enc, errors='ignore') as file:
+                        content = file.read()
+                    break
+                except UnicodeDecodeError:
+                    continue
+            if content is None:
+                raise CodeAnalysisError(
+                    message="File encoding error: could not decode with utf-8/utf-8-sig/latin-1/cp949",
+                    file_path=file_path
+                )
+
             try:
                 module = astroid.parse(content)
             except astroid_exceptions.AstroidSyntaxError as e:
@@ -103,12 +114,8 @@ class CodeSmellDetector:
                         function_name=method_name
                     )
                 
-        except UnicodeDecodeError as e:
-            logger.error(f"Encoding error in {file_path}: {str(e)}")
-            raise CodeAnalysisError(
-                message=f"File encoding error: {str(e)}",
-                file_path=file_path
-            )
+        except CodeAnalysisError:
+            raise
         except Exception as e:
             logger.error(f"Unexpected error analyzing {file_path}: {str(e)}", exc_info=True)
             raise CodeAnalysisError(
@@ -766,10 +773,17 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.FunctionDef):
                 # Skip test functions and property methods
-                if (node.name.startswith('test_') or
-                    (node.decorators and any(d.name == 'property' for d in node.decorators.nodes))):
+                if node.name.startswith('test_'):
                     continue
-                    
+                if node.decorators:
+                    deco_names = []
+                    for deco in node.decorators.nodes:
+                        name_attr = getattr(deco, "name", None) or getattr(deco, "attrname", None)
+                        if name_attr:
+                            deco_names.append(name_attr)
+                    if 'property' in deco_names:
+                        continue
+                        
                 # Check for decorators that suggest external use
                 has_public_decorator = False
                 if node.decorators:

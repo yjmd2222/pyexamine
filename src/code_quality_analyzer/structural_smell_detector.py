@@ -192,8 +192,19 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             file_path (str): The path to the Python file to be analyzed.
         """
         try:
-            with open(file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
+            content = None
+            for enc in ['utf-8', 'utf-8-sig', 'latin-1']:
+                try:
+                    with open(file_path, 'r', encoding=enc, errors='ignore') as file:
+                        content = file.read()
+                    break
+                except UnicodeDecodeError:
+                    continue
+            if content is None:
+                raise CodeAnalysisError(
+                    message="File encoding error: could not decode with utf-8/utf-8-sig/latin-1",
+                    file_path=file_path
+                )
             
             try:
                 tree = ast.parse(content)
@@ -228,12 +239,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         self.dependency_graph.add_edge(module_name, node.module)
                         self.module_dependencies.add_edge(module_name, node.module)
                         
-        except UnicodeDecodeError as e:
-            logger.error(f"Encoding error in {file_path}: {str(e)}")
-            raise CodeAnalysisError(
-                message=f"File encoding error: {str(e)}",
-                file_path=file_path
-            )
+        except CodeAnalysisError:
+            raise
         except Exception as e:
             logger.error(f"Error analyzing file {file_path}: {str(e)}")
             raise CodeAnalysisError(
@@ -706,12 +713,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     continue
 
                 # Try different encodings
-                encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252']
+                encodings = ['utf-8', 'utf-8-sig', 'latin1', 'cp1252', 'cp949']
                 content = None
                 
                 for encoding in encodings:
                     try:
-                        with open(file_path, 'r', encoding=encoding) as file:
+                        with open(file_path, 'r', encoding=encoding, errors='ignore') as file:
                             content = file.read()
                         break
                     except UnicodeDecodeError:
