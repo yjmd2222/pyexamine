@@ -2224,14 +2224,5 @@
                 }
             }
         }
-    ],
-    "output_template": [
-        "Type",
-        "Name",
-        "Description",
-        "File",
-        "Module/Class",
-        "Line Number",
-        "Severity"
     ]
 }
