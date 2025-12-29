@@ -69,7 +69,7 @@ jobs:
     steps:
       - name: Post N8N webhook
         env:
-          WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+          WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL_DBPREPARE }}
           WEBHOOK_HEADER_NAME: ${{ secrets.N8N_WEBHOOK_HEADER_NAME }}
           WEBHOOK_HEADER_VALUE: ${{ secrets.N8N_WEBHOOK_HEADER_VALUE }}
           SHA: ${{ github.sha }}

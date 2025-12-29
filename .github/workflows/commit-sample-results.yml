@@ -1,0 +1,35 @@
+name: Post commit sample results
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 2 * * *"  # daily at 02:00 UTC
+  push:
+    branches:
+      - resources
+
+env:
+  WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL_COMMITSAMPLERESULTS }}
+  WEBHOOK_HEADER_NAME: Content-Type
+  WEBHOOK_HEADER_VALUE: application/json
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post commit results to webhook
+        env:
+          STEP_WEBHOOK_NAME: commit-sample-results
+        run: |
+          TARGET_URL="${SECRET_WEBHOOK_URL:-${WEBHOOK_URL}}"
+          HEADER_NAME=${WEBHOOK_HEADER_NAME:-"<header-name>"}
+          HEADER_VALUE=${WEBHOOK_HEADER_VALUE:-"<header-value>"}
+          if [ -z "$TARGET_URL" ]; then
+            echo "WEBHOOK_URL must be set via secrets or the default env value" >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error \
+            -H "Content-Type: application/json" \
+            -H "${HEADER_NAME}: ${HEADER_VALUE}" \
+            -d "{\"workflow\":\"${STEP_WEBHOOK_NAME}\",\"ref\":\"${GITHUB_REF}\",\"sha\":\"${GITHUB_SHA}\"}" \
+            "$TARGET_URL"
