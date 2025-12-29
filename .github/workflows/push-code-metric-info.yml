@@ -17,7 +17,7 @@ env:
 
 jobs:
   sync:
-    # if: ${{ false }}  # 항상 false 이므로 실행 안 됨
+    if: ${{ false }}  # 항상 false 이므로 실행 안 됨
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source

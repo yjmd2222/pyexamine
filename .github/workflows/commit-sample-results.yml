@@ -28,8 +28,6 @@ jobs:
             echo "WEBHOOK_URL must be set via secrets or the default env value" >&2
             exit 1
           fi
-          curl --fail --silent --show-error \
-            -H "Content-Type: application/json" \
-            -H "${HEADER_NAME}: ${HEADER_VALUE}" \
-            -d "{\"workflow\":\"${STEP_WEBHOOK_NAME}\",\"ref\":\"${GITHUB_REF}\",\"sha\":\"${GITHUB_SHA}\"}" \
-            "$TARGET_URL"
+          curl --fail --silent --show-error --request POST \
+            "$WEBHOOK_URL" \
+            --header "${HEADER_NAME}: ${HEADER_VALUE}"
