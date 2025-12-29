@@ -80,8 +80,6 @@ jobs:
           fi
           HEADER_NAME=${WEBHOOK_HEADER_NAME:-"<header-name>"}
           HEADER_VALUE=${WEBHOOK_HEADER_VALUE:-"<header-value>"}
-          curl --fail --silent --show-error \
-            -H "Content-Type: application/json" \
-            -H "${HEADER_NAME}: ${HEADER_VALUE}" \
-            -d "{\"workflow\":\"push-code-metric-info\",\"sha\":\"${SHA}\"}" \
-            "$WEBHOOK_URL"
+          curl --fail --silent --show-error --request POST \
+            "$WEBHOOK_URL" \
+            --header "${HEADER_NAME}: ${HEADER_VALUE}"
