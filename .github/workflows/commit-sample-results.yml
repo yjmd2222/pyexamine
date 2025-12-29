@@ -10,8 +10,8 @@ on:
 
 env:
   WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL_COMMITSAMPLERESULTS }}
-  WEBHOOK_HEADER_NAME: Content-Type
-  WEBHOOK_HEADER_VALUE: application/json
+          WEBHOOK_HEADER_NAME: ${{ secrets.N8N_WEBHOOK_HEADER_NAME }}
+          WEBHOOK_HEADER_VALUE: ${{ secrets.N8N_WEBHOOK_HEADER_VALUE }}
 
 jobs:
   notify:
