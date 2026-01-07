@@ -17,8 +17,9 @@ class CodeSmell:
     description: str
     file_path: str
     module_class: str
-    line_number: int
-    severity: str = ''
+    start_line_number: int
+    end_line_number: int
+    severity: str
 
 class CodeSmellDetector:
     """
@@ -93,7 +94,7 @@ class CodeSmellDetector:
                 raise CodeAnalysisError(
                     message=f"Failed to parse Python file: {str(e)}",
                     file_path=file_path,
-                    line_number=getattr(e, 'lineno', None)
+                    start_line_number=getattr(e, 'lineno', None)
                 )
             
             self.file_content = content.split('\n')
@@ -157,7 +158,7 @@ class CodeSmellDetector:
                         description=f"'{node.name}' has {actual_lines} lines in {file_path} at line {node.lineno}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno
+                        start_line_number=node.lineno
                     )
 
     def detect_large_classes(self, module, file_path):
@@ -204,7 +205,7 @@ class CodeSmellDetector:
                         description=f"'{node.name}' has {len(non_trivial_methods)} non-trivial methods in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno
+                        start_line_number=node.lineno
                     )
 
     def detect_primitive_obsession(self, module, file_path):
@@ -241,7 +242,7 @@ class CodeSmellDetector:
                         description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -278,7 +279,7 @@ class CodeSmellDetector:
                         description=f"'{node.name}' has {len(args)} parameters in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -319,7 +320,7 @@ class CodeSmellDetector:
                     description=f"Parameters {', '.join(params)} appear together in functions: {', '.join(functions)} in {file_path}",
                     file_path=file_path,
                     module_class=', '.join(functions),
-                    line_number=None,
+                    start_line_number=None,
                     severity='medium'
                 )
 
@@ -359,7 +360,7 @@ class CodeSmellDetector:
                     description=f"Complex conditional with {condition_count} branches at line {node.lineno} in {file_path}",
                     file_path=file_path,
                     module_class=None,
-                    line_number=node.lineno,
+                    start_line_number=node.lineno,
                     severity='medium'
                 )
 
@@ -421,7 +422,7 @@ class CodeSmellDetector:
                         description=f"Potentially unused fields {', '.join(temp_fields)} in class '{node.name}' at line {node.lineno} in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='low'
                     )
 
@@ -480,7 +481,7 @@ class CodeSmellDetector:
                         description=f"Classes {', '.join(classes)} share similar methods {', '.join(methods)} in {file_path}",
                         file_path=file_path,
                         module_class=', '.join(classes),
-                        line_number=None,
+                        start_line_number=None,
                         severity='medium'
                     )
 
@@ -546,7 +547,7 @@ class CodeSmellDetector:
                         description=f"Class '{node.name}' has {len(unique_prefixes)} different method prefixes: {', '.join(unique_prefixes)} in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -593,7 +594,7 @@ class CodeSmellDetector:
                     description=f"Parallel hierarchies detected: {' and '.join([' -> '.join(h) for h in parallel_hierarchies])} in {file_path}",
                     file_path=file_path,
                     module_class=None,
-                    line_number=None,
+                    start_line_number=None,
                     severity='high'
                 )
 
@@ -627,7 +628,7 @@ class CodeSmellDetector:
                     description=f"Method '{method}' called in {unique_contexts} different contexts across {len(calls)} locations in {file_path}",
                     file_path=file_path,
                     module_class=method,
-                    line_number=calls[0][0],
+                    start_line_number=calls[0][0],
                     severity='high'
                 )
 
@@ -673,7 +674,7 @@ class CodeSmellDetector:
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
                 module_class=None,
-                line_number=None,
+                start_line_number=None,
                 severity='low'
             )
 
@@ -714,7 +715,7 @@ class CodeSmellDetector:
                     description=f"Similar code found in functions: {', '.join(f[0] for f in functions)} ({total_lines} total lines) in {file_path}",
                     file_path=file_path,
                     module_class=', '.join(f[0] for f in functions),
-                    line_number=None,
+                    start_line_number=None,
                     severity='high'
                 )
 
@@ -758,7 +759,7 @@ class CodeSmellDetector:
                         description=f"Class '{node.name}' has {getters} getters and {setters} setters with no other methods in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -821,7 +822,7 @@ class CodeSmellDetector:
                     description=f"Potentially unused function '{func}' in {file_path}",
                     file_path=file_path,
                     module_class=func,
-                    line_number=None,
+                    start_line_number=None,
                     severity='low'
                 )
 
@@ -855,7 +856,7 @@ class CodeSmellDetector:
                         description=f"Class '{node.name}' has only {len(methods)} non-trivial methods with {total_lines} total lines in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='low'
                     )
 
@@ -898,7 +899,7 @@ class CodeSmellDetector:
                         description=f"Class '{node.name}' {' and '.join(description)} in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -953,7 +954,7 @@ class CodeSmellDetector:
                             description=f"Method '{node.name}' makes {max_calls} calls to '{max_class}' but only {local_calls} local calls in {file_path}",
                             file_path=file_path,
                             module_class=node.name,
-                            line_number=node.lineno,
+                            start_line_number=node.lineno,
                             severity='medium'
                         )
 
@@ -1025,7 +1026,7 @@ class CodeSmellDetector:
                                       f"({shared} shared members, {method_ratio:.1%} of methods) in {file_path}",
                             file_path=file_path,
                             module_class=class_name,
-                            line_number=None,
+                            start_line_number=None,
                             severity='medium'
                         )
 
@@ -1080,7 +1081,7 @@ class CodeSmellDetector:
                            f"in {context or 'unknown context'} at line {node.lineno} in {file_path}",
                 file_path=file_path,
                 module_class=context,
-                line_number=node.lineno,
+                start_line_number=node.lineno,
                 severity='medium'
             )
 
@@ -1143,7 +1144,7 @@ class CodeSmellDetector:
                                   f"({delegation_ratio:.1%}), mainly to {primary_delegate[0]} in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        line_number=node.lineno,
+                        start_line_number=node.lineno,
                         severity='medium'
                     )
 
@@ -1160,7 +1161,8 @@ class CodeSmellDetector:
             for smell in self.code_smells:
                 print(f"- {smell.name}: {smell.description}")
 
-    def add_smell(self, name, description, file_path, module_class, line_number=None, severity='medium'):
+    def add_smell(self, name, description, file_path, module_class, start_line_number=None, 
+                  end_line_number=None, severity='medium'):
         """
         Add a detected smell to the list of code smells.
         
@@ -1169,7 +1171,8 @@ class CodeSmellDetector:
             description (str): Description of the smell
             file_path (str): Path to the file containing the smell
             module_class (str): The module or class containing the smell
-            line_number (int, optional): The line number where the smell was detected
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
             severity (str, optional): The severity level of the smell (default: 'medium')
         """
         self.code_smells.append(CodeSmell(
@@ -1177,6 +1180,7 @@ class CodeSmellDetector:
             description=description,
             file_path=file_path,
             module_class=module_class,
-            line_number=line_number,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
             severity=severity
         ))

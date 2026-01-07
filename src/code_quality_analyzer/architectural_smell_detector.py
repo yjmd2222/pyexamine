@@ -18,8 +18,9 @@ class ArchitecturalSmell:
     description: str
     file_path: str
     module_class: str
-    line_number: int = None
-    severity: str = 'medium'
+    start_line_number: int
+    end_line_number: int
+    severity: str
 
 class ArchitecturalSmellDetector:
     """
@@ -246,7 +247,8 @@ class ArchitecturalSmellDetector:
                        not self.module_dependencies.out_edges(dependency):
                         self.module_dependencies.remove_node(dependency)
 
-    def add_smell(self, name, description, file_path, module_class, line_number=None, severity='medium'):
+    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
+                  end_line_number=None, severity='medium'):
         """
         Add a detected architectural smell to the list.
         
@@ -255,7 +257,8 @@ class ArchitecturalSmellDetector:
             description (str): Description of the smell
             file_path (str): Path to the file containing the smell
             module_class (str): The module or class containing the smell
-            line_number (int, optional): The line number where the smell was detected
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
             severity (str, optional): The severity level of the smell (default: 'medium')
         """
         self.architectural_smells.append(ArchitecturalSmell(
@@ -263,7 +266,8 @@ class ArchitecturalSmellDetector:
             description=description,
             file_path=file_path,
             module_class=module_class,
-            line_number=line_number,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
             severity=severity
         ))
 

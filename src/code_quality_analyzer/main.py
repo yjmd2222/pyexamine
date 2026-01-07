@@ -312,8 +312,10 @@ def generate_report(code_smells, architectural_smells, structural_smells,
         report += "-------------------\n"
         for smell in structural_smells:
             report += f"- {smell.name}: {smell.description}\n"
-            if smell.line_number:
-                report += f"  Line: {smell.line_number}\n"
+            if smell.start_line_number:
+                report += f"  Start Line Number: {smell.start_line_number}\n"
+            if smell.end_line_number:
+                report += f"  End Line Number: {smell.end_line_number}\n"
             report += f"  File: {smell.file_path}\n"
             report += f"  Severity: {smell.severity}\n\n"
     else:
@@ -371,7 +373,7 @@ def generate_csv_report(code_smells, architectural_smells, structural_smells, cs
         csv_file (str): The path to the output CSV file
     """
     with open(csv_file, 'w', newline='') as csvfile:
-        fieldnames = ['Type', 'Name', 'Description', 'File', 'Module/Class', 'Line Number', 'Severity']
+        fieldnames = ['Type', 'Name', 'Description', 'File', 'Module/Class', 'Start Line Number', 'End Line Number', 'Severity']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -383,7 +385,8 @@ def generate_csv_report(code_smells, architectural_smells, structural_smells, cs
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
 
@@ -395,7 +398,8 @@ def generate_csv_report(code_smells, architectural_smells, structural_smells, cs
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
 
@@ -407,7 +411,8 @@ def generate_csv_report(code_smells, architectural_smells, structural_smells, cs
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
 
@@ -434,7 +439,8 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
 
@@ -446,7 +452,8 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
 
@@ -458,7 +465,8 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
                 'Description': smell.description,
                 'File': smell.file_path,
                 'Module/Class': smell.module_class,
-                'Line Number': smell.line_number,
+                'Start Line Number': smell.start_line_number,
+                'End Line Number': smell.end_line_number,
                 'Severity': smell.severity
             })
         json.dump(all_smells_data, jsonfile, indent=4)

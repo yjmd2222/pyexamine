@@ -20,15 +20,17 @@ class StructuralSmell:
         description (str): A description of the detected smell.
         file_path (str): The path to the file where the smell was detected.
         module_class (str): The module or class where the smell was detected.
-        line_number (int, optional): The line number where the smell was detected.
+        start_line_number (int, optional): The start line number where the smell was detected.
+        end_line_number (int, optional): The ending line number (+1 for slicing).
         severity (str, optional): The severity level of the smell.
     """
     name: str
     description: str
     file_path: str
     module_class: str
-    line_number: int = None
-    severity: str = ''
+    start_line_number: int
+    end_line_number: int
+    severity: str
 
 class StructuralSmellDetector:
     """
@@ -213,7 +215,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 raise CodeAnalysisError(
                     message=f"Parse error: {str(e)}",
                     file_path=file_path,
-                    line_number=getattr(e, 'lineno', None)
+                    start_line_number=getattr(e, 'lineno', None)
                 )
             
             # Get relative module path
@@ -285,7 +287,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 if isinstance(child.func, ast.Attribute):
                     self.class_info[class_name]['method_calls'][node.name].add(child.func.attr)
 
-    def add_smell(self, name, description, file_path, module_class, line_number=None, severity='medium'):
+    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
+                  end_line_number=None, severity='medium'):
         """
         Add a detected structural smell to the list.
         
@@ -294,7 +297,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             description (str): Description of the smell
             file_path (str): Path to the file containing the smell
             module_class (str): The module or class containing the smell
-            line_number (int, optional): The line number where the smell was detected
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
             severity (str, optional): The severity level of the smell (default: 'medium')
         """
         self.structural_smells.append(StructuralSmell(
@@ -302,7 +306,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             description=description,
             file_path=file_path,
             module_class=module_class,
-            line_number=line_number,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
             severity=severity
         ))
 
@@ -1115,7 +1120,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         f"Method '{method.name}' has cyclomatic complexity of {complexity}",
                         self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         class_name,
-                        method.lineno,
+                        start_line_number=method.lineno,
                         severity=severity
                     )
 
@@ -1290,7 +1295,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         f"with max nesting of {branch_info['max_nesting']}",
                         self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         class_name,
-                        method.lineno,
+                        start_line_number=method.lineno,
                         severity=severity
                     )
 
