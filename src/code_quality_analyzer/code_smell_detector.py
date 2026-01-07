@@ -98,6 +98,13 @@ class CodeSmellDetector:
                 )
             
             self.file_content = content.split('\n')
+            self._node_spans = {}
+            for node in module.body:
+                if isinstance(node, (nodes.FunctionDef, nodes.ClassDef)):
+                    start = getattr(node, "lineno", None)
+                    end = getattr(node, "end_lineno", None) or getattr(node, "tolineno", None) or start
+                    if start is not None:
+                        self._node_spans[(node.name, start)] = end
             
             # Run each detection method
             for detect_method, method_name in detection_methods:
@@ -1175,6 +1182,11 @@ class CodeSmellDetector:
             end_line_number (int, optional): The ending line number (+1 for slicing)
             severity (str, optional): The severity level of the smell (default: 'medium')
         """
+        if (end_line_number is None and start_line_number is not None and module_class and
+                hasattr(self, "_node_spans")):
+            end = self._node_spans.get((module_class, start_line_number))
+            if end is not None:
+                end_line_number = end + 1
         self.code_smells.append(CodeSmell(
             name=name,
             description=description,
