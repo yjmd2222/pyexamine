@@ -499,22 +499,31 @@ class CodeSmellDetector:
                 if len(methods) < 2:
                     continue
                     
-                class_methods[methods].append(node.name)
+                class_methods[methods].append({
+                    "name": node.name,
+                    "start_line_number": node.lineno,
+                    "end_line_number": node.tolineno + 1,
+                })
         
         for methods, classes in class_methods.items():
             if len(classes) >= self.thresholds["ALTERNATIVE_CLASSES_THRESHOLD"]:
                 # Check if classes share a common base class
-                class_nodes = [node for node in module.body 
-                             if isinstance(node, nodes.ClassDef) and node.name in classes]
+                class_names = [entry["name"] for entry in classes]
+                class_nodes = [node for node in module.body
+                             if isinstance(node, nodes.ClassDef) and node.name in class_names]
                 share_base_class = len({base.name for node in class_nodes 
                                       for base in node.bases if isinstance(base, nodes.Name)}) > 0
                 
                 if not share_base_class:
+                    class_ranges = ", ".join(
+                        f"{entry['name']} (lines {entry['start_line_number']}-{entry['end_line_number']})"
+                        for entry in classes
+                    )
                     self.add_smell(
                         name="Alternative Classes with Different Interfaces",
-                        description=f"Classes {', '.join(classes)} share similar methods {', '.join(methods)} in {file_path}",
+                        description=f"Classes {class_ranges} share similar methods {', '.join(methods)} in {file_path}",
                         file_path=file_path,
-                        module_class=', '.join(classes),
+                        module_class=', '.join(class_names),
                         start_line_number=None,
                         severity='medium'
                     )
@@ -591,6 +600,7 @@ class CodeSmellDetector:
         """
         class_hierarchies = defaultdict(list)
         class_info = {}  # Store class information for better analysis
+        class_ranges = {}
         
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
@@ -605,6 +615,7 @@ class CodeSmellDetector:
                         # Store method names for similarity comparison
                         class_info[node.name] = {m.name for m in node.mymethods() 
                                            if not m.name.startswith('_')}
+                        class_ranges[node.name] = (node.lineno, node.tolineno + 1)
         
         if len(class_hierarchies) > 1:
             parallel_hierarchies = []
@@ -623,9 +634,15 @@ class CodeSmellDetector:
                                     parallel_hierarchies.extend([h1, h2])
 
             if parallel_hierarchies:
+                def format_classes(classes):
+                    return " -> ".join(
+                        f"{name} (lines {class_ranges[name][0]}-{class_ranges[name][1]})"
+                        if name in class_ranges else name
+                        for name in classes
+                    )
                 self.add_smell(
                     name="Parallel Inheritance Hierarchies",
-                    description=f"Parallel hierarchies detected: {' and '.join([' -> '.join(h) for h in parallel_hierarchies])} in {file_path}",
+                    description=f"Parallel hierarchies detected: {' and '.join([format_classes(h) for h in parallel_hierarchies])} in {file_path}",
                     file_path=file_path,
                     module_class=None,
                     start_line_number=None,
