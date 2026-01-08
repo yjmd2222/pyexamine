@@ -135,38 +135,45 @@ class CodeSmellDetector:
         """
         Detect long methods in the given module.
         """
+        def detect(node, file_path):
+            # Skip property decorators and simple getter/setters
+            if node.decorators:
+                is_property = False
+                for decorator in node.decorators.nodes:
+                    # Handle both direct name and call decorators
+                    if isinstance(decorator, nodes.Name) and decorator.name == 'property':
+                        is_property = True
+                        break
+                    elif isinstance(decorator, nodes.Call) and isinstance(decorator.func, nodes.Name) and decorator.func.name == 'property':
+                        is_property = True
+                        break
+                if is_property:
+                    return
+            
+            # Count non-empty, non-comment lines
+            actual_lines = 0
+            for line_no in range(node.fromlineno, node.tolineno + 1):
+                if line_no <= len(self.file_content):
+                    line = self.file_content[line_no - 1].strip()
+                    if line and not line.startswith('#'):
+                        actual_lines += 1
+            
+            if actual_lines > self.thresholds["LONG_METHOD_LINES"]:
+                self.add_smell(
+                    name="Long Method",
+                    description=f"'{node.name}' has {actual_lines} lines in {file_path} at line {node.lineno}",
+                    file_path=file_path,
+                    module_class=node.name,
+                    start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1
+                )
         for node in module.body:
-            if isinstance(node, nodes.FunctionDef):
-                # Skip property decorators and simple getter/setters
-                if node.decorators:
-                    is_property = False
-                    for decorator in node.decorators.nodes:
-                        # Handle both direct name and call decorators
-                        if isinstance(decorator, nodes.Name) and decorator.name == 'property':
-                            is_property = True
-                            break
-                        elif isinstance(decorator, nodes.Call) and isinstance(decorator.func, nodes.Name) and decorator.func.name == 'property':
-                            is_property = True
-                            break
-                    if is_property:
-                        continue
-                
-                # Count non-empty, non-comment lines
-                actual_lines = 0
-                for line_no in range(node.fromlineno, node.tolineno + 1):
-                    if line_no <= len(self.file_content):
-                        line = self.file_content[line_no - 1].strip()
-                        if line and not line.startswith('#'):
-                            actual_lines += 1
-                
-                if actual_lines > self.thresholds["LONG_METHOD_LINES"]:
-                    self.add_smell(
-                        name="Long Method",
-                        description=f"'{node.name}' has {actual_lines} lines in {file_path} at line {node.lineno}",
-                        file_path=file_path,
-                        module_class=node.name,
-                        start_line_number=node.lineno
-                    )
+            if isinstance(node, nodes.ClassDef):
+                for node_child in node.body:
+                    if isinstance(node, nodes.FunctionDef):
+                        detect(node_child, file_path)
+            elif isinstance(node, nodes.FunctionDef):
+                detect(node, file_path)
 
     def detect_large_classes(self, module, file_path):
         """
@@ -219,89 +226,101 @@ class CodeSmellDetector:
         """
         Detect primitive obsession in the given module.
         """
+        def detect(node, file_path):
+            primitives = []
+            total_args = len(node.args.args)
+            
+            # Skip if it's a small number of total arguments
+            if total_args <= self.thresholds.get('PRIMITIVE_MIN_ARGS', 3):
+                return
+
+            for i, arg in enumerate(node.args.args):
+                if isinstance(arg, nodes.AssignName):
+                    # Skip 'self' parameter in methods
+                    if i == 0 and arg.name == 'self':
+                        continue
+                    
+                    if i < len(node.args.annotations):
+                        arg_type = node.args.annotations[i]
+                        if (isinstance(arg_type, nodes.Name) and 
+                            arg_type.name in ['int', 'str', 'float', 'bool']):
+                            primitives.append(arg)
+
+            # Calculate primitive ratio
+            primitive_ratio = len(primitives) / (total_args - 1 if 'self' in node.args.args[0].name else total_args)
+            if (len(primitives) > self.thresholds["PRIMITIVE_OBSESSION_COUNT"] and 
+                primitive_ratio > self.thresholds.get('PRIMITIVE_RATIO_THRESHOLD', 0.7)):
+                self.add_smell(
+                    name="Primitive Obsession",
+                    description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
+                    file_path=file_path,
+                    module_class=node.name,
+                    start_line_number=node.lineno,
+                    severity='medium'
+                )
         for node in module.body:
-            if isinstance(node, nodes.FunctionDef):
-                primitives = []
-                total_args = len(node.args.args)
-                
-                # Skip if it's a small number of total arguments
-                if total_args <= self.thresholds.get('PRIMITIVE_MIN_ARGS', 3):
-                    continue
-
-                for i, arg in enumerate(node.args.args):
-                    if isinstance(arg, nodes.AssignName):
-                        # Skip 'self' parameter in methods
-                        if i == 0 and arg.name == 'self':
-                            continue
-                        
-                        if i < len(node.args.annotations):
-                            arg_type = node.args.annotations[i]
-                            if (isinstance(arg_type, nodes.Name) and 
-                                arg_type.name in ['int', 'str', 'float', 'bool']):
-                                primitives.append(arg)
-
-                # Calculate primitive ratio
-                primitive_ratio = len(primitives) / (total_args - 1 if 'self' in node.args.args[0].name else total_args)
-                if (len(primitives) > self.thresholds["PRIMITIVE_OBSESSION_COUNT"] and 
-                    primitive_ratio > self.thresholds.get('PRIMITIVE_RATIO_THRESHOLD', 0.7)):
-                    self.add_smell(
-                        name="Primitive Obsession",
-                        description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
-                        file_path=file_path,
-                        module_class=node.name,
-                        start_line_number=node.lineno,
-                        severity='medium'
-                    )
+            if isinstance(node, nodes.ClassDef):
+                for node_child in node.body:
+                    if isinstance(node, nodes.FunctionDef):
+                        detect(node_child, file_path)
+            elif isinstance(node, nodes.FunctionDef):
+                detect(node, file_path)
 
     def detect_long_parameter_lists(self, module, file_path):
         """
         Detect long parameter lists in the given module.
         """
-        for node in module.body:
-            if isinstance(node, nodes.FunctionDef):
-                args = node.args.args
-                
-                # Skip if it's a constructor
-                if node.name == '__init__':
-                    continue
-                
-                # Skip 'self' in method parameter count
-                if args and args[0].name == 'self':
-                    args = args[1:]
-                
-                # Check for **kwargs or *args
-                has_var_args = node.args.vararg is not None
-                has_kwargs = node.args.kwarg is not None
-                
-                # Reduce severity if function has variable arguments
-                threshold = (
-                    self.thresholds["LONG_PARAMETER_LIST"] + 2 
-                    if (has_var_args or has_kwargs) 
-                    else self.thresholds["LONG_PARAMETER_LIST"]
-                )
+        def detect(node, file_path):
+            args = node.args.args
+            
+            # Skip if it's a constructor
+            if node.name == '__init__':
+                return
+            
+            # Skip 'self' in method parameter count
+            if args and args[0].name == 'self':
+                args = args[1:]
+            
+            # Check for **kwargs or *args
+            has_var_args = node.args.vararg is not None
+            has_kwargs = node.args.kwarg is not None
+            
+            # Reduce severity if function has variable arguments
+            threshold = (
+                self.thresholds["LONG_PARAMETER_LIST"] + 2 
+                if (has_var_args or has_kwargs) 
+                else self.thresholds["LONG_PARAMETER_LIST"]
+            )
 
-                if len(args) > threshold:
-                    self.add_smell(
-                        name="Long Parameter List",
-                        description=f"'{node.name}' has {len(args)} parameters in {file_path}",
-                        file_path=file_path,
-                        module_class=node.name,
-                        start_line_number=node.lineno,
-                        severity='medium'
-                    )
+            if len(args) > threshold:
+                self.add_smell(
+                    name="Long Parameter List",
+                    description=f"'{node.name}' has {len(args)} parameters in {file_path}",
+                    file_path=file_path,
+                    module_class=node.name,
+                    start_line_number=node.lineno,
+                    severity='medium'
+                )
+        for node in module.body:
+            if isinstance(node, nodes.ClassDef):
+                for node_child in node.body:
+                    if isinstance(node, nodes.FunctionDef):
+                        detect(node_child, file_path)
+            elif isinstance(node, nodes.FunctionDef):
+                detect(node, file_path)
 
     def detect_data_clumps(self, module, file_path):
         """
         Detect data clumps in the given module.
         """
         parameter_groups = defaultdict(list)
-        for node in module.body:
+        def find_parameter_groups(node, parameter_groups):
             if isinstance(node, nodes.FunctionDef):
                 # Skip if it's a constructor or property
                 if node.name == '__init__' or (node.decorators and 
                     any(isinstance(d, nodes.Name) and d.name == 'property' 
                         for d in node.decorators.nodes)):
-                    continue
+                    return
                 
                 # Get parameters excluding self
                 params = [arg.name for arg in node.args.args 
@@ -309,13 +328,20 @@ class CodeSmellDetector:
                 
                 # Skip if too few parameters
                 if len(params) < self.thresholds["DATA_CLUMPS_THRESHOLD"]:
-                    continue
+                    return
                     
                 # Create combinations of parameters that appear together
                 min_combo = self.thresholds.get('DATA_CLUMP_MIN_COMBO_SIZE', 3)
                 for size in range(min_combo, len(params) + 1):
                     for combo in combinations(sorted(params), size):
                         parameter_groups[combo].append(node.name)
+        for node in module.body:
+            if isinstance(node, nodes.ClassDef):
+                for node_child in node.body:
+                    if isinstance(node, nodes.FunctionDef):
+                        find_parameter_groups(node_child, parameter_groups)
+            elif isinstance(node, nodes.FunctionDef):
+                find_parameter_groups(node, parameter_groups)
         
         for params, functions in parameter_groups.items():
             # Only report if parameters appear together in multiple functions
@@ -368,6 +394,7 @@ class CodeSmellDetector:
                     file_path=file_path,
                     module_class=None,
                     start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
 
@@ -914,56 +941,62 @@ class CodeSmellDetector:
         """
         Detect feature envy in the given module.
         """
-        for node in module.body:
-            if isinstance(node, nodes.FunctionDef):
-                # Skip property methods and simple delegators
-                is_property = False
-                if node.decorators:
-                    for decorator in node.decorators.nodes:
-                        if isinstance(decorator, nodes.Name) and decorator.name == 'property':
+        def detect(node, file_path):
+            # Skip property methods and simple delegators
+            is_property = False
+            if node.decorators:
+                for decorator in node.decorators.nodes:
+                    if isinstance(decorator, nodes.Name) and decorator.name == 'property':
+                        is_property = True
+                        break
+                    elif isinstance(decorator, nodes.Call):
+                        if isinstance(decorator.func, nodes.Name) and decorator.func.name == 'property':
                             is_property = True
                             break
-                        elif isinstance(decorator, nodes.Call):
-                            if isinstance(decorator.func, nodes.Name) and decorator.func.name == 'property':
-                                is_property = True
-                                break
-                        elif isinstance(decorator, nodes.Attribute):
-                            if decorator.attrname == 'property':
-                                is_property = True
-                                break
+                    elif isinstance(decorator, nodes.Attribute):
+                        if decorator.attrname == 'property':
+                            is_property = True
+                            break
 
-                if (is_property or
-                    len(node.body) == 1 and isinstance(node.body[0], nodes.Return)):
-                    continue
+            if (is_property or
+                len(node.body) == 1 and isinstance(node.body[0], nodes.Return)):
+                return
+            
+            # Track method calls by class
+            class_calls = defaultdict(int)
+            local_calls = 0
+            
+            for sub_node in node.nodes_of_class(nodes.Attribute):
+                if isinstance(sub_node.expr, nodes.Name):
+                    if sub_node.expr.name == 'self':
+                        local_calls += 1
+                    else:
+                                # Skip common utility objects
+                                if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
+                                    class_calls[sub_node.expr.name] += 1
+            
+            if class_calls:
+                max_calls = max(class_calls.values())
+                max_class = max(class_calls.items(), key=lambda x: x[1])[0]
                 
-                # Track method calls by class
-                class_calls = defaultdict(int)
-                local_calls = 0
-                
-                for sub_node in node.nodes_of_class(nodes.Attribute):
-                    if isinstance(sub_node.expr, nodes.Name):
-                        if sub_node.expr.name == 'self':
-                            local_calls += 1
-                        else:
-                                    # Skip common utility objects
-                                    if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
-                                        class_calls[sub_node.expr.name] += 1
-                
-                if class_calls:
-                    max_calls = max(class_calls.values())
-                    max_class = max(class_calls.items(), key=lambda x: x[1])[0]
-                    
-                    # Check if external calls significantly outnumber local calls
-                    if (max_calls > self.thresholds["FEATURE_ENVY_CALLS"] and
-                        max_calls > local_calls * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
-                        self.add_smell(
-                            name="Feature Envy",
-                            description=f"Method '{node.name}' makes {max_calls} calls to '{max_class}' but only {local_calls} local calls in {file_path}",
-                            file_path=file_path,
-                            module_class=node.name,
-                            start_line_number=node.lineno,
-                            severity='medium'
-                        )
+                # Check if external calls significantly outnumber local calls
+                if (max_calls > self.thresholds["FEATURE_ENVY_CALLS"] and
+                    max_calls > local_calls * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
+                    self.add_smell(
+                        name="Feature Envy",
+                        description=f"Method '{node.name}' makes {max_calls} calls to '{max_class}' but only {local_calls} local calls in {file_path}",
+                        file_path=file_path,
+                        module_class=node.name,
+                        start_line_number=node.lineno,
+                        severity='medium'
+                    )
+        for node in module.body:
+            if isinstance(node, nodes.ClassDef):
+                for node_child in node.body:
+                    if isinstance(node, nodes.FunctionDef):
+                        detect(node_child, file_path)
+            elif isinstance(node, nodes.FunctionDef):
+                detect(node, file_path)
 
     def detect_inappropriate_intimacy(self, module, file_path):
         """
