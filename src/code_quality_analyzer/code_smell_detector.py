@@ -557,6 +557,7 @@ class CodeSmellDetector:
 
                 # Get method prefixes, excluding common patterns
                 method_prefixes = []
+                methods = []
                 for method in node.mymethods():
                     # Skip magic methods, properties, and private methods
                     is_property = False
@@ -581,6 +582,11 @@ class CodeSmellDetector:
                     # Skip common CRUD and utility prefixes
                     if prefix not in {'get', 'set', 'is', 'has', 'validate', 'create', 'update', 'delete'}:
                         method_prefixes.append(prefix)
+                        methods.append({
+                            "name": method.name,
+                            "start_line_number": method.lineno,
+                            "end_line_number": method.tolineno + 1,
+                        })
 
                 unique_prefixes = set(method_prefixes)
                 if (len(unique_prefixes) > self.thresholds["DIVERGENT_CHANGE_PREFIXES"] and
@@ -591,6 +597,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno,
                         severity='medium'
                     )
 
@@ -663,15 +670,19 @@ class CodeSmellDetector:
                         continue
                         
                     # Store both line number and context
-                    context = None
+                    context = None # call name
                     for parent in call.node_ancestors():
                         if isinstance(parent, (nodes.FunctionDef, nodes.ClassDef)):
                             context = parent.name
                             break
-                    method_calls[call.func.name].append((call.lineno, context))
+                    method_calls[call.func.name].append({
+                        "call_name": context,
+                        "start_line_number": call.lineno,
+                        "end_line_number": call.tolineno + 1,
+                    })
         
         for method, calls in method_calls.items():
-            unique_contexts = len(set(context for _, context in calls))
+            unique_contexts = len(set(d["call_name"] for d in calls))
             if (len(calls) > self.thresholds["SHOTGUN_SURGERY_CALLS"] and
                 unique_contexts > self.thresholds["SHOTGUN_SURGERY_CONTEXTS"]):
                 self.add_smell(
@@ -679,7 +690,6 @@ class CodeSmellDetector:
                     description=f"Method '{method}' called in {unique_contexts} different contexts across {len(calls)} locations in {file_path}",
                     file_path=file_path,
                     module_class=method,
-                    start_line_number=calls[0][0],
                     severity='high'
                 )
 
@@ -750,22 +760,27 @@ class CodeSmellDetector:
                 if (len(node.body) < self.thresholds["DUPLICATE_CODE_MIN_LINES"] or
                     node.name.startswith('test_')):
                     continue
-                    
+
                 # Skip simple getter/setter methods
                 if len(node.body) == 1 and isinstance(node.body[0], (nodes.Return, nodes.Assign)):
                     continue
-                    
+
                 normalized_code = normalize_code(node)
-                code_blocks[normalized_code].append((node.name, len(node.body)))
-        
+                code_blocks[normalized_code].append({
+                    "name": node.name,
+                    "length": len(node.body),
+                    "start_line_number": node.lineno,
+                    "end_line_number": node.tolineno + 1,
+                })
+
         for block, functions in code_blocks.items():
             if len(functions) >= self.thresholds["DUPLICATE_CODE_THRESHOLD"]:
-                total_lines = sum(lines for _, lines in functions)
+                total_lines = sum(d["length"] for d in functions)
                 self.add_smell(
                     name="Duplicate Code",
-                    description=f"Similar code found in functions: {', '.join(f[0] for f in functions)} ({total_lines} total lines) in {file_path}",
+                    description=f"Similar code found in functions: {', '.join(d["name"] for d in functions)} ({total_lines} total lines) in {file_path}",
                     file_path=file_path,
-                    module_class=', '.join(f[0] for f in functions),
+                    module_class=', '.join(d["name"] for d in functions),
                     start_line_number=None,
                     severity='high'
                 )
@@ -782,26 +797,37 @@ class CodeSmellDetector:
                     continue
 
                 methods = list(node.mymethods())
-                
+
                 # Skip empty classes or those with no methods
                 if not methods:
                     continue
-                    
+
                 # Count different types of methods
                 getters = 0
                 setters = 0
                 others = 0
-                
+
+                code_blocks = defaultdict(list)
+                kind = None
                 for method in methods:
                     if method.name.startswith('__'):
                         continue  # Skip magic methods
                     elif method.name.startswith('get_') and len(method.body) == 1:
                         getters += 1
+                        kind = "getters"
                     elif method.name.startswith('set_') and len(method.body) == 1:
                         setters += 1
+                        kind = "setters"
                     else:
                         others += 1
-                
+                        kind = "others"
+                    if kind != "others":
+                        code_blocks[method.name].append({
+                            "kind": kind,
+                            "start_line_number": method.lineno,
+                            "end_line_number": method.tolineno + 1
+                        })
+
                 # Only flag if class is predominantly getters/setters
                 if (others == 0 and getters + setters >= self.thresholds["DATA_CLASS_METHODS"] and
                     not node.name.endswith(('DTO', 'Model', 'Entity', 'Record'))):  # Skip known data structures
@@ -843,37 +869,46 @@ class CodeSmellDetector:
                         if any(name in str(decorator) for name in ['api', 'route', 'endpoint', 'public', 'export']):
                             has_public_decorator = True
                             break
-                
-                defined_functions[node.name] = has_public_decorator
-                
+
+                defined_functions[node.name] = {
+                    "name": node.name,
+                    "has_public_decorator": has_public_decorator,
+                    "start_line_number": node.lineno,
+                    "end_line_number": node.tolineno + 1
+                }
+
                 # Check if function is likely to be exported
                 if (not node.name.startswith('_') or  # Public functions
                     node.name.startswith('__')):      # Magic methods
                     exported_functions.add(node.name)
-                    
+
             # Collect function calls
             for call in node.nodes_of_class(nodes.Call):
                 if isinstance(call.func, nodes.Name):
                     called_functions.add(call.func.name)
                 elif isinstance(call.func, nodes.Attribute):
                     called_functions.add(call.func.attrname)
-        
+
         # Consider only truly unused functions
-        unused_functions = set()
-        for func_name, has_public_decorator in defined_functions.items():
+        unused_functions = []
+        for func_name, d in defined_functions.items():
             if (func_name not in called_functions and
-                not has_public_decorator and
-                func_name not in exported_functions):
-                unused_functions.add(func_name)
-        
+                not d["has_public_decorator"] and
+                func_name not in exported_functions and
+                func_name not in unused_functions):
+                unused_functions.append({
+                    "name": func_name,
+                    "start_line_number": d["start_line_number"],
+                    "end_line_number": d["end_line_number"]
+                })
+
         if len(unused_functions) >= self.thresholds["DEAD_CODE_THRESHOLD"]:
-            for func in unused_functions:
+            for d in unused_functions:
                 self.add_smell(
                     name="Dead Code",
-                    description=f"Potentially unused function '{func}' in {file_path}",
+                    description=f"Potentially unused function '{d["name"]}' in {file_path}",
                     file_path=file_path,
-                    module_class=func,
-                    start_line_number=None,
+                    module_class=d["name"],
                     severity='low'
                 )
 
@@ -928,22 +963,39 @@ class CodeSmellDetector:
                 for method in node.mymethods():
                     # Check for empty/pass methods
                     if method.body and isinstance(method.body[0], nodes.Pass):
-                        abstract_methods.append(method.name)
+                        abstract_methods.append({
+                            "name": method.name,
+                            "start_line_number": method.lineno,
+                            "end_line_number": method.tolineno + 1
+                        })
                     
                     # Check for unused parameters
                     used_names = {n.name for n in method.nodes_of_class(nodes.Name)}
                     param_names = {arg.name for arg in method.args.args if arg.name != 'self'}
                     unused = param_names - used_names
                     if unused:
-                        unused_params.extend(unused)
+                        unused_params.extend({
+                            "name": param,
+                            "method": method.name,
+                            "start_line_number": method.lineno,
+                            "end_line_number": method.tolineno + 1
+                        } for param in unused)
                 
                 if (len(abstract_methods) >= self.thresholds["SPECULATIVE_GENERALITY_THRESHOLD"] or
                     len(unused_params) >= self.thresholds["UNUSED_PARAMETERS_THRESHOLD"]):
                     description = []
                     if abstract_methods:
-                        description.append(f"has {len(abstract_methods)} empty methods: {', '.join(abstract_methods)}")
+                        abstract_detail = ", ".join(
+                            f"{d['name']} (lines {d['start_line_number']}-{d['end_line_number']})"
+                            for d in abstract_methods
+                        )
+                        description.append(f"has {len(abstract_methods)} empty methods: {abstract_detail}")
                     if unused_params:
-                        description.append(f"has {len(unused_params)} unused parameters: {', '.join(unused_params)}")
+                        unused_detail = ", ".join(
+                            f"{p['name']} in {p['method']} (lines {p['start_line_number']}-{p['end_line_number']})"
+                            for p in unused_params
+                        )
+                        description.append(f"has {len(unused_params)} unused parameters: {unused_detail}")
                     
                     self.add_smell(
                         name="Speculative Generality",
@@ -980,31 +1032,51 @@ class CodeSmellDetector:
                 return
             
             # Track method calls by class
-            class_calls = defaultdict(int)
-            local_calls = 0
+            class_calls = {}
+            local_calls = {"count": 0, "lines": []}
             
             for sub_node in node.nodes_of_class(nodes.Attribute):
                 if isinstance(sub_node.expr, nodes.Name):
                     if sub_node.expr.name == 'self':
-                        local_calls += 1
+                        local_calls["count"] += 1
+                        local_calls["lines"].append((sub_node.lineno, sub_node.tolineno + 1))
                     else:
-                                # Skip common utility objects
-                                if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
-                                    class_calls[sub_node.expr.name] += 1
+                        # Skip common utility objects
+                        if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
+                            call_data = class_calls.setdefault(
+                                sub_node.expr.name, {"count": 0, "lines": []}
+                            )
+                            call_data["count"] += 1
+                            call_data["lines"].append(
+                                (sub_node.lineno, sub_node.tolineno + 1)
+                            )
             
             if class_calls:
-                max_calls = max(class_calls.values())
-                max_class = max(class_calls.items(), key=lambda x: x[1])[0]
+                max_class, max_call_data = max(
+                    class_calls.items(),
+                    key=lambda item: item[1]["count"]
+                )
                 
                 # Check if external calls significantly outnumber local calls
-                if (max_calls > self.thresholds["FEATURE_ENVY_CALLS"] and
-                    max_calls > local_calls * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
+                if (max_call_data["count"] > self.thresholds["FEATURE_ENVY_CALLS"] and
+                    max_call_data["count"] > local_calls["count"] * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
+                    line_ranges = ", ".join(
+                        f"{start}-{end}" for start, end in max_call_data["lines"]
+                    )
+                    local_line_ranges = ", ".join(
+                        f"{start}-{end}" for start, end in local_calls["lines"]
+                    )
                     self.add_smell(
                         name="Feature Envy",
-                        description=f"Method '{node.name}' makes {max_calls} calls to '{max_class}' but only {local_calls} local calls in {file_path}",
+                        description=(
+                            f"Method '{node.name}' makes {max_call_data['count']} calls to '{max_class}' "
+                            f"at lines {line_ranges} but only {local_calls['count']} local calls "
+                            f"at lines {local_line_ranges} in {file_path}"
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='medium'
                     )
         for node in module.body:
@@ -1022,6 +1094,7 @@ class CodeSmellDetector:
         class_fields = defaultdict(set)
         class_methods = defaultdict(set)
         class_relationships = defaultdict(set)  # Track inheritance and composition
+        class_ranges = {}
 
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
@@ -1053,6 +1126,7 @@ class CodeSmellDetector:
                     name for name in node.instance_attrs.keys()
                     if not name.startswith('_')  # Skip private fields
                 }
+                class_ranges[node.name] = (node.lineno, node.tolineno + 1)
 
                 # Track inheritance relationships
                 for base in node.bases:
@@ -1075,15 +1149,40 @@ class CodeSmellDetector:
                     shared = len(methods.intersection(other_fields))
                     method_ratio = shared / len(methods) if methods else 0
 
+                    # Track where class_name methods overlap with other_class fields
+                    overlap_lines = []
+                    # Track where class_name accesses attributes that match other_class fields
+                    access_lines = []
+                    class_node = next(
+                        (n for n in module.body
+                         if isinstance(n, nodes.ClassDef) and n.name == class_name),
+                        None
+                    )
+                    if class_node:
+                        for method in class_node.mymethods():
+                            if method.name in other_fields:
+                                overlap_lines.append((method.lineno, method.tolineno + 1))
+                            for attr in method.nodes_of_class(nodes.Attribute):
+                                if attr.attrname in other_fields:
+                                    access_lines.append((attr.lineno, attr.tolineno + 1))
+
                     if (shared > self.thresholds["INAPPROPRIATE_INTIMACY_SHARED"] and
                         method_ratio > self.thresholds.get('INAPPROPRIATE_INTIMACY_METHOD_RATIO', 0.3)):
+                        overlap_line_ranges = ", ".join(
+                            f"{start}-{end}" for start, end in overlap_lines
+                        )
+                        access_line_ranges = ", ".join(
+                            f"{start}-{end}" for start, end in access_lines
+                        )
                         self.add_smell(
                             name="Inappropriate Intimacy",
                             description=f"Class '{class_name}' might be too intimate with '{other_class}' "
-                                      f"({shared} shared members, {method_ratio:.1%} of methods) in {file_path}",
+                                      f"({shared} shared members, {method_ratio:.1%} of methods) "
+                                      f"method lines {overlap_line_ranges}; access lines {access_line_ranges} in {file_path}",
                             file_path=file_path,
                             module_class=class_name,
-                            start_line_number=None,
+                            start_line_number=class_ranges[class_name][0],
+                            end_line_number=class_ranges[class_name][1],
                             severity='medium'
                         )
 
