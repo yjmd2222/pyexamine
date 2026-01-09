@@ -1251,12 +1251,17 @@ class CodeSmellDetector:
         def get_chain_length(node):
             length = 0
             chain = []
+            chain_lines = []
             current = node
             while isinstance(current, nodes.Attribute):
                 length += 1
                 chain.append(current.attrname)
+                chain_lines.append({
+                    "start_line_number": current.lineno,
+                    "end_line_number": current.tolineno + 1
+                })
                 current = current.expr
-            return length, chain
+            return length, chain, chain_lines
 
         def is_builder_pattern(chain):
             """Check if the chain follows builder pattern."""
@@ -1274,7 +1279,7 @@ class CodeSmellDetector:
                       for pattern in common_patterns.values())
 
         for node in module.nodes_of_class(nodes.Attribute):
-            chain_length, chain = get_chain_length(node)
+            chain_length, chain, chain_lines = get_chain_length(node)
             
             # Skip if it's a valid pattern
             if (chain_length <= self.thresholds["MESSAGE_CHAIN_LENGTH"] or
@@ -1289,10 +1294,29 @@ class CodeSmellDetector:
                     context = parent.name
                     break
 
+            merged_ranges = {
+                (d["start_line_number"], d["end_line_number"])
+                for d in chain_lines
+            }
+            merged_sorted = sorted(merged_ranges)
+            collapsed_ranges = []
+            for start, end in merged_sorted:
+                if not collapsed_ranges:
+                    collapsed_ranges.append([start, end])
+                    continue
+                last_start, last_end = collapsed_ranges[-1]
+                if start <= last_end:
+                    collapsed_ranges[-1][1] = max(last_end, end)
+                else:
+                    collapsed_ranges.append([start, end])
+            line_ranges = ", ".join(
+                f"{start}-{end}" for start, end in collapsed_ranges
+            )
+
             self.add_smell(
                 name="Message Chains",
                 description=f"Long chain ({chain_length} calls: {' -> '.join(reversed(chain))}) "
-                           f"in {context or 'unknown context'} at line {node.lineno} in {file_path}",
+                           f"at lines {line_ranges} in {context or 'unknown context'} in {file_path}",
                 file_path=file_path,
                 module_class=context,
                 start_line_number=node.lineno,
