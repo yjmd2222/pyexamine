@@ -55,6 +55,7 @@ class ArchitecturalSmellDetector:
         self.file_paths = {}  # New attribute to store file paths
         self.external_dependencies = defaultdict(set)
         self.function_calls = defaultdict(set)  # Track inter-module function calls
+        self.import_lines = defaultdict(list)
 
     def load_thresholds(self, config_path):
         """
@@ -160,6 +161,11 @@ class ArchitecturalSmellDetector:
                         import_name = alias.name
                         local_imports.append((import_name, node.lineno))
                         self.module_dependencies.add_edge(module_name, import_name)
+                        self.import_lines[module_name].append({
+                            "name": import_name,
+                            "start_line_number": node.lineno,
+                            "end_line_number": node.lineno + 1
+                        })
                 
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
@@ -177,6 +183,11 @@ class ArchitecturalSmellDetector:
                         
                         local_imports.append((import_name, node.lineno))
                         self.module_dependencies.add_edge(module_name, import_name)
+                        self.import_lines[module_name].append({
+                            "name": import_name,
+                            "start_line_number": node.lineno,
+                            "end_line_number": node.lineno + 1
+                        })
                         
                         # Track imported names for more detailed dependency analysis
                         for alias in node.names:
@@ -285,6 +296,18 @@ class ArchitecturalSmellDetector:
         min_connections = self.thresholds.get('MIN_HUB_CONNECTIONS', 5)
         
         for node in self.module_dependencies.nodes():
+            def _format_instances(instances):
+                grouped = defaultdict(list)
+                for entry in instances:
+                    grouped[entry["name"]].append(
+                        (entry["start_line_number"], entry["end_line_number"])
+                    )
+                parts = []
+                for name in sorted(grouped):
+                    ranges = ", ".join(f"{start}-{end}" for start, end in grouped[name])
+                    parts.append(f"{name}({ranges})")
+                return ", ".join(parts)
+
             # Count both internal and external dependencies
             in_degree = self.module_dependencies.in_degree(node)
             out_degree = self.module_dependencies.out_degree(node)
@@ -316,12 +339,40 @@ class ArchitecturalSmellDetector:
                 is_balanced = (bal_min <= ratio <= bal_max)
                 
                 if not is_balanced:
+                    outgoing_instances = [
+                        entry for entry in self.import_lines.get(node, [])
+                        if (
+                            entry["name"] in self.module_dependencies.successors(node) or
+                            any(entry["name"] == dep for _, dep in self.external_dependencies[node])
+                        )
+                    ]
+                    incoming_instances = []
+                    for predecessor in self.module_dependencies.predecessors(node):
+                        for entry in self.import_lines.get(predecessor, []):
+                            if entry["name"] == node:
+                                incoming_instances.append({
+                                    "name": predecessor,
+                                    "start_line_number": entry["start_line_number"],
+                                    "end_line_number": entry["end_line_number"]
+                                })
+
+                    outgoing_detail = _format_instances(outgoing_instances) or "None"
+                    incoming_detail = _format_instances(incoming_instances) or "None"
+                    instance_start = None
+                    instance_end = None
+                    if outgoing_instances:
+                        instance_start = min(d["start_line_number"] for d in outgoing_instances)
+                        instance_end = max(d["end_line_number"] for d in outgoing_instances)
                     self.add_smell(
                         "Hub-like Dependency",
                         f"Module '{node}' is a potential hub with {total_connections} connections "
-                        f"(in: {in_degree}, out: {out_degree}, external: {external_deps})",
+                        f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
+                        f"Outgoing dependency instances: {outgoing_detail}\n"
+                        f"Incoming dependency instances: {incoming_detail}",
                         self.file_paths.get(node, "Unknown"),
                         node,
+                        start_line_number=instance_start,
+                        end_line_number=instance_end,
                         severity='high' if total_connections > min_connections * 2 else 'medium'
                     )
 
