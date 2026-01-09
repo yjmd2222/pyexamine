@@ -219,7 +219,8 @@ class CodeSmellDetector:
                         description=f"'{node.name}' has {len(non_trivial_methods)} non-trivial methods in {file_path}",
                         file_path=file_path,
                         module_class=node.name,
-                        start_line_number=node.lineno
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1
                     )
 
     def detect_primitive_obsession(self, module, file_path):
@@ -256,6 +257,7 @@ class CodeSmellDetector:
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
         for node in module.body:
@@ -299,6 +301,7 @@ class CodeSmellDetector:
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
         for node in module.body:
@@ -334,7 +337,11 @@ class CodeSmellDetector:
                 min_combo = self.thresholds.get('DATA_CLUMP_MIN_COMBO_SIZE', 3)
                 for size in range(min_combo, len(params) + 1):
                     for combo in combinations(sorted(params), size):
-                        parameter_groups[combo].append(node.name)
+                        parameter_groups[combo].append({
+                            "name": node.name,
+                            "start_line_number": node.lineno,
+                            "end_line_number": node.tolineno + 1
+                        })
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
@@ -348,12 +355,15 @@ class CodeSmellDetector:
             # and represent a significant portion of each function's parameters
             if (len(functions) > 1 and 
                 len(params) >= self.thresholds["DATA_CLUMPS_THRESHOLD"]):
+                function_lines = ", ".join(
+                    f"{d['name']} (lines {d['start_line_number']}-{d['end_line_number']})"
+                    for d in functions
+                )
                 self.add_smell(
                     name="Data Clumps",
-                    description=f"Parameters {', '.join(params)} appear together in functions: {', '.join(functions)} in {file_path}",
+                    description=f"Parameters {', '.join(params)} appear together in functions: {function_lines} in {file_path}",
                     file_path=file_path,
-                    module_class=', '.join(functions),
-                    start_line_number=None,
+                    module_class=', '.join(d["name"] for d in functions),
                     severity='medium'
                 )
 
@@ -457,6 +467,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='low'
                     )
 
@@ -524,7 +535,6 @@ class CodeSmellDetector:
                         description=f"Classes {class_ranges} share similar methods {', '.join(methods)} in {file_path}",
                         file_path=file_path,
                         module_class=', '.join(class_names),
-                        start_line_number=None,
                         severity='medium'
                     )
 
@@ -607,8 +617,16 @@ class CodeSmellDetector:
         """
         class_hierarchies = defaultdict(list)
         class_info = {}  # Store class information for better analysis
-        class_ranges = {}
-        
+        class_entries = {}
+
+        for node in module.body:
+            if isinstance(node, nodes.ClassDef):
+                class_entries[node.name] = {
+                    "name": node.name,
+                    "start_line_number": node.lineno,
+                    "end_line_number": node.tolineno + 1
+                }
+
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 # Skip exception classes and mixins
@@ -622,11 +640,10 @@ class CodeSmellDetector:
                         # Store method names for similarity comparison
                         class_info[node.name] = {m.name for m in node.mymethods() 
                                            if not m.name.startswith('_')}
-                        class_ranges[node.name] = (node.lineno, node.tolineno + 1)
         
         if len(class_hierarchies) > 1:
             parallel_hierarchies = []
-            for h1, h2 in combinations(class_hierarchies.values(), 2):
+            for (base1, h1), (base2, h2) in combinations(class_hierarchies.items(), 2):
                 if len(h1) > 1 and len(h2) > 1:
                     # Check for naming patterns
                     if any(c1.replace(h1[0], '') == c2.replace(h2[0], '')
@@ -638,21 +655,33 @@ class CodeSmellDetector:
                             if union_size > 0:  # Prevent division by zero
                                 similarity = len(class_info[h1[0]] & class_info[h2[0]]) / union_size
                                 if similarity > self.thresholds.get('PARALLEL_INHERITANCE_SIMILARITY_THRESHOLD', 0.3):  # More than configured percent similar methods
-                                    parallel_hierarchies.extend([h1, h2])
+                                    parallel_hierarchies.append((base1, h1))
+                                    parallel_hierarchies.append((base2, h2))
 
             if parallel_hierarchies:
-                def format_classes(classes):
+                def build_hierarchy_instances(base, classes):
+                    instances = []
+                    for name in [base] + classes:
+                        if name in class_entries:
+                            instances.append(class_entries[name])
+                        else:
+                            instances.append({"name": name})
+                    return instances
+                def format_hierarchy(instances):
                     return " -> ".join(
-                        f"{name} (lines {class_ranges[name][0]}-{class_ranges[name][1]})"
-                        if name in class_ranges else name
-                        for name in classes
+                        f"{entry['name']} (lines {entry['start_line_number']}-{entry['end_line_number']})"
+                        if "start_line_number" in entry else entry["name"]
+                        for entry in instances
                     )
                 self.add_smell(
                     name="Parallel Inheritance Hierarchies",
-                    description=f"Parallel hierarchies detected: {' and '.join([format_classes(h) for h in parallel_hierarchies])} in {file_path}",
+                    description=(
+                        f"Parallel hierarchies detected: "
+                        f"{' and '.join([format_hierarchy(build_hierarchy_instances(base, h)) for base, h in parallel_hierarchies])} "
+                        f"in {file_path}"
+                    ),
                     file_path=file_path,
                     module_class=None,
-                    start_line_number=None,
                     severity='high'
                 )
 
@@ -735,7 +764,6 @@ class CodeSmellDetector:
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
                 module_class=None,
-                start_line_number=None,
                 severity='low'
             )
 
@@ -781,7 +809,6 @@ class CodeSmellDetector:
                     description=f"Similar code found in functions: {', '.join(d["name"] for d in functions)} ({total_lines} total lines) in {file_path}",
                     file_path=file_path,
                     module_class=', '.join(d["name"] for d in functions),
-                    start_line_number=None,
                     severity='high'
                 )
 
@@ -837,6 +864,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='medium'
                     )
 
@@ -943,6 +971,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='low'
                     )
 
@@ -1003,6 +1032,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='medium'
                     )
 
@@ -1039,7 +1069,10 @@ class CodeSmellDetector:
                 if isinstance(sub_node.expr, nodes.Name):
                     if sub_node.expr.name == 'self':
                         local_calls["count"] += 1
-                        local_calls["lines"].append((sub_node.lineno, sub_node.tolineno + 1))
+                        local_calls["lines"].append({
+                            "start_line_number": sub_node.lineno,
+                            "end_line_number": sub_node.tolineno + 1
+                        })
                     else:
                         # Skip common utility objects
                         if sub_node.expr.name.lower() not in {'logger', 'config', 'utils', 'helper'}:
@@ -1047,9 +1080,10 @@ class CodeSmellDetector:
                                 sub_node.expr.name, {"count": 0, "lines": []}
                             )
                             call_data["count"] += 1
-                            call_data["lines"].append(
-                                (sub_node.lineno, sub_node.tolineno + 1)
-                            )
+                            call_data["lines"].append({
+                                "start_line_number": sub_node.lineno,
+                                "end_line_number": sub_node.tolineno + 1
+                            })
             
             if class_calls:
                 max_class, max_call_data = max(
@@ -1061,10 +1095,12 @@ class CodeSmellDetector:
                 if (max_call_data["count"] > self.thresholds["FEATURE_ENVY_CALLS"] and
                     max_call_data["count"] > local_calls["count"] * self.thresholds.get('FEATURE_ENVY_LOCAL_RATIO', 2.0)):
                     line_ranges = ", ".join(
-                        f"{start}-{end}" for start, end in max_call_data["lines"]
+                        f"{d['start_line_number']}-{d['end_line_number']}"
+                        for d in max_call_data["lines"]
                     )
                     local_line_ranges = ", ".join(
-                        f"{start}-{end}" for start, end in local_calls["lines"]
+                        f"{d['start_line_number']}-{d['end_line_number']}"
+                        for d in local_calls["lines"]
                     )
                     self.add_smell(
                         name="Feature Envy",
@@ -1161,24 +1197,46 @@ class CodeSmellDetector:
                     if class_node:
                         for method in class_node.mymethods():
                             if method.name in other_fields:
-                                overlap_lines.append((method.lineno, method.tolineno + 1))
+                                overlap_lines.append({
+                                    "start_line_number": method.lineno,
+                                    "end_line_number": method.tolineno + 1
+                                })
                             for attr in method.nodes_of_class(nodes.Attribute):
                                 if attr.attrname in other_fields:
-                                    access_lines.append((attr.lineno, attr.tolineno + 1))
+                                    access_lines.append({
+                                        "start_line_number": attr.lineno,
+                                        "end_line_number": attr.tolineno + 1
+                                    })
 
                     if (shared > self.thresholds["INAPPROPRIATE_INTIMACY_SHARED"] and
                         method_ratio > self.thresholds.get('INAPPROPRIATE_INTIMACY_METHOD_RATIO', 0.3)):
-                        overlap_line_ranges = ", ".join(
-                            f"{start}-{end}" for start, end in overlap_lines
+                        merged_ranges = {
+                            (d["start_line_number"], d["end_line_number"])
+                            for d in overlap_lines
+                        }
+                        merged_ranges.update(
+                            (d["start_line_number"], d["end_line_number"])
+                            for d in access_lines
                         )
-                        access_line_ranges = ", ".join(
-                            f"{start}-{end}" for start, end in access_lines
+                        merged_sorted = sorted(merged_ranges)
+                        collapsed_ranges = []
+                        for start, end in merged_sorted:
+                            if not collapsed_ranges:
+                                collapsed_ranges.append([start, end])
+                                continue
+                            last_start, last_end = collapsed_ranges[-1]
+                            if start <= last_end:
+                                collapsed_ranges[-1][1] = max(last_end, end)
+                            else:
+                                collapsed_ranges.append([start, end])
+                        merged_line_ranges = ", ".join(
+                            f"{start}-{end}" for start, end in collapsed_ranges
                         )
                         self.add_smell(
                             name="Inappropriate Intimacy",
                             description=f"Class '{class_name}' might be too intimate with '{other_class}' "
                                       f"({shared} shared members, {method_ratio:.1%} of methods) "
-                                      f"method lines {overlap_line_ranges}; access lines {access_line_ranges} in {file_path}",
+                                      f"at lines {merged_line_ranges} in {file_path}",
                             file_path=file_path,
                             module_class=class_name,
                             start_line_number=class_ranges[class_name][0],
@@ -1238,6 +1296,7 @@ class CodeSmellDetector:
                 file_path=file_path,
                 module_class=context,
                 start_line_number=node.lineno,
+                end_line_number=node.tolineno + 1,
                 severity='medium'
             )
 
@@ -1301,6 +1360,7 @@ class CodeSmellDetector:
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
                         severity='medium'
                     )
 
@@ -1331,11 +1391,6 @@ class CodeSmellDetector:
             end_line_number (int, optional): The ending line number (+1 for slicing)
             severity (str, optional): The severity level of the smell (default: 'medium')
         """
-        if (end_line_number is None and start_line_number is not None and module_class and
-                hasattr(self, "_node_spans")):
-            end = self._node_spans.get((module_class, start_line_number))
-            if end is not None:
-                end_line_number = end + 1
         self.code_smells.append(CodeSmell(
             name=name,
             description=description,
