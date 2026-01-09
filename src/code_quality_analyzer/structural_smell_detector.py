@@ -59,11 +59,13 @@ class StructuralSmellDetector:
         self.structural_smells = []
         self.class_info = defaultdict(dict)
         self.module_info = defaultdict(dict)
+        self.module_classes = defaultdict(set)
         self.dependency_graph = nx.DiGraph()
         self.module_dependencies = nx.DiGraph()
         self.thresholds = self.load_thresholds(config)
         self.project_root = None
         self.file_paths = {}
+        self.import_lines = defaultdict(lambda: defaultdict(list))
 
     def load_thresholds(self, config):
         """
@@ -229,6 +231,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             self.module_dependencies.add_node(module_name)
             self.dependency_graph.add_node(module_name)
 
+            # Record local class names for base resolution
+            self.module_classes[module_name] = {
+                n.name for n in ast.walk(tree) if isinstance(n, ast.ClassDef)
+            }
+
             for node in ast.walk(tree):
                 if isinstance(node, ast.ClassDef):
                     self.analyze_class(node, module_name)
@@ -236,10 +243,18 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     for alias in node.names:
                         self.dependency_graph.add_edge(module_name, alias.name)
                         self.module_dependencies.add_edge(module_name, alias.name)
+                        self.import_lines[module_name][alias.name].append({
+                            "start_line_number": node.lineno,
+                            "end_line_number": node.lineno + 1
+                        })
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
                         self.dependency_graph.add_edge(module_name, node.module)
                         self.module_dependencies.add_edge(module_name, node.module)
+                        self.import_lines[module_name][node.module].append({
+                            "start_line_number": node.lineno,
+                            "end_line_number": node.lineno + 1
+                        })
                         
         except CodeAnalysisError:
             raise
@@ -264,6 +279,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         self.class_info[class_name]['method_calls'] = defaultdict(set)
         self.class_info[class_name]['base_classes'] = [self.resolve_base_class(base, module_name) for base in node.bases]
         self.class_info[class_name]['loc'] = node.end_lineno - node.lineno + 1
+        self.class_info[class_name]['start_line_number'] = node.lineno
+        self.class_info[class_name]['end_line_number'] = node.end_lineno + 1
 
         for child in node.body:
             if isinstance(child, ast.FunctionDef):
@@ -287,7 +304,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 if isinstance(child.func, ast.Attribute):
                     self.class_info[class_name]['method_calls'][node.name].add(child.func.attr)
 
-    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
+    def add_smell(self, name, description, file_path, module_class=None, start_line_number=None,
                   end_line_number=None, severity='medium'):
         """
         Add a detected structural smell to the list.
@@ -337,6 +354,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     description=f"Class '{class_name}' has {nom} methods (excluding special methods and properties)",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
                 logger.info(f"Detected NOM smell in {class_name}: {nom} methods")
@@ -352,6 +371,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         for class_name, info in self.class_info.items():
             # Filter out simple getters/setters and special methods
             complex_methods = []
+            complex_method_entries = []
             for method in info['methods']:
                 # Skip special methods
                 if method.name.startswith('__') and method.name.endswith('__'):
@@ -366,6 +386,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 
                 if not is_simple:
                     complex_methods.append(method)
+                    complex_method_entries.append({
+                        "name": method.name,
+                        "start_line_number": method.lineno,
+                        "end_line_number": method.end_lineno + 1
+                    })
 
             wmpc1 = sum(self.calculate_cyclomatic_complexity(method) for method in complex_methods)
             wmpc2 = sum(len(method.args.args) - 1 for method in complex_methods)  # Subtract 1 for 'self'
@@ -373,11 +398,17 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if wmpc1 > self.thresholds['WMPC1_THRESHOLD'] or wmpc2 > self.thresholds['WMPC2_THRESHOLD']:
                 severity = 'High' if (wmpc1 > self.thresholds['WMPC1_THRESHOLD'] * 1.5 or 
                                     wmpc2 > self.thresholds['WMPC2_THRESHOLD'] * 1.5) else 'Medium'
+                method_ranges = ", ".join(
+                    f"{d['name']} (lines {d['start_line_number']}-{d['end_line_number']})"
+                    for d in complex_method_entries
+                )
                 self.add_smell(
-                    "High Weighted Methods per Class (WMPC)",
-                    f"Class '{class_name}' has complex methods (WMPC1: {wmpc1}, WMPC2: {wmpc2})",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    name="High Weighted Methods per Class (WMPC)",
+                    description=f"Class '{class_name}' has complex methods (WMPC1: {wmpc1}, WMPC2: {wmpc2}): {method_ranges}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -406,10 +437,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if size2 > self.thresholds['SIZE2_THRESHOLD']:
                 severity = 'High' if size2 > self.thresholds['SIZE2_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
-                    "Large Class (SIZE2)",
-                    f"Class '{class_name}' has {size2} significant members (methods: {len(significant_methods)}, fields: {len(significant_fields)})",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    name="Large Class (SIZE2)",
+                    description=f"Class '{class_name}' has {size2} significant members (methods: {len(significant_methods)}, fields: {len(significant_fields)})",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -445,10 +478,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if wac > self.thresholds['WAC_THRESHOLD']:
                 severity = 'High' if wac > self.thresholds['WAC_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
-                    "High Weight of a Class (WAC)",
-                    f"Class '{class_name}' has {wac} significant attributes (excluding constants and unused private fields)",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    name="High Weight of a Class (WAC)",
+                    description=f"Class '{class_name}' has {wac} significant attributes (excluding constants and unused private fields)",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -499,10 +534,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if lcom > self.thresholds['LCOM_THRESHOLD']:
                 severity = 'High' if lcom > self.thresholds['LCOM_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
-                    "High Lack of Cohesion of Methods (LCOM)",
-                    f"Class '{class_name}' has LCOM of {lcom} (non-cohesive: {non_cohesive_pairs}, cohesive: {cohesive_pairs})",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    name="High Lack of Cohesion of Methods (LCOM)",
+                    description=f"Class '{class_name}' has LCOM of {lcom} (non-cohesive: {non_cohesive_pairs}, cohesive: {cohesive_pairs})",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -577,10 +614,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if rfc > self.thresholds['RFC_THRESHOLD']:
                 severity = 'High' if rfc > self.thresholds['RFC_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
-                    "High Response for a Class (RFC)",
-                    f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    name="High Response for a Class (RFC)",
+                    description=f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -635,10 +674,10 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if count > adjusted_threshold:
                 severity = 'High' if count > adjusted_threshold * 1.5 else 'Medium'
                 self.add_smell(
-                    "High Number of Classes (NOCC)",
-                    f"Module '{module_name}' has {count} significant classes (avg complexity: {avg_weight:.1f})",
-                    self.file_paths.get(module_name, "Unknown"),
-                    module_name,
+                    name="High Number of Classes (NOCC)",
+                    description=f"Module '{module_name}' has {count} significant classes (avg complexity: {avg_weight:.1f})",
+                    file_path=self.file_paths.get(module_name, "Unknown"),
+                    module_class=module_name,
                     severity=severity
                 )
 
@@ -690,22 +729,23 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         severity = 'High' if dit > self.thresholds['DIT_THRESHOLD'] * 1.5 else 'Medium'
                         inheritance_path = '->'.join(nx.shortest_path(inheritance_graph, 'object', class_name))
                         self.add_smell(
-                            "Deep Inheritance Tree (DIT)",
-                            f"Class '{class_name}' has DIT of {dit}\nInheritance path: {inheritance_path}",
-                            self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                            class_name,
+                            name="Deep Inheritance Tree (DIT)",
+                            description=f"Class '{class_name}' has DIT of {dit}\nInheritance path: {inheritance_path}",
+                            file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                            module_class=class_name,
                             severity=severity
                         )
                 except nx.NetworkXNoPath:
                     # Only report if it's not a framework/library class
-                    if not any(base in class_name for base in framework_bases):
-                        self.add_smell(
-                            "Isolated Class in Inheritance Tree",
-                            f"Class '{class_name}' is isolated from the main inheritance hierarchy",
-                            self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                            class_name,
-                            severity='Low'
-                        )
+                    # if not any(base in class_name for base in framework_bases):
+                    #     self.add_smell(
+                    #         "Isolated Class in Inheritance Tree",
+                    #         f"Class '{class_name}' is isolated from the main inheritance hierarchy",
+                    #         self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    #         class_name,
+                    #         severity='Low'
+                    #     )
+                    pass # this doesn't work
 
     def detect_loc(self):
         """
@@ -839,12 +879,14 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if weighted_mpc > self.thresholds['MPC_THRESHOLD']:
                 severity = 'High' if weighted_mpc > self.thresholds['MPC_THRESHOLD'] * 1.5 else 'Medium'
                 self.add_smell(
-                    "High Message Passing Coupling (MPC)",
-                    f"Class '{class_name}' has weighted MPC of {weighted_mpc:.1f}\n"
+                    name="High Message Passing Coupling (MPC)",
+                    description=f"Class '{class_name}' has weighted MPC of {weighted_mpc:.1f}\n"
                     f"(External calls: {external_mpc}, Internal calls: {internal_mpc})\n"
                     f"Most frequent external calls: {dict(sorted(method_calls.items(), key=lambda x: x[1], reverse=True)[:3])}",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -865,6 +907,27 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             # Track different types of coupling
             direct_coupling = set()
             indirect_coupling = set()
+            direct_instances = []
+            indirect_instances = []
+
+            def _append_instance(instances, name, node=None, line=None):
+                if node is not None:
+                    start_line_number = getattr(node, "lineno", None)
+                    end_line_number = (getattr(node, "end_lineno", None) or start_line_number)
+                    if start_line_number is None:
+                        return
+                    instances.append({
+                        "name": name,
+                        "start_line_number": start_line_number,
+                        "end_line_number": end_line_number + 1
+                    })
+                    return
+                if line is not None:
+                    instances.append({
+                        "name": name,
+                        "start_line_number": line,
+                        "end_line_number": line + 1
+                    })
             
             # Analyze method calls and attribute access
             for method in info['methods']:
@@ -875,16 +938,20 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                             base_obj = self._get_base_object(node.func)
                             if base_obj and not self._is_excluded_dependency(base_obj, standard_libs, framework_patterns):
                                 direct_coupling.add(base_obj)
+                                _append_instance(direct_instances, base_obj, node=node)
                     
                     elif isinstance(node, ast.Attribute):
                         base_obj = self._get_base_object(node)
                         if base_obj and not self._is_excluded_dependency(base_obj, standard_libs, framework_patterns):
                             indirect_coupling.add(base_obj)
+                            _append_instance(indirect_instances, base_obj, node=node)
             
             # Analyze inheritance and composition
             for base in info['base_classes']:
                 if not self._is_excluded_dependency(base, standard_libs, framework_patterns):
                     direct_coupling.add(base)
+                    if info.get("start_line_number") is not None:
+                        _append_instance(direct_instances, base, line=info["start_line_number"])
             
             # Calculate weighted CBO
             direct_cbo = len(direct_coupling)
@@ -895,14 +962,25 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
 
             if weighted_cbo > self.thresholds['CBO_THRESHOLD']:
                 severity = self._calculate_cbo_severity(weighted_cbo, self.thresholds['CBO_THRESHOLD'])
+                direct_detail = ", ".join(
+                    f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
+                    for d in direct_instances
+                )
+                indirect_detail = ", ".join(
+                    f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
+                    for d in indirect_instances
+                )
                 self.add_smell(
-                    "High Coupling Between Object Classes (CBO)",
-                    f"Class '{class_name}' has weighted CBO of {weighted_cbo:.1f}\n"
+                    name="High Coupling Between Object Classes (CBO)",
+                    description=f"Class '{class_name}' has weighted CBO of {weighted_cbo:.1f}\n"
                     f"Direct coupling: {direct_cbo} classes\n"
                     f"Indirect coupling: {indirect_cbo} classes\n"
-                    f"Most significant dependencies: {sorted(direct_coupling)[:3]}",
-                    self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                    class_name,
+                    f"Direct coupling instances: {direct_detail or 'None'}\n"
+                    f"Indirect coupling instances: {indirect_detail or 'None'}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    module_class=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
 
@@ -1021,15 +1099,14 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         if weighted_noc > adjusted_threshold:
             severity = 'High' if weighted_noc > adjusted_threshold * 1.5 else 'Medium'
             self.add_smell(
-                "High Number of Classes (NOC)",
-                f"Project has {weighted_noc:.1f} weighted classes:\n"
+                name="High Number of Classes (NOC)",
+                description=f"Project has {weighted_noc:.1f} weighted classes:\n"
                 f"- Regular classes: {len(regular_classes)}\n"
                 f"- Abstract/Interface classes: {len(abstract_classes)}\n"
                 f"- Utility classes: {len(utility_classes)}\n"
                 f"- Test classes: {len(test_classes)} (not counted in weighted total)\n"
                 f"Adjusted threshold: {adjusted_threshold}",
-                self.project_root,
-                "Project",
+                file_path=self.project_root,
                 severity=severity
             )
 
@@ -1085,10 +1162,20 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             str: The resolved base class name
         """
         if isinstance(base_node, ast.Name):
+            if base_node.id in self.module_classes.get(module_name, set()):
+                return f"{module_name}.{base_node.id}"
             return base_node.id
         elif isinstance(base_node, ast.Attribute):
             # Handle module.class syntax
-            return f"{self._get_base_object(base_node)}.{base_node.attr}"
+            base_obj = self._get_base_object(base_node)
+            if base_obj:
+                package_prefix = module_name.rsplit('.', 1)[0]
+                candidate = f"{package_prefix}.{base_obj}" if package_prefix else base_obj
+                candidate_path = os.path.join(self.project_root, candidate.replace('.', os.path.sep) + ".py")
+                if os.path.exists(candidate_path):
+                    return f"{candidate}.{base_node.attr}"
+                return f"{base_obj}.{base_node.attr}"
+            return str(base_node)
         return str(base_node)
 
     def _get_base_object(self, node):
@@ -1116,11 +1203,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 if complexity > threshold:
                     severity = 'High' if complexity > threshold * 1.5 else 'Medium'
                     self.add_smell(
-                        "High Cyclomatic Complexity",
-                        f"Method '{method.name}' has cyclomatic complexity of {complexity}",
-                        self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                        class_name,
+                        name="High Cyclomatic Complexity",
+                        description=f"Method '{method.name}' has cyclomatic complexity of {complexity}",
+                        file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                        module_class=class_name,
                         start_line_number=method.lineno,
+                        end_line_number=method.end_lineno + 1,
                         severity=severity
                     )
 
@@ -1167,24 +1255,39 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         Excludes standard library and test dependencies.
         """
         standard_libs = {'os', 'sys', 'datetime', 'collections', 'json', 'logging'}
-        
+
         for module in self.dependency_graph.nodes():
             # Skip test modules
             if 'test' in module.lower():
                 continue
-                
+
             # Count only non-standard library dependencies
             significant_deps = sum(1 for successor in self.dependency_graph.successors(module)
                                  if not any(successor.startswith(lib) for lib in standard_libs))
-            
+
             threshold = self.thresholds.get('MAX_FANOUT', 15)
             if significant_deps > threshold:
                 severity = 'High' if significant_deps > threshold * 1.5 else 'Medium'
+                instance_lines = [
+                    {
+                        "name": successor,
+                        "start_line_number": d["start_line_number"],
+                        "end_line_number": d["end_line_number"]
+                    }
+                    for successor in self.dependency_graph.successors(module)
+                    if not any(successor.startswith(lib) for lib in standard_libs)
+                    for d in self.import_lines.get(module, {}).get(successor, [])
+                ]
+                instance_detail = ", ".join(
+                    f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
+                    for d in instance_lines
+                )
                 self.add_smell(
-                    "High Fan-out",
-                    f"Module '{module}' has {significant_deps} significant outgoing dependencies",
-                    self.file_paths.get(module, "Unknown"),
-                    module,
+                    name="High Fan-out",
+                    description=f"Module '{module}' has {significant_deps} significant outgoing dependencies\n"
+                    f"Outgoing dependency instances: {instance_detail or 'None'}",
+                    file_path=self.file_paths.get(module, "Unknown"),
+                    module_class=module,
                     severity=severity
                 )
 
@@ -1203,11 +1306,26 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             
             if fanin > threshold:
                 severity = 'High' if fanin > threshold * 1.5 else 'Medium'
+                instance_lines = []
+                for src_module, targets in self.import_lines.items():
+                    for target, instances in targets.items():
+                        if target == module:
+                            for d in instances:
+                                instance_lines.append({
+                                    "name": src_module,
+                                    "start_line_number": d["start_line_number"],
+                                    "end_line_number": d["end_line_number"]
+                                })
+                instance_detail = ", ".join(
+                    f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
+                    for d in instance_lines
+                )
                 self.add_smell(
-                    "High Fan-in",
-                    f"Module '{module}' has {fanin} incoming dependencies",
-                    self.file_paths.get(module, "Unknown"),
-                    module,
+                    name="High Fan-in",
+                    description=f"Module '{module}' has {fanin} incoming dependencies\n"
+                    f"Incoming dependency instances: {instance_detail or 'None'}",
+                    file_path=self.file_paths.get(module, "Unknown"),
+                    module_class=module,
                     severity=severity
                 )
 
@@ -1296,6 +1414,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         class_name,
                         start_line_number=method.lineno,
+                        end_line_number=method.end_lineno + 1,
                         severity=severity
                     )
 
