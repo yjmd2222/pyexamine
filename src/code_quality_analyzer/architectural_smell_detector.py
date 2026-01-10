@@ -364,15 +364,13 @@ class ArchitecturalSmellDetector:
                         instance_start = min(d["start_line_number"] for d in outgoing_instances)
                         instance_end = max(d["end_line_number"] for d in outgoing_instances)
                     self.add_smell(
-                        "Hub-like Dependency",
-                        f"Module '{node}' is a potential hub with {total_connections} connections "
+                        name="Hub-like Dependency",
+                        description=f"Module '{node}' is a potential hub with {total_connections} connections "
                         f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
                         f"Outgoing dependency instances: {outgoing_detail}\n"
                         f"Incoming dependency instances: {incoming_detail}",
-                        self.file_paths.get(node, "Unknown"),
-                        node,
-                        start_line_number=instance_start,
-                        end_line_number=instance_end,
+                        file_path=self.file_paths.get(node, "Unknown"),
+                        module_class=node,
                         severity='high' if total_connections > min_connections * 2 else 'medium'
                     )
 
@@ -396,10 +394,10 @@ class ArchitecturalSmellDetector:
         for func, modules in function_modules.items():
             if len(modules) >= min_occurrences:  # Increase minimum occurrences threshold
                 self.add_smell(
-                    "Scattered Functionality",
-                    f"Function '{func}' appears in {len(modules)} modules: {', '.join(modules)}",
-                    self.file_paths.get(modules[0], "Unknown"),
-                    modules[0]
+                    name="Scattered Functionality",
+                    description=f"Function '{func}' appears in {len(modules)} modules: {', '.join(modules)}",
+                    file_path=self.file_paths.get(modules[0], "Unknown"),
+                    module_class=modules[0]
                 )
 
     def detect_redundant_abstractions(self):
