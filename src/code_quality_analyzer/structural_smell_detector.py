@@ -277,6 +277,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         self.class_info[class_name]['methods'] = []
         self.class_info[class_name]['fields'] = set()
         self.class_info[class_name]['method_calls'] = defaultdict(set)
+        self.class_info[class_name]['method_call_lines'] = defaultdict(list)
         self.class_info[class_name]['base_classes'] = [self.resolve_base_class(base, module_name) for base in node.bases]
         self.class_info[class_name]['loc'] = node.end_lineno - node.lineno + 1
         self.class_info[class_name]['start_line_number'] = node.lineno
@@ -303,6 +304,12 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             if isinstance(child, ast.Call):
                 if isinstance(child.func, ast.Attribute):
                     self.class_info[class_name]['method_calls'][node.name].add(child.func.attr)
+                    call_end = getattr(child, "end_lineno", child.lineno)
+                    self.class_info[class_name]['method_call_lines'][child.func.attr].append({
+                        "name": child.func.attr,
+                        "start_line_number": child.lineno,
+                        "end_line_number": call_end + 1
+                    })
 
     def add_smell(self, name, description, file_path, module_class=None, start_line_number=None,
                   end_line_number=None, severity='medium'):
@@ -579,6 +586,10 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         - External vs internal calls
         - Framework-specific methods
         - Standard library calls
+
+        Location data is derived from method definitions and call sites and represented as
+        {name: <module>.<class>.<method>, start_line_number: <start>, end_line_number: <end>} or
+        {name: <call>, start_line_number: <start>, end_line_number: <end>}.
         """
         standard_lib_prefixes = {'os.', 'sys.', 'datetime.', 'collections.', 'json.'}
         
@@ -613,9 +624,36 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             rfc = len(significant_methods) + len(external_calls)
             if rfc > self.thresholds['RFC_THRESHOLD']:
                 severity = 'High' if rfc > self.thresholds['RFC_THRESHOLD'] * 1.5 else 'Medium'
+                method_instances = []
+                for method in significant_methods:
+                    method_end = getattr(method, "end_lineno", method.lineno)
+                    method_instances.append({
+                        "name": f"{class_name}.{method.name}",
+                        "start_line_number": method.lineno,
+                        "end_line_number": method_end + 1
+                    })
+                # method_instances: {name, start_line_number, end_line_number} per significant method
+                external_instances = []
+                for call_name in external_calls:
+                    external_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # external_instances: {name, start_line_number, end_line_number} per external call site
+                method_detail = (
+                    ", ".join(
+                        f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                        for entry in method_instances
+                    ) or "None"
+                )
+                instances_detail = (
+                    ", ".join(
+                        f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                        for entry in external_instances
+                    ) or "None"
+                )
                 self.add_smell(
                     name="High Response for a Class (RFC)",
-                    description=f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})",
+                    description=f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})\n"
+                    f"Method instances: {method_detail}\n"
+                    f"External call instances: {instances_detail}",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -845,6 +883,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         - Standard library calls
         - Internal vs external coupling
         - Framework-specific patterns
+
+        Location data is derived from call sites and represented as
+        {name: <call>, start_line_number: <start>, end_line_number: <end>}.
         """
         standard_lib_prefixes = {'os.', 'sys.', 'datetime.', 'collections.', 'json.', 'logging.'}
         framework_patterns = {'get_', 'set_', 'is_', 'has_', '__'}
@@ -878,11 +919,33 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
 
             if weighted_mpc > self.thresholds['MPC_THRESHOLD']:
                 severity = 'High' if weighted_mpc > self.thresholds['MPC_THRESHOLD'] * 1.5 else 'Medium'
+                external_instances = []
+                for call_name in method_calls:
+                    external_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # external_instances: {name, start_line_number, end_line_number} per external call site
+                internal_instances = []
+                for call_name in internal_calls:
+                    internal_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # internal_instances: {name, start_line_number, end_line_number} per internal call site
+                instances_detail = (
+                    ", ".join(
+                        f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                        for entry in external_instances
+                    ) or "None"
+                )
+                internal_detail = (
+                    ", ".join(
+                        f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                        for entry in internal_instances
+                    ) or "None"
+                )
                 self.add_smell(
                     name="High Message Passing Coupling (MPC)",
                     description=f"Class '{class_name}' has weighted MPC of {weighted_mpc:.1f}\n"
                     f"(External calls: {external_mpc}, Internal calls: {internal_mpc})\n"
-                    f"Most frequent external calls: {dict(sorted(method_calls.items(), key=lambda x: x[1], reverse=True)[:3])}",
+                    f"Most frequent external calls: {dict(sorted(method_calls.items(), key=lambda x: x[1], reverse=True)[:3])}\n"
+                    f"External call instances: {instances_detail}\n"
+                    f"Internal call instances: {internal_detail}",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),

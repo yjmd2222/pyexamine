@@ -56,6 +56,12 @@ class ArchitecturalSmellDetector:
         self.external_dependencies = defaultdict(set)
         self.function_calls = defaultdict(set)  # Track inter-module function calls
         self.import_lines = defaultdict(list)
+        self.function_lines = defaultdict(lambda: defaultdict(list))
+        self.api_call_lines = defaultdict(list)
+        self.class_methods = defaultdict(set)
+        self.class_method_lines = defaultdict(lambda: defaultdict(list))
+        self.class_lines = {}
+        self.class_modules = {}
 
     def load_thresholds(self, config_path):
         """
@@ -195,12 +201,34 @@ class ArchitecturalSmellDetector:
                                 full_import = f"{import_name}.{alias.name}"
                                 self.module_functions[import_name].add(alias.name)
                 
-                elif isinstance(node, ast.FunctionDef):
+                elif isinstance(node, ast.ClassDef):
+                    class_key = f"{module_name}.{node.name}"
+                    self.class_modules[class_key] = module_name
+                    class_end = getattr(node, "end_lineno", node.lineno)
+                    self.class_lines[class_key] = (node.lineno, class_end + 1)
+                    for class_item in node.body:
+                        if isinstance(class_item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                            self.class_methods[class_key].add(class_item.name)
+                            method_end = getattr(class_item, "end_lineno", class_item.lineno)
+                            self.class_method_lines[class_key][class_item.name].append(
+                                (class_item.lineno, method_end + 1)
+                            )
+                elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     self.module_functions[module_name].add(node.name)
+                    end_lineno = getattr(node, "end_lineno", node.lineno)
+                    self.function_lines[module_name][node.name].append(
+                        (node.lineno, end_lineno + 1)
+                    )
                 
                 elif isinstance(node, ast.Call):
                     if isinstance(node.func, ast.Attribute):
                         self.api_usage[module_name].append(node.func.attr)
+                        call_end = getattr(node, "end_lineno", node.lineno)
+                        self.api_call_lines[module_name].append({
+                            "name": node.func.attr,
+                            "start_line_number": node.lineno,
+                            "end_line_number": call_end + 1
+                        })
                         
                         # Track function calls between modules
                         if isinstance(node.func.value, ast.Name):
@@ -284,7 +312,10 @@ class ArchitecturalSmellDetector:
 
     def detect_hub_like_dependency(self):
         """
-        Detect hub-like dependencies in the project with improved accuracy.
+        Detect hub-like dependencies in the project with improved accuracy.\n
+
+        Location data is derived from import statements and represented as\n
+        {name: <module>, start_line_number: <start>, end_line_number: <end>}.
         """
         total_modules = len(self.module_dependencies.nodes())
         # Skip analysis for very small projects
@@ -346,6 +377,7 @@ class ArchitecturalSmellDetector:
                             any(entry["name"] == dep for _, dep in self.external_dependencies[node])
                         )
                     ]
+                    # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
                     incoming_instances = []
                     for predecessor in self.module_dependencies.predecessors(node):
                         for entry in self.import_lines.get(predecessor, []):
@@ -355,6 +387,7 @@ class ArchitecturalSmellDetector:
                                     "start_line_number": entry["start_line_number"],
                                     "end_line_number": entry["end_line_number"]
                                 })
+                    # incoming_instances: {name, start_line_number, end_line_number} per import of this module
 
                     outgoing_detail = _format_instances(outgoing_instances) or "None"
                     incoming_detail = _format_instances(incoming_instances) or "None"
@@ -376,7 +409,10 @@ class ArchitecturalSmellDetector:
 
     def detect_scattered_functionality(self):
         """
-        Detect scattered functionality in the project.
+        Detect scattered functionality in the project.\n
+
+        Location data is derived from function definitions and represented as\n
+        {name: <module>, start_line_number: <start>, end_line_number: <end>}.
         """
         function_modules = defaultdict(list)
         min_function_length = self.thresholds.get('SCATTERED_MIN_FUNCTION_NAME_LENGTH', 3)
@@ -393,9 +429,19 @@ class ArchitecturalSmellDetector:
         min_occurrences = self.thresholds.get('MIN_SCATTERED_OCCURRENCES', 3)
         for func, modules in function_modules.items():
             if len(modules) >= min_occurrences:  # Increase minimum occurrences threshold
+                grouped = defaultdict(list)
+                for module in modules:
+                    for start, end in self.function_lines.get(module, {}).get(func, []):
+                        grouped[module].append((start, end))
+                # grouped -> locations per module; becomes {name, start_line_number, end_line_number}
+                parts = []
+                for module in sorted(grouped):
+                    ranges = ", ".join(f"{start}-{end}" for start, end in grouped[module])
+                    parts.append(f"{module}({ranges})")
+                detail = ", ".join(parts) if parts else ", ".join(modules)
                 self.add_smell(
                     name="Scattered Functionality",
-                    description=f"Function '{func}' appears in {len(modules)} modules: {', '.join(modules)}",
+                    description=f"Function '{func}' appears in {len(modules)} modules: {detail}",
                     file_path=self.file_paths.get(modules[0], "Unknown"),
                     module_class=modules[0]
                 )
@@ -403,6 +449,9 @@ class ArchitecturalSmellDetector:
     def detect_redundant_abstractions(self):
         """
         Detect potential redundant abstractions in the project.
+
+        Location data is derived from function definitions and represented as
+        {name: <module>.<function>, start_line_number: <start>, end_line_number: <end>}.
         """
         similar_modules = defaultdict(list)
         min_functions = self.thresholds.get('REDUNDANT_MIN_FUNCTIONS', 3)  # Minimum number of functions to consider
@@ -431,38 +480,85 @@ class ArchitecturalSmellDetector:
                         similarity = len(module1_funcs & module2_funcs) / len(module1_funcs | module2_funcs)
                         
                         if similarity >= similarity_threshold:
+                            redundant_instances = []
+                            overlap = module1_funcs & module2_funcs
+                            for module_name in (modules[i], modules[j]):
+                                for func in sorted(overlap):
+                                    for start, end in self.function_lines.get(module_name, {}).get(func, []):
+                                        redundant_instances.append({
+                                            "name": f"{module_name}.{func}",
+                                            "start_line_number": start,
+                                            "end_line_number": end
+                                        })
+                            # redundant_instances: {name, start_line_number, end_line_number} per overlapping function
+                            instances_detail = (
+                                ", ".join(
+                                    f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                                    for entry in redundant_instances
+                                ) or "None"
+                            )
                             self.add_smell(
-                                "Potential Redundant Abstractions",
-                                f"Modules {modules[i]} and {modules[j]} have {similarity:.1%} similar functionalities",
-                                self.file_paths.get(modules[i], "Unknown"),
-                                modules[i]
+                                name="Potential Redundant Abstractions",
+                                description=(
+                                    f"Modules {modules[i]} and {modules[j]} have {similarity:.1%} similar functionalities\n"
+                                    f"Overlapping function instances: {instances_detail}"
+                                ),
+                                file_path=self.file_paths.get(modules[i], "Unknown"),
+                                module_class=modules[i]
                             )
 
     def detect_god_objects(self):
         """
         Detect god objects in the project.
+
+        Location data is derived from function definitions and represented as
+        {name: <module>.<class>.<function>, start_line_number: <start>, end_line_number: <end>}.
         """
         min_functions = self.thresholds.get('MIN_GOD_OBJECT_FUNCTIONS', 5)
         excluded_patterns = {'test_', 'setup_', 'config_'}  # Common prefixes to exclude
         
-        for module, functions in self.module_functions.items():
+        for class_key, methods in self.class_methods.items():
             # Filter out private methods and common test/setup functions
-            public_functions = {f for f in functions 
+            public_functions = {f for f in methods 
                               if not f.startswith('_') and 
                               not any(f.startswith(pattern) for pattern in excluded_patterns)}
             
             if (len(public_functions) >= min_functions and 
                 len(public_functions) > self.thresholds['GOD_OBJECT_FUNCTIONS']):
+                class_start, class_end = self.class_lines.get(class_key, (None, None))
+                god_instances = []
+                for func in sorted(public_functions):
+                    for start, end in self.class_method_lines.get(class_key, {}).get(func, []):
+                        god_instances.append({
+                            "name": f"{class_key}.{func}",
+                            "start_line_number": start,
+                            "end_line_number": end
+                        })
+                # god_instances: {name, start_line_number, end_line_number} per public function
+                instances_detail = (
+                    ", ".join(
+                        f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                    for entry in god_instances
+                    ) or "None"
+                )
                 self.add_smell(
-                    "God Object",
-                    f"Module '{module}' has too many public functions ({len(public_functions)})", 
-                    self.file_paths.get(module, "Unknown"),
-                    module
+                    name="God Object",
+                    description=(
+                        f"Class '{class_key}' has too many public methods ({len(public_functions)})\n"
+                        f"Public function instances: {instances_detail}"
+                    ),
+                    file_path=self.file_paths.get(self.class_modules.get(class_key, ""), "Unknown"),
+                    module_class=class_key,
+                    start_line_number=class_start,
+                    end_line_number=class_end
                 )
 
     def detect_improper_api_usage(self):
         """
         Detect potential improper API usage in the project.
+
+        Location data is derived from call sites and represented as
+        {name: <call>, start_line_number: <start>, end_line_number: <end>}.
         """
         min_calls = self.thresholds.get('MIN_API_CALLS', 10)  # Minimum calls to consider
         repetition_threshold = self.thresholds.get('API_REPETITION_THRESHOLD', 0.4)
@@ -481,10 +577,22 @@ class ArchitecturalSmellDetector:
                 
                 if (repetitive_calls and 
                     sum(repetitive_calls.values()) / len(api_calls) > repetition_threshold):
+                    repetitive_instances = [
+                        entry for entry in self.api_call_lines.get(module, [])
+                        if entry["name"] in repetitive_calls
+                    ]
+                    # repetitive_instances: {name, start_line_number, end_line_number} per call site
+                    instances_detail = (
+                        ", ".join(
+                            f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
+                            for entry in repetitive_instances
+                        ) or "None"
+                    )
                     self.add_smell(
                         "Potential Improper API Usage",
                         f"Module '{module}' has repetitive API calls: " +
-                        ", ".join(f"{call}({count}x)" for call, count in repetitive_calls.items()),
+                        ", ".join(f"{call}({count}x)" for call, count in repetitive_calls.items()) +
+                        f"\nRepetitive call instances: {instances_detail}",
                         self.file_paths.get(module, "Unknown"),
                         module
                     )
@@ -559,17 +667,22 @@ class ArchitecturalSmellDetector:
             
             cycle_str = ' -> '.join(cycle + [cycle[0]])
             self.add_smell(
-                "Cyclic Dependency",
-                f"Strong cyclic dependency detected: {cycle_str}\n"
-                f"Cycle strength: {strength} mutual dependencies",
-                self.file_paths.get(cycle[0], "Unknown"),
-                cycle[0],
+                name="Cyclic Dependency",
+                description=(
+                    f"Strong cyclic dependency detected: {cycle_str}\n"
+                    f"Cycle strength: {strength} mutual dependencies"
+                ),
+                file_path=self.file_paths.get(cycle[0], "Unknown"),
+                module_class=cycle[0],
                 severity=severity
             )
 
     def detect_unstable_dependencies(self):
         """
         Detect unstable dependencies in the project.
+
+        Location data is derived from import statements and represented as
+        {name: <module>, start_line_number: <start>, end_line_number: <end>}.
         """
         min_dependencies = self.thresholds.get('MIN_DEPENDENCIES', 5)  # Minimum dependencies to consider
         excluded_patterns = {'test_', 'setup_', '__init__'}  # Patterns to exclude
@@ -585,12 +698,49 @@ class ArchitecturalSmellDetector:
             if total_dependencies >= min_dependencies:
                 instability = out_degree / total_dependencies
                 if instability > self.thresholds['UNSTABLE_DEPENDENCY_THRESHOLD']:
+                    def _format_instances(instances):
+                        grouped = defaultdict(list)
+                        for entry in instances:
+                            grouped[entry["name"]].append(
+                                (entry["start_line_number"], entry["end_line_number"])
+                            )
+                        parts = []
+                        for name in sorted(grouped):
+                            ranges = ", ".join(f"{start}-{end}" for start, end in grouped[name])
+                            parts.append(f"{name}({ranges})")
+                        return ", ".join(parts)
+
+                    outgoing_instances = [
+                        entry for entry in self.import_lines.get(node, [])
+                        if (
+                            entry["name"] in self.module_dependencies.successors(node) or
+                            any(entry["name"] == dep for _, dep in self.external_dependencies[node])
+                        )
+                    ]
+                    # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
+                    incoming_instances = []
+                    for predecessor in self.module_dependencies.predecessors(node):
+                        for entry in self.import_lines.get(predecessor, []):
+                            if entry["name"] == node:
+                                incoming_instances.append({
+                                    "name": predecessor,
+                                    "start_line_number": entry["start_line_number"],
+                                    "end_line_number": entry["end_line_number"]
+                                })
+                    # incoming_instances: {name, start_line_number, end_line_number} per import of this module
+
+                    outgoing_detail = _format_instances(outgoing_instances) or "None"
+                    incoming_detail = _format_instances(incoming_instances) or "None"
                     self.add_smell(
-                        "Unstable Dependency",
-                        f"Module '{node}' has high instability ({instability:.2f}) " +
-                        f"with {out_degree} outgoing and {in_degree} incoming dependencies",
-                        self.file_paths.get(node, "Unknown"),
-                        node
+                        name="Unstable Dependency",
+                        description=(
+                            f"Module '{node}' has high instability ({instability:.2f}) "
+                            f"with {out_degree} outgoing and {in_degree} incoming dependencies\n"
+                            f"Outgoing dependency instances: {outgoing_detail}\n"
+                            f"Incoming dependency instances: {incoming_detail}"
+                        ),
+                        file_path=self.file_paths.get(node, "Unknown"),
+                        module_class=node
                     )
 
     def print_report(self):
