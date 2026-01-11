@@ -7,6 +7,33 @@ from itertools import combinations, product
 import re
 import logging
 from .exceptions import CodeAnalysisError
+from .smell_templates import (
+    FileClassLineSpansPayload,
+    FileFunctionLineSpansPayload,
+    FileLevelMethodFunctionLineSpansPayload,
+    FileLevelWithoutLineSpansPayload,
+    FileLineSpansPayload,
+    FileMultipleClassesPayload,
+    FlatChainPayload,
+    FlatClassLevelPayload,
+    FlatFunctionLevelPayload,
+    FlatMethodFunctionPayload,
+    FlatStatementPayload,
+    LineSpan,
+    NamedLineSpan,
+    TemplateRenderer,
+    render_file_class_line_spans,
+    render_file_function_line_spans,
+    render_file_level_method_function_line_spans,
+    render_file_level_without_line_spans,
+    render_file_line_spans,
+    render_file_multiple_classes,
+    render_flat_chain,
+    render_flat_class_level,
+    render_flat_function_level,
+    render_flat_method_function,
+    render_flat_statement,
+)
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -20,6 +47,34 @@ class CodeSmell:
     start_line_number: int
     end_line_number: int
     severity: str
+
+class CodeSmellRecorder:
+    def __init__(self, code_smells):
+        self._code_smells = code_smells
+
+    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
+                  end_line_number=None, severity='medium'):
+        """
+        Add a detected smell to the list of code smells.
+        
+        Args:
+            name (str): The name of the smell
+            description (str): Description of the smell
+            file_path (str): Path to the file containing the smell
+            module_class (str): The module or class containing the smell
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
+            severity (str, optional): The severity level of the smell (default: 'medium')
+        """
+        self._code_smells.append(CodeSmell(
+            name=name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=severity
+        ))
 
 class CodeSmellDetector:
     """
@@ -42,6 +97,21 @@ class CodeSmellDetector:
             thresholds (dict): A dictionary of threshold values for various code smell detections.
         """
         self.code_smells = []
+        self._smell_recorder = CodeSmellRecorder(self.code_smells)
+        self.add_smell = self._smell_recorder.add_smell
+        self._template_renderer = TemplateRenderer({
+            "flat_function_level": render_flat_function_level,
+            "flat_method_function": render_flat_method_function,
+            "flat_statement": render_flat_statement,
+            "flat_chain": render_flat_chain,
+            "file_line_spans": render_file_line_spans,
+            "file_class_line_spans": render_file_class_line_spans,
+            "file_level_method_function_line_spans": render_file_level_method_function_line_spans,
+            "file_function_line_spans": render_file_function_line_spans,
+            "file_multiple_classes": render_file_multiple_classes,
+            "flat_class_level": render_flat_class_level,
+            "file_level_without_line_spans": render_file_level_without_line_spans,
+        })
         self.thresholds = thresholds
 
     def detect_smells(self, file_path):
@@ -159,9 +229,23 @@ class CodeSmellDetector:
                         actual_lines += 1
             
             if actual_lines > self.thresholds["LONG_METHOD_LINES"]:
-                self.add_smell(
+                payload = FlatMethodFunctionPayload(
+                    type="Code",
                     name="Long Method",
                     description=f"'{node.name}' has {actual_lines} lines in {file_path} at line {node.lineno}",
+                    file_path=file_path,
+                    class_name=node.parent.name if isinstance(node.parent, nodes.ClassDef) else "",
+                    method_function=node.name,
+                    start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
+                    severity="medium"
+                )
+                self.add_smell(
+                    name="Long Method",
+                    description=self._template_renderer.render(
+                        "flat_method_function",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -214,9 +298,22 @@ class CodeSmellDetector:
                         non_trivial_methods.append(method)
 
                 if len(non_trivial_methods) > self.thresholds["LARGE_CLASS_METHODS"]:
-                    self.add_smell(
+                    payload = FlatClassLevelPayload(
+                        type="Code",
                         name="Large Class",
                         description=f"'{node.name}' has {len(non_trivial_methods)} non-trivial methods in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        severity="medium"
+                    )
+                    self.add_smell(
+                        name="Large Class",
+                        description=self._template_renderer.render(
+                            "flat_class_level",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -251,9 +348,23 @@ class CodeSmellDetector:
             primitive_ratio = len(primitives) / (total_args - 1 if 'self' in node.args.args[0].name else total_args)
             if (len(primitives) > self.thresholds["PRIMITIVE_OBSESSION_COUNT"] and 
                 primitive_ratio > self.thresholds.get('PRIMITIVE_RATIO_THRESHOLD', 0.7)):
-                self.add_smell(
+                payload = FlatMethodFunctionPayload(
+                    type="Code",
                     name="Primitive Obsession",
                     description=f"'{node.name}' has {len(primitives)} primitive parameters in {file_path}",
+                    file_path=file_path,
+                    class_name=node.parent.name if isinstance(node.parent, nodes.ClassDef) else "",
+                    method_function=node.name,
+                    start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="Primitive Obsession",
+                    description=self._template_renderer.render(
+                        "flat_method_function",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -295,9 +406,23 @@ class CodeSmellDetector:
             )
 
             if len(args) > threshold:
-                self.add_smell(
+                payload = FlatMethodFunctionPayload(
+                    type="Code",
                     name="Long Parameter List",
                     description=f"'{node.name}' has {len(args)} parameters in {file_path}",
+                    file_path=file_path,
+                    class_name=node.parent.name if isinstance(node.parent, nodes.ClassDef) else "",
+                    method_function=node.name,
+                    start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="Long Parameter List",
+                    description=self._template_renderer.render(
+                        "flat_method_function",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -359,9 +484,29 @@ class CodeSmellDetector:
                     f"{d['name']} (lines {d['start_line_number']}-{d['end_line_number']})"
                     for d in functions
                 )
-                self.add_smell(
+                payload = FileLevelMethodFunctionLineSpansPayload(
+                    type="Code",
                     name="Data Clumps",
                     description=f"Parameters {', '.join(params)} appear together in functions: {function_lines} in {file_path}",
+                    file_path=file_path,
+                    start_line_number=None,
+                    end_line_number=None,
+                    methods_functions=[
+                        NamedLineSpan(
+                            name=d["name"],
+                            start_line_number=d["start_line_number"],
+                            end_line_number=d["end_line_number"]
+                        )
+                        for d in functions
+                    ],
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="Data Clumps",
+                    description=self._template_renderer.render(
+                        "file_level_method_function_line_spans",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=', '.join(d["name"] for d in functions),
                     severity='medium'
@@ -398,9 +543,21 @@ class CodeSmellDetector:
             if (condition_count > self.thresholds["COMPLEX_CONDITIONAL"] and 
                 not is_guard_clause and 
                 not is_type_check):
-                self.add_smell(
+                payload = FlatStatementPayload(
+                    type="Code",
                     name="Switch Statements",
                     description=f"Complex conditional with {condition_count} branches at line {node.lineno} in {file_path}",
+                    file_path=file_path,
+                    start_line_number=node.lineno,
+                    end_line_number=node.tolineno + 1,
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="Switch Statements",
+                    description=self._template_renderer.render(
+                        "flat_statement",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=None,
                     start_line_number=node.lineno,
@@ -461,9 +618,22 @@ class CodeSmellDetector:
                              {'logger', 'config', 'cache', '_cache'})
                 
                 if len(temp_fields) >= self.thresholds["TEMPORARY_FIELD_THRESHOLD"]:
-                    self.add_smell(
+                    payload = FlatClassLevelPayload(
+                        type="Code",
                         name="Temporary Field",
                         description=f"Potentially unused fields {', '.join(temp_fields)} in class '{node.name}' at line {node.lineno} in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        severity='low'
+                    )
+                    self.add_smell(
+                        name="Temporary Field",
+                        description=self._template_renderer.render(
+                            "flat_class_level",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -530,9 +700,27 @@ class CodeSmellDetector:
                         f"{entry['name']} (lines {entry['start_line_number']}-{entry['end_line_number']})"
                         for entry in classes
                     )
-                    self.add_smell(
+                    payload = FileMultipleClassesPayload(
+                        type="Code",
                         name="Alternative Classes with Different Interfaces",
                         description=f"Classes {class_ranges} share similar methods {', '.join(methods)} in {file_path}",
+                        file_path=file_path,
+                        classes=[
+                            NamedLineSpan(
+                                name=entry["name"],
+                                start_line_number=entry["start_line_number"],
+                                end_line_number=entry["end_line_number"]
+                            )
+                            for entry in classes
+                        ],
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Alternative Classes with Different Interfaces",
+                        description=self._template_renderer.render(
+                            "file_multiple_classes",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=', '.join(class_names),
                         severity='medium'
@@ -601,9 +789,29 @@ class CodeSmellDetector:
                 unique_prefixes = set(method_prefixes)
                 if (len(unique_prefixes) > self.thresholds["DIVERGENT_CHANGE_PREFIXES"] and
                     len(method_prefixes) > self.thresholds["DIVERGENT_CHANGE_METHODS"]):
-                    self.add_smell(
+                    payload = FileClassLineSpansPayload(
+                        type="Code",
                         name="Potential Divergent Change",
                         description=f"Class '{node.name}' has {len(unique_prefixes)} different method prefixes: {', '.join(unique_prefixes)} in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno,
+                        instance_lines=[
+                            LineSpan(
+                                start_line_number=entry["start_line_number"],
+                                end_line_number=entry["end_line_number"]
+                            )
+                            for entry in methods
+                        ],
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Potential Divergent Change",
+                        description=self._template_renderer.render(
+                            "file_class_line_spans",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -673,12 +881,31 @@ class CodeSmellDetector:
                         if "start_line_number" in entry else entry["name"]
                         for entry in instances
                     )
-                self.add_smell(
+                payload = FileMultipleClassesPayload(
+                    type="Code",
                     name="Parallel Inheritance Hierarchies",
                     description=(
                         f"Parallel hierarchies detected: "
                         f"{' and '.join([format_hierarchy(build_hierarchy_instances(base, h)) for base, h in parallel_hierarchies])} "
                         f"in {file_path}"
+                    ),
+                    file_path=file_path,
+                    classes=[
+                        NamedLineSpan(
+                            name=entry["name"],
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in class_entries.values()
+                        if "start_line_number" in entry and "end_line_number" in entry
+                    ],
+                    severity='high'
+                )
+                self.add_smell(
+                    name="Parallel Inheritance Hierarchies",
+                    description=self._template_renderer.render(
+                        "file_multiple_classes",
+                        payload
                     ),
                     file_path=file_path,
                     module_class=None,
@@ -714,9 +941,26 @@ class CodeSmellDetector:
             unique_contexts = len(set(d["call_name"] for d in calls))
             if (len(calls) > self.thresholds["SHOTGUN_SURGERY_CALLS"] and
                 unique_contexts > self.thresholds["SHOTGUN_SURGERY_CONTEXTS"]):
-                self.add_smell(
+                payload = FileLineSpansPayload(
+                    type="Code",
                     name="Potential Shotgun Surgery",
                     description=f"Method '{method}' called in {unique_contexts} different contexts across {len(calls)} locations in {file_path}",
+                    file_path=file_path,
+                    lines=[
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in calls
+                    ],
+                    severity='high'
+                )
+                self.add_smell(
+                    name="Potential Shotgun Surgery",
+                    description=self._template_renderer.render(
+                        "file_line_spans",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=method,
                     severity='high'
@@ -759,9 +1003,19 @@ class CodeSmellDetector:
         
         if (comment_ratio > self.thresholds["EXCESSIVE_COMMENTS_RATIO"] and
             large_comment_blocks > self.thresholds["LARGE_COMMENT_BLOCKS"]):
-            self.add_smell(
+            payload = FileLevelWithoutLineSpansPayload(
+                type="Structural",
                 name="Excessive Comments",
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
+                file_path=file_path,
+                severity='low'
+            )
+            self.add_smell(
+                name="Excessive Comments",
+                description=self._template_renderer.render(
+                    "file_level_without_line_spans",
+                    payload
+                ),
                 file_path=file_path,
                 module_class=None,
                 severity='low'
@@ -804,9 +1058,26 @@ class CodeSmellDetector:
         for block, functions in code_blocks.items():
             if len(functions) >= self.thresholds["DUPLICATE_CODE_THRESHOLD"]:
                 total_lines = sum(d["length"] for d in functions)
+                payload = FileLineSpansPayload(
+                    type="Code",
+                    name="Duplicate Code",
+                    description=f"Similar code found in functions: {', '.join(d['name'] for d in functions)} ({total_lines} total lines) in {file_path}",
+                    file_path=file_path,
+                    lines=[
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in functions
+                    ],
+                    severity='high'
+                )
                 self.add_smell(
                     name="Duplicate Code",
-                    description=f"Similar code found in functions: {', '.join(d["name"] for d in functions)} ({total_lines} total lines) in {file_path}",
+                    description=self._template_renderer.render(
+                        "file_line_spans",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=', '.join(d["name"] for d in functions),
                     severity='high'
@@ -858,9 +1129,31 @@ class CodeSmellDetector:
                 # Only flag if class is predominantly getters/setters
                 if (others == 0 and getters + setters >= self.thresholds["DATA_CLASS_METHODS"] and
                     not node.name.endswith(('DTO', 'Model', 'Entity', 'Record'))):  # Skip known data structures
-                    self.add_smell(
+                    instance_lines = [
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for block in code_blocks.values()
+                        for entry in block
+                    ]
+                    payload = FileClassLineSpansPayload(
+                        type="Code",
                         name="Data Class",
                         description=f"Class '{node.name}' has {getters} getters and {setters} setters with no other methods in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        instance_lines=instance_lines,
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Data Class",
+                        description=self._template_renderer.render(
+                            "file_class_line_spans",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -932,11 +1225,26 @@ class CodeSmellDetector:
 
         if len(unused_functions) >= self.thresholds["DEAD_CODE_THRESHOLD"]:
             for d in unused_functions:
+                payload = FlatFunctionLevelPayload(
+                    type="Code",
+                    name="Dead Code",
+                    description=f"Potentially unused function '{d['name']}' in {file_path}",
+                    file_path=file_path,
+                    function=d["name"],
+                    start_line_number=d["start_line_number"],
+                    end_line_number=d["end_line_number"],
+                    severity='low'
+                )
                 self.add_smell(
                     name="Dead Code",
-                    description=f"Potentially unused function '{d["name"]}' in {file_path}",
+                    description=self._template_renderer.render(
+                        "flat_function_level",
+                        payload
+                    ),
                     file_path=file_path,
                     module_class=d["name"],
+                    start_line_number=d["start_line_number"],
+                    end_line_number=d["end_line_number"],
                     severity='low'
                 )
 
@@ -965,9 +1273,22 @@ class CodeSmellDetector:
                 total_lines = sum(m.tolineno - m.fromlineno for m in methods)
                 if (len(methods) <= self.thresholds["LAZY_CLASS_METHODS"] and
                     total_lines <= self.thresholds["LAZY_CLASS_LINES"]):
-                    self.add_smell(
+                    payload = FlatClassLevelPayload(
+                        type="Code",
                         name="Lazy Class",
                         description=f"Class '{node.name}' has only {len(methods)} non-trivial methods with {total_lines} total lines in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        severity='low'
+                    )
+                    self.add_smell(
+                        name="Lazy Class",
+                        description=self._template_renderer.render(
+                            "flat_class_level",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1025,10 +1346,31 @@ class CodeSmellDetector:
                             for p in unused_params
                         )
                         description.append(f"has {len(unused_params)} unused parameters: {unused_detail}")
+                    instance_lines = [
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in abstract_methods + unused_params
+                    ]
+                    payload = FileClassLineSpansPayload(
+                        type="Code",
+                        name="Speculative Generality",
+                        description=f"Class '{node.name}' {' and '.join(description)} in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        instance_lines=instance_lines,
+                        severity='medium'
+                    )
                     
                     self.add_smell(
                         name="Speculative Generality",
-                        description=f"Class '{node.name}' {' and '.join(description)} in {file_path}",
+                        description=self._template_renderer.render(
+                            "file_class_line_spans",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1102,12 +1444,32 @@ class CodeSmellDetector:
                         f"{d['start_line_number']}-{d['end_line_number']}"
                         for d in local_calls["lines"]
                     )
-                    self.add_smell(
+                    payload = FileFunctionLineSpansPayload(
+                        type="Code",
                         name="Feature Envy",
                         description=(
                             f"Method '{node.name}' makes {max_call_data['count']} calls to '{max_class}' "
                             f"at lines {line_ranges} but only {local_calls['count']} local calls "
                             f"at lines {local_line_ranges} in {file_path}"
+                        ),
+                        file_path=file_path,
+                        function=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        instance_lines=[
+                            LineSpan(
+                                start_line_number=entry["start_line_number"],
+                                end_line_number=entry["end_line_number"]
+                            )
+                            for entry in max_call_data["lines"]
+                        ],
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Feature Envy",
+                        description=self._template_renderer.render(
+                            "file_function_line_spans",
+                            payload
                         ),
                         file_path=file_path,
                         module_class=node.name,
@@ -1232,11 +1594,28 @@ class CodeSmellDetector:
                         merged_line_ranges = ", ".join(
                             f"{start}-{end}" for start, end in collapsed_ranges
                         )
-                        self.add_smell(
+                        payload = FileClassLineSpansPayload(
+                            type="Code",
                             name="Inappropriate Intimacy",
                             description=f"Class '{class_name}' might be too intimate with '{other_class}' "
                                       f"({shared} shared members, {method_ratio:.1%} of methods) "
                                       f"at lines {merged_line_ranges} in {file_path}",
+                            file_path=file_path,
+                            class_name=class_name,
+                            start_line_number=class_ranges[class_name][0],
+                            end_line_number=class_ranges[class_name][1],
+                            instance_lines=[
+                                LineSpan(start_line_number=start, end_line_number=end)
+                                for start, end in collapsed_ranges
+                            ],
+                            severity='medium'
+                        )
+                        self.add_smell(
+                            name="Inappropriate Intimacy",
+                            description=self._template_renderer.render(
+                                "file_class_line_spans",
+                                payload
+                            ),
                             file_path=file_path,
                             module_class=class_name,
                             start_line_number=class_ranges[class_name][0],
@@ -1313,10 +1692,22 @@ class CodeSmellDetector:
                 f"{start}-{end}" for start, end in collapsed_ranges
             )
 
-            self.add_smell(
+            payload = FlatChainPayload(
+                type="Code",
                 name="Message Chains",
                 description=f"Long chain ({chain_length} calls: {' -> '.join(reversed(chain))}) "
                            f"at lines {line_ranges} in {context or 'unknown context'} in {file_path}",
+                file_path=file_path,
+                start_line_number=node.lineno,
+                end_line_number=node.tolineno + 1,
+                severity='medium'
+            )
+            self.add_smell(
+                name="Message Chains",
+                description=self._template_renderer.render(
+                    "flat_chain",
+                    payload
+                ),
                 file_path=file_path,
                 module_class=context,
                 start_line_number=node.lineno,
@@ -1377,10 +1768,32 @@ class CodeSmellDetector:
                 if (delegation_ratio > self.thresholds["MIDDLE_MAN_RATIO"] and
                     len(delegate_targets) <= self.thresholds.get('MIDDLE_MAN_MAX_DELEGATE_TARGETS', 2)):
                     primary_delegate = max(delegate_targets.items(), key=lambda x: len(x[1]))
-                    self.add_smell(
+                    instance_lines = [
+                        LineSpan(
+                            start_line_number=method.lineno,
+                            end_line_number=method.tolineno + 1
+                        )
+                        for method in methods
+                        if method.name in primary_delegate[1]
+                    ]
+                    payload = FileClassLineSpansPayload(
+                        type="Code",
                         name="Middle Man",
                         description=f"Class '{node.name}' delegates {delegating_methods}/{total_methods} methods "
                                   f"({delegation_ratio:.1%}), mainly to {primary_delegate[0]} in {file_path}",
+                        file_path=file_path,
+                        class_name=node.name,
+                        start_line_number=node.lineno,
+                        end_line_number=node.tolineno + 1,
+                        instance_lines=instance_lines,
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Middle Man",
+                        description=self._template_renderer.render(
+                            "file_class_line_spans",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1401,26 +1814,3 @@ class CodeSmellDetector:
             for smell in self.code_smells:
                 print(f"- {smell.name}: {smell.description}")
 
-    def add_smell(self, name, description, file_path, module_class, start_line_number=None, 
-                  end_line_number=None, severity='medium'):
-        """
-        Add a detected smell to the list of code smells.
-        
-        Args:
-            name (str): The name of the smell
-            description (str): Description of the smell
-            file_path (str): Path to the file containing the smell
-            module_class (str): The module or class containing the smell
-            start_line_number (int, optional): The start line number where the smell was detected
-            end_line_number (int, optional): The ending line number (+1 for slicing)
-            severity (str, optional): The severity level of the smell (default: 'medium')
-        """
-        self.code_smells.append(CodeSmell(
-            name=name,
-            description=description,
-            file_path=file_path,
-            module_class=module_class,
-            start_line_number=start_line_number,
-            end_line_number=end_line_number,
-            severity=severity
-        ))

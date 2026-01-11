@@ -8,6 +8,23 @@ import sys
 import importlib.util
 import logging
 from .exceptions import CodeAnalysisError
+from .smell_templates import (
+    ArchitecturalFileLevelConnectedPayload,
+    ArchitecturalFileLevelLineSpansPayload,
+    ArchitecturalFileLevelPayload,
+    ArchitecturalFilesPayload,
+    ArchitecturalFunctionLevelConnectedPayload,
+    ArchitecturalMultiFilePayload,
+    FileInstanceLines,
+    LineSpan,
+    TemplateRenderer,
+    render_architectural_file_level,
+    render_architectural_file_level_connected,
+    render_architectural_file_level_line_spans,
+    render_architectural_files,
+    render_architectural_function_level_connected,
+    render_architectural_multi_file,
+)
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -21,6 +38,34 @@ class ArchitecturalSmell:
     start_line_number: int
     end_line_number: int
     severity: str
+
+class ArchitecturalSmellRecorder:
+    def __init__(self, architectural_smells):
+        self._architectural_smells = architectural_smells
+
+    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
+                  end_line_number=None, severity='medium'):
+        """
+        Add a detected architectural smell to the list.
+        
+        Args:
+            name (str): The name of the smell
+            description (str): Description of the smell
+            file_path (str): Path to the file containing the smell
+            module_class (str): The module or class containing the smell
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
+            severity (str, optional): The severity level of the smell (default: 'medium')
+        """
+        self._architectural_smells.append(ArchitecturalSmell(
+            name=name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=severity
+        ))
 
 class ArchitecturalSmellDetector:
     """
@@ -48,6 +93,16 @@ class ArchitecturalSmellDetector:
             thresholds (dict): A dictionary of threshold values for various smell detections.
         """
         self.architectural_smells = []
+        self._smell_recorder = ArchitecturalSmellRecorder(self.architectural_smells)
+        self.add_smell = self._smell_recorder.add_smell
+        self._template_renderer = TemplateRenderer({
+            "architectural_file_level_connected": render_architectural_file_level_connected,
+            "architectural_function_level_connected": render_architectural_function_level_connected,
+            "architectural_files": render_architectural_files,
+            "architectural_file_level_line_spans": render_architectural_file_level_line_spans,
+            "architectural_file_level": render_architectural_file_level,
+            "architectural_multi_file": render_architectural_multi_file,
+        })
         self.module_dependencies = nx.DiGraph()
         self.module_functions = defaultdict(set)
         self.api_usage = defaultdict(list)
@@ -286,29 +341,6 @@ class ArchitecturalSmellDetector:
                        not self.module_dependencies.out_edges(dependency):
                         self.module_dependencies.remove_node(dependency)
 
-    def add_smell(self, name, description, file_path, module_class, start_line_number=None,
-                  end_line_number=None, severity='medium'):
-        """
-        Add a detected architectural smell to the list.
-        
-        Args:
-            name (str): The name of the smell
-            description (str): Description of the smell
-            file_path (str): Path to the file containing the smell
-            module_class (str): The module or class containing the smell
-            start_line_number (int, optional): The start line number where the smell was detected
-            end_line_number (int, optional): The ending line number (+1 for slicing)
-            severity (str, optional): The severity level of the smell (default: 'medium')
-        """
-        self.architectural_smells.append(ArchitecturalSmell(
-            name=name,
-            description=description,
-            file_path=file_path,
-            module_class=module_class,
-            start_line_number=start_line_number,
-            end_line_number=end_line_number,
-            severity=severity
-        ))
 
     def detect_hub_like_dependency(self):
         """
@@ -396,12 +428,36 @@ class ArchitecturalSmellDetector:
                     if outgoing_instances:
                         instance_start = min(d["start_line_number"] for d in outgoing_instances)
                         instance_end = max(d["end_line_number"] for d in outgoing_instances)
+                    grouped = defaultdict(list)
+                    for entry in outgoing_instances + incoming_instances:
+                        grouped[entry["name"]].append(
+                            LineSpan(
+                                start_line_number=entry["start_line_number"],
+                                end_line_number=entry["end_line_number"]
+                            )
+                        )
+                    payload = ArchitecturalFileLevelConnectedPayload(
+                        type="Architectural",
+                        name="Hub-like Dependency",
+                        description=(
+                            f"Module '{node}' is a potential hub with {total_connections} connections "
+                            f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
+                            f"Outgoing dependency instances: {outgoing_detail}\n"
+                            f"Incoming dependency instances: {incoming_detail}"
+                        ),
+                        file_path=self.file_paths.get(node, "Unknown"),
+                        files=[
+                            FileInstanceLines(name=name, instance_lines=lines)
+                            for name, lines in grouped.items()
+                        ],
+                        severity='high' if total_connections > min_connections * 2 else 'medium'
+                    )
                     self.add_smell(
                         name="Hub-like Dependency",
-                        description=f"Module '{node}' is a potential hub with {total_connections} connections "
-                        f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
-                        f"Outgoing dependency instances: {outgoing_detail}\n"
-                        f"Incoming dependency instances: {incoming_detail}",
+                        description=self._template_renderer.render(
+                            "architectural_file_level_connected",
+                            payload
+                        ),
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node,
                         severity='high' if total_connections > min_connections * 2 else 'medium'
@@ -439,9 +495,31 @@ class ArchitecturalSmellDetector:
                     ranges = ", ".join(f"{start}-{end}" for start, end in grouped[module])
                     parts.append(f"{module}({ranges})")
                 detail = ", ".join(parts) if parts else ", ".join(modules)
-                self.add_smell(
+                files = [
+                    FileInstanceLines(
+                        name=module,
+                        instance_lines=[
+                            LineSpan(start_line_number=start, end_line_number=end)
+                            for start, end in grouped[module]
+                        ]
+                    )
+                    for module in sorted(grouped)
+                ]
+                payload = ArchitecturalFunctionLevelConnectedPayload(
+                    type="Architectural",
                     name="Scattered Functionality",
                     description=f"Function '{func}' appears in {len(modules)} modules: {detail}",
+                    file_path=self.file_paths.get(modules[0], "Unknown"),
+                    function=func,
+                    files=files,
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="Scattered Functionality",
+                    description=self._template_renderer.render(
+                        "architectural_function_level_connected",
+                        payload
+                    ),
                     file_path=self.file_paths.get(modules[0], "Unknown"),
                     module_class=modules[0]
                 )
@@ -497,11 +575,33 @@ class ArchitecturalSmellDetector:
                                     for entry in redundant_instances
                                 ) or "None"
                             )
-                            self.add_smell(
+                            grouped = defaultdict(list)
+                            for entry in redundant_instances:
+                                module_name = entry["name"].rsplit('.', 1)[0]
+                                grouped[module_name].append(
+                                    LineSpan(
+                                        start_line_number=entry["start_line_number"],
+                                        end_line_number=entry["end_line_number"]
+                                    )
+                                )
+                            payload = ArchitecturalFilesPayload(
+                                type="Architectural",
                                 name="Potential Redundant Abstractions",
                                 description=(
                                     f"Modules {modules[i]} and {modules[j]} have {similarity:.1%} similar functionalities\n"
                                     f"Overlapping function instances: {instances_detail}"
+                                ),
+                                files=[
+                                    FileInstanceLines(name=module, instance_lines=lines)
+                                    for module, lines in grouped.items()
+                                ],
+                                severity='medium'
+                            )
+                            self.add_smell(
+                                name="Potential Redundant Abstractions",
+                                description=self._template_renderer.render(
+                                    "architectural_files",
+                                    payload
                                 ),
                                 file_path=self.file_paths.get(modules[i], "Unknown"),
                                 module_class=modules[i]
@@ -541,11 +641,33 @@ class ArchitecturalSmellDetector:
                     for entry in god_instances
                     ) or "None"
                 )
-                self.add_smell(
+                instance_lines = [
+                    LineSpan(
+                        start_line_number=entry["start_line_number"],
+                        end_line_number=entry["end_line_number"]
+                    )
+                    for entry in god_instances
+                ]
+                payload = ArchitecturalFileLevelLineSpansPayload(
+                    type="Architectural",
                     name="God Object",
                     description=(
                         f"Class '{class_key}' has too many public methods ({len(public_functions)})\n"
                         f"Public function instances: {instances_detail}"
+                    ),
+                    file_path=self.file_paths.get(self.class_modules.get(class_key, ""), "Unknown"),
+                    start_line_number=class_start,
+                    end_line_number=class_end,
+                    instance_lines=instance_lines,
+                    severity='medium'
+                )
+                self.add_smell(
+                    name="God Object",
+                    description=(
+                        self._template_renderer.render(
+                            "architectural_file_level_line_spans",
+                            payload
+                        )
                     ),
                     file_path=self.file_paths.get(self.class_modules.get(class_key, ""), "Unknown"),
                     module_class=class_key,
@@ -588,13 +710,35 @@ class ArchitecturalSmellDetector:
                             for entry in repetitive_instances
                         ) or "None"
                     )
+                    instance_lines = [
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in repetitive_instances
+                    ]
+                    payload = ArchitecturalFileLevelLineSpansPayload(
+                        type="Architectural",
+                        name="Potential Improper API Usage",
+                        description=(
+                            f"Module '{module}' has repetitive API calls: " +
+                            ", ".join(f"{call}({count}x)" for call, count in repetitive_calls.items()) +
+                            f"\nRepetitive call instances: {instances_detail}"
+                        ),
+                        file_path=self.file_paths.get(module, "Unknown"),
+                        start_line_number=None,
+                        end_line_number=None,
+                        instance_lines=instance_lines,
+                        severity='medium'
+                    )
                     self.add_smell(
-                        "Potential Improper API Usage",
-                        f"Module '{module}' has repetitive API calls: " +
-                        ", ".join(f"{call}({count}x)" for call, count in repetitive_calls.items()) +
-                        f"\nRepetitive call instances: {instances_detail}",
-                        self.file_paths.get(module, "Unknown"),
-                        module
+                        name="Potential Improper API Usage",
+                        description=self._template_renderer.render(
+                            "architectural_file_level_line_spans",
+                            payload
+                        ),
+                        file_path=self.file_paths.get(module, "Unknown"),
+                        module_class=module
                     )
 
     def detect_orphan_modules(self):
@@ -615,7 +759,16 @@ class ArchitecturalSmellDetector:
                 not any(excluded in node.lower() for excluded in excluded_modules)):
                 self.add_smell(
                     name="Orphan Module",
-                    description=f"'{node}' is isolated from other modules",
+                    description=self._template_renderer.render(
+                        "architectural_file_level",
+                        ArchitecturalFileLevelPayload(
+                            type="Architectural",
+                            name="Orphan Module",
+                            description=f"'{node}' is isolated from other modules",
+                            file_path=self.file_paths.get(node, "Unknown"),
+                            severity='medium'
+                        )
+                    ),
                     file_path=self.file_paths.get(node, "Unknown"),
                     module_class=node,
                     severity='medium'
@@ -666,11 +819,23 @@ class ArchitecturalSmellDetector:
             severity = 'high' if len(cycle) >= cycle_high_size and strength >= cycle_high_strength else 'medium'
             
             cycle_str = ' -> '.join(cycle + [cycle[0]])
-            self.add_smell(
+            payload = ArchitecturalMultiFilePayload(
+                type="Architectural",
                 name="Cyclic Dependency",
                 description=(
                     f"Strong cyclic dependency detected: {cycle_str}\n"
                     f"Cycle strength: {strength} mutual dependencies"
+                ),
+                files=[self.file_paths.get(name, name) for name in cycle],
+                severity=severity
+            )
+            self.add_smell(
+                name="Cyclic Dependency",
+                description=(
+                    self._template_renderer.render(
+                        "architectural_multi_file",
+                        payload
+                    )
                 ),
                 file_path=self.file_paths.get(cycle[0], "Unknown"),
                 module_class=cycle[0],
@@ -731,13 +896,35 @@ class ArchitecturalSmellDetector:
 
                     outgoing_detail = _format_instances(outgoing_instances) or "None"
                     incoming_detail = _format_instances(incoming_instances) or "None"
-                    self.add_smell(
+                    instance_lines = [
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in outgoing_instances + incoming_instances
+                    ]
+                    payload = ArchitecturalFileLevelLineSpansPayload(
+                        type="Architectural",
                         name="Unstable Dependency",
                         description=(
                             f"Module '{node}' has high instability ({instability:.2f}) "
                             f"with {out_degree} outgoing and {in_degree} incoming dependencies\n"
                             f"Outgoing dependency instances: {outgoing_detail}\n"
                             f"Incoming dependency instances: {incoming_detail}"
+                        ),
+                        file_path=self.file_paths.get(node, "Unknown"),
+                        start_line_number=None,
+                        end_line_number=None,
+                        instance_lines=instance_lines,
+                        severity='medium'
+                    )
+                    self.add_smell(
+                        name="Unstable Dependency",
+                        description=(
+                            self._template_renderer.render(
+                                "architectural_file_level_line_spans",
+                                payload
+                            )
                         ),
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node

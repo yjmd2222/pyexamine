@@ -6,6 +6,29 @@ from dataclasses import dataclass
 import yaml
 import logging
 from .exceptions import CodeAnalysisError
+from .smell_templates import (
+    FileInstanceLines,
+    LineSpan,
+    StructuralClassLevelLineSpansPayload,
+    StructuralClassLevelPayload,
+    StructuralClassMethodPayload,
+    StructuralClassOnlyPayload,
+    StructuralFileLevelConnectedPayload,
+    StructuralFileLevelLineSpansPayload,
+    StructuralFileLevelPayload,
+    StructuralProjectLevelPayload,
+    TemplateRenderer,
+    render_file_level_without_line_spans,
+    render_structural_class_level,
+    render_structural_class_level_line_spans,
+    render_structural_class_method,
+    render_structural_class_only,
+    render_structural_file_level,
+    render_structural_file_level_connected,
+    render_structural_file_level_line_spans,
+    render_structural_project_level,
+    FileLevelWithoutLineSpansPayload,
+)
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -32,6 +55,34 @@ class StructuralSmell:
     end_line_number: int
     severity: str
 
+class StructuralSmellRecorder:
+    def __init__(self, structural_smells):
+        self._structural_smells = structural_smells
+
+    def add_smell(self, name, description, file_path, module_class=None, start_line_number=None,
+                  end_line_number=None, severity='medium'):
+        """
+        Add a detected structural smell to the list.
+        
+        Args:
+            name (str): The name of the smell
+            description (str): Description of the smell
+            file_path (str): Path to the file containing the smell
+            module_class (str): The module or class containing the smell
+            start_line_number (int, optional): The start line number where the smell was detected
+            end_line_number (int, optional): The ending line number (+1 for slicing)
+            severity (str, optional): The severity level of the smell (default: 'medium')
+        """
+        self._structural_smells.append(StructuralSmell(
+            name=name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=severity
+        ))
+
 class StructuralSmellDetector:
     """
     A class to detect structural smells in Python code.
@@ -57,6 +108,19 @@ class StructuralSmellDetector:
             config (dict or str): Either a dictionary of thresholds or a path to a YAML config file.
         """
         self.structural_smells = []
+        self._smell_recorder = StructuralSmellRecorder(self.structural_smells)
+        self.add_smell = self._smell_recorder.add_smell
+        self._template_renderer = TemplateRenderer({
+            "file_level_without_line_spans": render_file_level_without_line_spans,
+            "structural_class_method": render_structural_class_method,
+            "structural_class_level": render_structural_class_level,
+            "structural_class_level_line_spans": render_structural_class_level_line_spans,
+            "structural_file_level": render_structural_file_level,
+            "structural_class_only": render_structural_class_only,
+            "structural_file_level_connected": render_structural_file_level_connected,
+            "structural_file_level_line_spans": render_structural_file_level_line_spans,
+            "structural_project_level": render_structural_project_level,
+        })
         self.class_info = defaultdict(dict)
         self.module_info = defaultdict(dict)
         self.module_classes = defaultdict(set)
@@ -311,29 +375,6 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         "end_line_number": call_end + 1
                     })
 
-    def add_smell(self, name, description, file_path, module_class=None, start_line_number=None,
-                  end_line_number=None, severity='medium'):
-        """
-        Add a detected structural smell to the list.
-        
-        Args:
-            name (str): The name of the smell
-            description (str): Description of the smell
-            file_path (str): Path to the file containing the smell
-            module_class (str): The module or class containing the smell
-            start_line_number (int, optional): The start line number where the smell was detected
-            end_line_number (int, optional): The ending line number (+1 for slicing)
-            severity (str, optional): The severity level of the smell (default: 'medium')
-        """
-        self.structural_smells.append(StructuralSmell(
-            name=name,
-            description=description,
-            file_path=file_path,
-            module_class=module_class,
-            start_line_number=start_line_number,
-            end_line_number=end_line_number,
-            severity=severity
-        ))
 
     def detect_nom(self):
         """
@@ -356,9 +397,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             nom = len(regular_methods)
             if nom > threshold:
                 severity = 'High' if nom > threshold * 1.5 else 'Medium'
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="High Number of Methods (NOM)",
                     description=f"Class '{class_name}' has {nom} methods (excluding special methods and properties)",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Number of Methods (NOM)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -409,9 +463,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     f"{d['name']} (lines {d['start_line_number']}-{d['end_line_number']})"
                     for d in complex_method_entries
                 )
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="High Weighted Methods per Class (WMPC)",
                     description=f"Class '{class_name}' has complex methods (WMPC1: {wmpc1}, WMPC2: {wmpc2}): {method_ranges}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Weighted Methods per Class (WMPC)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -443,9 +510,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             size2 = len(significant_methods) + len(significant_fields)
             if size2 > self.thresholds['SIZE2_THRESHOLD']:
                 severity = 'High' if size2 > self.thresholds['SIZE2_THRESHOLD'] * 1.5 else 'Medium'
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="Large Class (SIZE2)",
                     description=f"Class '{class_name}' has {size2} significant members (methods: {len(significant_methods)}, fields: {len(significant_fields)})",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="Large Class (SIZE2)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -484,9 +564,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             wac = len(significant_fields)
             if wac > self.thresholds['WAC_THRESHOLD']:
                 severity = 'High' if wac > self.thresholds['WAC_THRESHOLD'] * 1.5 else 'Medium'
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="High Weight of a Class (WAC)",
                     description=f"Class '{class_name}' has {wac} significant attributes (excluding constants and unused private fields)",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Weight of a Class (WAC)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -540,9 +633,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             lcom = max(0, non_cohesive_pairs - cohesive_pairs)
             if lcom > self.thresholds['LCOM_THRESHOLD']:
                 severity = 'High' if lcom > self.thresholds['LCOM_THRESHOLD'] * 1.5 else 'Medium'
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="High Lack of Cohesion of Methods (LCOM)",
                     description=f"Class '{class_name}' has LCOM of {lcom} (non-cohesive: {non_cohesive_pairs}, cohesive: {cohesive_pairs})",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Lack of Cohesion of Methods (LCOM)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -649,11 +755,24 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         for entry in external_instances
                     ) or "None"
                 )
-                self.add_smell(
+                payload = StructuralClassLevelPayload(
+                    type="Structural",
                     name="High Response for a Class (RFC)",
                     description=f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})\n"
                     f"Method instances: {method_detail}\n"
                     f"External call instances: {instances_detail}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Response for a Class (RFC)",
+                    description=self._template_renderer.render(
+                        "structural_class_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -711,9 +830,19 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             
             if count > adjusted_threshold:
                 severity = 'High' if count > adjusted_threshold * 1.5 else 'Medium'
-                self.add_smell(
+                payload = StructuralFileLevelPayload(
+                    type="Structural",
                     name="High Number of Classes (NOCC)",
                     description=f"Module '{module_name}' has {count} significant classes (avg complexity: {avg_weight:.1f})",
+                    file_path=self.file_paths.get(module_name, "Unknown"),
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Number of Classes (NOCC)",
+                    description=self._template_renderer.render(
+                        "structural_file_level",
+                        payload
+                    ),
                     file_path=self.file_paths.get(module_name, "Unknown"),
                     module_class=module_name,
                     severity=severity
@@ -766,9 +895,20 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     if dit > self.thresholds['DIT_THRESHOLD']:
                         severity = 'High' if dit > self.thresholds['DIT_THRESHOLD'] * 1.5 else 'Medium'
                         inheritance_path = '->'.join(nx.shortest_path(inheritance_graph, 'object', class_name))
-                        self.add_smell(
+                        payload = StructuralClassOnlyPayload(
+                            type="Structural",
                             name="Deep Inheritance Tree (DIT)",
                             description=f"Class '{class_name}' has DIT of {dit}\nInheritance path: {inheritance_path}",
+                            file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                            class_name=class_name,
+                            severity=severity
+                        )
+                        self.add_smell(
+                            name="Deep Inheritance Tree (DIT)",
+                            description=self._template_renderer.render(
+                                "structural_class_only",
+                                payload
+                            ),
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             module_class=class_name,
                             severity=severity
@@ -861,11 +1001,21 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 
                 if effective_loc > adjusted_threshold:
                     severity = 'High' if effective_loc > adjusted_threshold * 1.5 else 'Medium'
-                    self.add_smell(
+                    payload = StructuralFileLevelPayload(
+                        type="Structural",
                         name="High Lines of Code (LOC)",
                         description=f"Module '{module_name}' has {effective_loc} effective code lines\n"
                         f"(Total: {len(lines)}, Code: {code_lines}, Doc: {doc_lines}, "
                         f"Import: {import_lines}, Blank: {blank_lines})",
+                        file_path=file_path,
+                        severity=severity
+                    )
+                    self.add_smell(
+                        name="High Lines of Code (LOC)",
+                        description=self._template_renderer.render(
+                            "structural_file_level",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=module_name,
                         severity=severity
@@ -939,13 +1089,34 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         for entry in internal_instances
                     ) or "None"
                 )
-                self.add_smell(
+                combined_instances = [
+                    LineSpan(
+                        start_line_number=entry["start_line_number"],
+                        end_line_number=entry["end_line_number"]
+                    )
+                    for entry in external_instances + internal_instances
+                ]
+                payload = StructuralClassLevelLineSpansPayload(
+                    type="Structural",
                     name="High Message Passing Coupling (MPC)",
                     description=f"Class '{class_name}' has weighted MPC of {weighted_mpc:.1f}\n"
                     f"(External calls: {external_mpc}, Internal calls: {internal_mpc})\n"
                     f"Most frequent external calls: {dict(sorted(method_calls.items(), key=lambda x: x[1], reverse=True)[:3])}\n"
                     f"External call instances: {instances_detail}\n"
                     f"Internal call instances: {internal_detail}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    instance_lines=combined_instances,
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Message Passing Coupling (MPC)",
+                    description=self._template_renderer.render(
+                        "structural_class_level_line_spans",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -1033,13 +1204,34 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
                     for d in indirect_instances
                 )
-                self.add_smell(
+                combined_instances = [
+                    LineSpan(
+                        start_line_number=entry["start_line_number"],
+                        end_line_number=entry["end_line_number"]
+                    )
+                    for entry in direct_instances + indirect_instances
+                ]
+                payload = StructuralClassLevelLineSpansPayload(
+                    type="Structural",
                     name="High Coupling Between Object Classes (CBO)",
                     description=f"Class '{class_name}' has weighted CBO of {weighted_cbo:.1f}\n"
                     f"Direct coupling: {direct_cbo} classes\n"
                     f"Indirect coupling: {indirect_cbo} classes\n"
                     f"Direct coupling instances: {direct_detail or 'None'}\n"
                     f"Indirect coupling instances: {indirect_detail or 'None'}",
+                    file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                    class_name=class_name,
+                    start_line_number=info.get("start_line_number"),
+                    end_line_number=info.get("end_line_number"),
+                    instance_lines=combined_instances,
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Coupling Between Object Classes (CBO)",
+                    description=self._template_renderer.render(
+                        "structural_class_level_line_spans",
+                        payload
+                    ),
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -1161,7 +1353,8 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         
         if weighted_noc > adjusted_threshold:
             severity = 'High' if weighted_noc > adjusted_threshold * 1.5 else 'Medium'
-            self.add_smell(
+            payload = StructuralProjectLevelPayload(
+                type="Structural",
                 name="High Number of Classes (NOC)",
                 description=f"Project has {weighted_noc:.1f} weighted classes:\n"
                 f"- Regular classes: {len(regular_classes)}\n"
@@ -1169,6 +1362,14 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 f"- Utility classes: {len(utility_classes)}\n"
                 f"- Test classes: {len(test_classes)} (not counted in weighted total)\n"
                 f"Adjusted threshold: {adjusted_threshold}",
+                severity=severity
+            )
+            self.add_smell(
+                name="High Number of Classes (NOC)",
+                description=self._template_renderer.render(
+                    "structural_project_level",
+                    payload
+                ),
                 file_path=self.project_root,
                 severity=severity
             )
@@ -1265,9 +1466,23 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 
                 if complexity > threshold:
                     severity = 'High' if complexity > threshold * 1.5 else 'Medium'
-                    self.add_smell(
+                    payload = StructuralClassMethodPayload(
+                        type="Structural",
                         name="High Cyclomatic Complexity",
                         description=f"Method '{method.name}' has cyclomatic complexity of {complexity}",
+                        file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                        class_name=class_name,
+                        method_function=method.name,
+                        start_line_number=method.lineno,
+                        end_line_number=method.end_lineno + 1,
+                        severity=severity
+                    )
+                    self.add_smell(
+                        name="High Cyclomatic Complexity",
+                        description=self._template_renderer.render(
+                            "structural_class_method",
+                            payload
+                        ),
                         file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         module_class=class_name,
                         start_line_number=method.lineno,
@@ -1345,10 +1560,29 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
                     for d in instance_lines
                 )
-                self.add_smell(
+                payload = StructuralFileLevelLineSpansPayload(
+                    type="Structural",
                     name="High Fan-out",
                     description=f"Module '{module}' has {significant_deps} significant outgoing dependencies\n"
                     f"Outgoing dependency instances: {instance_detail or 'None'}",
+                    file_path=self.file_paths.get(module, "Unknown"),
+                    start_line_number=None,
+                    end_line_number=None,
+                    instance_lines=[
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                        for entry in instance_lines
+                    ],
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Fan-out",
+                    description=self._template_renderer.render(
+                        "structural_file_level_line_spans",
+                        payload
+                    ),
                     file_path=self.file_paths.get(module, "Unknown"),
                     module_class=module,
                     severity=severity
@@ -1383,10 +1617,32 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
                     for d in instance_lines
                 )
-                self.add_smell(
+                grouped = defaultdict(list)
+                for entry in instance_lines:
+                    grouped[entry["name"]].append(
+                        LineSpan(
+                            start_line_number=entry["start_line_number"],
+                            end_line_number=entry["end_line_number"]
+                        )
+                    )
+                payload = StructuralFileLevelConnectedPayload(
+                    type="Structural",
                     name="High Fan-in",
                     description=f"Module '{module}' has {fanin} incoming dependencies\n"
                     f"Incoming dependency instances: {instance_detail or 'None'}",
+                    file_path=self.file_paths.get(module, "Unknown"),
+                    files=[
+                        FileInstanceLines(name=name, instance_lines=lines)
+                        for name, lines in grouped.items()
+                    ],
+                    severity=severity
+                )
+                self.add_smell(
+                    name="High Fan-in",
+                    description=self._template_renderer.render(
+                        "structural_file_level_connected",
+                        payload
+                    ),
                     file_path=self.file_paths.get(module, "Unknown"),
                     module_class=module,
                     severity=severity
@@ -1436,9 +1692,19 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 threshold = self.thresholds.get('MAX_FILE_LENGTH', 250)
                 if meaningful_lines > threshold:
                     severity = 'High' if meaningful_lines > threshold * 1.5 else 'Medium'
-                    self.add_smell(
+                    payload = StructuralFileLevelPayload(
+                        type="Structural",
                         name="Long File",
                         description=f"File '{module_name}' has {meaningful_lines} meaningful lines of code",
+                        file_path=file_path,
+                        severity=severity
+                    )
+                    self.add_smell(
+                        name="Long File",
+                        description=self._template_renderer.render(
+                            "structural_file_level",
+                            payload
+                        ),
                         file_path=file_path,
                         module_class=module_name,
                         severity=severity
@@ -1470,10 +1736,24 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 if (branch_info['count'] > threshold or 
                     branch_info['max_nesting'] > max_nesting_threshold):
                     severity = 'High' if branch_info['count'] > threshold * 1.5 else 'Medium'
+                    payload = StructuralClassMethodPayload(
+                        type="Structural",
+                        name="Too Many Branches",
+                        description=f"Method '{method.name}' has {branch_info['count']} branches "
+                        f"with max nesting of {branch_info['max_nesting']}",
+                        file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                        class_name=class_name,
+                        method_function=method.name,
+                        start_line_number=method.lineno,
+                        end_line_number=method.end_lineno + 1,
+                        severity=severity
+                    )
                     self.add_smell(
                         "Too Many Branches",
-                        f"Method '{method.name}' has {branch_info['count']} branches "
-                        f"with max nesting of {branch_info['max_nesting']}",
+                        self._template_renderer.render(
+                            "structural_class_method",
+                            payload
+                        ),
                         self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         class_name,
                         start_line_number=method.lineno,
