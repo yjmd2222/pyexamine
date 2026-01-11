@@ -3,6 +3,7 @@ import argparse
 import csv
 import json
 import logging
+from dataclasses import asdict, is_dataclass
 from .code_smell_detector import CodeSmellDetector
 from .architectural_smell_detector import ArchitecturalSmellDetector
 from .structural_smell_detector import StructuralSmellDetector
@@ -428,45 +429,40 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
     """
     all_smells_data = []
 
+    def _format_payload(payload):
+        if payload is None:
+            return None
+        if is_dataclass(payload):
+            return asdict(payload)
+        return payload
+
+    def _payload_entry(smell):
+        payload = _format_payload(getattr(smell, 'payload', None))
+        if isinstance(payload, dict):
+            return payload
+        return {
+            'Type': 'Unknown',
+            'Name': smell.name,
+            'Description': smell.description,
+            'File': smell.file_path,
+            'Module/Class': smell.module_class,
+            'Start Line Number': smell.start_line_number,
+            'End Line Number': smell.end_line_number,
+            'Severity': smell.severity
+        }
+
     with open(json_file, 'w', newline='') as jsonfile:
         # Write structural smells
         for smell in structural_smells:
-            all_smells_data.append({
-                'Type': 'Structural',
-                'Name': smell.name,
-                'Description': smell.description,
-                'File': smell.file_path,
-                'Module/Class': smell.module_class,
-                'Start Line Number': smell.start_line_number,
-                'End Line Number': smell.end_line_number,
-                'Severity': smell.severity
-            })
+            all_smells_data.append(_payload_entry(smell))
 
         # Write code smells
         for smell in code_smells:
-            all_smells_data.append({
-                'Type': 'Code',
-                'Name': smell.name,
-                'Description': smell.description,
-                'File': smell.file_path,
-                'Module/Class': smell.module_class,
-                'Start Line Number': smell.start_line_number,
-                'End Line Number': smell.end_line_number,
-                'Severity': smell.severity
-            })
+            all_smells_data.append(_payload_entry(smell))
 
         # Write architectural smells
         for smell in architectural_smells:
-            all_smells_data.append({
-                'Type': 'Architectural',
-                'Name': smell.name,
-                'Description': smell.description,
-                'File': smell.file_path,
-                'Module/Class': smell.module_class,
-                'Start Line Number': smell.start_line_number,
-                'End Line Number': smell.end_line_number,
-                'Severity': smell.severity
-            })
+            all_smells_data.append(_payload_entry(smell))
         json.dump(all_smells_data, jsonfile, indent=4)
 
     logger.info(f"JSON report generated and saved to {json_file}")

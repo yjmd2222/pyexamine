@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from itertools import combinations, product
 import re
 import logging
+from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
     FileClassLineSpansPayload,
@@ -47,10 +48,13 @@ class CodeSmell:
     start_line_number: int
     end_line_number: int
     severity: str
+    template_id: Optional[str] = None
+    payload: Optional[Any] = None
 
 class CodeSmellRecorder:
-    def __init__(self, code_smells):
+    def __init__(self, code_smells, template_renderer):
         self._code_smells = code_smells
+        self._template_renderer = template_renderer
 
     def add_smell(self, name, description, file_path, module_class, start_line_number=None,
                   end_line_number=None, severity='medium'):
@@ -76,6 +80,22 @@ class CodeSmellRecorder:
             severity=severity
         ))
 
+    def record_smell(self, template_id, payload, file_path, module_class, start_line_number=None,
+                     end_line_number=None, severity=None):
+        description = self._template_renderer.render(template_id, payload)
+        resolved_severity = severity or getattr(payload, "severity", "medium")
+        self._code_smells.append(CodeSmell(
+            name=payload.name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=resolved_severity,
+            template_id=template_id,
+            payload=payload
+        ))
+
 class CodeSmellDetector:
     """
     A class to detect various code smells in Python source code.
@@ -97,8 +117,6 @@ class CodeSmellDetector:
             thresholds (dict): A dictionary of threshold values for various code smell detections.
         """
         self.code_smells = []
-        self._smell_recorder = CodeSmellRecorder(self.code_smells)
-        self.add_smell = self._smell_recorder.add_smell
         self._template_renderer = TemplateRenderer({
             "flat_function_level": render_flat_function_level,
             "flat_method_function": render_flat_method_function,
@@ -112,6 +130,8 @@ class CodeSmellDetector:
             "flat_class_level": render_flat_class_level,
             "file_level_without_line_spans": render_file_level_without_line_spans,
         })
+        self._smell_recorder = CodeSmellRecorder(self.code_smells, self._template_renderer)
+        self.add_smell = self._smell_recorder.add_smell
         self.thresholds = thresholds
 
     def detect_smells(self, file_path):
@@ -240,12 +260,9 @@ class CodeSmellDetector:
                     end_line_number=node.tolineno + 1,
                     severity="medium"
                 )
-                self.add_smell(
-                    name="Long Method",
-                    description=self._template_renderer.render(
-                        "flat_method_function",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "flat_method_function",
+                    payload,
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -308,12 +325,9 @@ class CodeSmellDetector:
                         end_line_number=node.tolineno + 1,
                         severity="medium"
                     )
-                    self.add_smell(
-                        name="Large Class",
-                        description=self._template_renderer.render(
-                            "flat_class_level",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "flat_class_level",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -359,12 +373,9 @@ class CodeSmellDetector:
                     end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
-                self.add_smell(
-                    name="Primitive Obsession",
-                    description=self._template_renderer.render(
-                        "flat_method_function",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "flat_method_function",
+                    payload,
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -417,12 +428,9 @@ class CodeSmellDetector:
                     end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
-                self.add_smell(
-                    name="Long Parameter List",
-                    description=self._template_renderer.render(
-                        "flat_method_function",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "flat_method_function",
+                    payload,
                     file_path=file_path,
                     module_class=node.name,
                     start_line_number=node.lineno,
@@ -501,12 +509,9 @@ class CodeSmellDetector:
                     ],
                     severity='medium'
                 )
-                self.add_smell(
-                    name="Data Clumps",
-                    description=self._template_renderer.render(
-                        "file_level_method_function_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "file_level_method_function_line_spans",
+                    payload,
                     file_path=file_path,
                     module_class=', '.join(d["name"] for d in functions),
                     severity='medium'
@@ -552,12 +557,9 @@ class CodeSmellDetector:
                     end_line_number=node.tolineno + 1,
                     severity='medium'
                 )
-                self.add_smell(
-                    name="Switch Statements",
-                    description=self._template_renderer.render(
-                        "flat_statement",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "flat_statement",
+                    payload,
                     file_path=file_path,
                     module_class=None,
                     start_line_number=node.lineno,
@@ -628,12 +630,9 @@ class CodeSmellDetector:
                         end_line_number=node.tolineno + 1,
                         severity='low'
                     )
-                    self.add_smell(
-                        name="Temporary Field",
-                        description=self._template_renderer.render(
-                            "flat_class_level",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "flat_class_level",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -715,12 +714,9 @@ class CodeSmellDetector:
                         ],
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Alternative Classes with Different Interfaces",
-                        description=self._template_renderer.render(
-                            "file_multiple_classes",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_multiple_classes",
+                        payload,
                         file_path=file_path,
                         module_class=', '.join(class_names),
                         severity='medium'
@@ -806,12 +802,9 @@ class CodeSmellDetector:
                         ],
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Potential Divergent Change",
-                        description=self._template_renderer.render(
-                            "file_class_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_class_line_spans",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -901,12 +894,9 @@ class CodeSmellDetector:
                     ],
                     severity='high'
                 )
-                self.add_smell(
-                    name="Parallel Inheritance Hierarchies",
-                    description=self._template_renderer.render(
-                        "file_multiple_classes",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "file_multiple_classes",
+                    payload,
                     file_path=file_path,
                     module_class=None,
                     severity='high'
@@ -955,12 +945,9 @@ class CodeSmellDetector:
                     ],
                     severity='high'
                 )
-                self.add_smell(
-                    name="Potential Shotgun Surgery",
-                    description=self._template_renderer.render(
-                        "file_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "file_line_spans",
+                    payload,
                     file_path=file_path,
                     module_class=method,
                     severity='high'
@@ -1010,12 +997,9 @@ class CodeSmellDetector:
                 file_path=file_path,
                 severity='low'
             )
-            self.add_smell(
-                name="Excessive Comments",
-                description=self._template_renderer.render(
-                    "file_level_without_line_spans",
-                    payload
-                ),
+            self._smell_recorder.record_smell(
+                "file_level_without_line_spans",
+                payload,
                 file_path=file_path,
                 module_class=None,
                 severity='low'
@@ -1072,12 +1056,9 @@ class CodeSmellDetector:
                     ],
                     severity='high'
                 )
-                self.add_smell(
-                    name="Duplicate Code",
-                    description=self._template_renderer.render(
-                        "file_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "file_line_spans",
+                    payload,
                     file_path=file_path,
                     module_class=', '.join(d["name"] for d in functions),
                     severity='high'
@@ -1148,12 +1129,9 @@ class CodeSmellDetector:
                         instance_lines=instance_lines,
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Data Class",
-                        description=self._template_renderer.render(
-                            "file_class_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_class_line_spans",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1235,12 +1213,9 @@ class CodeSmellDetector:
                     end_line_number=d["end_line_number"],
                     severity='low'
                 )
-                self.add_smell(
-                    name="Dead Code",
-                    description=self._template_renderer.render(
-                        "flat_function_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "flat_function_level",
+                    payload,
                     file_path=file_path,
                     module_class=d["name"],
                     start_line_number=d["start_line_number"],
@@ -1283,12 +1258,9 @@ class CodeSmellDetector:
                         end_line_number=node.tolineno + 1,
                         severity='low'
                     )
-                    self.add_smell(
-                        name="Lazy Class",
-                        description=self._template_renderer.render(
-                            "flat_class_level",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "flat_class_level",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1365,12 +1337,9 @@ class CodeSmellDetector:
                         severity='medium'
                     )
                     
-                    self.add_smell(
-                        name="Speculative Generality",
-                        description=self._template_renderer.render(
-                            "file_class_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_class_line_spans",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1465,12 +1434,9 @@ class CodeSmellDetector:
                         ],
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Feature Envy",
-                        description=self._template_renderer.render(
-                            "file_function_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_function_line_spans",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,
@@ -1610,12 +1576,9 @@ class CodeSmellDetector:
                             ],
                             severity='medium'
                         )
-                        self.add_smell(
-                            name="Inappropriate Intimacy",
-                            description=self._template_renderer.render(
-                                "file_class_line_spans",
-                                payload
-                            ),
+                        self._smell_recorder.record_smell(
+                            "file_class_line_spans",
+                            payload,
                             file_path=file_path,
                             module_class=class_name,
                             start_line_number=class_ranges[class_name][0],
@@ -1702,12 +1665,9 @@ class CodeSmellDetector:
                 end_line_number=node.tolineno + 1,
                 severity='medium'
             )
-            self.add_smell(
-                name="Message Chains",
-                description=self._template_renderer.render(
-                    "flat_chain",
-                    payload
-                ),
+            self._smell_recorder.record_smell(
+                "flat_chain",
+                payload,
                 file_path=file_path,
                 module_class=context,
                 start_line_number=node.lineno,
@@ -1788,12 +1748,9 @@ class CodeSmellDetector:
                         instance_lines=instance_lines,
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Middle Man",
-                        description=self._template_renderer.render(
-                            "file_class_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "file_class_line_spans",
+                        payload,
                         file_path=file_path,
                         module_class=node.name,
                         start_line_number=node.lineno,

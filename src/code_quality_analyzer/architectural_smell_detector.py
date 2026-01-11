@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import sys
 import importlib.util
 import logging
+from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
     ArchitecturalFileLevelConnectedPayload,
@@ -38,10 +39,13 @@ class ArchitecturalSmell:
     start_line_number: int
     end_line_number: int
     severity: str
+    template_id: Optional[str] = None
+    payload: Optional[Any] = None
 
 class ArchitecturalSmellRecorder:
-    def __init__(self, architectural_smells):
+    def __init__(self, architectural_smells, template_renderer):
         self._architectural_smells = architectural_smells
+        self._template_renderer = template_renderer
 
     def add_smell(self, name, description, file_path, module_class, start_line_number=None,
                   end_line_number=None, severity='medium'):
@@ -67,6 +71,21 @@ class ArchitecturalSmellRecorder:
             severity=severity
         ))
 
+    def record_smell(self, template_id, payload, file_path, module_class, start_line_number=None,
+                     end_line_number=None, severity=None):
+        description = self._template_renderer.render(template_id, payload)
+        resolved_severity = severity or getattr(payload, "severity", "medium")
+        self._architectural_smells.append(ArchitecturalSmell(
+            name=payload.name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=resolved_severity,
+            template_id=template_id,
+            payload=payload
+        ))
 class ArchitecturalSmellDetector:
     """
     A class to detect architectural smells in Python projects.
@@ -93,8 +112,6 @@ class ArchitecturalSmellDetector:
             thresholds (dict): A dictionary of threshold values for various smell detections.
         """
         self.architectural_smells = []
-        self._smell_recorder = ArchitecturalSmellRecorder(self.architectural_smells)
-        self.add_smell = self._smell_recorder.add_smell
         self._template_renderer = TemplateRenderer({
             "architectural_file_level_connected": render_architectural_file_level_connected,
             "architectural_function_level_connected": render_architectural_function_level_connected,
@@ -103,6 +120,8 @@ class ArchitecturalSmellDetector:
             "architectural_file_level": render_architectural_file_level,
             "architectural_multi_file": render_architectural_multi_file,
         })
+        self._smell_recorder = ArchitecturalSmellRecorder(self.architectural_smells, self._template_renderer)
+        self.add_smell = self._smell_recorder.add_smell
         self.module_dependencies = nx.DiGraph()
         self.module_functions = defaultdict(set)
         self.api_usage = defaultdict(list)
@@ -452,12 +471,9 @@ class ArchitecturalSmellDetector:
                         ],
                         severity='high' if total_connections > min_connections * 2 else 'medium'
                     )
-                    self.add_smell(
-                        name="Hub-like Dependency",
-                        description=self._template_renderer.render(
-                            "architectural_file_level_connected",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "architectural_file_level_connected",
+                        payload,
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node,
                         severity='high' if total_connections > min_connections * 2 else 'medium'
@@ -514,12 +530,9 @@ class ArchitecturalSmellDetector:
                     files=files,
                     severity='medium'
                 )
-                self.add_smell(
-                    name="Scattered Functionality",
-                    description=self._template_renderer.render(
-                        "architectural_function_level_connected",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "architectural_function_level_connected",
+                    payload,
                     file_path=self.file_paths.get(modules[0], "Unknown"),
                     module_class=modules[0]
                 )
@@ -597,12 +610,9 @@ class ArchitecturalSmellDetector:
                                 ],
                                 severity='medium'
                             )
-                            self.add_smell(
-                                name="Potential Redundant Abstractions",
-                                description=self._template_renderer.render(
-                                    "architectural_files",
-                                    payload
-                                ),
+                            self._smell_recorder.record_smell(
+                                "architectural_files",
+                                payload,
                                 file_path=self.file_paths.get(modules[i], "Unknown"),
                                 module_class=modules[i]
                             )
@@ -661,14 +671,9 @@ class ArchitecturalSmellDetector:
                     instance_lines=instance_lines,
                     severity='medium'
                 )
-                self.add_smell(
-                    name="God Object",
-                    description=(
-                        self._template_renderer.render(
-                            "architectural_file_level_line_spans",
-                            payload
-                        )
-                    ),
+                self._smell_recorder.record_smell(
+                    "architectural_file_level_line_spans",
+                    payload,
                     file_path=self.file_paths.get(self.class_modules.get(class_key, ""), "Unknown"),
                     module_class=class_key,
                     start_line_number=class_start,
@@ -731,12 +736,9 @@ class ArchitecturalSmellDetector:
                         instance_lines=instance_lines,
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Potential Improper API Usage",
-                        description=self._template_renderer.render(
-                            "architectural_file_level_line_spans",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "architectural_file_level_line_spans",
+                        payload,
                         file_path=self.file_paths.get(module, "Unknown"),
                         module_class=module
                     )
@@ -757,21 +759,18 @@ class ArchitecturalSmellDetector:
             if (self.module_dependencies.in_degree(node) + self.module_dependencies.out_degree(node) == 0 and
                 module_name not in excluded_modules and
                 not any(excluded in node.lower() for excluded in excluded_modules)):
-                self.add_smell(
+                payload = ArchitecturalFileLevelPayload(
+                    type="Architectural",
                     name="Orphan Module",
-                    description=self._template_renderer.render(
-                        "architectural_file_level",
-                        ArchitecturalFileLevelPayload(
-                            type="Architectural",
-                            name="Orphan Module",
-                            description=f"'{node}' is isolated from other modules",
-                            file_path=self.file_paths.get(node, "Unknown"),
-                            severity='medium'
-                        )
-                    ),
+                    description=f"'{node}' is isolated from other modules",
                     file_path=self.file_paths.get(node, "Unknown"),
-                    module_class=node,
                     severity='medium'
+                )
+                self._smell_recorder.record_smell(
+                    "architectural_file_level",
+                    payload,
+                    file_path=self.file_paths.get(node, "Unknown"),
+                    module_class=node
                 )
 
     def detect_cyclic_dependencies(self):
@@ -829,14 +828,9 @@ class ArchitecturalSmellDetector:
                 files=[self.file_paths.get(name, name) for name in cycle],
                 severity=severity
             )
-            self.add_smell(
-                name="Cyclic Dependency",
-                description=(
-                    self._template_renderer.render(
-                        "architectural_multi_file",
-                        payload
-                    )
-                ),
+            self._smell_recorder.record_smell(
+                "architectural_multi_file",
+                payload,
                 file_path=self.file_paths.get(cycle[0], "Unknown"),
                 module_class=cycle[0],
                 severity=severity
@@ -918,14 +912,9 @@ class ArchitecturalSmellDetector:
                         instance_lines=instance_lines,
                         severity='medium'
                     )
-                    self.add_smell(
-                        name="Unstable Dependency",
-                        description=(
-                            self._template_renderer.render(
-                                "architectural_file_level_line_spans",
-                                payload
-                            )
-                        ),
+                    self._smell_recorder.record_smell(
+                        "architectural_file_level_line_spans",
+                        payload,
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node
                     )

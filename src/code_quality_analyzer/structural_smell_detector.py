@@ -5,6 +5,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 import yaml
 import logging
+from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
     FileInstanceLines,
@@ -54,10 +55,13 @@ class StructuralSmell:
     start_line_number: int
     end_line_number: int
     severity: str
+    template_id: Optional[str] = None
+    payload: Optional[Any] = None
 
 class StructuralSmellRecorder:
-    def __init__(self, structural_smells):
+    def __init__(self, structural_smells, template_renderer):
         self._structural_smells = structural_smells
+        self._template_renderer = template_renderer
 
     def add_smell(self, name, description, file_path, module_class=None, start_line_number=None,
                   end_line_number=None, severity='medium'):
@@ -83,6 +87,21 @@ class StructuralSmellRecorder:
             severity=severity
         ))
 
+    def record_smell(self, template_id, payload, file_path, module_class=None, start_line_number=None,
+                     end_line_number=None, severity=None):
+        description = self._template_renderer.render(template_id, payload)
+        resolved_severity = severity or getattr(payload, "severity", "medium")
+        self._structural_smells.append(StructuralSmell(
+            name=payload.name,
+            description=description,
+            file_path=file_path,
+            module_class=module_class,
+            start_line_number=start_line_number,
+            end_line_number=end_line_number,
+            severity=resolved_severity,
+            template_id=template_id,
+            payload=payload
+        ))
 class StructuralSmellDetector:
     """
     A class to detect structural smells in Python code.
@@ -108,8 +127,6 @@ class StructuralSmellDetector:
             config (dict or str): Either a dictionary of thresholds or a path to a YAML config file.
         """
         self.structural_smells = []
-        self._smell_recorder = StructuralSmellRecorder(self.structural_smells)
-        self.add_smell = self._smell_recorder.add_smell
         self._template_renderer = TemplateRenderer({
             "file_level_without_line_spans": render_file_level_without_line_spans,
             "structural_class_method": render_structural_class_method,
@@ -121,6 +138,8 @@ class StructuralSmellDetector:
             "structural_file_level_line_spans": render_structural_file_level_line_spans,
             "structural_project_level": render_structural_project_level,
         })
+        self._smell_recorder = StructuralSmellRecorder(self.structural_smells, self._template_renderer)
+        self.add_smell = self._smell_recorder.add_smell
         self.class_info = defaultdict(dict)
         self.module_info = defaultdict(dict)
         self.module_classes = defaultdict(set)
@@ -407,12 +426,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Number of Methods (NOM)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -473,12 +489,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Weighted Methods per Class (WMPC)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -520,12 +533,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="Large Class (SIZE2)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -574,12 +584,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Weight of a Class (WAC)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -643,12 +650,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Lack of Cohesion of Methods (LCOM)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -767,12 +771,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     end_line_number=info.get("end_line_number"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Response for a Class (RFC)",
-                    description=self._template_renderer.render(
-                        "structural_class_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -837,12 +838,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     file_path=self.file_paths.get(module_name, "Unknown"),
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Number of Classes (NOCC)",
-                    description=self._template_renderer.render(
-                        "structural_file_level",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_file_level",
+                    payload,
                     file_path=self.file_paths.get(module_name, "Unknown"),
                     module_class=module_name,
                     severity=severity
@@ -903,12 +901,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                             class_name=class_name,
                             severity=severity
                         )
-                        self.add_smell(
-                            name="Deep Inheritance Tree (DIT)",
-                            description=self._template_renderer.render(
-                                "structural_class_only",
-                                payload
-                            ),
+                        self._smell_recorder.record_smell(
+                            "structural_class_only",
+                            payload,
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             module_class=class_name,
                             severity=severity
@@ -1010,12 +1005,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         file_path=file_path,
                         severity=severity
                     )
-                    self.add_smell(
-                        name="High Lines of Code (LOC)",
-                        description=self._template_renderer.render(
-                            "structural_file_level",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "structural_file_level",
+                        payload,
                         file_path=file_path,
                         module_class=module_name,
                         severity=severity
@@ -1111,12 +1103,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     instance_lines=combined_instances,
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Message Passing Coupling (MPC)",
-                    description=self._template_renderer.render(
-                        "structural_class_level_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level_line_spans",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -1226,12 +1215,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     instance_lines=combined_instances,
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Coupling Between Object Classes (CBO)",
-                    description=self._template_renderer.render(
-                        "structural_class_level_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_class_level_line_spans",
+                    payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -1364,12 +1350,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 f"Adjusted threshold: {adjusted_threshold}",
                 severity=severity
             )
-            self.add_smell(
-                name="High Number of Classes (NOC)",
-                description=self._template_renderer.render(
-                    "structural_project_level",
-                    payload
-                ),
+            self._smell_recorder.record_smell(
+                "structural_project_level",
+                payload,
                 file_path=self.project_root,
                 severity=severity
             )
@@ -1477,12 +1460,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         end_line_number=method.end_lineno + 1,
                         severity=severity
                     )
-                    self.add_smell(
-                        name="High Cyclomatic Complexity",
-                        description=self._template_renderer.render(
-                            "structural_class_method",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "structural_class_method",
+                        payload,
                         file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                         module_class=class_name,
                         start_line_number=method.lineno,
@@ -1577,12 +1557,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     ],
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Fan-out",
-                    description=self._template_renderer.render(
-                        "structural_file_level_line_spans",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_file_level_line_spans",
+                    payload,
                     file_path=self.file_paths.get(module, "Unknown"),
                     module_class=module,
                     severity=severity
@@ -1637,12 +1614,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     ],
                     severity=severity
                 )
-                self.add_smell(
-                    name="High Fan-in",
-                    description=self._template_renderer.render(
-                        "structural_file_level_connected",
-                        payload
-                    ),
+                self._smell_recorder.record_smell(
+                    "structural_file_level_connected",
+                    payload,
                     file_path=self.file_paths.get(module, "Unknown"),
                     module_class=module,
                     severity=severity
@@ -1699,12 +1673,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         file_path=file_path,
                         severity=severity
                     )
-                    self.add_smell(
-                        name="Long File",
-                        description=self._template_renderer.render(
-                            "structural_file_level",
-                            payload
-                        ),
+                    self._smell_recorder.record_smell(
+                        "structural_file_level",
+                        payload,
                         file_path=file_path,
                         module_class=module_name,
                         severity=severity
@@ -1748,14 +1719,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         end_line_number=method.end_lineno + 1,
                         severity=severity
                     )
-                    self.add_smell(
-                        "Too Many Branches",
-                        self._template_renderer.render(
-                            "structural_class_method",
-                            payload
-                        ),
-                        self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
-                        class_name,
+                    self._smell_recorder.record_smell(
+                        "structural_class_method",
+                        payload,
+                        file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
+                        module_class=class_name,
                         start_line_number=method.lineno,
                         end_line_number=method.end_lineno + 1,
                         severity=severity
