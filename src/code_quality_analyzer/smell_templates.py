@@ -84,6 +84,16 @@ class FileLineSpansPayload:
 
 
 @dataclass
+class CodeFileLevelInstanceLinesPayload:
+    type: str
+    name: str
+    description: str
+    file_path: str
+    instance_lines: List[LineSpan]
+    severity: str
+
+
+@dataclass
 class FileLevelWithoutLineSpansPayload:
     type: str
     name: str
@@ -324,6 +334,10 @@ def render_flat_chain(payload: FlatChainPayload) -> str:
 
 
 def render_file_line_spans(payload: FileLineSpansPayload) -> str:
+    return payload.description
+
+
+def render_code_file_level_instance_lines(payload: CodeFileLevelInstanceLinesPayload) -> str:
     return payload.description
 
 

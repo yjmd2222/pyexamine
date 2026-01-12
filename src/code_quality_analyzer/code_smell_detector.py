@@ -9,6 +9,7 @@ import logging
 from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
+    CodeFileLevelInstanceLinesPayload,
     FileClassLineSpansPayload,
     FileFunctionLineSpansPayload,
     FileLevelMethodFunctionLineSpansPayload,
@@ -21,8 +22,8 @@ from .smell_templates import (
     FlatStatementPayload,
     LineSpan,
     NamedLineSpan,
-    StructuralFileLevelLineSpansPayload,
     TemplateRenderer,
+    render_code_file_level_instance_lines,
     render_file_class_line_spans,
     render_file_function_line_spans,
     render_file_level_method_function_line_spans,
@@ -33,7 +34,6 @@ from .smell_templates import (
     render_flat_function_level,
     render_flat_method_function,
     render_flat_statement,
-    render_structural_file_level_line_spans,
 )
 
 # Set up logger
@@ -128,7 +128,7 @@ class CodeSmellDetector:
             "file_function_line_spans": render_file_function_line_spans,
             "file_multiple_classes": render_file_multiple_classes,
             "flat_class_level": render_flat_class_level,
-            "structural_file_level_line_spans": render_structural_file_level_line_spans,
+            "code_file_level_instance_lines": render_code_file_level_instance_lines,
         })
         self._smell_recorder = CodeSmellRecorder(self.code_smells, self._template_renderer)
         self.add_smell = self._smell_recorder.add_smell
@@ -994,8 +994,8 @@ class CodeSmellDetector:
         
         if (comment_ratio > self.thresholds["EXCESSIVE_COMMENTS_RATIO"] and
             large_comment_blocks > self.thresholds["LARGE_COMMENT_BLOCKS"]):
-            payload = StructuralFileLevelLineSpansPayload(
-                type="Structural",
+            payload = CodeFileLevelInstanceLinesPayload(
+                type="Code",
                 name="Excessive Comments",
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
@@ -1003,7 +1003,7 @@ class CodeSmellDetector:
                 severity='low'
             )
             self._smell_recorder.record_smell(
-                "structural_file_level_line_spans",
+                "code_file_level_instance_lines",
                 payload,
                 file_path=file_path,
                 module_class=None,

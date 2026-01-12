@@ -946,15 +946,30 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     logger.warning(f"Could not read file {file_path} with any supported encoding")
                     continue
 
+                def _line_spans(line_numbers):
+                    if not line_numbers:
+                        return []
+                    spans = []
+                    start = prev = line_numbers[0]
+                    for line in line_numbers[1:]:
+                        if line == prev + 1:
+                            prev = line
+                            continue
+                        spans.append(LineSpan(start_line_number=start + 1, end_line_number=prev + 2))
+                        start = prev = line
+                    spans.append(LineSpan(start_line_number=start + 1, end_line_number=prev + 2))
+                    return spans
+
                 # Count different types of lines
                 lines = content.splitlines()
                 code_lines = 0
                 doc_lines = 0
                 import_lines = 0
                 blank_lines = 0
+                code_line_numbers = []
                 
                 in_docstring = False
-                for line in lines:
+                for i, line in enumerate(lines):
                     stripped = line.strip()
                     
                     # Skip blank lines
@@ -982,6 +997,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         continue
                         
                     code_lines += 1
+                    code_line_numbers.append(i)
                 
                 # Calculate effective LOC and complexity ratio
                 effective_loc = code_lines
@@ -996,17 +1012,18 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 
                 if effective_loc > adjusted_threshold:
                     severity = 'High' if effective_loc > adjusted_threshold * 1.5 else 'Medium'
-                    payload = StructuralFileLevelPayload(
+                    payload = StructuralFileLevelLineSpansPayload(
                         type="Structural",
                         name="High Lines of Code (LOC)",
                         description=f"Module '{module_name}' has {effective_loc} effective code lines\n"
                         f"(Total: {len(lines)}, Code: {code_lines}, Doc: {doc_lines}, "
                         f"Import: {import_lines}, Blank: {blank_lines})",
                         file_path=file_path,
+                        instance_lines=_line_spans(code_line_numbers),
                         severity=severity
                     )
                     self._smell_recorder.record_smell(
-                        "structural_file_level",
+                        "structural_file_level_line_spans",
                         payload,
                         file_path=file_path,
                         module_class=module_name,
@@ -1646,12 +1663,27 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     logger.warning(f"Could not read file {file_path} with any supported encoding")
                     continue
 
+                def _line_spans(line_numbers):
+                    if not line_numbers:
+                        return []
+                    spans = []
+                    start = prev = line_numbers[0]
+                    for line in line_numbers[1:]:
+                        if line == prev + 1:
+                            prev = line
+                            continue
+                        spans.append(LineSpan(start_line_number=start + 1, end_line_number=prev + 2))
+                        start = prev = line
+                    spans.append(LineSpan(start_line_number=start + 1, end_line_number=prev + 2))
+                    return spans
+
                 # Count meaningful lines
                 lines = content.splitlines()
                 meaningful_lines = 0
                 in_docstring = False
+                meaningful_line_numbers = []
                 
-                for line in lines:
+                for i, line in enumerate(lines):
                     stripped = line.strip()
                     if not stripped or stripped.startswith('#'):
                         continue
@@ -1660,19 +1692,21 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         continue
                     if not in_docstring:
                         meaningful_lines += 1
+                        meaningful_line_numbers.append(i)
                 
                 threshold = self.thresholds.get('MAX_FILE_LENGTH', 250)
                 if meaningful_lines > threshold:
                     severity = 'High' if meaningful_lines > threshold * 1.5 else 'Medium'
-                    payload = StructuralFileLevelPayload(
+                    payload = StructuralFileLevelLineSpansPayload(
                         type="Structural",
                         name="Long File",
                         description=f"File '{module_name}' has {meaningful_lines} meaningful lines of code",
                         file_path=file_path,
+                        instance_lines=_line_spans(meaningful_line_numbers),
                         severity=severity
                     )
                     self._smell_recorder.record_smell(
-                        "structural_file_level",
+                        "structural_file_level_line_spans",
                         payload,
                         file_path=file_path,
                         module_class=module_name,
