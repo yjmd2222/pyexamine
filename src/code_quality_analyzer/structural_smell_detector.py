@@ -818,11 +818,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             avg_weight = sum(weight for _, weight in classes) / count if count > 0 else 0
             
             # Adjust threshold based on average class complexity
-            adjusted_threshold = self.thresholds['NOCC_THRESHOLD']
-            low_bound = self.thresholds.get('NOCC_AVG_WEIGHT_BOUND_LOW', 5)
-            high_bound = self.thresholds.get('NOCC_AVG_WEIGHT_BOUND_HIGH', 15)
-            low_mult = self.thresholds.get('NOCC_MULTIPLIER_LOW', 1.5)
-            high_mult = self.thresholds.get('NOCC_MULTIPLIER_HIGH', 0.7)
+            adjusted_threshold = self.thresholds['NOC_MODULE_THRESHOLD']
+            low_bound = self.thresholds.get('NOC_MODULE_AVG_WEIGHT_BOUND_LOW', 5)
+            high_bound = self.thresholds.get('NOC_MODULE_AVG_WEIGHT_BOUND_HIGH', 15)
+            low_mult = self.thresholds.get('NOC_MODULE_MULTIPLIER_LOW', 1.5)
+            high_mult = self.thresholds.get('NOC_MODULE_MULTIPLIER_HIGH', 0.7)
 
             if avg_weight < low_bound:  # Simple classes
                 adjusted_threshold *= low_mult
@@ -1381,7 +1381,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         Returns:
             float: Adjusted threshold value
         """
-        base_threshold = self.thresholds['NOC_THRESHOLD']
+        base_threshold = self.thresholds['NOC_PROJECT_THRESHOLD']
 
         # Count total lines of production code
         total_loc = sum(info['loc'] for info in self.module_info.values()
@@ -1390,10 +1390,10 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                                 for name in info))
 
         # Adjust based on project size using configurable breakpoints/multipliers
-        high_break = self.thresholds.get('NOC_LOC_BREAKPOINT_HIGH', 10000)
-        med_break = self.thresholds.get('NOC_LOC_BREAKPOINT_MEDIUM', 5000)
-        high_mult = self.thresholds.get('NOC_LOC_MULTIPLIER_HIGH', 1.5)
-        med_mult = self.thresholds.get('NOC_LOC_MULTIPLIER_MEDIUM', 1.2)
+        high_break = self.thresholds.get('NOC_PROJECT_LOC_BREAKPOINT_HIGH', 10000)
+        med_break = self.thresholds.get('NOC_PROJECT_LOC_BREAKPOINT_MEDIUM', 5000)
+        high_mult = self.thresholds.get('NOC_PROJECT_LOC_MULTIPLIER_HIGH', 1.5)
+        med_mult = self.thresholds.get('NOC_PROJECT_LOC_MULTIPLIER_MEDIUM', 1.2)
 
         if total_loc > high_break:
             base_threshold *= high_mult

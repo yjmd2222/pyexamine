@@ -261,7 +261,7 @@ structural_smells:
     value: 20
     explanation: "Classes with Response for Class higher than this may be too coupled."
 
-  NOCC_THRESHOLD:
+  NOC_MODULE_THRESHOLD:
     value: 10
     explanation: "Modules with more than this many classes may be too complex."
 
@@ -281,7 +281,7 @@ structural_smells:
     value: 5
     explanation: "Modules with Coupling Between Object Classes higher than this may be too coupled."
 
-  NOC_THRESHOLD:
+  NOC_PROJECT_THRESHOLD:
     value: 7
     explanation: "Projects with more than this many classes may be too large or complex."
 
@@ -309,37 +309,37 @@ structural_smells:
     value: 4
     explanation: "Code with nesting depth greater than this may be too complex and hard to read."
 
-  NOCC_AVG_WEIGHT_BOUND_LOW:
+  NOC_MODULE_AVG_WEIGHT_BOUND_LOW:
     value: 5
-    explanation: "Lower bound for average class weight used to adjust NOCC threshold."
+    explanation: "Lower bound for average class weight used to adjust module class-count threshold."
 
-  NOCC_AVG_WEIGHT_BOUND_HIGH:
+  NOC_MODULE_AVG_WEIGHT_BOUND_HIGH:
     value: 15
-    explanation: "Upper bound for average class weight used to adjust NOCC threshold."
+    explanation: "Upper bound for average class weight used to adjust module class-count threshold."
 
-  NOCC_MULTIPLIER_LOW:
+  NOC_MODULE_MULTIPLIER_LOW:
     value: 1.5
-    explanation: "Multiplier applied to NOCC threshold when avg weight is low."
+    explanation: "Multiplier applied to module class-count threshold when avg weight is low."
 
-  NOCC_MULTIPLIER_HIGH:
+  NOC_MODULE_MULTIPLIER_HIGH:
     value: 0.7
-    explanation: "Multiplier applied to NOCC threshold when avg weight is high."
+    explanation: "Multiplier applied to module class-count threshold when avg weight is high."
 
-  NOC_LOC_BREAKPOINT_HIGH:
+  NOC_PROJECT_LOC_BREAKPOINT_HIGH:
     value: 10000
-    explanation: "LOC breakpoint to treat a project as large for NOC threshold adjustment."
+    explanation: "LOC breakpoint to treat a project as large for project class-count adjustment."
 
-  NOC_LOC_BREAKPOINT_MEDIUM:
+  NOC_PROJECT_LOC_BREAKPOINT_MEDIUM:
     value: 5000
-    explanation: "LOC breakpoint for medium-sized projects used in NOC threshold adjustment."
+    explanation: "LOC breakpoint for medium-sized projects used in project class-count adjustment."
 
-  NOC_LOC_MULTIPLIER_HIGH:
+  NOC_PROJECT_LOC_MULTIPLIER_HIGH:
     value: 1.5
-    explanation: "Multiplier applied to NOC threshold for very large projects."
+    explanation: "Multiplier applied to project class-count threshold for very large projects."
 
-  NOC_LOC_MULTIPLIER_MEDIUM:
+  NOC_PROJECT_LOC_MULTIPLIER_MEDIUM:
     value: 1.2
-    explanation: "Multiplier applied to NOC threshold for medium projects."
+    explanation: "Multiplier applied to project class-count threshold for medium projects."
 
   LOC_TEST_FILE_MULTIPLIER:
     value: 1.5

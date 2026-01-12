@@ -54,10 +54,10 @@ class ConfigHandler:
         """
         # Validate presence of core structural thresholds
         required_structural_thresholds = [
-            'NOM_THRESHOLD', 'WMPC1_THRESHOLD', 'WMPC2_THRESHOLD', 
+            'NOM_THRESHOLD', 'WMPC1_THRESHOLD', 'WMPC2_THRESHOLD',
             'SIZE2_THRESHOLD', 'WAC_THRESHOLD', 'LCOM_THRESHOLD',
-            'RFC_THRESHOLD', 'NOCC_THRESHOLD', 'DIT_THRESHOLD',
-            'LOC_THRESHOLD', 'CBO_THRESHOLD'
+            'RFC_THRESHOLD', 'NOC_MODULE_THRESHOLD', 'DIT_THRESHOLD',
+            'LOC_THRESHOLD', 'CBO_THRESHOLD', 'NOC_PROJECT_THRESHOLD'
         ]
         
         structural_thresholds = self.thresholds.get('structural_smells', {})
