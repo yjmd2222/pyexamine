@@ -12,7 +12,6 @@ from .smell_templates import (
     FileClassLineSpansPayload,
     FileFunctionLineSpansPayload,
     FileLevelMethodFunctionLineSpansPayload,
-    FileLevelWithoutLineSpansPayload,
     FileLineSpansPayload,
     FileMultipleClassesPayload,
     FlatChainPayload,
@@ -22,11 +21,11 @@ from .smell_templates import (
     FlatStatementPayload,
     LineSpan,
     NamedLineSpan,
+    StructuralFileLevelLineSpansPayload,
     TemplateRenderer,
     render_file_class_line_spans,
     render_file_function_line_spans,
     render_file_level_method_function_line_spans,
-    render_file_level_without_line_spans,
     render_file_line_spans,
     render_file_multiple_classes,
     render_flat_chain,
@@ -34,6 +33,7 @@ from .smell_templates import (
     render_flat_function_level,
     render_flat_method_function,
     render_flat_statement,
+    render_structural_file_level_line_spans,
 )
 
 # Set up logger
@@ -128,7 +128,7 @@ class CodeSmellDetector:
             "file_function_line_spans": render_file_function_line_spans,
             "file_multiple_classes": render_file_multiple_classes,
             "flat_class_level": render_flat_class_level,
-            "file_level_without_line_spans": render_file_level_without_line_spans,
+            "structural_file_level_line_spans": render_structural_file_level_line_spans,
         })
         self._smell_recorder = CodeSmellRecorder(self.code_smells, self._template_renderer)
         self.add_smell = self._smell_recorder.add_smell
@@ -959,13 +959,15 @@ class CodeSmellDetector:
             module (astroid.Module): The AST module being analyzed
             file_path (str): Path to the file being analyzed
         """
+        comment_line_re = re.compile(r'^\s*#')
         comment_blocks = []
         current_block = []
         code_lines = 0
         
         for i, line in enumerate(self.file_content):
             stripped_line = line.strip()
-            if stripped_line.startswith('#'):
+            is_regex_comment = comment_line_re.match(line) is not None
+            if is_regex_comment:
                 current_block.append(i)
             else:
                 if current_block:
@@ -985,18 +987,23 @@ class CodeSmellDetector:
         comment_lines = sum(len(block) for block in comment_blocks)
         comment_ratio = comment_lines / max(code_lines, 1)
         large_comment_blocks = sum(1 for block in comment_blocks if len(block) > 5)
+        comment_line_spans = [
+            LineSpan(start_line_number=block[0] + 1, end_line_number=block[-1] + 2)
+            for block in comment_blocks
+        ]
         
         if (comment_ratio > self.thresholds["EXCESSIVE_COMMENTS_RATIO"] and
             large_comment_blocks > self.thresholds["LARGE_COMMENT_BLOCKS"]):
-            payload = FileLevelWithoutLineSpansPayload(
+            payload = StructuralFileLevelLineSpansPayload(
                 type="Structural",
                 name="Excessive Comments",
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
+                instance_lines=comment_line_spans,
                 severity='low'
             )
             self._smell_recorder.record_smell(
-                "file_level_without_line_spans",
+                "structural_file_level_line_spans",
                 payload,
                 file_path=file_path,
                 module_class=None,
@@ -1768,4 +1775,3 @@ class CodeSmellDetector:
             print("Detected Code Smells:")
             for smell in self.code_smells:
                 print(f"- {smell.name}: {smell.description}")
-

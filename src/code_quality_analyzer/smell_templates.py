@@ -227,6 +227,8 @@ class StructuralFileLevelLineSpansPayload:
     severity: str
 
 
+
+
 @dataclass
 class StructuralProjectLevelPayload:
     type: str
@@ -375,6 +377,8 @@ def render_structural_file_level_connected(payload: StructuralFileLevelConnected
 
 def render_structural_file_level_line_spans(payload: StructuralFileLevelLineSpansPayload) -> str:
     return payload.description
+
+
 
 
 def render_structural_project_level(payload: StructuralProjectLevelPayload) -> str:
