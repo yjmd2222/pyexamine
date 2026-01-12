@@ -183,10 +183,10 @@ class StructuralSmellDetector:
             (self.detect_wac, "detect_wac"),
             (self.detect_lcom, "detect_lcom"),
             (self.detect_rfc, "detect_rfc"),
-            (self.detect_nocc, "detect_nocc"),
+            (self.detect_noc_per_module, "detect_noc_per_module"),
             (self.detect_dit, "detect_dit"),
             (self.detect_loc, "detect_loc"),
-            (self.detect_noc, "detect_noc"),
+            (self.detect_noc_per_project, "detect_noc_per_project"),
             (self.detect_mpc, "detect_mpc"),
             (self.detect_cbo, "detect_cbo"),
             (self.detect_cyclomatic_complexity, "detect_cyclomatic_complexity"),
@@ -781,9 +781,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     severity=severity
                 )
 
-    def detect_nocc(self):
+    def detect_noc_per_module(self):
         """
-        Detect modules with a high Number of Classes (NOCC).
+        Detect modules with a high Number of Classes per Module.
         Enhanced to consider:
         - Class size and complexity
         - Inner classes
@@ -833,7 +833,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 severity = 'High' if count > adjusted_threshold * 1.5 else 'Medium'
                 payload = StructuralFileLevelPayload(
                     type="Structural",
-                    name="High Number of Classes (NOCC)",
+                    name="High Number of Classes per Module",
                     description=f"Module '{module_name}' has {count} significant classes (avg complexity: {avg_weight:.1f})",
                     file_path=self.file_paths.get(module_name, "Unknown"),
                     severity=severity
@@ -1290,9 +1290,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             return 'Medium'
         return 'Low'
 
-    def detect_noc(self):
+    def detect_noc_per_project(self):
         """
-        Detect projects with a high Number of Classes (NOC).
+        Detect projects with a high Number of Classes per Project.
         Enhanced to consider:
         - Class type and purpose
         - Project size and domain
@@ -1341,7 +1341,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             severity = 'High' if weighted_noc > adjusted_threshold * 1.5 else 'Medium'
             payload = StructuralProjectLevelPayload(
                 type="Structural",
-                name="High Number of Classes (NOC)",
+                name="High Number of classes per Project",
                 description=f"Project has {weighted_noc:.1f} weighted classes:\n"
                 f"- Regular classes: {len(regular_classes)}\n"
                 f"- Abstract/Interface classes: {len(abstract_classes)}\n"
@@ -1546,8 +1546,6 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     description=f"Module '{module}' has {significant_deps} significant outgoing dependencies\n"
                     f"Outgoing dependency instances: {instance_detail or 'None'}",
                     file_path=self.file_paths.get(module, "Unknown"),
-                    start_line_number=None,
-                    end_line_number=None,
                     instance_lines=[
                         LineSpan(
                             start_line_number=entry["start_line_number"],

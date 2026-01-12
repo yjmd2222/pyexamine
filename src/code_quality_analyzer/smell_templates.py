@@ -22,6 +22,11 @@ class FileInstanceLines:
 
 
 @dataclass
+class FileNameOnly:
+    name: str
+
+
+@dataclass
 class FlatFunctionLevelPayload:
     type: str
     name: str
@@ -106,8 +111,6 @@ class FileLevelMethodFunctionLineSpansPayload:
     name: str
     description: str
     file_path: str
-    start_line_number: int
-    end_line_number: int
     methods_functions: List[NamedLineSpan]
     severity: str
 
@@ -220,8 +223,6 @@ class StructuralFileLevelLineSpansPayload:
     name: str
     description: str
     file_path: str
-    start_line_number: int
-    end_line_number: int
     instance_lines: List[LineSpan]
     severity: str
 
@@ -277,6 +278,16 @@ class ArchitecturalFileLevelLineSpansPayload:
 
 
 @dataclass
+class ArchitecturalFileLevelInstanceLinesPayload:
+    type: str
+    name: str
+    description: str
+    file_path: str
+    instance_lines: List[LineSpan]
+    severity: str
+
+
+@dataclass
 class ArchitecturalFileLevelPayload:
     type: str
     name: str
@@ -290,7 +301,7 @@ class ArchitecturalMultiFilePayload:
     type: str
     name: str
     description: str
-    files: List[str]
+    files: List[FileNameOnly]
     severity: str
 
 
@@ -383,6 +394,10 @@ def render_architectural_files(payload: ArchitecturalFilesPayload) -> str:
 
 
 def render_architectural_file_level_line_spans(payload: ArchitecturalFileLevelLineSpansPayload) -> str:
+    return payload.description
+
+
+def render_architectural_file_level_instance_lines(payload: ArchitecturalFileLevelInstanceLinesPayload) -> str:
     return payload.description
 
 

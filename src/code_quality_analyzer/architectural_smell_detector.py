@@ -11,16 +11,19 @@ from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
     ArchitecturalFileLevelConnectedPayload,
+    ArchitecturalFileLevelInstanceLinesPayload,
     ArchitecturalFileLevelLineSpansPayload,
     ArchitecturalFileLevelPayload,
     ArchitecturalFilesPayload,
     ArchitecturalFunctionLevelConnectedPayload,
     ArchitecturalMultiFilePayload,
     FileInstanceLines,
+    FileNameOnly,
     LineSpan,
     TemplateRenderer,
     render_architectural_file_level,
     render_architectural_file_level_connected,
+    render_architectural_file_level_instance_lines,
     render_architectural_file_level_line_spans,
     render_architectural_files,
     render_architectural_function_level_connected,
@@ -117,6 +120,7 @@ class ArchitecturalSmellDetector:
             "architectural_function_level_connected": render_architectural_function_level_connected,
             "architectural_files": render_architectural_files,
             "architectural_file_level_line_spans": render_architectural_file_level_line_spans,
+            "architectural_file_level_instance_lines": render_architectural_file_level_instance_lines,
             "architectural_file_level": render_architectural_file_level,
             "architectural_multi_file": render_architectural_multi_file,
         })
@@ -722,7 +726,7 @@ class ArchitecturalSmellDetector:
                         )
                         for entry in repetitive_instances
                     ]
-                    payload = ArchitecturalFileLevelLineSpansPayload(
+                    payload = ArchitecturalFileLevelInstanceLinesPayload(
                         type="Architectural",
                         name="Potential Improper API Usage",
                         description=(
@@ -731,13 +735,11 @@ class ArchitecturalSmellDetector:
                             f"\nRepetitive call instances: {instances_detail}"
                         ),
                         file_path=self.file_paths.get(module, "Unknown"),
-                        start_line_number=None,
-                        end_line_number=None,
                         instance_lines=instance_lines,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
-                        "architectural_file_level_line_spans",
+                        "architectural_file_level_instance_lines",
                         payload,
                         file_path=self.file_paths.get(module, "Unknown"),
                         module_class=module
@@ -825,7 +827,10 @@ class ArchitecturalSmellDetector:
                     f"Strong cyclic dependency detected: {cycle_str}\n"
                     f"Cycle strength: {strength} mutual dependencies"
                 ),
-                files=[self.file_paths.get(name, name) for name in cycle],
+                files=[
+                    FileNameOnly(name=self.file_paths.get(name, name))
+                    for name in cycle
+                ],
                 severity=severity
             )
             self._smell_recorder.record_smell(
@@ -897,7 +902,7 @@ class ArchitecturalSmellDetector:
                         )
                         for entry in outgoing_instances + incoming_instances
                     ]
-                    payload = ArchitecturalFileLevelLineSpansPayload(
+                    payload = ArchitecturalFileLevelInstanceLinesPayload(
                         type="Architectural",
                         name="Unstable Dependency",
                         description=(
@@ -907,13 +912,11 @@ class ArchitecturalSmellDetector:
                             f"Incoming dependency instances: {incoming_detail}"
                         ),
                         file_path=self.file_paths.get(node, "Unknown"),
-                        start_line_number=None,
-                        end_line_number=None,
                         instance_lines=instance_lines,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
-                        "architectural_file_level_line_spans",
+                        "architectural_file_level_instance_lines",
                         payload,
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node

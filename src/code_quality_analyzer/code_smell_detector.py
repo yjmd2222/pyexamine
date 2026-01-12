@@ -497,8 +497,6 @@ class CodeSmellDetector:
                     name="Data Clumps",
                     description=f"Parameters {', '.join(params)} appear together in functions: {function_lines} in {file_path}",
                     file_path=file_path,
-                    start_line_number=None,
-                    end_line_number=None,
                     methods_functions=[
                         NamedLineSpan(
                             name=d["name"],
