@@ -139,6 +139,7 @@ class ArchitecturalSmellDetector:
         self.class_method_lines = defaultdict(lambda: defaultdict(list))
         self.class_lines = {}
         self.class_modules = {}
+        self.metadata = {}
 
     def load_thresholds(self, config_path):
         """
@@ -748,14 +749,13 @@ class ArchitecturalSmellDetector:
         """
         Detect orphan modules in the project.
         """
-        print("[debug] Orphan Module dependency graph nodes:")
-        print(f"  {sorted(self.module_dependencies.nodes())}")
-        print("[debug] Orphan Module dependency graph edges:")
-        print(f"  {sorted((u, v) for u, v in self.module_dependencies.edges())}")
-        print("[debug] Orphan Module import lines (AST-derived):")
-        for module_name in sorted(self.import_lines):
-            print(f"  {module_name}: {self.import_lines[module_name]}")
-
+        self.metadata["module_dependency_graph"] = {
+            "nodes": sorted(self.module_dependencies.nodes()),
+            "edges": [
+                {"from": source, "to": target}
+                for source, target in sorted(self.module_dependencies.edges())
+            ]
+        }
         excluded_modules = set(self.thresholds.get('ORPHAN_EXCLUDED_MODULES', ['__init__', 'setup', 'tests', 'utils']))
         min_project_size = self.thresholds.get('MIN_PROJECT_SIZE', 3)
         
@@ -786,18 +786,10 @@ class ArchitecturalSmellDetector:
         """
         Detect cyclic dependencies with improved accuracy and cycle classification.
         """
-        print("[debug] Cyclic Dependency graph nodes:")
-        print(f"  {sorted(self.module_dependencies.nodes())}")
-        print("[debug] Cyclic Dependency graph edges:")
-        print(f"  {sorted((u, v) for u, v in self.module_dependencies.edges())}")
-        print("[debug] Cyclic Dependency import lines (AST-derived):")
-        for module_name in sorted(self.import_lines):
-            print(f"  {module_name}: {self.import_lines[module_name]}")
-
         min_cycle_size = self.thresholds.get('MIN_CYCLE_SIZE', 2)
         max_cycle_size = self.thresholds.get('MAX_CYCLE_SIZE', 5)
         excluded_modules = set(self.thresholds.get('CYCLE_EXCLUDED_MODULES', ['__init__', 'utils', 'common', 'base', 'core']))
-        
+
         # Find all simple cycles
         cycles = list(nx.simple_cycles(self.module_dependencies))
         
@@ -833,7 +825,7 @@ class ArchitecturalSmellDetector:
             cycle_high_size = self.thresholds.get('CYCLE_HIGH_MIN_SIZE', 3)
             cycle_high_strength = self.thresholds.get('CYCLE_HIGH_MIN_STRENGTH', 3)
             severity = 'high' if len(cycle) >= cycle_high_size and strength >= cycle_high_strength else 'medium'
-            
+
             cycle_str = ' -> '.join(cycle + [cycle[0]])
             files = []
             for i, module in enumerate(cycle):

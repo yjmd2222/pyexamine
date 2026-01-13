@@ -149,6 +149,7 @@ class StructuralSmellDetector:
         self.project_root = None
         self.file_paths = {}
         self.import_lines = defaultdict(lambda: defaultdict(list))
+        self.metadata = {}
 
     def load_thresholds(self, config):
         """
@@ -886,10 +887,15 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         - Interface-like classes
         - Abstract base classes
         """
-        print("[debug] DIT AST classes and bases:")
-        for class_name in sorted(self.class_info):
-            bases = self.class_info[class_name].get("base_classes", [])
-            print(f"  {class_name}: {bases}")
+        self.metadata["dit"] = {
+            "classes": [
+                {
+                    "class_name": class_name,
+                    "base_classes": self.class_info[class_name].get("base_classes", [])
+                }
+                for class_name in sorted(self.class_info)
+            ]
+        }
 
         inheritance_graph = nx.DiGraph()
         framework_bases = set(self.thresholds.get('FRAMEWORK_BASES', ['object', 'Exception', 'dict', 'list', 'set', 'tuple', 'str', 'int', 'float']))
@@ -922,11 +928,6 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 if inheritance_graph.in_degree(node) == 0 and node != 'object':
                     inheritance_graph.add_edge('object', node)
 
-        print("[debug] DIT inheritance_graph nodes:")
-        print(f"  {sorted(inheritance_graph.nodes())}")
-        print("[debug] DIT inheritance_graph edges:")
-        print(f"  {sorted((u, v) for u, v in inheritance_graph.edges())}")
-        
         for class_name in inheritance_graph.nodes():
             if class_name != 'object':
                 try:

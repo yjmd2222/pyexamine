@@ -190,23 +190,29 @@ def analyze_project(debug=False, smell_type=None):
         code_smells = []
         architectural_smells = []
         structural_smells = []
+        metadata = {}
 
         if smell_type in [None, 'code']:
             print("Analyzing Code Smells...")
             code_detector = CodeSmellDetector(config_handler.get_thresholds('code_smells'))
             code_smells = analyze_code_smells(args.directory, code_detector)
+            metadata["code"] = getattr(code_detector, "metadata", {})
 
         if smell_type in [None, 'architectural']:
             print("Analyzing Architectural Smells...")
             arch_detector = ArchitecturalSmellDetector(config_handler.get_thresholds('architectural_smells'))
             architectural_smells = analyze_architectural_smells(args.directory, arch_detector)
+            metadata["architectural"] = getattr(arch_detector, "metadata", {})
 
         if smell_type in [None, 'structural']:
             print("Analyzing Structural Smells...")
             struct_detector = StructuralSmellDetector(config_handler.get_thresholds('structural_smells'))
             structural_smells = analyze_structural_smells(args.directory, struct_detector)
+            metadata["structural"] = getattr(struct_detector, "metadata", {})
 
         generate_report(code_smells, architectural_smells, structural_smells, output_json)
+        metadata_output = os.path.join(os.path.dirname(output_json) or ".", "code_metadata.json")
+        generate_metadata_report(metadata, metadata_output)
 
     except Exception as e:
         logger.error(f"Error during analysis: {str(e)}", exc_info=True)
@@ -284,6 +290,8 @@ def analyze_structural_smells_only(directory_path, config_path="code_quality_con
             json_file = "structural_smells_report.json"
             
         generate_report([], [], structural_smells, json_file)
+        metadata_output = os.path.join(os.path.dirname(json_file) or ".", "code_metadata.json")
+        generate_metadata_report(getattr(struct_detector, "metadata", {}), metadata_output)
         return structural_smells
     
     except Exception as e:
@@ -467,6 +475,32 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
 
     logger.info(f"JSON report generated and saved to {json_file}")
 
+def generate_metadata_report(metadata, json_file):
+    """
+    Generate a JSON metadata report for collected analysis metadata.
+
+    Args:
+        metadata (dict): Aggregated metadata from detectors.
+        json_file (str): The path to the output JSON file.
+    """
+    if not json_file:
+        return
+    flattened = {}
+    if isinstance(metadata, dict) and any(
+        key in metadata for key in ("code", "architectural", "structural")
+    ):
+        for key in ("code", "architectural", "structural"):
+            value = metadata.get(key, {})
+            if isinstance(value, dict):
+                flattened.update(value)
+    else:
+        flattened = metadata
+
+    with open(json_file, 'w', newline='') as jsonfile:
+        json.dump(flattened, jsonfile, indent=4)
+
+    logger.info(f"Metadata report generated and saved to {json_file}")
+
 def analyze_code_smells_only(directory_path, config_path="code_quality_config.yaml"):
     """
     Analyze only code smells in a Python project.
@@ -505,6 +539,7 @@ def analyze_architectural_smells_only(directory_path, config_path="code_quality_
         architectural_smells = analyze_architectural_smells(directory_path, arch_detector)
         
         generate_report([], architectural_smells, [], "architectural_smells_report.txt")
+        generate_metadata_report(getattr(arch_detector, "metadata", {}), "code_metadata.json")
         return architectural_smells
         
     except Exception as e:
