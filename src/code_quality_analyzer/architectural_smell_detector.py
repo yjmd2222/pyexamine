@@ -10,18 +10,19 @@ import logging
 from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
-    ArchitecturalFileLevelConnectedPayload,
+    ArchitecturalFileLevelIncomingOutgoingPayload,
     ArchitecturalFileLevelInstanceLinesPayload,
     ArchitecturalFileLevelLineSpansPayload,
     ArchitecturalFileLevelPayload,
     ArchitecturalFilesPayload,
     ArchitecturalFunctionLevelConnectedPayload,
     ArchitecturalMultiFilePayload,
+    FileIncomingInstanceLines,
     FileInstanceLines,
     LineSpan,
     TemplateRenderer,
     render_architectural_file_level,
-    render_architectural_file_level_connected,
+    render_architectural_file_level_incoming_outgoing,
     render_architectural_file_level_instance_lines,
     render_architectural_file_level_line_spans,
     render_architectural_files,
@@ -115,12 +116,12 @@ class ArchitecturalSmellDetector:
         """
         self.architectural_smells = []
         self._template_renderer = TemplateRenderer({
-            "architectural_file_level_connected": render_architectural_file_level_connected,
             "architectural_function_level_connected": render_architectural_function_level_connected,
             "architectural_files": render_architectural_files,
             "architectural_file_level_line_spans": render_architectural_file_level_line_spans,
             "architectural_file_level_instance_lines": render_architectural_file_level_instance_lines,
             "architectural_file_level": render_architectural_file_level,
+            "architectural_file_level_incoming_outgoing": render_architectural_file_level_incoming_outgoing,
             "architectural_multi_file": render_architectural_multi_file,
         })
         self._smell_recorder = ArchitecturalSmellRecorder(self.architectural_smells, self._template_renderer)
@@ -140,6 +141,7 @@ class ArchitecturalSmellDetector:
         self.class_lines = {}
         self.class_modules = {}
         self.metadata = {}
+        self.project_root = None
 
     def load_thresholds(self, config_path):
         """
@@ -202,12 +204,14 @@ class ArchitecturalSmellDetector:
         Args:
             directory_path (str): The path to the directory to be analyzed.
         """
+        self.project_root = os.path.abspath(directory_path)
         for root, _, files in os.walk(directory_path):
             for file in files:
                 if file.endswith('.py'):
                     file_path = os.path.join(root, file)
                     self.analyze_file(file_path)
-        
+
+        self._resolve_internal_import_names()
         # After analyzing all files, resolve external dependencies
         self.resolve_external_dependencies()
 
@@ -231,7 +235,8 @@ class ArchitecturalSmellDetector:
             tree = ast.parse(content)
 
             # Get relative module path
-            module_name = os.path.relpath(file_path, os.path.dirname(os.path.dirname(file_path)))
+            base_dir = self.project_root or os.path.dirname(os.path.dirname(file_path))
+            module_name = os.path.relpath(file_path, base_dir)
             module_name = module_name.replace(os.path.sep, '.')[:-3]  # Remove .py extension
             self.module_dependencies.add_node(module_name)
             self.file_paths[module_name] = file_path
@@ -325,7 +330,7 @@ class ArchitecturalSmellDetector:
         Resolve external dependencies while preserving intra-project dependencies.
         """
         # Get all project modules
-        project_root = os.path.dirname(os.path.dirname(next(iter(self.file_paths.values()))))
+        project_root = self.project_root or os.path.dirname(os.path.dirname(next(iter(self.file_paths.values()))))
         all_modules = set(self.module_dependencies.nodes())
         standard_lib_modules = set(sys.stdlib_module_names)
         
@@ -364,6 +369,36 @@ class ArchitecturalSmellDetector:
                        not self.module_dependencies.out_edges(dependency):
                         self.module_dependencies.remove_node(dependency)
 
+    def _resolve_internal_import_names(self):
+        resolved_aliases = self._build_module_aliases()
+        if not resolved_aliases:
+            return
+
+        remapped_graph = nx.DiGraph()
+        remapped_graph.add_nodes_from(self.module_dependencies.nodes())
+        for source, target in self.module_dependencies.edges():
+            resolved_target = resolved_aliases.get(target, target)
+            remapped_graph.add_edge(source, resolved_target)
+        self.module_dependencies = remapped_graph
+
+        for module_name, entries in self.import_lines.items():
+            for entry in entries:
+                entry_name = entry.get("name")
+                entry["name"] = resolved_aliases.get(entry_name, entry_name)
+
+    def _build_module_aliases(self):
+        aliases = defaultdict(set)
+        for module in self.module_dependencies.nodes():
+            parts = module.split('.')
+            for idx in range(len(parts)):
+                alias = '.'.join(parts[idx:])
+                aliases[alias].add(module)
+        return {
+            alias: next(iter(candidates))
+            for alias, candidates in aliases.items()
+            if len(candidates) == 1
+        }
+
 
     def detect_hub_like_dependency(self):
         """
@@ -372,116 +407,136 @@ class ArchitecturalSmellDetector:
         Location data is derived from import statements and represented as\n
         {name: <module>, start_line_number: <start>, end_line_number: <end>}.
         """
-        total_modules = len(self.module_dependencies.nodes())
-        # Skip analysis for very small projects
-        min_project_modules = self.thresholds.get('HUB_MIN_PROJECT_MODULES', 3)
-        if total_modules < min_project_modules:
-            return
-
         threshold = self.thresholds.get('HUB_LIKE_DEPENDENCY_THRESHOLD', 0.5)
         min_connections = self.thresholds.get('MIN_HUB_CONNECTIONS', 5)
-        
+        min_project_modules = self.thresholds.get('HUB_MIN_PROJECT_MODULES', 3)
+
+        def _format_instances(instances):
+            grouped = defaultdict(list)
+            for entry in instances:
+                grouped[entry["name"]].append(
+                    (entry["start_line_number"], entry["end_line_number"])
+                )
+            parts = []
+            for name in sorted(grouped):
+                ranges = ", ".join(f"{start}-{end}" for start, end in grouped[name])
+                parts.append(f"{name}({ranges})")
+            return ", ".join(parts)
+
+        group_nodes = defaultdict(list)
         for node in self.module_dependencies.nodes():
-            def _format_instances(instances):
-                grouped = defaultdict(list)
-                for entry in instances:
-                    grouped[entry["name"]].append(
-                        (entry["start_line_number"], entry["end_line_number"])
-                    )
-                parts = []
-                for name in sorted(grouped):
-                    ranges = ", ".join(f"{start}-{end}" for start, end in grouped[name])
-                    parts.append(f"{name}({ranges})")
-                return ", ".join(parts)
+            file_path = self.file_paths.get(node)
+            if not file_path:
+                group_key = ""
+            else:
+                base_dir = self.project_root or os.path.dirname(file_path)
+                rel_path = os.path.relpath(file_path, base_dir)
+                group_key = os.path.dirname(rel_path)
+            group_nodes[group_key].append(node)
 
-            # Count both internal and external dependencies
-            in_degree = self.module_dependencies.in_degree(node)
-            out_degree = self.module_dependencies.out_degree(node)
-            external_deps = len(self.external_dependencies[node])
-            total_connections = in_degree + out_degree + external_deps
-            
-            # Calculate fan-in and fan-out ratios
-            fan_in_ratio = in_degree / total_modules if total_modules > 0 else 0
-            fan_out_ratio = (out_degree + external_deps) / total_modules if total_modules > 0 else 0
-            
-            # Check for hub-like characteristics
-            is_hub = (total_connections >= min_connections and 
-                     (total_connections / total_modules) > threshold)
-            
-            # Additional checks to reduce false positives
-            if is_hub:
-                # Exclude common infrastructure modules
-                if any(pattern in node.lower() for pattern in ['util', 'common', 'base', 'core']):
-                    continue
+        for group_key, nodes in group_nodes.items():
+            total_modules = len(nodes)
+            if total_modules < min_project_modules:
+                continue
 
-                # Check if the module has balanced dependencies
-                bal_min = self.thresholds.get('HUB_BALANCE_RATIO_MIN', 0.2)
-                bal_max = self.thresholds.get('HUB_BALANCE_RATIO_MAX', 5)
-                # avoid division by zero by using conditional
-                if fan_out_ratio == 0:
-                    ratio = float('inf') if fan_in_ratio > 0 else 0
-                else:
-                    ratio = fan_in_ratio / fan_out_ratio
-                is_balanced = (bal_min <= ratio <= bal_max)
-                
-                if not is_balanced:
-                    outgoing_instances = [
-                        entry for entry in self.import_lines.get(node, [])
-                        if (
-                            entry["name"] in self.module_dependencies.successors(node) or
-                            any(entry["name"] == dep for _, dep in self.external_dependencies[node])
-                        )
-                    ]
-                    # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
-                    incoming_instances = []
-                    for predecessor in self.module_dependencies.predecessors(node):
-                        for entry in self.import_lines.get(predecessor, []):
-                            if entry["name"] == node:
-                                incoming_instances.append({
-                                    "name": predecessor,
-                                    "start_line_number": entry["start_line_number"],
-                                    "end_line_number": entry["end_line_number"]
-                                })
-                    # incoming_instances: {name, start_line_number, end_line_number} per import of this module
+            for node in nodes:
+                # Count both internal and external dependencies
+                in_degree = self.module_dependencies.in_degree(node)
+                out_degree = self.module_dependencies.out_degree(node)
+                external_deps = len(self.external_dependencies[node])
+                total_connections = in_degree + out_degree + external_deps
 
-                    outgoing_detail = _format_instances(outgoing_instances) or "None"
-                    incoming_detail = _format_instances(incoming_instances) or "None"
-                    instance_start = None
-                    instance_end = None
-                    if outgoing_instances:
-                        instance_start = min(d["start_line_number"] for d in outgoing_instances)
-                        instance_end = max(d["end_line_number"] for d in outgoing_instances)
-                    grouped = defaultdict(list)
-                    for entry in outgoing_instances + incoming_instances:
-                        grouped[entry["name"]].append(
+                # Calculate fan-in and fan-out ratios
+                fan_in_ratio = in_degree / total_modules if total_modules > 0 else 0
+                fan_out_ratio = (out_degree + external_deps) / total_modules if total_modules > 0 else 0
+
+                # Check for hub-like characteristics
+                is_hub = (total_connections >= min_connections and
+                          (total_connections / total_modules) > threshold)
+
+                # Additional checks to reduce false positives
+                if is_hub:
+                    # Exclude common infrastructure modules
+                    if any(pattern in node.lower() for pattern in ['util', 'common', 'base', 'core']):
+                        continue
+
+                    # Check if the module has balanced dependencies
+                    bal_min = self.thresholds.get('HUB_BALANCE_RATIO_MIN', 0.2)
+                    bal_max = self.thresholds.get('HUB_BALANCE_RATIO_MAX', 5)
+                    # avoid division by zero by using conditional
+                    if fan_out_ratio == 0:
+                        ratio = float('inf') if fan_in_ratio > 0 else 0
+                    else:
+                        ratio = fan_in_ratio / fan_out_ratio
+                    is_balanced = (bal_min <= ratio <= bal_max)
+
+                    if not is_balanced:
+                        outgoing_instances = [
+                            entry for entry in self.import_lines.get(node, [])
+                            if (
+                                entry["name"] in self.module_dependencies.successors(node) or
+                                any(entry["name"] == dep for _, dep in self.external_dependencies[node])
+                            )
+                        ]
+                        # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
+                        incoming_instances = []
+                        for predecessor in self.module_dependencies.predecessors(node):
+                            if predecessor not in nodes:
+                                continue
+                            for entry in self.import_lines.get(predecessor, []):
+                                if entry["name"] == node:
+                                    incoming_instances.append({
+                                        "name": predecessor,
+                                        "start_line_number": entry["start_line_number"],
+                                        "end_line_number": entry["end_line_number"]
+                                    })
+                        # incoming_instances: {name, start_line_number, end_line_number} per import of this module
+
+                        outgoing_detail = _format_instances(outgoing_instances) or "None"
+                        incoming_detail = _format_instances(incoming_instances) or "None"
+                        outgoing_instance_lines = [
                             LineSpan(
                                 start_line_number=entry["start_line_number"],
                                 end_line_number=entry["end_line_number"]
                             )
+                            for entry in outgoing_instances
+                        ]
+                        incoming_grouped = defaultdict(list)
+                        for entry in incoming_instances:
+                            incoming_grouped[entry["name"]].append(
+                                LineSpan(
+                                    start_line_number=entry["start_line_number"],
+                                    end_line_number=entry["end_line_number"]
+                                )
+                            )
+                        incoming_files = [
+                            FileIncomingInstanceLines(
+                                name=self.file_paths.get(name, name),
+                                incoming_instance_lines=lines
+                            )
+                            for name, lines in incoming_grouped.items()
+                        ]
+                        payload = ArchitecturalFileLevelIncomingOutgoingPayload(
+                            type="Architectural",
+                            name="Hub-like Dependency",
+                            description=(
+                                f"Module '{node}' is a potential hub with {total_connections} connections "
+                                f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
+                                f"Outgoing dependency instances: {outgoing_detail}\n"
+                                f"Incoming dependency instances: {incoming_detail}"
+                            ),
+                            file_path=self.file_paths.get(node, "Unknown"),
+                            outgoing_instance_lines=outgoing_instance_lines,
+                            files=incoming_files,
+                            severity='high' if total_connections > min_connections * 2 else 'medium'
                         )
-                    payload = ArchitecturalFileLevelConnectedPayload(
-                        type="Architectural",
-                        name="Hub-like Dependency",
-                        description=(
-                            f"Module '{node}' is a potential hub with {total_connections} connections "
-                            f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
-                            f"Outgoing dependency instances: {outgoing_detail}\n"
-                            f"Incoming dependency instances: {incoming_detail}"
-                        ),
-                        file_path=self.file_paths.get(node, "Unknown"),
-                        files=[
-                            FileInstanceLines(name=name, instance_lines=lines)
-                            for name, lines in grouped.items()
-                        ],
-                        severity='high' if total_connections > min_connections * 2 else 'medium'
-                    )
-                    self._smell_recorder.record_smell(
-                        "architectural_file_level_connected",
-                        payload,
-                        file_path=self.file_paths.get(node, "Unknown"),
-                        module_class=node,
-                        severity='high' if total_connections > min_connections * 2 else 'medium'
-                    )
+                        self._smell_recorder.record_smell(
+                            "architectural_file_level_incoming_outgoing",
+                            payload,
+                            file_path=self.file_paths.get(node, "Unknown"),
+                            module_class=node,
+                            severity='high' if total_connections > min_connections * 2 else 'medium'
+                        )
 
     def detect_scattered_functionality(self):
         """
@@ -916,14 +971,29 @@ class ArchitecturalSmellDetector:
 
                     outgoing_detail = _format_instances(outgoing_instances) or "None"
                     incoming_detail = _format_instances(incoming_instances) or "None"
-                    instance_lines = [
+                    outgoing_instance_lines = [
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
                         )
-                        for entry in outgoing_instances + incoming_instances
+                        for entry in outgoing_instances
                     ]
-                    payload = ArchitecturalFileLevelInstanceLinesPayload(
+                    incoming_grouped = defaultdict(list)
+                    for entry in incoming_instances:
+                        incoming_grouped[entry["name"]].append(
+                            LineSpan(
+                                start_line_number=entry["start_line_number"],
+                                end_line_number=entry["end_line_number"]
+                            )
+                        )
+                    incoming_files = [
+                        FileIncomingInstanceLines(
+                            name=self.file_paths.get(name, name),
+                            incoming_instance_lines=lines
+                        )
+                        for name, lines in incoming_grouped.items()
+                    ]
+                    payload = ArchitecturalFileLevelIncomingOutgoingPayload(
                         type="Architectural",
                         name="Unstable Dependency",
                         description=(
@@ -933,11 +1003,12 @@ class ArchitecturalSmellDetector:
                             f"Incoming dependency instances: {incoming_detail}"
                         ),
                         file_path=self.file_paths.get(node, "Unknown"),
-                        instance_lines=instance_lines,
+                        outgoing_instance_lines=outgoing_instance_lines,
+                        files=incoming_files,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
-                        "architectural_file_level_instance_lines",
+                        "architectural_file_level_incoming_outgoing",
                         payload,
                         file_path=self.file_paths.get(node, "Unknown"),
                         module_class=node

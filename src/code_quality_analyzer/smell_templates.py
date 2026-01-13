@@ -22,6 +22,12 @@ class FileInstanceLines:
 
 
 @dataclass
+class FileIncomingInstanceLines:
+    name: str
+    incoming_instance_lines: List[LineSpan]
+
+
+@dataclass
 class FlatFunctionLevelPayload:
     type: str
     name: str
@@ -305,6 +311,17 @@ class ArchitecturalFileLevelPayload:
 
 
 @dataclass
+class ArchitecturalFileLevelIncomingOutgoingPayload:
+    type: str
+    name: str
+    description: str
+    file_path: str
+    outgoing_instance_lines: List[LineSpan]
+    files: List[FileIncomingInstanceLines]
+    severity: str
+
+
+@dataclass
 class ArchitecturalMultiFilePayload:
     type: str
     name: str
@@ -418,6 +435,10 @@ def render_architectural_file_level(payload: ArchitecturalFileLevelPayload) -> s
 
 
 def render_architectural_multi_file(payload: ArchitecturalMultiFilePayload) -> str:
+    return payload.description
+
+
+def render_architectural_file_level_incoming_outgoing(payload: ArchitecturalFileLevelIncomingOutgoingPayload) -> str:
     return payload.description
 
 
