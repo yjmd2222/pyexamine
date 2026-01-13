@@ -229,6 +229,17 @@ class StructuralFileLevelConnectedPayload:
 
 
 @dataclass
+class StructuralClassLevelConnectedPayload:
+    type: str
+    name: str
+    description: str
+    file_path: str
+    class_name: str
+    files: List[FileInstanceLines]
+    severity: str
+
+
+@dataclass
 class StructuralFileLevelLineSpansPayload:
     type: str
     name: str
@@ -322,6 +333,17 @@ class ArchitecturalFileLevelIncomingOutgoingPayload:
 
 
 @dataclass
+class ArchitecturalFileLevelRangePayload:
+    type: str
+    name: str
+    description: str
+    file_path: str
+    start_line_number: int
+    end_line_number: int
+    severity: str
+
+
+@dataclass
 class ArchitecturalMultiFilePayload:
     type: str
     name: str
@@ -402,6 +424,10 @@ def render_structural_file_level_connected(payload: StructuralFileLevelConnected
     return payload.description
 
 
+def render_structural_class_level_connected(payload: StructuralClassLevelConnectedPayload) -> str:
+    return payload.description
+
+
 def render_structural_file_level_line_spans(payload: StructuralFileLevelLineSpansPayload) -> str:
     return payload.description
 
@@ -439,6 +465,10 @@ def render_architectural_multi_file(payload: ArchitecturalMultiFilePayload) -> s
 
 
 def render_architectural_file_level_incoming_outgoing(payload: ArchitecturalFileLevelIncomingOutgoingPayload) -> str:
+    return payload.description
+
+
+def render_architectural_file_level_range(payload: ArchitecturalFileLevelRangePayload) -> str:
     return payload.description
 
 

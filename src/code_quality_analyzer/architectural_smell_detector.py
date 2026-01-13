@@ -14,6 +14,7 @@ from .smell_templates import (
     ArchitecturalFileLevelInstanceLinesPayload,
     ArchitecturalFileLevelLineSpansPayload,
     ArchitecturalFileLevelPayload,
+    ArchitecturalFileLevelRangePayload,
     ArchitecturalFilesPayload,
     ArchitecturalFunctionLevelConnectedPayload,
     ArchitecturalMultiFilePayload,
@@ -25,6 +26,7 @@ from .smell_templates import (
     render_architectural_file_level_incoming_outgoing,
     render_architectural_file_level_instance_lines,
     render_architectural_file_level_line_spans,
+    render_architectural_file_level_range,
     render_architectural_files,
     render_architectural_function_level_connected,
     render_architectural_multi_file,
@@ -122,6 +124,7 @@ class ArchitecturalSmellDetector:
             "architectural_file_level_instance_lines": render_architectural_file_level_instance_lines,
             "architectural_file_level": render_architectural_file_level,
             "architectural_file_level_incoming_outgoing": render_architectural_file_level_incoming_outgoing,
+            "architectural_file_level_range": render_architectural_file_level_range,
             "architectural_multi_file": render_architectural_multi_file,
         })
         self._smell_recorder = ArchitecturalSmellRecorder(self.architectural_smells, self._template_renderer)
@@ -823,17 +826,32 @@ class ArchitecturalSmellDetector:
             if (self.module_dependencies.in_degree(node) + self.module_dependencies.out_degree(node) == 0 and
                 module_name not in excluded_modules and
                 not any(excluded in node.lower() for excluded in excluded_modules)):
-                payload = ArchitecturalFileLevelPayload(
+                file_path = self.file_paths.get(node, "Unknown")
+                start_line_number = None
+                end_line_number = None
+                if file_path != "Unknown":
+                    try:
+                        with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
+                            total_lines = sum(1 for _ in file)
+                        if total_lines > 0:
+                            start_line_number = 1
+                            end_line_number = total_lines + 1
+                    except OSError:
+                        start_line_number = None
+                        end_line_number = None
+                payload = ArchitecturalFileLevelRangePayload(
                     type="Architectural",
                     name="Orphan Module",
                     description=f"'{node}' is isolated from other modules",
-                    file_path=self.file_paths.get(node, "Unknown"),
+                    file_path=file_path,
+                    start_line_number=start_line_number,
+                    end_line_number=end_line_number,
                     severity='medium'
                 )
                 self._smell_recorder.record_smell(
-                    "architectural_file_level",
+                    "architectural_file_level_range",
                     payload,
-                    file_path=self.file_paths.get(node, "Unknown"),
+                    file_path=file_path,
                     module_class=node
                 )
 

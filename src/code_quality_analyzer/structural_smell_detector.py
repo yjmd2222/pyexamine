@@ -12,6 +12,7 @@ from .smell_templates import (
     LineSpan,
     StructuralClassLevelLineSpansPayload,
     StructuralClassLevelPayload,
+    StructuralClassLevelConnectedPayload,
     StructuralClassMethodPayload,
     StructuralClassOnlyPayload,
     StructuralFileLevelConnectedPayload,
@@ -24,6 +25,7 @@ from .smell_templates import (
     render_structural_class_level_line_spans,
     render_structural_class_method,
     render_structural_class_only,
+    render_structural_class_level_connected,
     render_structural_file_level,
     render_structural_file_level_connected,
     render_structural_file_level_line_spans,
@@ -134,6 +136,7 @@ class StructuralSmellDetector:
             "structural_class_level_line_spans": render_structural_class_level_line_spans,
             "structural_file_level": render_structural_file_level,
             "structural_class_only": render_structural_class_only,
+            "structural_class_level_connected": render_structural_class_level_connected,
             "structural_file_level_connected": render_structural_file_level_connected,
             "structural_file_level_line_spans": render_structural_file_level_line_spans,
             "structural_project_level_files": render_structural_project_level_files,
@@ -935,16 +938,36 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     if dit > self.thresholds['DIT_THRESHOLD']:
                         severity = 'High' if dit > self.thresholds['DIT_THRESHOLD'] * 1.5 else 'Medium'
                         inheritance_path = '->'.join(nx.shortest_path(inheritance_graph, 'object', class_name))
-                        payload = StructuralClassOnlyPayload(
+                        path_classes = [
+                            node_name for node_name in nx.shortest_path(inheritance_graph, 'object', class_name)
+                            if node_name != 'object'
+                        ]
+                        files = []
+                        for node_name in path_classes:
+                            info = self.class_info.get(node_name)
+                            if not info:
+                                continue
+                            start = info.get("start_line_number")
+                            end = info.get("end_line_number")
+                            if start is None or end is None:
+                                continue
+                            files.append(
+                                FileInstanceLines(
+                                    name=self.file_paths.get(node_name.rsplit('.', 1)[0], "Unknown"),
+                                    instance_lines=[LineSpan(start_line_number=start, end_line_number=end)]
+                                )
+                            )
+                        payload = StructuralClassLevelConnectedPayload(
                             type="Structural",
                             name="Deep Inheritance Tree (DIT)",
                             description=f"Class '{class_name}' has DIT of {dit}\nInheritance path: {inheritance_path}",
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             class_name=class_name,
+                            files=files,
                             severity=severity
                         )
                         self._smell_recorder.record_smell(
-                            "structural_class_only",
+                            "structural_class_level_connected",
                             payload,
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             module_class=class_name,
