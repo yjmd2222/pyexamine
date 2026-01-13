@@ -17,7 +17,7 @@ from .smell_templates import (
     StructuralFileLevelConnectedPayload,
     StructuralFileLevelLineSpansPayload,
     StructuralFileLevelPayload,
-    StructuralProjectLevelPayload,
+    StructuralProjectLevelFilesPayload,
     TemplateRenderer,
     render_file_level_without_line_spans,
     render_structural_class_level,
@@ -27,7 +27,7 @@ from .smell_templates import (
     render_structural_file_level,
     render_structural_file_level_connected,
     render_structural_file_level_line_spans,
-    render_structural_project_level,
+    render_structural_project_level_files,
     FileLevelWithoutLineSpansPayload,
 )
 
@@ -136,7 +136,7 @@ class StructuralSmellDetector:
             "structural_class_only": render_structural_class_only,
             "structural_file_level_connected": render_structural_file_level_connected,
             "structural_file_level_line_spans": render_structural_file_level_line_spans,
-            "structural_project_level": render_structural_project_level,
+            "structural_project_level_files": render_structural_project_level_files,
         })
         self._smell_recorder = StructuralSmellRecorder(self.structural_smells, self._template_renderer)
         self.add_smell = self._smell_recorder.add_smell
@@ -810,12 +810,19 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 sum(self.calculate_cyclomatic_complexity(m) for m in info['methods'])
             ) / 3  # Normalize
             
-            module_class_info[module_name].append((class_name, class_weight))
+            module_class_info[module_name].append(
+                (
+                    class_name,
+                    class_weight,
+                    info.get("start_line_number"),
+                    info.get("end_line_number")
+                )
+            )
         
         for module_name, classes in module_class_info.items():
             # Consider both count and weighted complexity
             count = len(classes)
-            avg_weight = sum(weight for _, weight in classes) / count if count > 0 else 0
+            avg_weight = sum(weight for _, weight, _, _ in classes) / count if count > 0 else 0
             
             # Adjust threshold based on average class complexity
             adjusted_threshold = self.thresholds['NOC_MODULE_THRESHOLD']
@@ -831,15 +838,39 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             
             if count > adjusted_threshold:
                 severity = 'High' if count > adjusted_threshold * 1.5 else 'Medium'
-                payload = StructuralFileLevelPayload(
+                sorted_classes = sorted(
+                    classes,
+                    key=lambda entry: (
+                        entry[2] is None,
+                        entry[2] or 0,
+                        entry[0]
+                    )
+                )
+                class_locations = ", ".join(
+                    f"{name.rsplit('.', 1)[-1]}({start}-{end})"
+                    if start is not None and end is not None
+                    else f"{name.rsplit('.', 1)[-1]}(?)"
+                    for name, _, start, end in sorted_classes
+                )
+                instance_lines = [
+                    LineSpan(start_line_number=start, end_line_number=end)
+                    for _, _, start, end in sorted_classes
+                    if start is not None and end is not None
+                ]
+                payload = StructuralFileLevelLineSpansPayload(
                     type="Structural",
                     name="High Number of Classes per Module",
-                    description=f"Module '{module_name}' has {count} significant classes (avg complexity: {avg_weight:.1f})",
+                    description=(
+                        f"Module '{module_name}' has {count} significant classes "
+                        f"(avg complexity: {avg_weight:.1f})\n"
+                        f"Class locations: {class_locations or 'None'}"
+                    ),
                     file_path=self.file_paths.get(module_name, "Unknown"),
+                    instance_lines=instance_lines,
                     severity=severity
                 )
                 self._smell_recorder.record_smell(
-                    "structural_file_level",
+                    "structural_file_level_line_spans",
                     payload,
                     file_path=self.file_paths.get(module_name, "Unknown"),
                     module_class=module_name,
@@ -1322,6 +1353,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         test_classes = []
         utility_classes = []
         abstract_classes = []
+        class_locations_by_module = defaultdict(list)
         
         for class_name, info in self.class_info.items():
             # Skip generated classes
@@ -1336,6 +1368,15 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             is_abstract = any(pattern in class_name 
                             for pattern in ['Abstract', 'Base', 'Interface'])
             
+            module_name = class_name.rsplit('.', 1)[0]
+            class_locations_by_module[module_name].append(
+                (
+                    class_name.rsplit('.', 1)[-1],
+                    info.get("start_line_number"),
+                    info.get("end_line_number")
+                )
+            )
+
             # Categorize the class
             if is_test:
                 test_classes.append(class_name)
@@ -1356,7 +1397,36 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         
         if weighted_noc > adjusted_threshold:
             severity = 'High' if weighted_noc > adjusted_threshold * 1.5 else 'Medium'
-            payload = StructuralProjectLevelPayload(
+            location_lines = []
+            files = []
+            for module_name in sorted(class_locations_by_module):
+                entries = sorted(
+                    class_locations_by_module[module_name],
+                    key=lambda entry: (
+                        entry[1] is None,
+                        entry[1] or 0,
+                        entry[0]
+                    )
+                )
+                entry_text = ", ".join(
+                    f"{name}({start}-{end})" if start is not None and end is not None else f"{name}(?)"
+                    for name, start, end in entries
+                )
+                location_lines.append(f"- {module_name}: {entry_text}")
+                instance_lines = [
+                    LineSpan(start_line_number=start, end_line_number=end)
+                    for _, start, end in entries
+                    if start is not None and end is not None
+                ]
+                files.append(
+                    FileInstanceLines(
+                        name=self.file_paths.get(module_name, module_name),
+                        instance_lines=instance_lines
+                    )
+                )
+
+            class_locations_detail = "\n".join(location_lines) if location_lines else "None"
+            payload = StructuralProjectLevelFilesPayload(
                 type="Structural",
                 name="High Number of classes per Project",
                 description=f"Project has {weighted_noc:.1f} weighted classes:\n"
@@ -1364,11 +1434,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 f"- Abstract/Interface classes: {len(abstract_classes)}\n"
                 f"- Utility classes: {len(utility_classes)}\n"
                 f"- Test classes: {len(test_classes)} (not counted in weighted total)\n"
-                f"Adjusted threshold: {adjusted_threshold}",
+                f"Adjusted threshold: {adjusted_threshold}\n"
+                f"Class locations:\n{class_locations_detail}",
+                files=files,
                 severity=severity
             )
             self._smell_recorder.record_smell(
-                "structural_project_level",
+                "structural_project_level_files",
                 payload,
                 file_path=self.project_root,
                 severity=severity

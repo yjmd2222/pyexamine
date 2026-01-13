@@ -237,14 +237,15 @@ class StructuralFileLevelLineSpansPayload:
     severity: str
 
 
-
-
 @dataclass
-class StructuralProjectLevelPayload:
+class StructuralProjectLevelFilesPayload:
     type: str
     name: str
     description: str
+    files: List[FileInstanceLines]
     severity: str
+
+
 
 
 @dataclass
@@ -393,9 +394,7 @@ def render_structural_file_level_line_spans(payload: StructuralFileLevelLineSpan
     return payload.description
 
 
-
-
-def render_structural_project_level(payload: StructuralProjectLevelPayload) -> str:
+def render_structural_project_level_files(payload: StructuralProjectLevelFilesPayload) -> str:
     return payload.description
 
 
