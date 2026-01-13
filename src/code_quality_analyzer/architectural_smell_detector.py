@@ -18,7 +18,6 @@ from .smell_templates import (
     ArchitecturalFunctionLevelConnectedPayload,
     ArchitecturalMultiFilePayload,
     FileInstanceLines,
-    FileNameOnly,
     LineSpan,
     TemplateRenderer,
     render_architectural_file_level,
@@ -749,6 +748,14 @@ class ArchitecturalSmellDetector:
         """
         Detect orphan modules in the project.
         """
+        print("[debug] Orphan Module dependency graph nodes:")
+        print(f"  {sorted(self.module_dependencies.nodes())}")
+        print("[debug] Orphan Module dependency graph edges:")
+        print(f"  {sorted((u, v) for u, v in self.module_dependencies.edges())}")
+        print("[debug] Orphan Module import lines (AST-derived):")
+        for module_name in sorted(self.import_lines):
+            print(f"  {module_name}: {self.import_lines[module_name]}")
+
         excluded_modules = set(self.thresholds.get('ORPHAN_EXCLUDED_MODULES', ['__init__', 'setup', 'tests', 'utils']))
         min_project_size = self.thresholds.get('MIN_PROJECT_SIZE', 3)
         
@@ -779,6 +786,14 @@ class ArchitecturalSmellDetector:
         """
         Detect cyclic dependencies with improved accuracy and cycle classification.
         """
+        print("[debug] Cyclic Dependency graph nodes:")
+        print(f"  {sorted(self.module_dependencies.nodes())}")
+        print("[debug] Cyclic Dependency graph edges:")
+        print(f"  {sorted((u, v) for u, v in self.module_dependencies.edges())}")
+        print("[debug] Cyclic Dependency import lines (AST-derived):")
+        for module_name in sorted(self.import_lines):
+            print(f"  {module_name}: {self.import_lines[module_name]}")
+
         min_cycle_size = self.thresholds.get('MIN_CYCLE_SIZE', 2)
         max_cycle_size = self.thresholds.get('MAX_CYCLE_SIZE', 5)
         excluded_modules = set(self.thresholds.get('CYCLE_EXCLUDED_MODULES', ['__init__', 'utils', 'common', 'base', 'core']))
@@ -820,6 +835,23 @@ class ArchitecturalSmellDetector:
             severity = 'high' if len(cycle) >= cycle_high_size and strength >= cycle_high_strength else 'medium'
             
             cycle_str = ' -> '.join(cycle + [cycle[0]])
+            files = []
+            for i, module in enumerate(cycle):
+                next_module = cycle[(i + 1) % len(cycle)]
+                instance_lines = [
+                    LineSpan(
+                        start_line_number=entry["start_line_number"],
+                        end_line_number=entry["end_line_number"]
+                    )
+                    for entry in self.import_lines.get(module, [])
+                    if entry["name"] == next_module
+                ]
+                files.append(
+                    FileInstanceLines(
+                        name=self.file_paths.get(module, module),
+                        instance_lines=instance_lines
+                    )
+                )
             payload = ArchitecturalMultiFilePayload(
                 type="Architectural",
                 name="Cyclic Dependency",
@@ -827,10 +859,7 @@ class ArchitecturalSmellDetector:
                     f"Strong cyclic dependency detected: {cycle_str}\n"
                     f"Cycle strength: {strength} mutual dependencies"
                 ),
-                files=[
-                    FileNameOnly(name=self.file_paths.get(name, name))
-                    for name in cycle
-                ],
+                files=files,
                 severity=severity
             )
             self._smell_recorder.record_smell(

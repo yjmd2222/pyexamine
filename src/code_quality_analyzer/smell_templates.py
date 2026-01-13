@@ -22,11 +22,6 @@ class FileInstanceLines:
 
 
 @dataclass
-class FileNameOnly:
-    name: str
-
-
-@dataclass
 class FlatFunctionLevelPayload:
     type: str
     name: str
@@ -314,7 +309,7 @@ class ArchitecturalMultiFilePayload:
     type: str
     name: str
     description: str
-    files: List[FileNameOnly]
+    files: List[FileInstanceLines]
     severity: str
 
 
