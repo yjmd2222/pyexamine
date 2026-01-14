@@ -2,8 +2,8 @@
 path=habit_tracker_reminders/catalog.py	-100
 
 class	B
-HabitType01	B
-:	B
+HabitType01	I
+:	I
 
     	I
 def	I
@@ -325,8 +325,8 @@ return	I
 path=habit_tracker_reminders/habits.py	-100
 
 class	B
-HabitBase	B
-:	B
+HabitBase	I
+:	I
 
     	I
 def	I

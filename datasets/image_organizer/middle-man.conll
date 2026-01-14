@@ -2,8 +2,8 @@
 path=image_organizer/brokers.py	-100
 
 class	B
-ImportBroker	B
-:	B
+ImportBroker	I
+:	I
 
     	I
 def	I

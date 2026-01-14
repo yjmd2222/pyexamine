@@ -84,19 +84,19 @@ payload	O
 }	O
 
 def	B
-fetch_prices	B
-(	B
-session	B
-:	B
-FetchSession	B
-,	B
-base_url	B
-:	B
-str	B
-,	B
-product_ids	B
-)	B
-:	B
+fetch_prices	I
+(	I
+session	I
+:	I
+FetchSession	I
+,	I
+base_url	I
+:	I
+str	I
+,	I
+product_ids	I
+)	I
+:	I
 
     	I
 results	I

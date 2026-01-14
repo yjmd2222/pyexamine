@@ -40,14 +40,14 @@ Node	O
 :	O
 
     	B
-return	B
-node	B
-.	B
-child	B
-.	B
-child	B
-.	B
-child	B
-.	B
-value	B
+return	I
+node	I
+.	I
+child	I
+.	I
+child	I
+.	I
+child	I
+.	I
+value	I
 

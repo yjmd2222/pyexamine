@@ -2,8 +2,8 @@
 path=image_organizer/lifecycle.py	-100
 
 class	B
-GalleryLifecycle	B
-:	B
+GalleryLifecycle	I
+:	I
 
     	I
 def	I

@@ -2,8 +2,8 @@
 path=log_analyzer/design.py	-100
 
 class	B
-FutureNotifier	B
-:	B
+FutureNotifier	I
+:	I
 
     	I-WITHIN
 def	I-WITHIN

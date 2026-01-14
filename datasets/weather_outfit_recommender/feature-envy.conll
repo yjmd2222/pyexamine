@@ -61,16 +61,16 @@ OutfitAdvisor	O
 :	O
 
     	B
-def	B
-recommend	B
-(	B
-self	B
-,	B
-profile	B
-:	B
-WeatherProfile	B
-)	B
-:	B
+def	I
+recommend	I
+(	I
+self	I
+,	I
+profile	I
+:	I
+WeatherProfile	I
+)	I
+:	I
 
         	I-WITHIN
 score	I-WITHIN

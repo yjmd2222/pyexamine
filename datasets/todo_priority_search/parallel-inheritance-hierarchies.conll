@@ -2,8 +2,8 @@
 path=todo_priority_search/templates.py	-100
 
 class	B
-BoardBase	B
-:	B
+BoardBase	I
+:	I
 
     	I
 def	I
@@ -18,11 +18,11 @@ return	I
 "base"	I
 
 class	B
-BoardSimple	B
-(	B
-BoardBase	B
-)	B
-:	B
+BoardSimple	I
+(	I
+BoardBase	I
+)	I
+:	I
 
     	I
 def	I
@@ -48,11 +48,11 @@ return	I
 "export_simple"	I
 
 class	B
-BoardAdvanced	B
-(	B
-BoardBase	B
-)	B
-:	B
+BoardAdvanced	I
+(	I
+BoardBase	I
+)	I
+:	I
 
     	I
 def	I
@@ -78,8 +78,8 @@ return	I
 "export_advanced"	I
 
 class	B
-CardBase	B
-:	B
+CardBase	I
+:	I
 
     	I
 def	I
@@ -94,11 +94,11 @@ return	I
 "base"	I
 
 class	B
-CardSimple	B
-(	B
-CardBase	B
-)	B
-:	B
+CardSimple	I
+(	I
+CardBase	I
+)	I
+:	I
 
     	I
 def	I
@@ -124,11 +124,11 @@ return	I
 "export_simple"	I
 
 class	B
-CardAdvanced	B
-(	B
-CardBase	B
-)	B
-:	B
+CardAdvanced	I
+(	I
+CardBase	I
+)	I
+:	I
 
     	I
 def	I

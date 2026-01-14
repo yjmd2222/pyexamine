@@ -2,22 +2,22 @@
 path=mini_search_engine/registry.py	-100
 
 import	B
-indexer	B
+indexer	I
 
 import	B
-tokenizer	B
+tokenizer	I
 
 import	B
-storage	B
+storage	I
 
 import	B
-cache	B
+cache	I
 
 import	B
-ranking	B
+ranking	I
 
 import	B
-queries	B
+queries	I
 
 def	O
 build_registry	O

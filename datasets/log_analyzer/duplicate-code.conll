@@ -108,19 +108,19 @@ result	O
 )	O
 
 def	B
-normalize_a	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_a	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -167,19 +167,19 @@ return	I
 out	I
 
 def	B
-normalize_b	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_b	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -226,19 +226,19 @@ return	I
 out	I
 
 def	B
-normalize_c	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_c	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -285,19 +285,19 @@ return	I
 out	I
 
 def	B
-normalize_d	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_d	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -344,19 +344,19 @@ return	I
 out	I
 
 def	B
-normalize_e	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_e	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -403,19 +403,19 @@ return	I
 out	I
 
 def	B
-normalize_f	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_f	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -462,19 +462,19 @@ return	I
 out	I
 
 def	B
-normalize_g	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_g	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -521,19 +521,19 @@ return	I
 out	I
 
 def	B
-normalize_h	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_h	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -580,19 +580,19 @@ return	I
 out	I
 
 def	B
-normalize_i	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_i	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -639,19 +639,19 @@ return	I
 out	I
 
 def	B
-normalize_j	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_j	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -698,19 +698,19 @@ return	I
 out	I
 
 def	B
-normalize_k	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_k	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -757,19 +757,19 @@ return	I
 out	I
 
 def	B
-normalize_l	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_l	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -816,19 +816,19 @@ return	I
 out	I
 
 def	B
-normalize_m	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_m	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -875,19 +875,19 @@ return	I
 out	I
 
 def	B
-normalize_n	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_n	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I
@@ -934,19 +934,19 @@ return	I
 out	I
 
 def	B
-normalize_o	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+normalize_o	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 out	I

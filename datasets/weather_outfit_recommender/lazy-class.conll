@@ -2,8 +2,8 @@
 path=weather_outfit_recommender/advisor.py	-100
 
 class	B
-WeatherProfile	B
-:	B
+WeatherProfile	I
+:	I
 
     	I
 def	I
@@ -57,8 +57,8 @@ in	I
 }	I
 
 class	B
-OutfitAdvisor	B
-:	B
+OutfitAdvisor	I
+:	I
 
     	I
 def	I
@@ -152,8 +152,8 @@ return	I
 path=weather_outfit_recommender/analyzer.py	-100
 
 class	B
-ForecastAnalyzer	B
-:	B
+ForecastAnalyzer	I
+:	I
 
     	I
 def	I
@@ -313,8 +313,8 @@ score	I
 path=weather_outfit_recommender/models.py	-100
 
 class	B
-WeatherSnapshot	B
-:	B
+WeatherSnapshot	I
+:	I
 
     	I
 def	I
@@ -449,8 +449,8 @@ _condition	I
 condition	I
 
 class	B
-UnitLookup	B
-:	B
+UnitLookup	I
+:	I
 
     	I
 def	I

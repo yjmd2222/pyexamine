@@ -2,17 +2,17 @@
 path=habit_tracker_reminders/notifier_a.py	-100
 
 def	B
-format_message	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+format_message	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -29,17 +29,17 @@ habit	I
 "	I
 
 def	B
-send_daily	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+send_daily	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -51,17 +51,17 @@ habit	I
 )	I
 
 def	B
-send_weekly	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+send_weekly	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -73,13 +73,13 @@ habit	I
 )	I
 
 def	B
-schedule_next	B
-(	B
-day	B
-:	B
-str	B
-)	B
-:	B
+schedule_next	I
+(	I
+day	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -94,17 +94,17 @@ day	I
 path=habit_tracker_reminders/notifier_b.py	-100
 
 def	B
-format_message	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+format_message	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -121,17 +121,17 @@ habit	I
 "	I
 
 def	B
-send_daily	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+send_daily	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -143,17 +143,17 @@ habit	I
 )	I
 
 def	B
-send_weekly	B
-(	B
-user	B
-:	B
-str	B
-,	B
-habit	B
-:	B
-str	B
-)	B
-:	B
+send_weekly	I
+(	I
+user	I
+:	I
+str	I
+,	I
+habit	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I
@@ -165,13 +165,13 @@ habit	I
 )	I
 
 def	B
-schedule_next	B
-(	B
-day	B
-:	B
-str	B
-)	B
-:	B
+schedule_next	I
+(	I
+day	I
+:	I
+str	I
+)	I
+:	I
 
     	I
 return	I

@@ -2,19 +2,19 @@
 path=weather_outfit_recommender/alerts.py	-100
 
 def	B-CALLFROM
-format_forecast	B-CALLFROM
-(	B-CALLFROM
-day	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-,	B-CALLFROM
-summary	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-)	B-CALLFROM
-->	B-CALLFROM
-str	B-CALLFROM
-:	B-CALLFROM
+format_forecast	I-CALLFROM
+(	I-CALLFROM
+day	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+,	I-CALLFROM
+summary	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+)	I-CALLFROM
+->	I-CALLFROM
+str	I-CALLFROM
+:	I-CALLFROM
 
     	I-CALLFROM
 return	I-CALLFROM
@@ -32,19 +32,19 @@ summary	I-CALLFROM
 path=weather_outfit_recommender/exports.py	-100
 
 def	B-CALLFROM
-format_forecast	B-CALLFROM
-(	B-CALLFROM
-day	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-,	B-CALLFROM
-summary	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-)	B-CALLFROM
-->	B-CALLFROM
-str	B-CALLFROM
-:	B-CALLFROM
+format_forecast	I-CALLFROM
+(	I-CALLFROM
+day	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+,	I-CALLFROM
+summary	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+)	I-CALLFROM
+->	I-CALLFROM
+str	I-CALLFROM
+:	I-CALLFROM
 
     	I-CALLFROM
 return	I-CALLFROM
@@ -62,19 +62,19 @@ summary	I-CALLFROM
 path=weather_outfit_recommender/ui.py	-100
 
 def	B-CALLFROM
-format_forecast	B-CALLFROM
-(	B-CALLFROM
-day	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-,	B-CALLFROM
-summary	B-CALLFROM
-:	B-CALLFROM
-str	B-CALLFROM
-)	B-CALLFROM
-->	B-CALLFROM
-str	B-CALLFROM
-:	B-CALLFROM
+format_forecast	I-CALLFROM
+(	I-CALLFROM
+day	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+,	I-CALLFROM
+summary	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+)	I-CALLFROM
+->	I-CALLFROM
+str	I-CALLFROM
+:	I-CALLFROM
 
     	I-CALLFROM
 banner	I-CALLFROM

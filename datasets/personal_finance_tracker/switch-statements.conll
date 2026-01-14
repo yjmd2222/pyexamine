@@ -530,11 +530,11 @@ str	O
 :	O
 
     	B
-if	B
-code	B
-==	B
-"new"	B
-:	B
+if	I
+code	I
+==	I
+"new"	I
+:	I
 
         	I
 label	I

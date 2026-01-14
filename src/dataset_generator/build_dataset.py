@@ -375,8 +375,18 @@ def _write_conll(handle, display_path, content, spans, scheme_labels):
         label = _label_for_token(row, spans, scheme_labels)
         if label not in scheme_labels:
             label = "O"
-        for token_str in token_lines[row]:
-            handle.write(f"{token_str}\t{label}\n")
+        tokens = token_lines[row]
+        if label.startswith("B") and len(tokens) > 1:
+            if label == "B-CALLFROM":
+                continuation = "I-CALLFROM"
+            else:
+                continuation = "I"
+            handle.write(f"{tokens[0]}\t{label}\n")
+            for token_str in tokens[1:]:
+                handle.write(f"{token_str}\t{continuation}\n")
+        else:
+            for token_str in tokens:
+                handle.write(f"{token_str}\t{label}\n")
         handle.write("\n")
 
 

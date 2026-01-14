@@ -337,8 +337,8 @@ return	O
 "30"	O
 
 class	B
-LogAggregator	B
-:	B
+LogAggregator	I
+:	I
 
     	I
 def	I

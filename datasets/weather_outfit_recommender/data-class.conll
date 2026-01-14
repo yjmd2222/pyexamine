@@ -2,8 +2,8 @@
 path=weather_outfit_recommender/models.py	-100
 
 class	B
-WeatherSnapshot	B
-:	B
+WeatherSnapshot	I
+:	I
 
     	I
 def	I

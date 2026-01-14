@@ -5,8 +5,8 @@ import	O
 shared	O
 
 class	B
-IntentRoute	B
-:	B
+IntentRoute	I
+:	I
 
     	I
 def	I
@@ -37,8 +37,8 @@ return	I
 0.0	I
 
 class	B
-IntentHandler	B
-:	B
+IntentHandler	I
+:	I
 
     	I
 def	I
@@ -69,8 +69,8 @@ return	I
 0.0	I
 
 class	B
-IntentPlanner	B
-:	B
+IntentPlanner	I
+:	I
 
     	I
 def	I
@@ -188,8 +188,8 @@ import	O
 feature_t	O
 
 class	B
-GraphBuilder	B
-:	B
+GraphBuilder	I
+:	I
 
     	I
 def	I
@@ -215,8 +215,8 @@ import	O
 shared	O
 
 class	B
-IntentRoute	B
-:	B
+IntentRoute	I
+:	I
 
     	I
 def	I
@@ -247,8 +247,8 @@ return	I
 0.0	I
 
 class	B
-IntentHandler	B
-:	B
+IntentHandler	I
+:	I
 
     	I
 def	I
@@ -279,8 +279,8 @@ return	I
 0.0	I
 
 class	B
-IntentPlanner	B
-:	B
+IntentPlanner	I
+:	I
 
     	I
 def	I

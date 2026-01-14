@@ -2,8 +2,8 @@
 path=todo_priority_search/callsites.py	-100
 
 class	B
-AuditLog	B
-:	B
+AuditLog	I
+:	I
 
     	I
 def	I
@@ -110,8 +110,8 @@ publish	I
 path=todo_priority_search/dispatch.py	-100
 
 class	B
-TaskDispatcher	B
-:	B
+TaskDispatcher	I
+:	I
 
     	I
 def	I
@@ -237,8 +237,8 @@ return	I
 path=todo_priority_search/templates.py	-100
 
 class	B
-BoardBase	B
-:	B
+BoardBase	I
+:	I
 
     	I
 def	I
@@ -392,8 +392,8 @@ return	I
 path=todo_priority_search/workflow.py	-100
 
 class	B
-TaskWorkflow	B
-:	B
+TaskWorkflow	I
+:	I
 
     	I
 def	I

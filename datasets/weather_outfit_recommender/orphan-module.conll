@@ -2,8 +2,8 @@
 path=weather_outfit_recommender/advisor.py	-100
 
 class	B
-WeatherProfile	B
-:	B
+WeatherProfile	I
+:	I
 
     	I
 def	I
@@ -182,8 +182,8 @@ summary	I
 path=weather_outfit_recommender/analyzer.py	-100
 
 class	B
-ForecastAnalyzer	B
-:	B
+ForecastAnalyzer	I
+:	I
 
     	I
 def	I
@@ -373,8 +373,8 @@ summary	I
 path=weather_outfit_recommender/models.py	-100
 
 class	B
-WeatherSnapshot	B
-:	B
+WeatherSnapshot	I
+:	I
 
     	I
 def	I

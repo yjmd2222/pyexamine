@@ -2,8 +2,8 @@
 path=mini_search_engine/relations.py	-100
 
 class	B
-ProfileState	B
-:	B
+ProfileState	I
+:	I
 
     	I
 def	I

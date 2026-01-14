@@ -6,16 +6,16 @@ TaskDispatcher	O
 :	O
 
     	B
-def	B
-trigger	B
-(	B
-self	B
-,	B
-command	B
-:	B
-str	B
-)	B
-:	B
+def	I
+trigger	I
+(	I
+self	I
+,	I
+command	I
+:	I
+str	I
+)	I
+:	I
 
         	I
 if	I

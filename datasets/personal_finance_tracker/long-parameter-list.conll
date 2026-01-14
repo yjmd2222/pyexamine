@@ -7,12 +7,12 @@ import	O
 date	O
 
 def	B
-categorize_income	B
-(	B
-amount	B
-:	B
-float	B
-,	B
+categorize_income	I
+(	I
+amount	I
+:	I
+float	I
+,	I
 
 currency	I
 :	I
@@ -101,12 +101,12 @@ label	I
 }	I
 
 def	B
-categorize_expense	B
-(	B
-amount	B
-:	B
-float	B
-,	B
+categorize_expense	I
+(	I
+amount	I
+:	I
+float	I
+,	I
 
 currency	I
 :	I
@@ -207,12 +207,12 @@ import	O
 date	O
 
 def	B
-add_transaction	B
-(	B
-user_id	B
-:	B
-int	B
-,	B
+add_transaction	I
+(	I
+user_id	I
+:	I
+int	I
+,	I
 
 account_id	I
 :	I

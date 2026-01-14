@@ -2,8 +2,8 @@
 path=web_scraper_price_monitor/extractors.py	-100
 
 class	B
-HtmlExtractor	B
-:	B
+HtmlExtractor	I
+:	I
 
     	I
 def	I
@@ -46,8 +46,8 @@ lower	I
 )	I
 
 class	B
-JsonExtractor	B
-:	B
+JsonExtractor	I
+:	I
 
     	I
 def	I
@@ -90,8 +90,8 @@ strip	I
 )	I
 
 class	B
-TextExtractor	B
-:	B
+TextExtractor	I
+:	I
 
     	I
 def	I

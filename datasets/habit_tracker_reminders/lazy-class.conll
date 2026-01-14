@@ -2,8 +2,8 @@
 path=habit_tracker_reminders/catalog.py	-100
 
 class	B
-HabitType01	B
-:	B
+HabitType01	I
+:	I
 
     	I
 def	I
@@ -18,8 +18,8 @@ return	I
 "habit_01"	I
 
 class	B
-HabitType02	B
-:	B
+HabitType02	I
+:	I
 
     	I
 def	I
@@ -34,8 +34,8 @@ return	I
 "habit_02"	I
 
 class	B
-HabitType03	B
-:	B
+HabitType03	I
+:	I
 
     	I
 def	I
@@ -50,8 +50,8 @@ return	I
 "habit_03"	I
 
 class	B
-HabitType04	B
-:	B
+HabitType04	I
+:	I
 
     	I
 def	I
@@ -66,8 +66,8 @@ return	I
 "habit_04"	I
 
 class	B
-HabitType05	B
-:	B
+HabitType05	I
+:	I
 
     	I
 def	I
@@ -82,8 +82,8 @@ return	I
 "habit_05"	I
 
 class	B
-HabitType06	B
-:	B
+HabitType06	I
+:	I
 
     	I
 def	I
@@ -98,8 +98,8 @@ return	I
 "habit_06"	I
 
 class	B
-HabitType07	B
-:	B
+HabitType07	I
+:	I
 
     	I
 def	I
@@ -114,8 +114,8 @@ return	I
 "habit_07"	I
 
 class	B
-HabitType08	B
-:	B
+HabitType08	I
+:	I
 
     	I
 def	I
@@ -130,8 +130,8 @@ return	I
 "habit_08"	I
 
 class	B
-HabitType09	B
-:	B
+HabitType09	I
+:	I
 
     	I
 def	I
@@ -146,8 +146,8 @@ return	I
 "habit_09"	I
 
 class	B
-HabitType10	B
-:	B
+HabitType10	I
+:	I
 
     	I
 def	I
@@ -162,8 +162,8 @@ return	I
 "habit_10"	I
 
 class	B
-HabitType11	B
-:	B
+HabitType11	I
+:	I
 
     	I
 def	I
@@ -178,8 +178,8 @@ return	I
 "habit_11"	I
 
 class	B
-HabitType12	B
-:	B
+HabitType12	I
+:	I
 
     	I
 def	I
@@ -194,8 +194,8 @@ return	I
 "habit_12"	I
 
 class	B
-HabitType13	B
-:	B
+HabitType13	I
+:	I
 
     	I
 def	I
@@ -210,8 +210,8 @@ return	I
 "habit_13"	I
 
 class	B
-HabitType14	B
-:	B
+HabitType14	I
+:	I
 
     	I
 def	I
@@ -226,8 +226,8 @@ return	I
 "habit_14"	I
 
 class	B
-HabitType15	B
-:	B
+HabitType15	I
+:	I
 
     	I
 def	I
@@ -242,8 +242,8 @@ return	I
 "habit_15"	I
 
 class	B
-HabitType16	B
-:	B
+HabitType16	I
+:	I
 
     	I
 def	I
@@ -258,8 +258,8 @@ return	I
 "habit_16"	I
 
 class	B
-HabitType17	B
-:	B
+HabitType17	I
+:	I
 
     	I
 def	I
@@ -274,8 +274,8 @@ return	I
 "habit_17"	I
 
 class	B
-HabitType18	B
-:	B
+HabitType18	I
+:	I
 
     	I
 def	I
@@ -290,8 +290,8 @@ return	I
 "habit_18"	I
 
 class	B
-HabitType19	B
-:	B
+HabitType19	I
+:	I
 
     	I
 def	I
@@ -306,8 +306,8 @@ return	I
 "habit_19"	I
 
 class	B
-HabitType20	B
-:	B
+HabitType20	I
+:	I
 
     	I
 def	I
@@ -365,11 +365,11 @@ title	O
 )	O
 
 class	B
-HabitDaily	B
-(	B
-HabitBase	B
-)	B
-:	B
+HabitDaily	I
+(	I
+HabitBase	I
+)	I
+:	I
 
     	I
 def	I
@@ -384,11 +384,11 @@ return	I
 "daily"	I
 
 class	B
-HabitWeekly	B
-(	B
-HabitDaily	B
-)	B
-:	B
+HabitWeekly	I
+(	I
+HabitDaily	I
+)	I
+:	I
 
     	I
 def	I
@@ -403,11 +403,11 @@ return	I
 "weekly"	I
 
 class	B
-HabitMonthly	B
-(	B
-HabitWeekly	B
-)	B
-:	B
+HabitMonthly	I
+(	I
+HabitWeekly	I
+)	I
+:	I
 
     	I
 def	I
@@ -422,11 +422,11 @@ return	I
 "monthly"	I
 
 class	B
-HabitAnnual	B
-(	B
-HabitMonthly	B
-)	B
-:	B
+HabitAnnual	I
+(	I
+HabitMonthly	I
+)	I
+:	I
 
     	I
 def	I

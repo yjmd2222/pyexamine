@@ -2,19 +2,19 @@
 path=log_analyzer/duplicates.py	-100
 
 def	B
-_template	B
-(	B
-entry	B
-,	B
-flag	B
-,	B
-tag	B
-,	B
-weight	B
-,	B
-source	B
-)	B
-:	B
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+:	I
 
     	I
 result	I
@@ -996,11 +996,11 @@ out	O
 path=log_analyzer/reports.py	-100
 
 def	B
-build_report	B
-(	B
-events	B
-)	B
-:	B
+build_report	I
+(	I
+events	I
+)	I
+:	I
 
     	I
 summary	I

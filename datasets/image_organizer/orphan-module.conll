@@ -2,8 +2,8 @@
 path=image_organizer/brokers.py	-100
 
 class	B
-ImportBroker	B
-:	B
+ImportBroker	I
+:	I
 
     	I
 def	I
@@ -122,8 +122,8 @@ path	I
 path=image_organizer/catalog.py	-100
 
 class	B
-AlbumCatalog	B
-:	B
+AlbumCatalog	I
+:	I
 
     	I
 def	I
@@ -317,8 +317,8 @@ cover_path	I
 path=image_organizer/layout.py	-100
 
 class	B
-LayoutPicker	B
-:	B
+LayoutPicker	I
+:	I
 
     	I
 def	I
@@ -444,8 +444,8 @@ return	I
 path=image_organizer/lifecycle.py	-100
 
 class	B
-GalleryLifecycle	B
-:	B
+GalleryLifecycle	I
+:	I
 
     	I
 def	I
@@ -692,8 +692,8 @@ state	I
 path=image_organizer/rules.py	-100
 
 class	B
-RetentionPolicy	B
-:	B
+RetentionPolicy	I
+:	I
 
     	I
 def	I

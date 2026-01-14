@@ -2,11 +2,11 @@
 path=log_analyzer/reports.py	-100
 
 def	B
-build_report	B
-(	B
-events	B
-)	B
-:	B
+build_report	I
+(	I
+events	I
+)	I
+:	I
 
     	I
 summary	I

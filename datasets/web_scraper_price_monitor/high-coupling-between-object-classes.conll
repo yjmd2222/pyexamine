@@ -2,8 +2,8 @@
 path=web_scraper_price_monitor/pipeline.py	-100
 
 class	B
-MonitorPipeline	B
-:	B
+MonitorPipeline	I
+:	I
 
     	I
 def	I

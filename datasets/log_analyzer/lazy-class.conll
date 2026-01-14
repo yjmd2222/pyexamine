@@ -2,8 +2,8 @@
 path=log_analyzer/aggregator.py	-100
 
 class	B
-Tooling	B
-:	B
+Tooling	I
+:	I
 
     	I
 def	I
@@ -337,8 +337,8 @@ return	I
 "30"	I
 
 class	B
-LogAggregator	B
-:	B
+LogAggregator	I
+:	I
 
     	I
 def	I
@@ -710,8 +710,8 @@ return	I
 path=log_analyzer/chains.py	-100
 
 class	B
-Node	B
-:	B
+Node	I
+:	I
 
     	I
 def	I
@@ -763,8 +763,8 @@ value	O
 path=log_analyzer/design.py	-100
 
 class	B
-FutureNotifier	B
-:	B
+FutureNotifier	I
+:	I
 
     	I
 def	I

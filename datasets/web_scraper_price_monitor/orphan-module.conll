@@ -2,8 +2,8 @@
 path=web_scraper_price_monitor/client.py	-100
 
 class	B
-FetchSession	B
-:	B
+FetchSession	I
+:	I
 
     	I
 def	I
@@ -300,8 +300,8 @@ results	I
 path=web_scraper_price_monitor/extractors.py	-100
 
 class	B
-HtmlExtractor	B
-:	B
+HtmlExtractor	I
+:	I
 
     	I
 def	I
@@ -614,8 +614,8 @@ message	I
 path=web_scraper_price_monitor/pipeline.py	-100
 
 class	B
-MonitorPipeline	B
-:	B
+MonitorPipeline	I
+:	I
 
     	I
 def	I
@@ -763,8 +763,8 @@ data	I
 path=web_scraper_price_monitor/state.py	-100
 
 class	B
-MonitorState	B
-:	B
+MonitorState	I
+:	I
 
     	I
 last_price	I

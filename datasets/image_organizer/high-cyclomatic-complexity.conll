@@ -6,16 +6,16 @@ LayoutPicker	O
 :	O
 
     	B
-def	B
-select	B
-(	B
-self	B
-,	B
-mode	B
-:	B
-str	B
-)	B
-:	B
+def	I
+select	I
+(	I
+self	I
+,	I
+mode	I
+:	I
+str	I
+)	I
+:	I
 
         	I
 if	I

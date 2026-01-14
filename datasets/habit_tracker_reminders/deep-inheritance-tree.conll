@@ -2,8 +2,8 @@
 path=habit_tracker_reminders/habits.py	-100
 
 class	B
-HabitBase	B
-:	B
+HabitBase	I
+:	I
 
     	I
 def	I
@@ -42,11 +42,11 @@ title	I
 )	I
 
 class	B
-HabitDaily	B
-(	B
-HabitBase	B
-)	B
-:	B
+HabitDaily	I
+(	I
+HabitBase	I
+)	I
+:	I
 
     	I
 def	I
@@ -61,11 +61,11 @@ return	I
 "daily"	I
 
 class	B
-HabitWeekly	B
-(	B
-HabitDaily	B
-)	B
-:	B
+HabitWeekly	I
+(	I
+HabitDaily	I
+)	I
+:	I
 
     	I
 def	I
@@ -80,11 +80,11 @@ return	I
 "weekly"	I
 
 class	B
-HabitMonthly	B
-(	B
-HabitWeekly	B
-)	B
-:	B
+HabitMonthly	I
+(	I
+HabitWeekly	I
+)	I
+:	I
 
     	I
 def	I
@@ -99,11 +99,11 @@ return	I
 "monthly"	I
 
 class	B
-HabitAnnual	B
-(	B
-HabitMonthly	B
-)	B
-:	B
+HabitAnnual	I
+(	I
+HabitMonthly	I
+)	I
+:	I
 
     	I
 def	I

@@ -2,8 +2,8 @@
 path=personal_finance_tracker/monolith.py	-100
 
 class	B
-FinanceDirector	B
-:	B
+FinanceDirector	I
+:	I
 
     	I-WITHIN
 def	I-WITHIN

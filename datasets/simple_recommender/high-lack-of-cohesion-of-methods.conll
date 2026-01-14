@@ -2,8 +2,8 @@
 path=simple_recommender/scoring.py	-100
 
 class	B
-SimilarityScorer	B
-:	B
+SimilarityScorer	I
+:	I
 
     	I
 def	I

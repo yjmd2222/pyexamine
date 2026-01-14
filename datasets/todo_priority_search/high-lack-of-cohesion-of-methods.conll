@@ -2,8 +2,8 @@
 path=todo_priority_search/workflow.py	-100
 
 class	B
-TaskWorkflow	B
-:	B
+TaskWorkflow	I
+:	I
 
     	I
 def	I

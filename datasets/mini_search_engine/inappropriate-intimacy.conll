@@ -47,8 +47,8 @@ tier	O
 tier	O
 
 class	B
-ProfileInspector	B
-:	B
+ProfileInspector	I
+:	I
 
     	I-WITHIN
 def	I-WITHIN

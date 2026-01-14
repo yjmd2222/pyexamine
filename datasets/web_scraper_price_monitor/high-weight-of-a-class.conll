@@ -2,8 +2,8 @@
 path=web_scraper_price_monitor/state.py	-100
 
 class	B
-MonitorState	B
-:	B
+MonitorState	I
+:	I
 
     	I
 last_price	I
