@@ -271,7 +271,7 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
-                    if isinstance(node, nodes.FunctionDef):
+                    if isinstance(node_child, nodes.FunctionDef):
                         detect(node_child, file_path)
             elif isinstance(node, nodes.FunctionDef):
                 detect(node, file_path)
@@ -385,7 +385,7 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
-                    if isinstance(node, nodes.FunctionDef):
+                    if isinstance(node_child, nodes.FunctionDef):
                         detect(node_child, file_path)
             elif isinstance(node, nodes.FunctionDef):
                 detect(node, file_path)
@@ -440,7 +440,7 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
-                    if isinstance(node, nodes.FunctionDef):
+                    if isinstance(node_child, nodes.FunctionDef):
                         detect(node_child, file_path)
             elif isinstance(node, nodes.FunctionDef):
                 detect(node, file_path)
@@ -478,7 +478,7 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
-                    if isinstance(node, nodes.FunctionDef):
+                    if isinstance(node_child, nodes.FunctionDef):
                         find_parameter_groups(node_child, parameter_groups)
             elif isinstance(node, nodes.FunctionDef):
                 find_parameter_groups(node, parameter_groups)
@@ -1451,7 +1451,7 @@ class CodeSmellDetector:
         for node in module.body:
             if isinstance(node, nodes.ClassDef):
                 for node_child in node.body:
-                    if isinstance(node, nodes.FunctionDef):
+                    if isinstance(node_child, nodes.FunctionDef):
                         detect(node_child, file_path)
             elif isinstance(node, nodes.FunctionDef):
                 detect(node, file_path)

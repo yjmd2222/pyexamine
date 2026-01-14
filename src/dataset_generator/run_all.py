@@ -10,6 +10,15 @@ def run_command(command, env):
         raise SystemExit(result.returncode)
 
 
+def _default_output_dir(code_path):
+    candidate = os.path.abspath(code_path)
+    if os.path.isfile(candidate) or candidate.endswith(".py"):
+        candidate = os.path.dirname(candidate)
+    base_name = os.path.basename(os.path.normpath(candidate))
+    base_name = base_name or "code"
+    return f"dataset_{base_name}"
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Run code quality analysis and generate per-smell CoNLL datasets."
@@ -18,11 +27,11 @@ def main():
     parser.add_argument("--config", required=True, help="Path to code quality config YAML")
     parser.add_argument("--report", default="code_quality_report.json",
                         help="Output path for code_quality_report.json")
-    parser.add_argument("--labels", default="master-thesis-materials/data/labels.json",
-                        help="Path to labels.json")
-    parser.add_argument("--output-dir", default="dataset_conll",
+    parser.add_argument("--output-dir", default=None,
                         help="Output directory for per-smell CoNLL files")
     args = parser.parse_args()
+
+    output_dir = args.output_dir or _default_output_dir(args.code_path)
 
     env = os.environ.copy()
     env["PYTHONPATH"] = os.pathsep.join(
@@ -39,8 +48,7 @@ def main():
         sys.executable, "-m", "dataset_generator",
         args.code_path,
         "--report", args.report,
-        "--labels", args.labels,
-        "--output-dir", args.output_dir
+        "--output-dir", output_dir
     ]
     run_command(dataset_cmd, env)
 

@@ -11,6 +11,141 @@ LABEL_PRIORITY = {
     "primary": 1,
 }
 
+LABELS = {
+    "schemes": {
+        "A": ["O", "B", "I"],
+        "B": ["O", "B", "I", "I-WITHIN"],
+        "C": ["O", "B", "I", "B-CALLFROM", "I-CALLFROM"],
+        "D": ["O", "B", "I", "I-WITHIN", "B-CALLFROM", "I-CALLFROM"],
+    },
+    "labels_by_scheme": {
+        "A": {
+            "labels": ["O", "B", "I"],
+            "id2label": {"0": "O", "1": "B", "2": "I"},
+            "label2id": {"O": 0, "B": 1, "I": 2},
+        },
+        "B": {
+            "labels": ["O", "B", "I", "I-WITHIN"],
+            "id2label": {"0": "O", "1": "B", "2": "I", "3": "I-WITHIN"},
+            "label2id": {"O": 0, "B": 1, "I": 2, "I-WITHIN": 3},
+        },
+        "C": {
+            "labels": ["O", "B", "I", "B-CALLFROM", "I-CALLFROM"],
+            "id2label": {"0": "O", "1": "B", "2": "I", "3": "B-CALLFROM", "4": "I-CALLFROM"},
+            "label2id": {"O": 0, "B": 1, "I": 2, "B-CALLFROM": 3, "I-CALLFROM": 4},
+        },
+        "D": {
+            "labels": ["O", "B", "I", "I-WITHIN", "B-CALLFROM", "I-CALLFROM"],
+            "id2label": {
+                "0": "O",
+                "1": "B",
+                "2": "I",
+                "3": "I-WITHIN",
+                "4": "B-CALLFROM",
+                "5": "I-CALLFROM",
+            },
+            "label2id": {"O": 0, "B": 1, "I": 2, "I-WITHIN": 3, "B-CALLFROM": 4, "I-CALLFROM": 5},
+        },
+    },
+    "slug_map": {
+        "Long Method": "long-method",
+        "Large Class": "large-class-1",
+        "Primitive Obsession": "primitive-obsession",
+        "Long Parameter List": "long-parameter-list",
+        "Data Clumps": "data-clumps",
+        "Switch Statements": "switch-statements",
+        "Temporary Field": "temporary-field",
+        "Alternative Classes with Different Interfaces": "alternative-classes-with-different-interfaces",
+        "Potential Divergent Change": "potential-divergent-change",
+        "Parallel Inheritance Hierarchies": "parallel-inheritance-hierarchies",
+        "Potential Shotgun Surgery": "potential-shotgun-surgery",
+        "Excessive Comments": "excessive-comments",
+        "Duplicate Code": "duplicate-code",
+        "Data Class": "data-class",
+        "Dead Code": "dead-code",
+        "Lazy Class": "lazy-class",
+        "Speculative Generality": "speculative-generality",
+        "Feature Envy": "feature-envy",
+        "Inappropriate Intimacy": "inappropriate-intimacy",
+        "Message Chains": "message-chains",
+        "Middle Man": "middle-man",
+        "Hub-like Dependency": "hub-like-dependency",
+        "Scattered Functionality": "scattered-functionality",
+        "Potential Redundant Abstractions": "potential-redundant-abstractions",
+        "God Object": "god-object",
+        "Potential Improper API Usage": "potential-improper-api-usage",
+        "Orphan Module": "orphan-module",
+        "Cyclic Dependency": "cyclic-dependency",
+        "Unstable Dependency": "unstable-dependency",
+        "High Number of Methods (NOM)": "high-number-of-methods",
+        "High Weighted Methods per Class (WMPC)": "high-weighted-methods-per-class",
+        "Large Class (SIZE2)": "large-class-2",
+        "High Weight of a Class (WAC)": "high-weight-of-a-class",
+        "High Lack of Cohesion of Methods (LCOM)": "high-lack-of-cohesion-of-methods",
+        "High Response for a Class (RFC)": "high-response-for-a-class",
+        "High Number of Classes per Module": "high-number-of-classes-per-module",
+        "Deep Inheritance Tree (DIT)": "deep-inheritance-tree",
+        "High Lines of Code (LOC)": "high-lines-of-code",
+        "High Message Passing Coupling (MPC)": "high-message-passing-coupling",
+        "High Coupling Between Object Classes (CBO)": "high-coupling-between-object-classes",
+        "High Number of classes Per Project": "high-number-of-classes-per-project",
+        "High Cyclomatic Complexity": "high-cyclomatic-complexity",
+        "High Fan-out": "high-fan-out",
+        "High Fan-in": "high-fan-in",
+        "Long File": "long-file",
+        "Too Many Branches": "too-many-branches",
+    },
+    "smell_schemes": {
+        "long-method": "A",
+        "large-class-1": "A",
+        "primitive-obsession": "A",
+        "long-parameter-list": "A",
+        "data-clumps": "A",
+        "switch-statements": "A",
+        "temporary-field": "A",
+        "alternative-classes-with-different-interfaces": "A",
+        "potential-divergent-change": "B",
+        "parallel-inheritance-hierarchies": "A",
+        "potential-shotgun-surgery": "A",
+        "excessive-comments": "A",
+        "duplicate-code": "A",
+        "data-class": "B",
+        "dead-code": "A",
+        "lazy-class": "A",
+        "speculative-generality": "B",
+        "feature-envy": "B",
+        "inappropriate-intimacy": "B",
+        "message-chains": "A",
+        "middle-man": "B",
+        "hub-like-dependency": "D",
+        "scattered-functionality": "C",
+        "potential-redundant-abstractions": "A",
+        "god-object": "B",
+        "potential-improper-api-usage": "A",
+        "orphan-module": "A",
+        "cyclic-dependency": "A",
+        "unstable-dependency": "D",
+        "high-number-of-methods": "A",
+        "high-weighted-methods-per-class": "A",
+        "large-class-2": "A",
+        "high-weight-of-a-class": "A",
+        "high-lack-of-cohesion-of-methods": "A",
+        "high-response-for-a-class": "A",
+        "high-number-of-classes-per-module": "A",
+        "deep-inheritance-tree": "A",
+        "high-lines-of-code": "A",
+        "high-message-passing-coupling": "B",
+        "high-coupling-between-object-classes": "B",
+        "high-number-of-classes-per-project": "A",
+        "high-cyclomatic-complexity": "A",
+        "high-fan-out": "A",
+        "high-fan-in": "C",
+        "long-file": "A",
+        "too-many-branches": "A",
+    },
+    "unmapped_smells": [],
+}
+
 
 def _load_json(path):
     with open(path, "r", encoding="utf-8") as handle:
@@ -29,6 +164,22 @@ def _iter_code_files(root_path):
 
 
 def _tokenize_by_line(content):
+    def _normalize_indentation(text):
+        normalized_lines = []
+        for line in text.splitlines(keepends=True):
+            stripped = line.lstrip(" \t")
+            if stripped == line:
+                normalized_lines.append(line)
+                continue
+            leading = line[: len(line) - len(stripped)]
+            expanded = leading.expandtabs(4)
+            count = len(expanded)
+            if count % 4 != 0:
+                count = ((count + 3) // 4) * 4
+            normalized_lines.append((" " * count) + stripped)
+        return "".join(normalized_lines)
+
+    content = _normalize_indentation(content)
     token_lines = {}
     reader = io.StringIO(content)
     try:
@@ -51,6 +202,15 @@ def _tokenize_by_line(content):
 def _read_file(path):
     with open(path, "r", encoding="utf-8", errors="ignore") as handle:
         return handle.read()
+
+
+def _default_output_dir(code_path):
+    candidate = os.path.abspath(code_path)
+    if os.path.isfile(candidate) or candidate.endswith(".py"):
+        candidate = os.path.dirname(candidate)
+    base_name = os.path.basename(os.path.normpath(candidate))
+    base_name = base_name or "code"
+    return f"dataset_{base_name}"
 
 
 def _normalize_path(path, code_root):
@@ -220,9 +380,8 @@ def _write_conll(handle, file_path, content, spans, scheme_labels):
         handle.write("\n")
 
 
-def build_dataset(code_root, report_path, labels_path, output_dir):
+def build_dataset(code_root, report_path, labels_data, output_dir):
     report_entries = _load_json(report_path)
-    labels_data = _load_json(labels_path)
     smell_schemes = labels_data["smell_schemes"]
     name_to_slug = labels_data["slug_map"]
     global scheme_labels
@@ -248,12 +407,11 @@ def main():
     parser = argparse.ArgumentParser(description="Build per-smell CoNLL datasets from source code and a PyExamine report.")
     parser.add_argument("code_path", help="Path to a code file or directory to include.")
     parser.add_argument("--report", required=True, help="Path to code_quality_report.json")
-    parser.add_argument("--labels", default="master-thesis-materials/data/labels.json",
-                        help="Path to labels.json")
-    parser.add_argument("--output-dir", default="dataset_conll", help="Output directory")
+    parser.add_argument("--output-dir", default=None, help="Output directory")
     args = parser.parse_args()
 
-    build_dataset(args.code_path, args.report, args.labels, args.output_dir)
+    output_dir = args.output_dir or _default_output_dir(args.code_path)
+    build_dataset(args.code_path, args.report, LABELS, output_dir)
 
 
 if __name__ == "__main__":
