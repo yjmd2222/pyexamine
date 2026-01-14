@@ -1,0 +1,79 @@
+import argparse
+import os
+import subprocess
+import sys
+
+
+def _with_pythonpath(env):
+    pyexamine_src = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    env["PYTHONPATH"] = os.pathsep.join(
+        filter(None, [env.get("PYTHONPATH"), pyexamine_src])
+    )
+    return env
+
+
+def _run(command):
+    result = subprocess.run(command, env=_with_pythonpath(os.environ.copy()), check=False)
+    if result.returncode != 0:
+        raise SystemExit(result.returncode)
+
+
+def main():
+    parser = argparse.ArgumentParser(prog="pyexamine", description="PyExamine command line interface.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    analyze_parser = subparsers.add_parser(
+        "analyze",
+        help="Analyze code quality and produce a report."
+    )
+    analyze_parser.add_argument("code_path", help="Path to a code file or directory to include.")
+    analyze_parser.add_argument("--config", default="code_quality_config.yaml",
+                                help="Path to the configuration file")
+    analyze_parser.add_argument("--output", help="Path to the output report (.json/.csv/.txt)")
+    analyze_parser.add_argument("--type", choices=["code", "architectural", "structural"],
+                                help="Type of smell to analyze (default: all)")
+    analyze_parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+
+    dataset_parser = subparsers.add_parser(
+        "smell_dataset",
+        help="Analyze code quality and generate per-smell CoNLL datasets."
+    )
+    dataset_parser.add_argument("code_path", help="Path to a code file or directory to include.")
+    dataset_parser.add_argument("--config", required=True, help="Path to code quality config YAML")
+    dataset_parser.add_argument("--report", default="code_quality_report.json",
+                                help="Output path for code_quality_report.json")
+    dataset_parser.add_argument("--output-dir", default=None,
+                                help="Output directory for per-smell CoNLL files")
+
+    args = parser.parse_args()
+
+    if args.command == "analyze":
+        cmd = [
+            sys.executable, "-m", "code_quality_analyzer.main",
+            args.code_path,
+            "--config", args.config
+        ]
+        if args.output:
+            cmd.extend(["--output", args.output])
+        if args.type:
+            cmd.extend(["--type", args.type])
+        if args.debug:
+            cmd.append("--debug")
+        _run(cmd)
+        return
+
+    if args.command == "smell_dataset":
+        cmd = [
+            sys.executable, "-m", "dataset_generator.run_all",
+            args.code_path,
+            "--config", args.config,
+            "--report", args.report,
+        ]
+        if args.output_dir:
+            cmd.extend(["--output-dir", args.output_dir])
+        _run(cmd)
+        return
+
+
+if __name__ == "__main__":
+    main()

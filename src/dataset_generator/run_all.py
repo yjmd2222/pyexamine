@@ -34,8 +34,9 @@ def main():
     output_dir = args.output_dir or _default_output_dir(args.code_path)
 
     env = os.environ.copy()
+    pyexamine_src = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     env["PYTHONPATH"] = os.pathsep.join(
-        filter(None, [env.get("PYTHONPATH"), "master-thesis-materials/pyexamine/src"])
+        filter(None, [env.get("PYTHONPATH"), pyexamine_src])
     )
 
     analyze_cmd = [
