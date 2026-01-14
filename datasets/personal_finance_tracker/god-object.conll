@@ -1,0 +1,239 @@
+[file]	-100
+path=personal_finance_tracker/monolith.py	-100
+
+class	B
+FinanceDirector	B
+:	B
+
+    	I-WITHIN
+def	I-WITHIN
+reconcile_day	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"reconcile_day"	I-WITHIN
+
+def	I-WITHIN
+reconcile_week	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"reconcile_week"	I-WITHIN
+
+def	I-WITHIN
+reconcile_month	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"reconcile_month"	I-WITHIN
+
+def	I-WITHIN
+summarize_accounts	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"summarize_accounts"	I-WITHIN
+
+def	I-WITHIN
+summarize_categories	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"summarize_categories"	I-WITHIN
+
+def	I-WITHIN
+summarize_merchants	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"summarize_merchants"	I-WITHIN
+
+def	I-WITHIN
+import_csv	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"import_csv"	I-WITHIN
+
+def	I-WITHIN
+import_bank_feed	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"import_bank_feed"	I-WITHIN
+
+def	I-WITHIN
+export_csv	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"export_csv"	I-WITHIN
+
+def	I-WITHIN
+export_pdf	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"export_pdf"	I-WITHIN
+
+def	I-WITHIN
+manage_budgets	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_budgets"	I-WITHIN
+
+def	I-WITHIN
+manage_alerts	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_alerts"	I-WITHIN
+
+def	I-WITHIN
+manage_rules	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_rules"	I-WITHIN
+
+def	I-WITHIN
+manage_categories	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_categories"	I-WITHIN
+
+def	I-WITHIN
+manage_merchants	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_merchants"	I-WITHIN
+
+def	I-WITHIN
+manage_accounts	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_accounts"	I-WITHIN
+
+def	I-WITHIN
+manage_cash_flow	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_cash_flow"	I-WITHIN
+
+def	I-WITHIN
+manage_goals	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"manage_goals"	I-WITHIN
+
+def	I-WITHIN
+audit_changes	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"audit_changes"	I-WITHIN
+
+def	I-WITHIN
+sync_cloud	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"sync_cloud"	I-WITHIN
+
+def	I-WITHIN
+generate_report_pack	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"generate_report_pack"	I-WITHIN
+

@@ -32,6 +32,9 @@ def main():
     args = parser.parse_args()
 
     output_dir = args.output_dir or _default_output_dir(args.code_path)
+    report_dir = os.path.dirname(os.path.abspath(args.report))
+    if report_dir:
+        os.makedirs(report_dir, exist_ok=True)
 
     env = os.environ.copy()
     pyexamine_src = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

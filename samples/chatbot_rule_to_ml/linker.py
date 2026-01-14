@@ -1,0 +1,25 @@
+import shared
+
+
+class IntentRoute:
+    def __init__(self, name):
+        self.name = name
+
+    def score(self):
+        return 0.0
+
+
+class IntentHandler:
+    def __init__(self, name):
+        self.name = name
+
+    def score(self):
+        return 0.0
+
+
+class IntentPlanner:
+    def __init__(self, name):
+        self.name = name
+
+    def score(self):
+        return 0.0

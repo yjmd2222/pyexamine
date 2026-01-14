@@ -1,0 +1,121 @@
+[file]	-100
+path=mini_search_engine/relations.py	-100
+
+class	B
+ProfileState	B
+:	B
+
+    	I
+def	I
+__init__	I
+(	I
+self	I
+,	I
+balance	I
+,	I
+status	I
+,	I
+limit	I
+,	I
+tier	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+balance	I
+=	I
+balance	I
+
+self	I
+.	I
+status	I
+=	I
+status	I
+
+self	I
+.	I
+limit	I
+=	I
+limit	I
+
+self	I
+.	I
+tier	I
+=	I
+tier	I
+
+class	I
+ProfileInspector	I
+:	I
+
+    	I
+def	I
+balance	I
+(	I
+self	I
+,	I
+state	I
+:	I
+ProfileState	I
+)	I
+:	I
+
+        	I
+return	I
+state	I
+.	I
+balance	I
+
+def	I
+status	I
+(	I
+self	I
+,	I
+state	I
+:	I
+ProfileState	I
+)	I
+:	I
+
+        	I
+return	I
+state	I
+.	I
+status	I
+
+def	I
+limit	I
+(	I
+self	I
+,	I
+state	I
+:	I
+ProfileState	I
+)	I
+:	I
+
+        	I
+return	I
+state	I
+.	I
+limit	I
+
+def	I
+tier	I
+(	I
+self	I
+,	I
+state	I
+:	I
+ProfileState	I
+)	I
+:	I
+
+        	I
+return	I
+state	I
+.	I
+tier	I
+

@@ -1,0 +1,60 @@
+[file]	-100
+path=mini_search_engine/link_a.py	-100
+
+import	B
+link_b	B
+
+def	O
+follow_a	O
+(	O
+)	O
+:	O
+
+    	O
+return	O
+link_b	O
+.	O
+follow_b	O
+(	O
+)	O
+
+[file]	-100
+path=mini_search_engine/link_b.py	-100
+
+import	B
+link_c	B
+
+def	O
+follow_b	O
+(	O
+)	O
+:	O
+
+    	O
+return	O
+link_c	O
+.	O
+follow_c	O
+(	O
+)	O
+
+[file]	-100
+path=mini_search_engine/link_c.py	-100
+
+import	B
+link_a	B
+
+def	O
+follow_c	O
+(	O
+)	O
+:	O
+
+    	O
+return	O
+link_a	O
+.	O
+follow_a	O
+(	O
+)	O
+

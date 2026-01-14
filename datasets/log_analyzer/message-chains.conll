@@ -1,0 +1,53 @@
+[file]	-100
+path=log_analyzer/chains.py	-100
+
+class	O
+Node	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+child	O
+=	O
+None	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+child	O
+=	O
+child	O
+
+self	O
+.	O
+value	O
+=	O
+"x"	O
+
+def	O
+extract_path	O
+(	O
+node	O
+:	O
+Node	O
+)	O
+:	O
+
+    	B
+return	B
+node	B
+.	B
+child	B
+.	B
+child	B
+.	B
+child	B
+.	B
+value	B
+

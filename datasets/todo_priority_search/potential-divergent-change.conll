@@ -1,0 +1,74 @@
+[file]	-100
+path=todo_priority_search/workflow.py	-100
+
+class	B
+TaskWorkflow	B
+:	B
+
+    	I-WITHIN
+def	I-WITHIN
+sync_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"sync_state"	I-WITHIN
+
+def	I-WITHIN
+index_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"index_state"	I-WITHIN
+
+def	I-WITHIN
+export_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"export_state"	I-WITHIN
+
+def	I-WITHIN
+notify_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"notify_state"	I-WITHIN
+
+def	I-WITHIN
+audit_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"audit_state"	I-WITHIN
+
+def	I-WITHIN
+alert_state	I-WITHIN
+(	I-WITHIN
+self	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+        	I-WITHIN
+return	I-WITHIN
+"alert_state"	I-WITHIN
+

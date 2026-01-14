@@ -366,9 +366,9 @@ def _label_for_token(line_number, spans, scheme_labels):
     return "B" if line_number == start else "I"
 
 
-def _write_conll(handle, file_path, content, spans, scheme_labels):
+def _write_conll(handle, display_path, content, spans, scheme_labels):
     handle.write("[file]\t-100\n")
-    handle.write(f"path={file_path}\t-100\n\n")
+    handle.write(f"path={display_path}\t-100\n\n")
 
     token_lines = _tokenize_by_line(content)
     for row in sorted(token_lines):
@@ -388,6 +388,7 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
     scheme_labels = labels_data["schemes"]
 
     code_root = os.path.abspath(code_root)
+    samples_root = os.path.abspath(os.path.join(code_root, os.pardir))
     spans_by_smell = _build_smell_spans(report_entries, smell_schemes, name_to_slug, code_root)
 
     os.makedirs(output_dir, exist_ok=True)
@@ -400,7 +401,14 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
             for file_path, file_spans in sorted(spans_by_file.items()):
                 content = _read_file(file_path)
                 scheme = smell_schemes.get(slug, "A")
-                _write_conll(handle, file_path, content, file_spans, scheme_labels[scheme])
+                display_path = file_path
+                try:
+                    common_root = os.path.commonpath([samples_root, file_path])
+                except ValueError:
+                    common_root = ""
+                if common_root == samples_root:
+                    display_path = os.path.relpath(file_path, samples_root)
+                _write_conll(handle, display_path, content, file_spans, scheme_labels[scheme])
 
 
 def main():

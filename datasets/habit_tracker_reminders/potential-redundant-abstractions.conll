@@ -1,0 +1,184 @@
+[file]	-100
+path=habit_tracker_reminders/notifier_a.py	-100
+
+def	B
+format_message	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+f"	I
+Hi 	I
+{	I
+user	I
+}	I
+, remember 	I
+{	I
+habit	I
+}	I
+.	I
+"	I
+
+def	B
+send_daily	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+format_message	I
+(	I
+user	I
+,	I
+habit	I
+)	I
+
+def	B
+send_weekly	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+format_message	I
+(	I
+user	I
+,	I
+habit	I
+)	I
+
+def	B
+schedule_next	B
+(	B
+day	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+f"	I
+next:	I
+{	I
+day	I
+}	I
+"	I
+
+[file]	-100
+path=habit_tracker_reminders/notifier_b.py	-100
+
+def	B
+format_message	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+f"	I
+Hello 	I
+{	I
+user	I
+}	I
+, keep up with 	I
+{	I
+habit	I
+}	I
+.	I
+"	I
+
+def	B
+send_daily	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+format_message	I
+(	I
+user	I
+,	I
+habit	I
+)	I
+
+def	B
+send_weekly	B
+(	B
+user	B
+:	B
+str	B
+,	B
+habit	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+format_message	I
+(	I
+user	I
+,	I
+habit	I
+)	I
+
+def	B
+schedule_next	B
+(	B
+day	B
+:	B
+str	B
+)	B
+:	B
+
+    	I
+return	I
+f"	I
+next:	I
+{	I
+day	I
+}	I
+"	I
+

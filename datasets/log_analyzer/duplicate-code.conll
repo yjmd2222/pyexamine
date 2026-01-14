@@ -1,0 +1,994 @@
+[file]	-100
+path=log_analyzer/duplicates.py	-100
+
+def	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+result	O
+=	O
+[	O
+]	O
+
+result	O
+.	O
+append	O
+(	O
+str	O
+(	O
+entry	O
+)	O
+.	O
+strip	O
+(	O
+)	O
+)	O
+
+result	O
+.	O
+append	O
+(	O
+str	O
+(	O
+flag	O
+)	O
+.	O
+strip	O
+(	O
+)	O
+)	O
+
+result	O
+.	O
+append	O
+(	O
+str	O
+(	O
+tag	O
+)	O
+.	O
+strip	O
+(	O
+)	O
+)	O
+
+result	O
+.	O
+append	O
+(	O
+str	O
+(	O
+weight	O
+)	O
+.	O
+strip	O
+(	O
+)	O
+)	O
+
+result	O
+.	O
+append	O
+(	O
+str	O
+(	O
+source	O
+)	O
+.	O
+strip	O
+(	O
+)	O
+)	O
+
+result	O
+.	O
+append	O
+(	O
+"ok"	O
+)	O
+
+return	O
+":"	O
+.	O
+join	O
+(	O
+result	O
+)	O
+
+def	B
+normalize_a	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_b	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_c	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_d	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_e	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_f	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_g	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_h	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_i	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_j	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_k	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_l	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_m	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_n	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+
+def	B
+normalize_o	B
+(	B
+entry	B
+,	B
+flag	B
+,	B
+tag	B
+,	B
+weight	B
+,	B
+source	B
+)	B
+:	B
+
+    	I
+out	I
+=	I
+_template	I
+(	I
+entry	I
+,	I
+flag	I
+,	I
+tag	I
+,	I
+weight	I
+,	I
+source	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	I
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	I
+=	I
+out	I
++	I
+""	I
+
+return	I
+out	I
+

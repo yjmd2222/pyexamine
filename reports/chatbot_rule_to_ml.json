@@ -1,0 +1,579 @@
+[
+    {
+        "type": "Structural",
+        "name": "High Fan-out",
+        "description": "Module 'graph' has 23 significant outgoing dependencies\nOutgoing dependency instances: math(4-5), re(5-6), shared(8-9), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29)",
+        "file_path": "./samples/chatbot_rule_to_ml/graph.py",
+        "instance_lines": [
+            {
+                "start_line_number": 4,
+                "end_line_number": 5
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 6
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 9
+            },
+            {
+                "start_line_number": 9,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 10,
+                "end_line_number": 11
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 12,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 13,
+                "end_line_number": 14
+            },
+            {
+                "start_line_number": 14,
+                "end_line_number": 15
+            },
+            {
+                "start_line_number": 15,
+                "end_line_number": 16
+            },
+            {
+                "start_line_number": 16,
+                "end_line_number": 17
+            },
+            {
+                "start_line_number": 17,
+                "end_line_number": 18
+            },
+            {
+                "start_line_number": 18,
+                "end_line_number": 19
+            },
+            {
+                "start_line_number": 19,
+                "end_line_number": 20
+            },
+            {
+                "start_line_number": 20,
+                "end_line_number": 21
+            },
+            {
+                "start_line_number": 21,
+                "end_line_number": 22
+            },
+            {
+                "start_line_number": 22,
+                "end_line_number": 23
+            },
+            {
+                "start_line_number": 23,
+                "end_line_number": 24
+            },
+            {
+                "start_line_number": 24,
+                "end_line_number": 25
+            },
+            {
+                "start_line_number": 25,
+                "end_line_number": 26
+            },
+            {
+                "start_line_number": 26,
+                "end_line_number": 27
+            },
+            {
+                "start_line_number": 27,
+                "end_line_number": 28
+            },
+            {
+                "start_line_number": 28,
+                "end_line_number": 29
+            }
+        ],
+        "severity": "High"
+    },
+    {
+        "type": "Structural",
+        "name": "High Fan-in",
+        "description": "Module 'shared' has 17 incoming dependencies\nIncoming dependency instances: helper_10(1-2), helper_09(1-2), helper_02(1-2), helper_12(1-2), helper_04(1-2), helper_07(1-2), helper_08(1-2), graph(8-9), helper_11(1-2), helper_06(1-2), trainer(2-3), helper_05(1-2), runner(2-3), bridge(1-2), helper_03(1-2), helper_01(1-2), linker(1-2)",
+        "file_path": "./samples/chatbot_rule_to_ml/shared.py",
+        "files": [
+            {
+                "name": "helper_10",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_09",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_02",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_12",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_04",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_07",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_08",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "graph",
+                "instance_lines": [
+                    {
+                        "start_line_number": 8,
+                        "end_line_number": 9
+                    }
+                ]
+            },
+            {
+                "name": "helper_11",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_06",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "trainer",
+                "instance_lines": [
+                    {
+                        "start_line_number": 2,
+                        "end_line_number": 3
+                    }
+                ]
+            },
+            {
+                "name": "helper_05",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "runner",
+                "instance_lines": [
+                    {
+                        "start_line_number": 2,
+                        "end_line_number": 3
+                    }
+                ]
+            },
+            {
+                "name": "bridge",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_03",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "helper_01",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
+                "name": "linker",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            }
+        ],
+        "severity": "Medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'GraphBuilder' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/graph.py",
+        "file_path": "./samples/chatbot_rule_to_ml/graph.py",
+        "class_name": "GraphBuilder",
+        "start_line_number": 30,
+        "end_line_number": 33,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentRoute' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+        "file_path": "./samples/chatbot_rule_to_ml/bridge.py",
+        "class_name": "IntentRoute",
+        "start_line_number": 4,
+        "end_line_number": 10,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentHandler' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+        "file_path": "./samples/chatbot_rule_to_ml/bridge.py",
+        "class_name": "IntentHandler",
+        "start_line_number": 12,
+        "end_line_number": 18,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentPlanner' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+        "file_path": "./samples/chatbot_rule_to_ml/bridge.py",
+        "class_name": "IntentPlanner",
+        "start_line_number": 20,
+        "end_line_number": 26,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentRoute' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+        "file_path": "./samples/chatbot_rule_to_ml/linker.py",
+        "class_name": "IntentRoute",
+        "start_line_number": 4,
+        "end_line_number": 10,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentHandler' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+        "file_path": "./samples/chatbot_rule_to_ml/linker.py",
+        "class_name": "IntentHandler",
+        "start_line_number": 12,
+        "end_line_number": 18,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'IntentPlanner' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+        "file_path": "./samples/chatbot_rule_to_ml/linker.py",
+        "class_name": "IntentPlanner",
+        "start_line_number": 20,
+        "end_line_number": 26,
+        "severity": "low"
+    },
+    {
+        "type": "Architectural",
+        "name": "Hub-like Dependency",
+        "description": "Module 'graph' is a potential hub with 28 connections (in: 0, out: 28, external: 0)\nOutgoing dependency instances: collections(6-7), datetime(7-8), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29), json(3-4), math(4-5), os(1-2), re(5-6), shared(8-9), sys(2-3)\nIncoming dependency instances: None",
+        "file_path": "./samples/chatbot_rule_to_ml/graph.py",
+        "outgoing_instance_lines": [
+            {
+                "start_line_number": 1,
+                "end_line_number": 2
+            },
+            {
+                "start_line_number": 2,
+                "end_line_number": 3
+            },
+            {
+                "start_line_number": 3,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 4,
+                "end_line_number": 5
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 6
+            },
+            {
+                "start_line_number": 6,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 7,
+                "end_line_number": 8
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 9
+            },
+            {
+                "start_line_number": 9,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 10,
+                "end_line_number": 11
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 12,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 13,
+                "end_line_number": 14
+            },
+            {
+                "start_line_number": 14,
+                "end_line_number": 15
+            },
+            {
+                "start_line_number": 15,
+                "end_line_number": 16
+            },
+            {
+                "start_line_number": 16,
+                "end_line_number": 17
+            },
+            {
+                "start_line_number": 17,
+                "end_line_number": 18
+            },
+            {
+                "start_line_number": 18,
+                "end_line_number": 19
+            },
+            {
+                "start_line_number": 19,
+                "end_line_number": 20
+            },
+            {
+                "start_line_number": 20,
+                "end_line_number": 21
+            },
+            {
+                "start_line_number": 21,
+                "end_line_number": 22
+            },
+            {
+                "start_line_number": 22,
+                "end_line_number": 23
+            },
+            {
+                "start_line_number": 23,
+                "end_line_number": 24
+            },
+            {
+                "start_line_number": 24,
+                "end_line_number": 25
+            },
+            {
+                "start_line_number": 25,
+                "end_line_number": 26
+            },
+            {
+                "start_line_number": 26,
+                "end_line_number": 27
+            },
+            {
+                "start_line_number": 27,
+                "end_line_number": 28
+            },
+            {
+                "start_line_number": 28,
+                "end_line_number": 29
+            }
+        ],
+        "files": [],
+        "severity": "high"
+    },
+    {
+        "type": "Architectural",
+        "name": "Unstable Dependency",
+        "description": "Module 'graph' has high instability (1.00) with 28 outgoing and 0 incoming dependencies\nOutgoing dependency instances: collections(6-7), datetime(7-8), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29), json(3-4), math(4-5), os(1-2), re(5-6), shared(8-9), sys(2-3)\nIncoming dependency instances: None",
+        "file_path": "./samples/chatbot_rule_to_ml/graph.py",
+        "outgoing_instance_lines": [
+            {
+                "start_line_number": 1,
+                "end_line_number": 2
+            },
+            {
+                "start_line_number": 2,
+                "end_line_number": 3
+            },
+            {
+                "start_line_number": 3,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 4,
+                "end_line_number": 5
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 6
+            },
+            {
+                "start_line_number": 6,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 7,
+                "end_line_number": 8
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 9
+            },
+            {
+                "start_line_number": 9,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 10,
+                "end_line_number": 11
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 12,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 13,
+                "end_line_number": 14
+            },
+            {
+                "start_line_number": 14,
+                "end_line_number": 15
+            },
+            {
+                "start_line_number": 15,
+                "end_line_number": 16
+            },
+            {
+                "start_line_number": 16,
+                "end_line_number": 17
+            },
+            {
+                "start_line_number": 17,
+                "end_line_number": 18
+            },
+            {
+                "start_line_number": 18,
+                "end_line_number": 19
+            },
+            {
+                "start_line_number": 19,
+                "end_line_number": 20
+            },
+            {
+                "start_line_number": 20,
+                "end_line_number": 21
+            },
+            {
+                "start_line_number": 21,
+                "end_line_number": 22
+            },
+            {
+                "start_line_number": 22,
+                "end_line_number": 23
+            },
+            {
+                "start_line_number": 23,
+                "end_line_number": 24
+            },
+            {
+                "start_line_number": 24,
+                "end_line_number": 25
+            },
+            {
+                "start_line_number": 25,
+                "end_line_number": 26
+            },
+            {
+                "start_line_number": 26,
+                "end_line_number": 27
+            },
+            {
+                "start_line_number": 27,
+                "end_line_number": 28
+            },
+            {
+                "start_line_number": 28,
+                "end_line_number": 29
+            }
+        ],
+        "files": [],
+        "severity": "medium"
+    }
+]

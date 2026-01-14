@@ -1,0 +1,3 @@
+
+def scratchpad():
+    return "notes"

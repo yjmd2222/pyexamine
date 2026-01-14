@@ -1,0 +1,70 @@
+[file]	-100
+path=habit_tracker_reminders/unused_helpers.py	-100
+
+def	B
+_calc_streak_days	B
+(	B
+total	B
+:	B
+int	B
+,	B
+missed	B
+:	B
+int	B
+)	B
+:	B
+
+    	I
+return	I
+max	I
+(	I
+total	I
+-	I
+missed	I
+,	I
+0	I
+)	I
+
+def	B
+_calc_completion_ratio	B
+(	B
+done	B
+:	B
+int	B
+,	B
+planned	B
+:	B
+int	B
+)	B
+:	B
+
+    	I
+return	I
+done	I
+/	I
+planned	I
+if	I
+planned	I
+else	I
+0.0	I
+
+def	B
+_calc_bonus_points	B
+(	B
+streak	B
+:	B
+int	B
+)	B
+:	B
+
+    	I
+return	I
+min	I
+(	I
+streak	I
+*	I
+2	I
+,	I
+100	I
+)	I
+

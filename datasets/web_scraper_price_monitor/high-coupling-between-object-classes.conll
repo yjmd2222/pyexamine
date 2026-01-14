@@ -1,0 +1,149 @@
+[file]	-100
+path=web_scraper_price_monitor/pipeline.py	-100
+
+class	B
+MonitorPipeline	B
+:	B
+
+    	I
+def	I
+__init__	I
+(	I
+self	I
+,	I
+client	I
+,	I
+parser	I
+,	I
+cache	I
+,	I
+limiter	I
+,	I
+policy	I
+)	I
+:	I
+
+        	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+client	I-WITHIN
+=	I-WITHIN
+client	I-WITHIN
+
+self	I-WITHIN
+.	I-WITHIN
+parser	I-WITHIN
+=	I-WITHIN
+parser	I-WITHIN
+
+self	I-WITHIN
+.	I-WITHIN
+cache	I-WITHIN
+=	I-WITHIN
+cache	I-WITHIN
+
+self	I-WITHIN
+.	I-WITHIN
+limiter	I-WITHIN
+=	I-WITHIN
+limiter	I-WITHIN
+
+self	I-WITHIN
+.	I-WITHIN
+policy	I-WITHIN
+=	I-WITHIN
+policy	I-WITHIN
+
+def	I
+run	I
+(	I
+self	I
+,	I
+url	I
+:	I
+str	I
+)	I
+:	I
+
+        	I-WITHIN
+client	I-WITHIN
+=	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+client	I-WITHIN
+
+parser	I-WITHIN
+=	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+parser	I-WITHIN
+
+cache	I-WITHIN
+=	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+cache	I-WITHIN
+
+limiter	I-WITHIN
+=	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+limiter	I-WITHIN
+
+policy	I-WITHIN
+=	I-WITHIN
+self	I-WITHIN
+.	I-WITHIN
+policy	I-WITHIN
+
+if	I-WITHIN
+not	I-WITHIN
+limiter	I-WITHIN
+.	I-WITHIN
+allow	I-WITHIN
+(	I-WITHIN
+url	I-WITHIN
+)	I-WITHIN
+:	I-WITHIN
+
+            	I
+return	I
+None	I
+
+html	I-WITHIN
+=	I-WITHIN
+client	I-WITHIN
+.	I-WITHIN
+get	I-WITHIN
+(	I-WITHIN
+url	I-WITHIN
+)	I-WITHIN
+
+data	I-WITHIN
+=	I-WITHIN
+parser	I-WITHIN
+.	I-WITHIN
+parse	I-WITHIN
+(	I-WITHIN
+html	I-WITHIN
+)	I-WITHIN
+
+cache	I-WITHIN
+.	I-WITHIN
+store	I-WITHIN
+(	I-WITHIN
+url	I-WITHIN
+,	I-WITHIN
+data	I-WITHIN
+)	I-WITHIN
+
+policy	I-WITHIN
+.	I-WITHIN
+check	I-WITHIN
+(	I-WITHIN
+data	I-WITHIN
+)	I-WITHIN
+
+return	I
+data	I
+

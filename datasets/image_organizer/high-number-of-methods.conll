@@ -1,0 +1,248 @@
+[file]	-100
+path=image_organizer/lifecycle.py	-100
+
+class	B
+GalleryLifecycle	B
+:	B
+
+    	I
+def	I
+start_import	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_import"	I
+
+return	I
+state	I
+
+def	I
+stop_import	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_import"	I
+
+return	I
+state	I
+
+def	I
+start_sync	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_sync"	I
+
+return	I
+state	I
+
+def	I
+stop_sync	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_sync"	I
+
+return	I
+state	I
+
+def	I
+start_share	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_share"	I
+
+return	I
+state	I
+
+def	I
+stop_share	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_share"	I
+
+return	I
+state	I
+
+def	I
+start_backup	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_backup"	I
+
+return	I
+state	I
+
+def	I
+stop_backup	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_backup"	I
+
+return	I
+state	I
+
+def	I
+start_cleanup	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_cleanup"	I
+
+return	I
+state	I
+
+def	I
+stop_cleanup	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_cleanup"	I
+
+return	I
+state	I
+
+def	I
+start_scan	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_scan"	I
+
+return	I
+state	I
+
+def	I
+stop_scan	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_scan"	I
+
+return	I
+state	I
+
+def	I
+start_sort	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_sort"	I
+
+return	I
+state	I
+
+def	I
+stop_sort	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_sort"	I
+
+return	I
+state	I
+
+def	I
+start_rebuild	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"start_rebuild"	I
+
+return	I
+state	I
+
+def	I
+stop_rebuild	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+state	I
+=	I
+"stop_rebuild"	I
+
+return	I
+state	I
+

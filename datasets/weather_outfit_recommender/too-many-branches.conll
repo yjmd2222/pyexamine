@@ -1,0 +1,161 @@
+[file]	-100
+path=weather_outfit_recommender/analyzer.py	-100
+
+class	O
+ForecastAnalyzer	O
+:	O
+
+    	B
+def	B
+score	B
+(	B
+self	B
+,	B
+temp	B
+:	B
+float	B
+,	B
+wind	B
+:	B
+float	B
+,	B
+humidity	B
+:	B
+float	B
+,	B
+precip	B
+:	B
+float	B
+,	B
+uv	B
+:	B
+float	B
+,	B
+cloud	B
+:	B
+float	B
+)	B
+:	B
+
+        	I
+score	I
+=	I
+0	I
+
+if	I
+temp	I
+<	I
+0	I
+and	I
+wind	I
+>	I
+15	I
+and	I
+humidity	I
+>	I
+70	I
+:	I
+
+            	I
+score	I
+-=	I
+2	I
+
+if	I
+temp	I
+<	I
+5	I
+and	I
+wind	I
+>	I
+10	I
+and	I
+precip	I
+>	I
+0.2	I
+:	I
+
+            	I
+score	I
+-=	I
+2	I
+
+if	I
+temp	I
+<	I
+10	I
+and	I
+humidity	I
+>	I
+80	I
+and	I
+cloud	I
+>	I
+0.6	I
+:	I
+
+            	I
+score	I
+-=	I
+1	I
+
+if	I
+temp	I
+>	I
+30	I
+and	I
+uv	I
+>	I
+7	I
+and	I
+humidity	I
+>	I
+50	I
+:	I
+
+            	I
+score	I
++=	I
+2	I
+
+if	I
+temp	I
+>	I
+25	I
+and	I
+wind	I
+<	I
+5	I
+and	I
+cloud	I
+<	I
+0.2	I
+:	I
+
+            	I
+score	I
++=	I
+1	I
+
+if	I
+temp	I
+>	I
+20	I
+and	I
+precip	I
+==	I
+0	I
+and	I
+uv	I
+>	I
+6	I
+:	I
+
+            	I
+score	I
++=	I
+1	I
+
+return	I
+score	I
+

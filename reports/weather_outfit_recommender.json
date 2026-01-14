@@ -1,0 +1,275 @@
+[
+    {
+        "type": "Structural",
+        "name": "High Cyclomatic Complexity",
+        "description": "Method 'score' has cyclomatic complexity of 19",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "class_name": "analyzer.ForecastAnalyzer",
+        "method_function": "score",
+        "start_line_number": 2,
+        "end_line_number": 17,
+        "severity": "High"
+    },
+    {
+        "type": "Structural",
+        "name": "Too Many Branches",
+        "description": "Method 'score' has 6 branches with max nesting of 6",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "class_name": "analyzer.ForecastAnalyzer",
+        "method_function": "score",
+        "start_line_number": 2,
+        "end_line_number": 17,
+        "severity": "Medium"
+    },
+    {
+        "type": "Code",
+        "name": "Temporary Field",
+        "description": "Potentially unused fields self, wind_kph, condition, temp_c in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+        "file_path": "./samples/weather_outfit_recommender/models.py",
+        "class_name": "WeatherSnapshot",
+        "start_line_number": 1,
+        "end_line_number": 24,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Data Class",
+        "description": "Class 'WeatherSnapshot' has 3 getters and 3 setters with no other methods in ./samples/weather_outfit_recommender/models.py",
+        "file_path": "./samples/weather_outfit_recommender/models.py",
+        "class_name": "WeatherSnapshot",
+        "start_line_number": 1,
+        "end_line_number": 24,
+        "instance_lines": [
+            {
+                "start_line_number": 7,
+                "end_line_number": 9
+            },
+            {
+                "start_line_number": 10,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 13,
+                "end_line_number": 15
+            },
+            {
+                "start_line_number": 16,
+                "end_line_number": 18
+            },
+            {
+                "start_line_number": 19,
+                "end_line_number": 21
+            },
+            {
+                "start_line_number": 22,
+                "end_line_number": 24
+            }
+        ],
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'WeatherSnapshot' has only 0 non-trivial methods with 0 total lines in ./samples/weather_outfit_recommender/models.py",
+        "file_path": "./samples/weather_outfit_recommender/models.py",
+        "class_name": "WeatherSnapshot",
+        "start_line_number": 1,
+        "end_line_number": 24,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'UnitLookup' has only 1 non-trivial methods with 6 total lines in ./samples/weather_outfit_recommender/models.py",
+        "file_path": "./samples/weather_outfit_recommender/models.py",
+        "class_name": "UnitLookup",
+        "start_line_number": 26,
+        "end_line_number": 37,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Primitive Obsession",
+        "description": "'score' has 6 primitive parameters in ./samples/weather_outfit_recommender/analyzer.py",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "class_name": "ForecastAnalyzer",
+        "method_function": "score",
+        "start_line_number": 2,
+        "end_line_number": 17,
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Long Parameter List",
+        "description": "'score' has 6 parameters in ./samples/weather_outfit_recommender/analyzer.py",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "class_name": "ForecastAnalyzer",
+        "method_function": "score",
+        "start_line_number": 2,
+        "end_line_number": 17,
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'ForecastAnalyzer' has only 1 non-trivial methods with 14 total lines in ./samples/weather_outfit_recommender/analyzer.py",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "class_name": "ForecastAnalyzer",
+        "start_line_number": 1,
+        "end_line_number": 17,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Temporary Field",
+        "description": "Potentially unused fields self, temp, wind, condition in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+        "file_path": "./samples/weather_outfit_recommender/advisor.py",
+        "class_name": "WeatherProfile",
+        "start_line_number": 1,
+        "end_line_number": 7,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'WeatherProfile' has only 0 non-trivial methods with 0 total lines in ./samples/weather_outfit_recommender/advisor.py",
+        "file_path": "./samples/weather_outfit_recommender/advisor.py",
+        "class_name": "WeatherProfile",
+        "start_line_number": 1,
+        "end_line_number": 7,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'OutfitAdvisor' has only 1 non-trivial methods with 10 total lines in ./samples/weather_outfit_recommender/advisor.py",
+        "file_path": "./samples/weather_outfit_recommender/advisor.py",
+        "class_name": "OutfitAdvisor",
+        "start_line_number": 9,
+        "end_line_number": 21,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Feature Envy",
+        "description": "Method 'recommend' makes 5 calls to 'profile' at lines 11-12, 11-12, 12-13, 14-15, 16-17 but only 0 local calls at lines  in ./samples/weather_outfit_recommender/advisor.py",
+        "file_path": "./samples/weather_outfit_recommender/advisor.py",
+        "function": "recommend",
+        "start_line_number": 10,
+        "end_line_number": 21,
+        "instance_lines": [
+            {
+                "start_line_number": 11,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 12
+            },
+            {
+                "start_line_number": 12,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 14,
+                "end_line_number": 15
+            },
+            {
+                "start_line_number": 16,
+                "end_line_number": 17
+            }
+        ],
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Scattered Functionality",
+        "description": "Function 'format_forecast' appears in 3 modules: alerts(2-4), exports(2-4), ui(2-5)",
+        "file_path": "./samples/weather_outfit_recommender/ui.py",
+        "function": "format_forecast",
+        "files": [
+            {
+                "name": "alerts",
+                "instance_lines": [
+                    {
+                        "start_line_number": 2,
+                        "end_line_number": 4
+                    }
+                ]
+            },
+            {
+                "name": "exports",
+                "instance_lines": [
+                    {
+                        "start_line_number": 2,
+                        "end_line_number": 4
+                    }
+                ]
+            },
+            {
+                "name": "ui",
+                "instance_lines": [
+                    {
+                        "start_line_number": 2,
+                        "end_line_number": 5
+                    }
+                ]
+            }
+        ],
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'ui' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/ui.py",
+        "start_line_number": 1,
+        "end_line_number": 5,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'models' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/models.py",
+        "start_line_number": 1,
+        "end_line_number": 37,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'exports' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/exports.py",
+        "start_line_number": 1,
+        "end_line_number": 4,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'analyzer' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/analyzer.py",
+        "start_line_number": 1,
+        "end_line_number": 17,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'alerts' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/alerts.py",
+        "start_line_number": 1,
+        "end_line_number": 4,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'advisor' is isolated from other modules",
+        "file_path": "./samples/weather_outfit_recommender/advisor.py",
+        "start_line_number": 1,
+        "end_line_number": 21,
+        "severity": "medium"
+    }
+]

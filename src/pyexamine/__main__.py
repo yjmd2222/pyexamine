@@ -45,6 +45,17 @@ def main():
     dataset_parser.add_argument("--output-dir", default=None,
                                 help="Output directory for per-smell CoNLL files")
 
+    index_parser = subparsers.add_parser(
+        "build_smell_index",
+        help="Build a bidirectional smell index from report files."
+    )
+    index_parser.add_argument("code_path", help="Path to a code file or directory to include.")
+    index_parser.add_argument("--config", required=True, help="Path to code quality config YAML")
+    index_parser.add_argument("--report", default="code_quality_report.json",
+                              help="Path to code_quality_report.json or a directory of reports.")
+    index_parser.add_argument("--output", default=None,
+                              help="Output path for smell_index.json")
+
     args = parser.parse_args()
 
     if args.command == "analyze":
@@ -54,6 +65,7 @@ def main():
             "--config", args.config
         ]
         if args.output:
+            os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
             cmd.extend(["--output", args.output])
         if args.type:
             cmd.extend(["--type", args.type])
@@ -71,6 +83,18 @@ def main():
         ]
         if args.output_dir:
             cmd.extend(["--output-dir", args.output_dir])
+        _run(cmd)
+        return
+
+    if args.command == "build_smell_index":
+        cmd = [
+            sys.executable, "-m", "dataset_generator.build_smell_index",
+            args.code_path,
+            "--config", args.config,
+            "--report", args.report,
+        ]
+        if args.output:
+            cmd.extend(["--output", args.output])
         _run(cmd)
         return
 

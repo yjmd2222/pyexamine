@@ -1,0 +1,138 @@
+[file]	-100
+path=web_scraper_price_monitor/extractors.py	-100
+
+class	B
+HtmlExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+html:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+lower	I
+(	I
+)	I
+
+class	B
+JsonExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+json:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+strip	I
+(	I
+)	I
+
+class	B
+TextExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+text:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+replace	I
+(	I
+" "	I
+,	I
+""	I
+)	I
+

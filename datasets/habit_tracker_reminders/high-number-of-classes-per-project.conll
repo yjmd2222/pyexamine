@@ -1,0 +1,442 @@
+[file]	-100
+path=habit_tracker_reminders/catalog.py	-100
+
+class	B
+HabitType01	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_01"	I
+
+class	B
+HabitType02	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_02"	I
+
+class	B
+HabitType03	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_03"	I
+
+class	B
+HabitType04	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_04"	I
+
+class	B
+HabitType05	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_05"	I
+
+class	B
+HabitType06	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_06"	I
+
+class	B
+HabitType07	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_07"	I
+
+class	B
+HabitType08	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_08"	I
+
+class	B
+HabitType09	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_09"	I
+
+class	B
+HabitType10	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_10"	I
+
+class	B
+HabitType11	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_11"	I
+
+class	B
+HabitType12	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_12"	I
+
+class	B
+HabitType13	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_13"	I
+
+class	B
+HabitType14	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_14"	I
+
+class	B
+HabitType15	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_15"	I
+
+class	B
+HabitType16	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_16"	I
+
+class	B
+HabitType17	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_17"	I
+
+class	B
+HabitType18	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_18"	I
+
+class	B
+HabitType19	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_19"	I
+
+class	B
+HabitType20	B
+:	B
+
+    	I
+def	I
+key	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"habit_20"	I
+
+[file]	-100
+path=habit_tracker_reminders/habits.py	-100
+
+class	B
+HabitBase	B
+:	B
+
+    	I
+def	I
+__init__	I
+(	I
+self	I
+,	I
+name	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+name	I
+=	I
+name	I
+
+def	I
+label	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+self	I
+.	I
+name	I
+.	I
+title	I
+(	I
+)	I
+
+class	B
+HabitDaily	B
+(	B
+HabitBase	B
+)	B
+:	B
+
+    	I
+def	I
+cadence	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"daily"	I
+
+class	B
+HabitWeekly	B
+(	B
+HabitDaily	B
+)	B
+:	B
+
+    	I
+def	I
+cadence	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"weekly"	I
+
+class	B
+HabitMonthly	B
+(	B
+HabitWeekly	B
+)	B
+:	B
+
+    	I
+def	I
+cadence	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"monthly"	I
+
+class	B
+HabitAnnual	B
+(	B
+HabitMonthly	B
+)	B
+:	B
+
+    	I
+def	I
+cadence	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"annual"	I
+

@@ -1,0 +1,150 @@
+[file]	-100
+path=weather_outfit_recommender/advisor.py	-100
+
+class	O
+WeatherProfile	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+temp	O
+:	O
+float	O
+,	O
+wind	O
+:	O
+float	O
+,	O
+condition	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+temp	O
+=	O
+temp	O
+
+self	O
+.	O
+wind	O
+=	O
+wind	O
+
+self	O
+.	O
+condition	O
+=	O
+condition	O
+
+self	O
+.	O
+is_precip	O
+=	O
+condition	O
+in	O
+{	O
+"rain"	O
+,	O
+"snow"	O
+}	O
+
+class	O
+OutfitAdvisor	O
+:	O
+
+    	B
+def	B
+recommend	B
+(	B
+self	B
+,	B
+profile	B
+:	B
+WeatherProfile	B
+)	B
+:	B
+
+        	I-WITHIN
+score	I-WITHIN
+=	I-WITHIN
+profile	I-WITHIN
+.	I-WITHIN
+temp	I-WITHIN
+-	I-WITHIN
+(	I-WITHIN
+profile	I-WITHIN
+.	I-WITHIN
+wind	I-WITHIN
+*	I-WITHIN
+0.1	I-WITHIN
+)	I-WITHIN
+
+if	I-WITHIN
+profile	I-WITHIN
+.	I-WITHIN
+is_precip	I-WITHIN
+:	I-WITHIN
+
+            	I
+score	I
+-=	I
+3	I
+
+if	I-WITHIN
+profile	I-WITHIN
+.	I-WITHIN
+condition	I-WITHIN
+==	I-WITHIN
+"hail"	I-WITHIN
+:	I-WITHIN
+
+            	I
+score	I
+-=	I
+6	I
+
+if	I-WITHIN
+profile	I-WITHIN
+.	I-WITHIN
+temp	I-WITHIN
+<	I-WITHIN
+0	I-WITHIN
+:	I-WITHIN
+
+            	I
+return	I
+[	I
+"parka"	I
+,	I
+"boots"	I
+,	I
+"gloves"	I
+]	I
+
+if	I
+score	I
+<	I
+5	I
+:	I
+
+            	I
+return	I
+[	I
+"coat"	I
+,	I
+"scarf"	I
+]	I
+
+return	I
+[	I
+"jacket"	I
+]	I
+

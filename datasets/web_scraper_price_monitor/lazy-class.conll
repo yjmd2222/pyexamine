@@ -1,0 +1,1141 @@
+[file]	-100
+path=web_scraper_price_monitor/client.py	-100
+
+class	B
+FetchSession	B
+:	B
+
+    	I
+def	I
+__init__	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+calls	I
+=	I
+[	I
+]	I
+
+def	I
+get	I
+(	I
+self	I
+,	I
+url	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+calls	I
+.	I
+append	I
+(	I
+url	I
+)	I
+
+return	I
+{	I
+"url"	I
+:	I
+url	I
+}	I
+
+def	I
+post	I
+(	I
+self	I
+,	I
+url	I
+:	I
+str	I
+,	I
+payload	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+calls	I
+.	I
+append	I
+(	I
+url	I
+)	I
+
+return	I
+{	I
+"url"	I
+:	I
+url	I
+,	I
+"payload"	I
+:	I
+payload	I
+}	I
+
+def	O
+fetch_prices	O
+(	O
+session	O
+:	O
+FetchSession	O
+,	O
+base_url	O
+:	O
+str	O
+,	O
+product_ids	O
+)	O
+:	O
+
+    	O
+results	O
+=	O
+[	O
+]	O
+
+for	O
+product_id	O
+in	O
+product_ids	O
+:	O
+
+        	O
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/	O
+{	O
+product_id	O
+}	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-1	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-2	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-3	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-4	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-5	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-6	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-7	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+get	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/p/extra-8	O
+"	O
+)	O
+)	O
+
+results	O
+.	O
+append	O
+(	O
+session	O
+.	O
+post	O
+(	O
+f"	O
+{	O
+base_url	O
+}	O
+/log	O
+"	O
+,	O
+{	O
+"count"	O
+:	O
+len	O
+(	O
+results	O
+)	O
+}	O
+)	O
+)	O
+
+return	O
+results	O
+
+[file]	-100
+path=web_scraper_price_monitor/extractors.py	-100
+
+class	B
+HtmlExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+html:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+lower	I
+(	I
+)	I
+
+class	B
+JsonExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+json:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+strip	I
+(	I
+)	I
+
+class	B
+TextExtractor	B
+:	B
+
+    	I
+def	I
+open	I
+(	I
+self	I
+,	I
+path	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+text:	I
+{	I
+path	I
+}	I
+"	I
+
+def	I
+extract	I
+(	I
+self	I
+,	I
+payload	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+return	I
+payload	I
+.	I
+replace	I
+(	I
+" "	I
+,	I
+""	I
+)	I
+
+[file]	-100
+path=web_scraper_price_monitor/pipeline.py	-100
+
+class	B
+MonitorPipeline	B
+:	B
+
+    	I
+def	I
+__init__	I
+(	I
+self	I
+,	I
+client	I
+,	I
+parser	I
+,	I
+cache	I
+,	I
+limiter	I
+,	I
+policy	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+client	I
+=	I
+client	I
+
+self	I
+.	I
+parser	I
+=	I
+parser	I
+
+self	I
+.	I
+cache	I
+=	I
+cache	I
+
+self	I
+.	I
+limiter	I
+=	I
+limiter	I
+
+self	I
+.	I
+policy	I
+=	I
+policy	I
+
+def	I
+run	I
+(	I
+self	I
+,	I
+url	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+client	I
+=	I
+self	I
+.	I
+client	I
+
+parser	I
+=	I
+self	I
+.	I
+parser	I
+
+cache	I
+=	I
+self	I
+.	I
+cache	I
+
+limiter	I
+=	I
+self	I
+.	I
+limiter	I
+
+policy	I
+=	I
+self	I
+.	I
+policy	I
+
+if	I
+not	I
+limiter	I
+.	I
+allow	I
+(	I
+url	I
+)	I
+:	I
+
+            	I
+return	I
+None	I
+
+html	I
+=	I
+client	I
+.	I
+get	I
+(	I
+url	I
+)	I
+
+data	I
+=	I
+parser	I
+.	I
+parse	I
+(	I
+html	I
+)	I
+
+cache	I
+.	I
+store	I
+(	I
+url	I
+,	I
+data	I
+)	I
+
+policy	I
+.	I
+check	I
+(	I
+data	I
+)	I
+
+return	I
+data	I
+
+[file]	-100
+path=web_scraper_price_monitor/state.py	-100
+
+class	B
+MonitorState	B
+:	B
+
+    	I
+last_price	I
+=	I
+0.0	I
+
+last_seen	I
+=	I
+None	I
+
+highest_price	I
+=	I
+0.0	I
+
+lowest_price	I
+=	I
+0.0	I
+
+currency	I
+=	I
+"USD"	I
+
+store	I
+=	I
+""	I
+
+product_id	I
+=	I
+""	I
+
+category	I
+=	I
+""	I
+
+brand	I
+=	I
+""	I
+
+region	I
+=	I
+""	I
+
+snapshot_id	I
+=	I
+""	I
+
+retries	I
+=	I
+0	I
+
+def	I
+__init__	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+self	I
+.	I
+last_price	I
+=	I
+0.0	I
+
+self	I
+.	I
+last_seen	I
+=	I
+None	I
+
+self	I
+.	I
+highest_price	I
+=	I
+0.0	I
+
+self	I
+.	I
+lowest_price	I
+=	I
+0.0	I
+
+self	I
+.	I
+currency	I
+=	I
+"USD"	I
+
+self	I
+.	I
+store	I
+=	I
+""	I
+
+self	I
+.	I
+product_id	I
+=	I
+""	I
+
+self	I
+.	I
+category	I
+=	I
+""	I
+
+self	I
+.	I
+brand	I
+=	I
+""	I
+
+self	I
+.	I
+region	I
+=	I
+""	I
+
+self	I
+.	I
+snapshot_id	I
+=	I
+""	I
+
+self	I
+.	I
+retries	I
+=	I
+0	I
+
+self	I
+.	I
+vendor_id	I
+=	I
+""	I
+
+self	I
+.	I
+offer_id	I
+=	I
+""	I
+
+self	I
+.	I
+country_code	I
+=	I
+""	I
+
+self	I
+.	I
+city	I
+=	I
+""	I
+
+self	I
+.	I
+zip_code	I
+=	I
+""	I
+
+self	I
+.	I
+sku	I
+=	I
+""	I
+
+self	I
+.	I
+upc	I
+=	I
+""	I
+
+self	I
+.	I
+ean	I
+=	I
+""	I
+
+self	I
+.	I
+inventory	I
+=	I
+0	I
+
+self	I
+.	I
+on_sale	I
+=	I
+False	I
+
+self	I
+.	I
+sale_price	I
+=	I
+0.0	I
+
+self	I
+.	I
+list_price	I
+=	I
+0.0	I
+
+self	I
+.	I
+tax_rate	I
+=	I
+0.0	I
+
+self	I
+.	I
+shipping_fee	I
+=	I
+0.0	I
+
+self	I
+.	I
+discount_code	I
+=	I
+""	I
+
+self	I
+.	I
+discount_amount	I
+=	I
+0.0	I
+
+self	I
+.	I
+coupon_count	I
+=	I
+0	I
+
+def	I
+summary	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+f"	I
+{	I
+self	I
+.	I
+product_id	I
+}	I
+:	I
+{	I
+self	I
+.	I
+last_price	I
+}	I
+"	I
+
+def	I
+touch_fields	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+inventory	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+retries	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+coupon_count	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+on_sale	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+vendor_id	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+offer_id	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+country_code	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+city	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+zip_code	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+sku	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+upc	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+ean	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+category	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+brand	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+region	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+snapshot_id	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+bool	I
+(	I
+self	I
+.	I
+discount_code	I
+)	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+discount_amount	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+sale_price	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+list_price	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+shipping_fee	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+tax_rate	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+last_price	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+highest_price	I
+>	I
+0	I
+)	I
+
+total	I
++=	I
+int	I
+(	I
+self	I
+.	I
+lowest_price	I
+>	I
+0	I
+)	I
+
+return	I
+total	I
+

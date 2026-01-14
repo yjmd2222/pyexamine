@@ -1,0 +1,329 @@
+[file]	-100
+path=personal_finance_tracker/categories.py	-100
+
+from	O
+datetime	O
+import	O
+date	O
+
+def	B
+categorize_income	B
+(	B
+amount	B
+:	B
+float	B
+,	B
+
+currency	I
+:	I
+str	I
+,	I
+
+source	I
+:	I
+str	I
+,	I
+
+received_at	I
+:	I
+date	I
+,	I
+
+description	I
+:	I
+str	I
+,	I
+
+category_code	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+label	I
+=	I
+"income"	I
+
+if	I
+source	I
+.	I
+lower	I
+(	I
+)	I
+==	I
+"salary"	I
+:	I
+
+        	I
+label	I
+=	I
+"salary"	I
+
+return	I
+{	I
+
+"amount"	I
+:	I
+amount	I
+,	I
+
+"currency"	I
+:	I
+currency	I
+,	I
+
+"source"	I
+:	I
+source	I
+,	I
+
+"received_at"	I
+:	I
+received_at	I
+,	I
+
+"description"	I
+:	I
+description	I
+,	I
+
+"category_code"	I
+:	I
+category_code	I
+,	I
+
+"label"	I
+:	I
+label	I
+,	I
+
+}	I
+
+def	B
+categorize_expense	B
+(	B
+amount	B
+:	B
+float	B
+,	B
+
+currency	I
+:	I
+str	I
+,	I
+
+source	I
+:	I
+str	I
+,	I
+
+received_at	I
+:	I
+date	I
+,	I
+
+description	I
+:	I
+str	I
+,	I
+
+category_code	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+label	I
+=	I
+"expense"	I
+
+if	I
+source	I
+.	I
+lower	I
+(	I
+)	I
+in	I
+{	I
+"coffee"	I
+,	I
+"snack"	I
+}	I
+:	I
+
+        	I
+label	I
+=	I
+"food"	I
+
+return	I
+{	I
+
+"amount"	I
+:	I
+amount	I
+,	I
+
+"currency"	I
+:	I
+currency	I
+,	I
+
+"source"	I
+:	I
+source	I
+,	I
+
+"received_at"	I
+:	I
+received_at	I
+,	I
+
+"description"	I
+:	I
+description	I
+,	I
+
+"category_code"	I
+:	I
+category_code	I
+,	I
+
+"label"	I
+:	I
+label	I
+,	I
+
+}	I
+
+[file]	-100
+path=personal_finance_tracker/ledger.py	-100
+
+from	O
+datetime	O
+import	O
+date	O
+
+def	B
+add_transaction	B
+(	B
+user_id	B
+:	B
+int	B
+,	B
+
+account_id	I
+:	I
+int	I
+,	I
+
+amount	I
+:	I
+float	I
+,	I
+
+currency	I
+:	I
+str	I
+,	I
+
+category_id	I
+:	I
+int	I
+,	I
+
+merchant	I
+:	I
+str	I
+,	I
+
+note	I
+:	I
+str	I
+,	I
+
+is_recurring	I
+:	I
+bool	I
+,	I
+
+year	I
+:	I
+int	I
+,	I
+
+month	I
+:	I
+int	I
+,	I
+
+day	I
+:	I
+int	I
+)	I
+:	I
+
+    	I
+transaction_date	I
+=	I
+date	I
+(	I
+year	I
+,	I
+month	I
+,	I
+day	I
+)	I
+
+return	I
+{	I
+
+"user_id"	I
+:	I
+user_id	I
+,	I
+
+"account_id"	I
+:	I
+account_id	I
+,	I
+
+"amount"	I
+:	I
+amount	I
+,	I
+
+"currency"	I
+:	I
+currency	I
+,	I
+
+"category_id"	I
+:	I
+category_id	I
+,	I
+
+"merchant"	I
+:	I
+merchant	I
+,	I
+
+"note"	I
+:	I
+note	I
+,	I
+
+"is_recurring"	I
+:	I
+is_recurring	I
+,	I
+
+"date"	I
+:	I
+transaction_date	I
+,	I
+
+}	I
+

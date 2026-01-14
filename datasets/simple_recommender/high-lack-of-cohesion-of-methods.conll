@@ -1,0 +1,438 @@
+[file]	-100
+path=simple_recommender/scoring.py	-100
+
+class	B
+SimilarityScorer	B
+:	B
+
+    	I
+def	I
+score_user	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
+>	I
+b	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+b	I
+>	I
+c	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+c	I
+>	I
+d	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+d	I
+>	I
+e	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+return	I
+total	I
+
+def	I
+score_item	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
+<	I
+b	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+b	I
+<	I
+c	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+c	I
+<	I
+d	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+d	I
+<	I
+e	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+return	I
+total	I
+
+def	I
+score_pair	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
+==	I
+b	I
+:	I
+
+            	I
+total	I
++=	I
+2	I
+
+if	I
+b	I
+==	I
+c	I
+:	I
+
+            	I
+total	I
++=	I
+2	I
+
+if	I
+c	I
+==	I
+d	I
+:	I
+
+            	I
+total	I
++=	I
+2	I
+
+if	I
+d	I
+==	I
+e	I
+:	I
+
+            	I
+total	I
++=	I
+2	I
+
+return	I
+total	I
+
+def	I
+score_context	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
+>=	I
+b	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+b	I
+>=	I
+c	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+c	I
+>=	I
+d	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+d	I
+>=	I
+e	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+return	I
+total	I
+
+def	I
+score_window	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
++	I
+b	I
+>	I
+c	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+b	I
++	I
+c	I
+>	I
+d	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+c	I
++	I
+d	I
+>	I
+e	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+d	I
++	I
+e	I
+>	I
+a	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+return	I
+total	I
+
+def	I
+score_final	I
+(	I
+self	I
+,	I
+a	I
+,	I
+b	I
+,	I
+c	I
+,	I
+d	I
+,	I
+e	I
+)	I
+:	I
+
+        	I
+total	I
+=	I
+0	I
+
+if	I
+a	I
+-	I
+b	I
+>	I
+0	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+b	I
+-	I
+c	I
+>	I
+0	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+c	I
+-	I
+d	I
+>	I
+0	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+if	I
+d	I
+-	I
+e	I
+>	I
+0	I
+:	I
+
+            	I
+total	I
++=	I
+1	I
+
+return	I
+total	I
+
