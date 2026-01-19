@@ -366,13 +366,17 @@ def _label_for_token(line_number, spans, scheme_labels):
     return "B" if line_number == start else "I"
 
 
-def _write_conll(handle, display_path, content, spans, scheme_labels):
+def _write_conll(handle, display_path, content, spans, scheme_labels, label_full_file=False):
     handle.write("[file]\t-100\n")
     handle.write(f"path={display_path}\t-100\n\n")
 
     token_lines = _tokenize_by_line(content)
+    first_row = min(token_lines) if token_lines else None
     for row in sorted(token_lines):
-        label = _label_for_token(row, spans, scheme_labels)
+        if label_full_file:
+            label = "B" if row == first_row else "I"
+        else:
+            label = _label_for_token(row, spans, scheme_labels)
         if label not in scheme_labels:
             label = "O"
         tokens = token_lines[row]
@@ -402,6 +406,26 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
     spans_by_smell = _build_smell_spans(report_entries, smell_schemes, name_to_slug, code_root)
     all_files = sorted(_iter_code_files(code_root))
     all_smells = sorted(smell_schemes.keys())
+    full_file_smells = {"high-fan-in", "scattered-functionality"}
+    full_file_by_smell = {slug: set() for slug in full_file_smells}
+
+    normalized_name_to_slug = {
+        _normalize_name(name): slug
+        for name, slug in name_to_slug.items()
+    }
+    for entry in report_entries:
+        name = _get_value(entry, "name", "Name")
+        if not name:
+            continue
+        slug = name_to_slug.get(name) or normalized_name_to_slug.get(_normalize_name(name))
+        if slug not in full_file_smells:
+            continue
+        file_path = _get_value(entry, "file_path", "File")
+        if not file_path:
+            continue
+        normalized_path = _normalize_path(file_path, code_root)
+        if normalized_path:
+            full_file_by_smell[slug].add(normalized_path)
 
     positive_dir = os.path.join(output_dir, "positive")
     negative_dir = os.path.join(output_dir, "negative")
@@ -427,12 +451,14 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
                 if common_root == samples_root:
                     display_path = os.path.relpath(file_path, samples_root)
                 file_spans = spans_by_file.get(file_path, [])
+                label_full_file = file_path in full_file_by_smell.get(slug, set())
                 _write_conll(
                     handle,
                     display_path,
                     content,
                     file_spans,
                     scheme_labels[scheme],
+                    label_full_file=label_full_file,
                 )
 
 

@@ -127,7 +127,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields status, limit, tier, balance, self in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+        "description": "Potentially unused fields status, self, limit, balance, tier in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
         "file_path": "./samples/mini_search_engine/relations.py",
         "class_name": "ProfileState",
         "start_line_number": 1,
@@ -238,8 +238,17 @@
     {
         "type": "Architectural",
         "name": "Cyclic Dependency",
-        "description": "Strong cyclic dependency detected: link_b -> link_c -> link_a -> link_b\nCycle strength: 3 mutual dependencies",
+        "description": "Strong cyclic dependency detected: link_a -> link_b -> link_c -> link_a\nCycle strength: 3 mutual dependencies",
         "files": [
+            {
+                "name": "./samples/mini_search_engine/link_a.py",
+                "instance_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
             {
                 "name": "./samples/mini_search_engine/link_b.py",
                 "instance_lines": [
@@ -251,15 +260,6 @@
             },
             {
                 "name": "./samples/mini_search_engine/link_c.py",
-                "instance_lines": [
-                    {
-                        "start_line_number": 1,
-                        "end_line_number": 2
-                    }
-                ]
-            },
-            {
-                "name": "./samples/mini_search_engine/link_a.py",
                 "instance_lines": [
                     {
                         "start_line_number": 1,

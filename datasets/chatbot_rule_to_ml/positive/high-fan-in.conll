@@ -656,35 +656,35 @@ total	O
 [file]	-100
 path=chatbot_rule_to_ml/shared.py	-100
 
-import	O
-math	O
+import	B
+math	I
 
-import	O
-json	O
+import	I
+json	I
 
-def	O
-shared_score	O
-(	O
-payload	O
-)	O
-:	O
+def	I
+shared_score	I
+(	I
+payload	I
+)	I
+:	I
 
-    	O
-return	O
-math	O
-.	O
-sqrt	O
-(	O
-len	O
-(	O
-json	O
-.	O
-dumps	O
-(	O
-payload	O
-)	O
-)	O
-)	O
+    	I
+return	I
+math	I
+.	I
+sqrt	I
+(	I
+len	I
+(	I
+json	I
+.	I
+dumps	I
+(	I
+payload	I
+)	I
+)	I
+)	I
 
 [file]	-100
 path=chatbot_rule_to_ml/trainer.py	-100
