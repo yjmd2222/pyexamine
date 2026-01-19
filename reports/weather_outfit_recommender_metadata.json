@@ -1,0 +1,37 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "advisor",
+            "alerts",
+            "analyzer",
+            "exports",
+            "models",
+            "ui"
+        ],
+        "edges": []
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "advisor.OutfitAdvisor",
+                "base_classes": []
+            },
+            {
+                "class_name": "advisor.WeatherProfile",
+                "base_classes": []
+            },
+            {
+                "class_name": "analyzer.ForecastAnalyzer",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.UnitLookup",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.WeatherSnapshot",
+                "base_classes": []
+            }
+        ]
+    }
+}

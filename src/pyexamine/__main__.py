@@ -42,6 +42,8 @@ def main():
     dataset_parser.add_argument("--config", required=True, help="Path to code quality config YAML")
     dataset_parser.add_argument("--report", default="code_quality_report.json",
                                 help="Output path for code_quality_report.json")
+    dataset_parser.add_argument("--metadata-output", default=None,
+                                help="Output path for code_metadata.json")
     dataset_parser.add_argument("--output-dir", default=None,
                                 help="Output directory for per-smell CoNLL files")
 
@@ -55,6 +57,8 @@ def main():
                               help="Path to code_quality_report.json or a directory of reports.")
     index_parser.add_argument("--output", default=None,
                               help="Output path for smell_index.json")
+    index_parser.add_argument("--no-analyze", action="store_true",
+                              help="Skip running analyze_code_quality before building the index.")
 
     args = parser.parse_args()
 
@@ -81,6 +85,8 @@ def main():
             "--config", args.config,
             "--report", args.report,
         ]
+        if args.metadata_output:
+            cmd.extend(["--metadata-output", args.metadata_output])
         if args.output_dir:
             cmd.extend(["--output-dir", args.output_dir])
         _run(cmd)
@@ -93,6 +99,8 @@ def main():
             "--config", args.config,
             "--report", args.report,
         ]
+        if args.no_analyze:
+            cmd.append("--no-analyze")
         if args.output:
             cmd.extend(["--output", args.output])
         _run(cmd)

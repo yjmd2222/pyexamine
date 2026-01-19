@@ -1,0 +1,29 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "categories",
+            "datetime",
+            "ledger",
+            "monolith",
+            "rules"
+        ],
+        "edges": [
+            {
+                "from": "categories",
+                "to": "datetime"
+            },
+            {
+                "from": "ledger",
+                "to": "datetime"
+            }
+        ]
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "monolith.FinanceDirector",
+                "base_classes": []
+            }
+        ]
+    }
+}

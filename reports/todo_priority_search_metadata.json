@@ -1,0 +1,59 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "callsites",
+            "dispatch",
+            "templates",
+            "workflow"
+        ],
+        "edges": []
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "callsites.AuditLog",
+                "base_classes": []
+            },
+            {
+                "class_name": "dispatch.TaskDispatcher",
+                "base_classes": []
+            },
+            {
+                "class_name": "templates.BoardAdvanced",
+                "base_classes": [
+                    "templates.BoardBase"
+                ]
+            },
+            {
+                "class_name": "templates.BoardBase",
+                "base_classes": []
+            },
+            {
+                "class_name": "templates.BoardSimple",
+                "base_classes": [
+                    "templates.BoardBase"
+                ]
+            },
+            {
+                "class_name": "templates.CardAdvanced",
+                "base_classes": [
+                    "templates.CardBase"
+                ]
+            },
+            {
+                "class_name": "templates.CardBase",
+                "base_classes": []
+            },
+            {
+                "class_name": "templates.CardSimple",
+                "base_classes": [
+                    "templates.CardBase"
+                ]
+            },
+            {
+                "class_name": "workflow.TaskWorkflow",
+                "base_classes": []
+            }
+        ]
+    }
+}

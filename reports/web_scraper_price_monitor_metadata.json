@@ -1,0 +1,40 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "client",
+            "extractors",
+            "notes",
+            "pipeline",
+            "state"
+        ],
+        "edges": []
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "client.FetchSession",
+                "base_classes": []
+            },
+            {
+                "class_name": "extractors.HtmlExtractor",
+                "base_classes": []
+            },
+            {
+                "class_name": "extractors.JsonExtractor",
+                "base_classes": []
+            },
+            {
+                "class_name": "extractors.TextExtractor",
+                "base_classes": []
+            },
+            {
+                "class_name": "pipeline.MonitorPipeline",
+                "base_classes": []
+            },
+            {
+                "class_name": "state.MonitorState",
+                "base_classes": []
+            }
+        ]
+    }
+}

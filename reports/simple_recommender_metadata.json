@@ -1,0 +1,17 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "corpus",
+            "scoring"
+        ],
+        "edges": []
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "scoring.SimilarityScorer",
+                "base_classes": []
+            }
+        ]
+    }
+}

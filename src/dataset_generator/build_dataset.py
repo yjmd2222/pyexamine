@@ -400,17 +400,25 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
     code_root = os.path.abspath(code_root)
     samples_root = os.path.abspath(os.path.join(code_root, os.pardir))
     spans_by_smell = _build_smell_spans(report_entries, smell_schemes, name_to_slug, code_root)
+    all_files = sorted(_iter_code_files(code_root))
+    all_smells = sorted(smell_schemes.keys())
 
-    os.makedirs(output_dir, exist_ok=True)
-    for slug, spans in spans_by_smell.items():
+    positive_dir = os.path.join(output_dir, "positive")
+    negative_dir = os.path.join(output_dir, "negative")
+    os.makedirs(positive_dir, exist_ok=True)
+    os.makedirs(negative_dir, exist_ok=True)
+
+    for slug in all_smells:
+        spans = spans_by_smell.get(slug, [])
         spans_by_file = {}
         for file_path, start, end, label_type in spans:
             spans_by_file.setdefault(file_path, []).append((start, end, label_type))
-        output_path = os.path.join(output_dir, f"{slug}.conll")
+        scheme = smell_schemes.get(slug, "A")
+        target_dir = positive_dir if spans else negative_dir
+        output_path = os.path.join(target_dir, f"{slug}.conll")
         with open(output_path, "w", encoding="utf-8") as handle:
-            for file_path, file_spans in sorted(spans_by_file.items()):
+            for file_path in all_files:
                 content = _read_file(file_path)
-                scheme = smell_schemes.get(slug, "A")
                 display_path = file_path
                 try:
                     common_root = os.path.commonpath([samples_root, file_path])
@@ -418,7 +426,14 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
                     common_root = ""
                 if common_root == samples_root:
                     display_path = os.path.relpath(file_path, samples_root)
-                _write_conll(handle, display_path, content, file_spans, scheme_labels[scheme])
+                file_spans = spans_by_file.get(file_path, [])
+                _write_conll(
+                    handle,
+                    display_path,
+                    content,
+                    file_spans,
+                    scheme_labels[scheme],
+                )
 
 
 def main():

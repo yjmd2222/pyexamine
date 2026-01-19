@@ -1,0 +1,696 @@
+[file]	-100
+path=habit_tracker_reminders/catalog.py	-100
+
+class	O
+HabitType01	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_01"	O
+
+class	O
+HabitType02	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_02"	O
+
+class	O
+HabitType03	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_03"	O
+
+class	O
+HabitType04	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_04"	O
+
+class	O
+HabitType05	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_05"	O
+
+class	O
+HabitType06	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_06"	O
+
+class	O
+HabitType07	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_07"	O
+
+class	O
+HabitType08	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_08"	O
+
+class	O
+HabitType09	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_09"	O
+
+class	O
+HabitType10	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_10"	O
+
+class	O
+HabitType11	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_11"	O
+
+class	O
+HabitType12	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_12"	O
+
+class	O
+HabitType13	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_13"	O
+
+class	O
+HabitType14	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_14"	O
+
+class	O
+HabitType15	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_15"	O
+
+class	O
+HabitType16	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_16"	O
+
+class	O
+HabitType17	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_17"	O
+
+class	O
+HabitType18	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_18"	O
+
+class	O
+HabitType19	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_19"	O
+
+class	O
+HabitType20	O
+:	O
+
+    	O
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"habit_20"	O
+
+[file]	-100
+path=habit_tracker_reminders/habits.py	-100
+
+class	O
+HabitBase	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+def	O
+label	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+name	O
+.	O
+title	O
+(	O
+)	O
+
+class	O
+HabitDaily	O
+(	O
+HabitBase	O
+)	O
+:	O
+
+    	O
+def	O
+cadence	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"daily"	O
+
+class	O
+HabitWeekly	O
+(	O
+HabitDaily	O
+)	O
+:	O
+
+    	O
+def	O
+cadence	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"weekly"	O
+
+class	O
+HabitMonthly	O
+(	O
+HabitWeekly	O
+)	O
+:	O
+
+    	O
+def	O
+cadence	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"monthly"	O
+
+class	O
+HabitAnnual	O
+(	O
+HabitMonthly	O
+)	O
+:	O
+
+    	O
+def	O
+cadence	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"annual"	O
+
+[file]	-100
+path=habit_tracker_reminders/notifier_a.py	-100
+
+def	O
+format_message	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+f"	O
+Hi 	O
+{	O
+user	O
+}	O
+, remember 	O
+{	O
+habit	O
+}	O
+.	O
+"	O
+
+def	O
+send_daily	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+format_message	O
+(	O
+user	O
+,	O
+habit	O
+)	O
+
+def	O
+send_weekly	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+format_message	O
+(	O
+user	O
+,	O
+habit	O
+)	O
+
+def	O
+schedule_next	O
+(	O
+day	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+f"	O
+next:	O
+{	O
+day	O
+}	O
+"	O
+
+[file]	-100
+path=habit_tracker_reminders/notifier_b.py	-100
+
+def	O
+format_message	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+f"	O
+Hello 	O
+{	O
+user	O
+}	O
+, keep up with 	O
+{	O
+habit	O
+}	O
+.	O
+"	O
+
+def	O
+send_daily	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+format_message	O
+(	O
+user	O
+,	O
+habit	O
+)	O
+
+def	O
+send_weekly	O
+(	O
+user	O
+:	O
+str	O
+,	O
+habit	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+format_message	O
+(	O
+user	O
+,	O
+habit	O
+)	O
+
+def	O
+schedule_next	O
+(	O
+day	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+return	O
+f"	O
+next:	O
+{	O
+day	O
+}	O
+"	O
+
+[file]	-100
+path=habit_tracker_reminders/unused_helpers.py	-100
+
+def	O
+_calc_streak_days	O
+(	O
+total	O
+:	O
+int	O
+,	O
+missed	O
+:	O
+int	O
+)	O
+:	O
+
+    	O
+return	O
+max	O
+(	O
+total	O
+-	O
+missed	O
+,	O
+0	O
+)	O
+
+def	O
+_calc_completion_ratio	O
+(	O
+done	O
+:	O
+int	O
+,	O
+planned	O
+:	O
+int	O
+)	O
+:	O
+
+    	O
+return	O
+done	O
+/	O
+planned	O
+if	O
+planned	O
+else	O
+0.0	O
+
+def	O
+_calc_bonus_points	O
+(	O
+streak	O
+:	O
+int	O
+)	O
+:	O
+
+    	O
+return	O
+min	O
+(	O
+streak	O
+*	O
+2	O
+,	O
+100	O
+)	O
+

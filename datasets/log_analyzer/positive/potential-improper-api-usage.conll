@@ -1,0 +1,2667 @@
+[file]	-100
+path=log_analyzer/aggregator.py	-100
+
+class	O
+Tooling	O
+:	O
+
+    	O
+def	O
+do_01	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"01"	O
+
+def	O
+do_02	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"02"	O
+
+def	O
+do_03	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"03"	O
+
+def	O
+do_04	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"04"	O
+
+def	O
+do_05	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"05"	O
+
+def	O
+do_06	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"06"	O
+
+def	O
+do_07	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"07"	O
+
+def	O
+do_08	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"08"	O
+
+def	O
+do_09	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"09"	O
+
+def	O
+do_10	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"10"	O
+
+def	O
+do_11	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"11"	O
+
+def	O
+do_12	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"12"	O
+
+def	O
+do_13	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"13"	O
+
+def	O
+do_14	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"14"	O
+
+def	O
+do_15	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"15"	O
+
+def	O
+do_16	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"16"	O
+
+def	O
+do_17	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"17"	O
+
+def	O
+do_18	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"18"	O
+
+def	O
+do_19	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"19"	O
+
+def	O
+do_20	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"20"	O
+
+def	O
+do_21	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"21"	O
+
+def	O
+do_22	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"22"	O
+
+def	O
+do_23	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"23"	O
+
+def	O
+do_24	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"24"	O
+
+def	O
+do_25	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"25"	O
+
+def	O
+do_26	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"26"	O
+
+def	O
+do_27	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"27"	O
+
+def	O
+do_28	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"28"	O
+
+def	O
+do_29	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"29"	O
+
+def	O
+do_30	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"30"	O
+
+class	O
+LogAggregator	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+tools	O
+:	O
+Tooling	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+tools	O
+=	O
+tools	O
+
+def	O
+analyze	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+[	O
+
+self	O
+.	O
+tools	O
+.	O
+do_01	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_02	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_03	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_04	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_05	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_06	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_07	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_08	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_09	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_10	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_11	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_12	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_13	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_14	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_15	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_16	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_17	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_18	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_19	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_20	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_21	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_22	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_23	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_24	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_25	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_26	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_27	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_28	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_29	O
+(	O
+)	O
+,	O
+
+self	O
+.	O
+tools	O
+.	O
+do_30	O
+(	O
+)	O
+,	O
+
+]	O
+
+def	O
+summarize	O
+(	O
+self	O
+,	O
+values	O
+)	O
+:	O
+
+        	O
+total	O
+=	O
+0	O
+
+for	O
+value	O
+in	O
+values	O
+:	O
+
+            	O
+total	O
++=	O
+len	O
+(	O
+str	O
+(	O
+value	O
+)	O
+)	O
+
+return	O
+total	O
+
+def	O
+export	O
+(	O
+self	O
+,	O
+values	O
+)	O
+:	O
+
+        	O
+return	O
+","	O
+.	O
+join	O
+(	O
+values	O
+)	O
+
+def	O
+reset	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+[	O
+]	O
+
+[file]	-100
+path=log_analyzer/chains.py	-100
+
+class	O
+Node	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+child	O
+=	O
+None	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+child	O
+=	O
+child	O
+
+self	O
+.	O
+value	O
+=	O
+"x"	O
+
+def	O
+extract_path	O
+(	O
+node	O
+:	O
+Node	O
+)	O
+:	O
+
+    	O
+return	O
+node	O
+.	O
+child	O
+.	O
+child	O
+.	O
+child	O
+.	O
+value	O
+
+[file]	-100
+path=log_analyzer/design.py	-100
+
+class	O
+FutureNotifier	O
+:	O
+
+    	O
+def	O
+schedule	O
+(	O
+self	O
+,	O
+user	O
+,	O
+channel	O
+,	O
+priority	O
+)	O
+:	O
+
+        	O
+pass	O
+
+def	O
+retry	O
+(	O
+self	O
+,	O
+user	O
+,	O
+channel	O
+,	O
+priority	O
+)	O
+:	O
+
+        	O
+pass	O
+
+def	O
+cancel	O
+(	O
+self	O
+,	O
+user	O
+,	O
+channel	O
+,	O
+priority	O
+)	O
+:	O
+
+        	O
+pass	O
+
+def	O
+defer	O
+(	O
+self	O
+,	O
+user	O
+,	O
+channel	O
+,	O
+priority	O
+)	O
+:	O
+
+        	O
+pass	O
+
+[file]	-100
+path=log_analyzer/duplicates.py	-100
+
+def	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+result	O
+=	O
+[	O
+]	O
+
+result	B
+.	I
+append	I
+(	I
+str	I
+(	I
+entry	I
+)	I
+.	I
+strip	I
+(	I
+)	I
+)	I
+
+result	B
+.	I
+append	I
+(	I
+str	I
+(	I
+flag	I
+)	I
+.	I
+strip	I
+(	I
+)	I
+)	I
+
+result	B
+.	I
+append	I
+(	I
+str	I
+(	I
+tag	I
+)	I
+.	I
+strip	I
+(	I
+)	I
+)	I
+
+result	B
+.	I
+append	I
+(	I
+str	I
+(	I
+weight	I
+)	I
+.	I
+strip	I
+(	I
+)	I
+)	I
+
+result	B
+.	I
+append	I
+(	I
+str	I
+(	I
+source	I
+)	I
+.	I
+strip	I
+(	I
+)	I
+)	I
+
+result	B
+.	I
+append	I
+(	I
+"ok"	I
+)	I
+
+return	O
+":"	O
+.	O
+join	O
+(	O
+result	O
+)	O
+
+def	O
+normalize_a	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_b	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_c	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_d	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_e	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_f	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_g	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_h	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_i	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_j	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_k	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_l	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_m	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_n	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+def	O
+normalize_o	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+:	O
+
+    	O
+out	O
+=	O
+_template	O
+(	O
+entry	O
+,	O
+flag	O
+,	O
+tag	O
+,	O
+weight	O
+,	O
+source	O
+)	O
+
+out	B
+=	I
+out	I
+.	I
+replace	I
+(	I
+"::"	I
+,	I
+":"	I
+)	I
+
+out	B
+=	I
+out	I
+.	I
+strip	I
+(	I
+)	I
+
+out	O
+=	O
+out	O
++	O
+""	O
+
+return	O
+out	O
+
+[file]	-100
+path=log_analyzer/misc.py	-100
+
+def	O
+scratchpad	O
+(	O
+)	O
+:	O
+
+    	O
+return	O
+"notes"	O
+
+[file]	-100
+path=log_analyzer/reports.py	-100
+
+def	O
+build_report	O
+(	O
+events	O
+)	O
+:	O
+
+    	O
+summary	O
+=	O
+{	O
+
+"total"	O
+:	O
+0	O
+,	O
+
+"by_level"	O
+:	O
+{	O
+}	O
+,	O
+
+"by_source"	O
+:	O
+{	O
+}	O
+,	O
+
+"by_hour"	O
+:	O
+{	O
+}	O
+,	O
+
+"top_messages"	O
+:	O
+[	O
+]	O
+,	O
+
+}	O
+
+for	O
+event	O
+in	O
+events	O
+:	O
+
+        	O
+summary	O
+[	O
+"total"	O
+]	O
++=	O
+1	O
+
+level	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"level"	I
+,	I
+"info"	I
+)	I
+
+source	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"source"	I
+,	I
+"unknown"	I
+)	I
+
+hour	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"hour"	I
+,	I
+0	I
+)	I
+
+message	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"message"	I
+,	I
+""	I
+)	I
+
+user_id	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"user_id"	I
+,	I
+"anon"	I
+)	I
+
+host	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"host"	I
+,	I
+"localhost"	I
+)	I
+
+service	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"service"	I
+,	I
+"core"	I
+)	I
+
+request_id	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"request_id"	I
+,	I
+"none"	I
+)	I
+
+duration_ms	B
+=	I
+event	I
+.	I
+get	I
+(	I
+"duration_ms"	I
+,	I
+0	I
+)	I
+
+summary	B
+[	I
+"by_level"	I
+]	I
+[	I
+level	I
+]	I
+=	I
+summary	I
+[	I
+"by_level"	I
+]	I
+.	I
+get	I
+(	I
+level	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+[	I
+"by_source"	I
+]	I
+[	I
+source	I
+]	I
+=	I
+summary	I
+[	I
+"by_source"	I
+]	I
+.	I
+get	I
+(	I
+source	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+[	I
+"by_hour"	I
+]	I
+[	I
+hour	I
+]	I
+=	I
+summary	I
+[	I
+"by_hour"	I
+]	I
+.	I
+get	I
+(	I
+hour	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+.	I
+setdefault	I
+(	I
+"by_user"	I
+,	I
+{	I
+}	I
+)	I
+
+summary	B
+[	I
+"by_user"	I
+]	I
+[	I
+user_id	I
+]	I
+=	I
+summary	I
+[	I
+"by_user"	I
+]	I
+.	I
+get	I
+(	I
+user_id	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+.	I
+setdefault	I
+(	I
+"by_host"	I
+,	I
+{	I
+}	I
+)	I
+
+summary	B
+[	I
+"by_host"	I
+]	I
+[	I
+host	I
+]	I
+=	I
+summary	I
+[	I
+"by_host"	I
+]	I
+.	I
+get	I
+(	I
+host	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+.	I
+setdefault	I
+(	I
+"by_service"	I
+,	I
+{	I
+}	I
+)	I
+
+summary	B
+[	I
+"by_service"	I
+]	I
+[	I
+service	I
+]	I
+=	I
+summary	I
+[	I
+"by_service"	I
+]	I
+.	I
+get	I
+(	I
+service	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+.	I
+setdefault	I
+(	I
+"by_request"	I
+,	I
+{	I
+}	I
+)	I
+
+summary	B
+[	I
+"by_request"	I
+]	I
+[	I
+request_id	I
+]	I
+=	I
+summary	I
+[	I
+"by_request"	I
+]	I
+.	I
+get	I
+(	I
+request_id	I
+,	I
+0	I
+)	I
++	I
+1	I
+
+summary	B
+.	I
+setdefault	I
+(	I
+"duration_total"	I
+,	I
+0	I
+)	I
+
+summary	O
+[	O
+"duration_total"	O
+]	O
++=	O
+duration_ms	O
+
+if	B
+duration_ms	I
+>	I
+summary	I
+.	I
+get	I
+(	I
+"duration_peak"	I
+,	I
+0	I
+)	I
+:	I
+
+            	O
+summary	O
+[	O
+"duration_peak"	O
+]	O
+=	O
+duration_ms	O
+
+if	O
+len	O
+(	O
+message	O
+)	O
+>	O
+40	O
+:	O
+
+            	O
+summary	O
+[	O
+"top_messages"	O
+]	O
+.	O
+append	O
+(	O
+message	O
+[	O
+:	O
+40	O
+]	O
+)	O
+
+else	O
+:	O
+
+            	O
+summary	O
+[	O
+"top_messages"	O
+]	O
+.	O
+append	O
+(	O
+message	O
+)	O
+
+ordered_levels	B
+=	I
+sorted	I
+(	I
+summary	I
+[	I
+"by_level"	I
+]	I
+.	I
+items	I
+(	I
+)	I
+,	I
+key	I
+=	I
+lambda	I
+x	I
+:	I
+x	I
+[	I
+1	I
+]	I
+,	I
+reverse	I
+=	I
+True	I
+)	I
+
+ordered_sources	B
+=	I
+sorted	I
+(	I
+summary	I
+[	I
+"by_source"	I
+]	I
+.	I
+items	I
+(	I
+)	I
+,	I
+key	I
+=	I
+lambda	I
+x	I
+:	I
+x	I
+[	I
+1	I
+]	I
+,	I
+reverse	I
+=	I
+True	I
+)	I
+
+ordered_hours	B
+=	I
+sorted	I
+(	I
+summary	I
+[	I
+"by_hour"	I
+]	I
+.	I
+items	I
+(	I
+)	I
+,	I
+key	I
+=	I
+lambda	I
+x	I
+:	I
+x	I
+[	I
+1	I
+]	I
+,	I
+reverse	I
+=	I
+True	I
+)	I
+
+summary	O
+[	O
+"ordered_levels"	O
+]	O
+=	O
+ordered_levels	O
+
+summary	O
+[	O
+"ordered_sources"	O
+]	O
+=	O
+ordered_sources	O
+
+summary	O
+[	O
+"ordered_hours"	O
+]	O
+=	O
+ordered_hours	O
+
+summary	O
+[	O
+"top_messages"	O
+]	O
+=	O
+summary	O
+[	O
+"top_messages"	O
+]	O
+[	O
+:	O
+10	O
+]	O
+
+summary	O
+[	O
+"has_errors"	O
+]	O
+=	O
+any	O
+(	O
+level	O
+==	O
+"error"	O
+for	O
+level	O
+,	O
+_	O
+in	O
+ordered_levels	O
+)	O
+
+summary	O
+[	O
+"has_warnings"	O
+]	O
+=	O
+any	O
+(	O
+level	O
+==	O
+"warning"	O
+for	O
+level	O
+,	O
+_	O
+in	O
+ordered_levels	O
+)	O
+
+summary	O
+[	O
+"has_critical"	O
+]	O
+=	O
+any	O
+(	O
+level	O
+==	O
+"critical"	O
+for	O
+level	O
+,	O
+_	O
+in	O
+ordered_levels	O
+)	O
+
+summary	O
+[	O
+"peak_hour"	O
+]	O
+=	O
+ordered_hours	O
+[	O
+0	O
+]	O
+[	O
+0	O
+]	O
+if	O
+ordered_hours	O
+else	O
+None	O
+
+summary	O
+[	O
+"peak_source"	O
+]	O
+=	O
+ordered_sources	O
+[	O
+0	O
+]	O
+[	O
+0	O
+]	O
+if	O
+ordered_sources	O
+else	O
+None	O
+
+summary	O
+[	O
+"peak_level"	O
+]	O
+=	O
+ordered_levels	O
+[	O
+0	O
+]	O
+[	O
+0	O
+]	O
+if	O
+ordered_levels	O
+else	O
+None	O
+
+summary	O
+[	O
+"average_per_hour"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_hour"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_per_source"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_source"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_per_level"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_level"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_per_user"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_user"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_per_host"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_host"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_per_service"	O
+]	O
+=	O
+summary	O
+[	O
+"total"	O
+]	O
+/	O
+max	O
+(	O
+len	O
+(	O
+summary	O
+[	O
+"by_service"	O
+]	O
+)	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"average_duration"	O
+]	O
+=	O
+summary	O
+[	O
+"duration_total"	O
+]	O
+/	O
+max	O
+(	O
+summary	O
+[	O
+"total"	O
+]	O
+,	O
+1	O
+)	O
+
+summary	O
+[	O
+"note"	O
+]	O
+=	O
+"generated"	O
+
+summary	O
+[	O
+"status"	O
+]	O
+=	O
+"complete"	O
+
+return	O
+summary	O
+

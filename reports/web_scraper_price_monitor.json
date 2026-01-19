@@ -141,7 +141,7 @@
     {
         "type": "Code",
         "name": "Alternative Classes with Different Interfaces",
-        "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods extract, open in ./samples/web_scraper_price_monitor/extractors.py",
+        "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods open, extract in ./samples/web_scraper_price_monitor/extractors.py",
         "file_path": "./samples/web_scraper_price_monitor/extractors.py",
         "classes": [
             {

@@ -1,0 +1,277 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "bridge",
+            "collections",
+            "datetime",
+            "feature_a",
+            "feature_b",
+            "feature_c",
+            "feature_d",
+            "feature_e",
+            "feature_f",
+            "feature_g",
+            "feature_h",
+            "feature_i",
+            "feature_j",
+            "feature_k",
+            "feature_l",
+            "feature_m",
+            "feature_n",
+            "feature_o",
+            "feature_p",
+            "feature_q",
+            "feature_r",
+            "feature_s",
+            "feature_t",
+            "graph",
+            "helper_01",
+            "helper_02",
+            "helper_03",
+            "helper_04",
+            "helper_05",
+            "helper_06",
+            "helper_07",
+            "helper_08",
+            "helper_09",
+            "helper_10",
+            "helper_11",
+            "helper_12",
+            "json",
+            "linker",
+            "math",
+            "os",
+            "re",
+            "runner",
+            "shared",
+            "sys",
+            "trainer"
+        ],
+        "edges": [
+            {
+                "from": "bridge",
+                "to": "shared"
+            },
+            {
+                "from": "graph",
+                "to": "collections"
+            },
+            {
+                "from": "graph",
+                "to": "datetime"
+            },
+            {
+                "from": "graph",
+                "to": "feature_a"
+            },
+            {
+                "from": "graph",
+                "to": "feature_b"
+            },
+            {
+                "from": "graph",
+                "to": "feature_c"
+            },
+            {
+                "from": "graph",
+                "to": "feature_d"
+            },
+            {
+                "from": "graph",
+                "to": "feature_e"
+            },
+            {
+                "from": "graph",
+                "to": "feature_f"
+            },
+            {
+                "from": "graph",
+                "to": "feature_g"
+            },
+            {
+                "from": "graph",
+                "to": "feature_h"
+            },
+            {
+                "from": "graph",
+                "to": "feature_i"
+            },
+            {
+                "from": "graph",
+                "to": "feature_j"
+            },
+            {
+                "from": "graph",
+                "to": "feature_k"
+            },
+            {
+                "from": "graph",
+                "to": "feature_l"
+            },
+            {
+                "from": "graph",
+                "to": "feature_m"
+            },
+            {
+                "from": "graph",
+                "to": "feature_n"
+            },
+            {
+                "from": "graph",
+                "to": "feature_o"
+            },
+            {
+                "from": "graph",
+                "to": "feature_p"
+            },
+            {
+                "from": "graph",
+                "to": "feature_q"
+            },
+            {
+                "from": "graph",
+                "to": "feature_r"
+            },
+            {
+                "from": "graph",
+                "to": "feature_s"
+            },
+            {
+                "from": "graph",
+                "to": "feature_t"
+            },
+            {
+                "from": "graph",
+                "to": "json"
+            },
+            {
+                "from": "graph",
+                "to": "math"
+            },
+            {
+                "from": "graph",
+                "to": "os"
+            },
+            {
+                "from": "graph",
+                "to": "re"
+            },
+            {
+                "from": "graph",
+                "to": "shared"
+            },
+            {
+                "from": "graph",
+                "to": "sys"
+            },
+            {
+                "from": "helper_01",
+                "to": "shared"
+            },
+            {
+                "from": "helper_02",
+                "to": "shared"
+            },
+            {
+                "from": "helper_03",
+                "to": "shared"
+            },
+            {
+                "from": "helper_04",
+                "to": "shared"
+            },
+            {
+                "from": "helper_05",
+                "to": "shared"
+            },
+            {
+                "from": "helper_06",
+                "to": "shared"
+            },
+            {
+                "from": "helper_07",
+                "to": "shared"
+            },
+            {
+                "from": "helper_08",
+                "to": "shared"
+            },
+            {
+                "from": "helper_09",
+                "to": "shared"
+            },
+            {
+                "from": "helper_10",
+                "to": "shared"
+            },
+            {
+                "from": "helper_11",
+                "to": "shared"
+            },
+            {
+                "from": "helper_12",
+                "to": "shared"
+            },
+            {
+                "from": "linker",
+                "to": "shared"
+            },
+            {
+                "from": "runner",
+                "to": "json"
+            },
+            {
+                "from": "runner",
+                "to": "shared"
+            },
+            {
+                "from": "shared",
+                "to": "json"
+            },
+            {
+                "from": "shared",
+                "to": "math"
+            },
+            {
+                "from": "trainer",
+                "to": "math"
+            },
+            {
+                "from": "trainer",
+                "to": "shared"
+            }
+        ]
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "bridge.IntentHandler",
+                "base_classes": []
+            },
+            {
+                "class_name": "bridge.IntentPlanner",
+                "base_classes": []
+            },
+            {
+                "class_name": "bridge.IntentRoute",
+                "base_classes": []
+            },
+            {
+                "class_name": "graph.GraphBuilder",
+                "base_classes": []
+            },
+            {
+                "class_name": "linker.IntentHandler",
+                "base_classes": []
+            },
+            {
+                "class_name": "linker.IntentPlanner",
+                "base_classes": []
+            },
+            {
+                "class_name": "linker.IntentRoute",
+                "base_classes": []
+            }
+        ]
+    }
+}

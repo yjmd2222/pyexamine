@@ -1,0 +1,1277 @@
+[file]	-100
+path=personal_finance_tracker/categories.py	-100
+
+from	O
+datetime	O
+import	O
+date	O
+
+def	O
+categorize_income	O
+(	O
+amount	O
+:	O
+float	O
+,	O
+
+currency	O
+:	O
+str	O
+,	O
+
+source	O
+:	O
+str	O
+,	O
+
+received_at	O
+:	O
+date	O
+,	O
+
+description	O
+:	O
+str	O
+,	O
+
+category_code	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+label	O
+=	O
+"income"	O
+
+if	O
+source	O
+.	O
+lower	O
+(	O
+)	O
+==	O
+"salary"	O
+:	O
+
+        	O
+label	O
+=	O
+"salary"	O
+
+return	O
+{	O
+
+"amount"	O
+:	O
+amount	O
+,	O
+
+"currency"	O
+:	O
+currency	O
+,	O
+
+"source"	O
+:	O
+source	O
+,	O
+
+"received_at"	O
+:	O
+received_at	O
+,	O
+
+"description"	O
+:	O
+description	O
+,	O
+
+"category_code"	O
+:	O
+category_code	O
+,	O
+
+"label"	O
+:	O
+label	O
+,	O
+
+}	O
+
+def	O
+categorize_expense	O
+(	O
+amount	O
+:	O
+float	O
+,	O
+
+currency	O
+:	O
+str	O
+,	O
+
+source	O
+:	O
+str	O
+,	O
+
+received_at	O
+:	O
+date	O
+,	O
+
+description	O
+:	O
+str	O
+,	O
+
+category_code	O
+:	O
+str	O
+)	O
+:	O
+
+    	O
+label	O
+=	O
+"expense"	O
+
+if	O
+source	O
+.	O
+lower	O
+(	O
+)	O
+in	O
+{	O
+"coffee"	O
+,	O
+"snack"	O
+}	O
+:	O
+
+        	O
+label	O
+=	O
+"food"	O
+
+return	O
+{	O
+
+"amount"	O
+:	O
+amount	O
+,	O
+
+"currency"	O
+:	O
+currency	O
+,	O
+
+"source"	O
+:	O
+source	O
+,	O
+
+"received_at"	O
+:	O
+received_at	O
+,	O
+
+"description"	O
+:	O
+description	O
+,	O
+
+"category_code"	O
+:	O
+category_code	O
+,	O
+
+"label"	O
+:	O
+label	O
+,	O
+
+}	O
+
+[file]	-100
+path=personal_finance_tracker/ledger.py	-100
+
+from	O
+datetime	O
+import	O
+date	O
+
+def	O
+add_transaction	O
+(	O
+user_id	O
+:	O
+int	O
+,	O
+
+account_id	O
+:	O
+int	O
+,	O
+
+amount	O
+:	O
+float	O
+,	O
+
+currency	O
+:	O
+str	O
+,	O
+
+category_id	O
+:	O
+int	O
+,	O
+
+merchant	O
+:	O
+str	O
+,	O
+
+note	O
+:	O
+str	O
+,	O
+
+is_recurring	O
+:	O
+bool	O
+,	O
+
+year	O
+:	O
+int	O
+,	O
+
+month	O
+:	O
+int	O
+,	O
+
+day	O
+:	O
+int	O
+)	O
+:	O
+
+    	O
+transaction_date	O
+=	O
+date	O
+(	O
+year	O
+,	O
+month	O
+,	O
+day	O
+)	O
+
+return	O
+{	O
+
+"user_id"	O
+:	O
+user_id	O
+,	O
+
+"account_id"	O
+:	O
+account_id	O
+,	O
+
+"amount"	O
+:	O
+amount	O
+,	O
+
+"currency"	O
+:	O
+currency	O
+,	O
+
+"category_id"	O
+:	O
+category_id	O
+,	O
+
+"merchant"	O
+:	O
+merchant	O
+,	O
+
+"note"	O
+:	O
+note	O
+,	O
+
+"is_recurring"	O
+:	O
+is_recurring	O
+,	O
+
+"date"	O
+:	O
+transaction_date	O
+,	O
+
+}	O
+
+[file]	-100
+path=personal_finance_tracker/monolith.py	-100
+
+class	B
+FinanceDirector	I
+:	I
+
+    	I
+def	I
+reconcile_day	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"reconcile_day"	I
+
+def	I
+reconcile_week	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"reconcile_week"	I
+
+def	I
+reconcile_month	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"reconcile_month"	I
+
+def	I
+summarize_accounts	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"summarize_accounts"	I
+
+def	I
+summarize_categories	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"summarize_categories"	I
+
+def	I
+summarize_merchants	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"summarize_merchants"	I
+
+def	I
+import_csv	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"import_csv"	I
+
+def	I
+import_bank_feed	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"import_bank_feed"	I
+
+def	I
+export_csv	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"export_csv"	I
+
+def	I
+export_pdf	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"export_pdf"	I
+
+def	I
+manage_budgets	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_budgets"	I
+
+def	I
+manage_alerts	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_alerts"	I
+
+def	I
+manage_rules	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_rules"	I
+
+def	I
+manage_categories	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_categories"	I
+
+def	I
+manage_merchants	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_merchants"	I
+
+def	I
+manage_accounts	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_accounts"	I
+
+def	I
+manage_cash_flow	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_cash_flow"	I
+
+def	I
+manage_goals	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"manage_goals"	I
+
+def	I
+audit_changes	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"audit_changes"	I
+
+def	I
+sync_cloud	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"sync_cloud"	I
+
+def	I
+generate_report_pack	I
+(	I
+self	I
+)	I
+:	I
+
+        	I
+return	I
+"generate_report_pack"	I
+
+[file]	-100
+path=personal_finance_tracker/rules.py	-100
+
+def	I
+map_category	I
+(	I
+source	I
+:	I
+str	I
+,	I
+description	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+text	I
+=	I
+f"	I
+{	I
+source	I
+}	I
+ 	I
+{	I
+description	I
+}	I
+"	I
+.	I
+lower	I
+(	I
+)	I
+
+if	I
+"grocery"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"groceries"	I
+
+elif	I
+"rent"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"housing"	I
+
+elif	I
+"uber"	I
+in	I
+text	I
+or	I
+"taxi"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"transport"	I
+
+elif	I
+"gym"	I
+in	I
+text	I
+or	I
+"fitness"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"health"	I
+
+elif	I
+"netflix"	I
+in	I
+text	I
+or	I
+"spotify"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"subscriptions"	I
+
+elif	I
+"restaurant"	I
+in	I
+text	I
+or	I
+"cafe"	I
+in	I
+text	I
+:	I
+
+        	I
+return	I
+"dining"	I
+
+else	I
+:	I
+
+        	I
+return	I
+"other"	I
+
+def	I
+map_priority	I
+(	I
+tag	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+if	I
+tag	I
+==	I
+"urgent"	I
+:	I
+
+        	I
+label	I
+=	I
+"p0"	I
+
+rank	I
+=	I
+0	I
+
+note	I
+=	I
+"urgent"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"high"	I
+:	I
+
+        	I
+label	I
+=	I
+"p1"	I
+
+rank	I
+=	I
+1	I
+
+note	I
+=	I
+"high"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"medium"	I
+:	I
+
+        	I
+label	I
+=	I
+"p2"	I
+
+rank	I
+=	I
+2	I
+
+note	I
+=	I
+"medium"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"low"	I
+:	I
+
+        	I
+label	I
+=	I
+"p3"	I
+
+rank	I
+=	I
+3	I
+
+note	I
+=	I
+"low"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"defer"	I
+:	I
+
+        	I
+label	I
+=	I
+"p4"	I
+
+rank	I
+=	I
+4	I
+
+note	I
+=	I
+"defer"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"snooze"	I
+:	I
+
+        	I
+label	I
+=	I
+"p5"	I
+
+rank	I
+=	I
+5	I
+
+note	I
+=	I
+"snooze"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+elif	I
+tag	I
+==	I
+"maybe"	I
+:	I
+
+        	I
+label	I
+=	I
+"p6"	I
+
+rank	I
+=	I
+6	I
+
+note	I
+=	I
+"maybe"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+else	I
+:	I
+
+        	I
+label	I
+=	I
+"p7"	I
+
+rank	I
+=	I
+7	I
+
+note	I
+=	I
+"other"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+rank	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+def	I
+map_bucket	I
+(	I
+code	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+if	I
+code	I
+==	I
+"a0"	I
+:	I
+
+        	I
+return	I
+"alpha"	I
+
+elif	I
+code	I
+==	I
+"b1"	I
+:	I
+
+        	I
+return	I
+"bravo"	I
+
+elif	I
+code	I
+==	I
+"c2"	I
+:	I
+
+        	I
+return	I
+"charlie"	I
+
+elif	I
+code	I
+==	I
+"d3"	I
+:	I
+
+        	I
+return	I
+"delta"	I
+
+elif	I
+code	I
+==	I
+"e4"	I
+:	I
+
+        	I
+return	I
+"echo"	I
+
+elif	I
+code	I
+==	I
+"f5"	I
+:	I
+
+        	I
+return	I
+"foxtrot"	I
+
+elif	I
+code	I
+==	I
+"g6"	I
+:	I
+
+        	I
+return	I
+"golf"	I
+
+elif	I
+code	I
+==	I
+"h7"	I
+:	I
+
+        	I
+return	I
+"hotel"	I
+
+elif	I
+code	I
+==	I
+"i8"	I
+:	I
+
+        	I
+return	I
+"india"	I
+
+elif	I
+code	I
+==	I
+"j9"	I
+:	I
+
+        	I
+return	I
+"juliet"	I
+
+elif	I
+code	I
+==	I
+"k10"	I
+:	I
+
+        	I
+return	I
+"kilo"	I
+
+else	I
+:	I
+
+        	I
+return	I
+"other"	I
+
+def	I
+map_status	I
+(	I
+code	I
+:	I
+str	I
+)	I
+:	I
+
+    	I
+if	I
+code	I
+==	I
+"new"	I
+:	I
+
+        	I
+label	I
+=	I
+"n1"	I
+
+score	I
+=	I
+1	I
+
+note	I
+=	I
+"new"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+score	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+else	I
+:	I
+
+        	I
+if	I
+code	I
+==	I
+"open"	I
+:	I
+
+            	I
+label	I
+=	I
+"o2"	I
+
+score	I
+=	I
+2	I
+
+note	I
+=	I
+"open"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+score	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+if	I
+code	I
+==	I
+"review"	I
+:	I
+
+            	I
+label	I
+=	I
+"r3"	I
+
+score	I
+=	I
+3	I
+
+note	I
+=	I
+"review"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+score	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+if	I
+code	I
+==	I
+"blocked"	I
+:	I
+
+            	I
+label	I
+=	I
+"b4"	I
+
+score	I
+=	I
+4	I
+
+note	I
+=	I
+"blocked"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+score	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+if	I
+code	I
+==	I
+"closed"	I
+:	I
+
+            	I
+label	I
+=	I
+"c5"	I
+
+score	I
+=	I
+5	I
+
+note	I
+=	I
+"closed"	I
+
+return	I
+f"	I
+{	I
+label	I
+}	I
+:	I
+{	I
+score	I
+}	I
+:	I
+{	I
+note	I
+}	I
+"	I
+
+return	I
+"unknown"	I
+

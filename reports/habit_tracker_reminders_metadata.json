@@ -1,0 +1,124 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "catalog",
+            "habits",
+            "notifier_a",
+            "notifier_b",
+            "unused_helpers"
+        ],
+        "edges": []
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "catalog.HabitType01",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType02",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType03",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType04",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType05",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType06",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType07",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType08",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType09",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType10",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType11",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType12",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType13",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType14",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType15",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType16",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType17",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType18",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType19",
+                "base_classes": []
+            },
+            {
+                "class_name": "catalog.HabitType20",
+                "base_classes": []
+            },
+            {
+                "class_name": "habits.HabitAnnual",
+                "base_classes": [
+                    "habits.HabitMonthly"
+                ]
+            },
+            {
+                "class_name": "habits.HabitBase",
+                "base_classes": []
+            },
+            {
+                "class_name": "habits.HabitDaily",
+                "base_classes": [
+                    "habits.HabitBase"
+                ]
+            },
+            {
+                "class_name": "habits.HabitMonthly",
+                "base_classes": [
+                    "habits.HabitWeekly"
+                ]
+            },
+            {
+                "class_name": "habits.HabitWeekly",
+                "base_classes": [
+                    "habits.HabitDaily"
+                ]
+            }
+        ]
+    }
+}

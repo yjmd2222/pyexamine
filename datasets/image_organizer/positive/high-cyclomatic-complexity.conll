@@ -1,0 +1,771 @@
+[file]	-100
+path=image_organizer/brokers.py	-100
+
+class	O
+ImportBroker	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+reader	O
+,	O
+scanner	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+reader	O
+=	O
+reader	O
+
+self	O
+.	O
+scanner	O
+=	O
+scanner	O
+
+def	O
+read	O
+(	O
+self	O
+,	O
+path	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+reader	O
+.	O
+read	O
+(	O
+path	O
+)	O
+
+def	O
+scan	O
+(	O
+self	O
+,	O
+path	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+scanner	O
+.	O
+scan	O
+(	O
+path	O
+)	O
+
+def	O
+refresh	O
+(	O
+self	O
+,	O
+path	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+reader	O
+.	O
+read	O
+(	O
+path	O
+)	O
+
+def	O
+rescan	O
+(	O
+self	O
+,	O
+path	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+scanner	O
+.	O
+scan	O
+(	O
+path	O
+)	O
+
+[file]	-100
+path=image_organizer/catalog.py	-100
+
+class	O
+AlbumCatalog	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+cover_path	O
+=	O
+""	O
+
+self	O
+.	O
+owner	O
+=	O
+""	O
+
+self	O
+.	O
+created	O
+=	O
+""	O
+
+self	O
+.	O
+updated	O
+=	O
+""	O
+
+self	O
+.	O
+title	O
+=	O
+""	O
+
+self	O
+.	O
+subtitle	O
+=	O
+""	O
+
+self	O
+.	O
+theme	O
+=	O
+""	O
+
+self	O
+.	O
+layout	O
+=	O
+""	O
+
+self	O
+.	O
+count	O
+=	O
+0	O
+
+self	O
+.	O
+size	O
+=	O
+0	O
+
+self	O
+.	O
+version	O
+=	O
+1	O
+
+def	O
+set_title	O
+(	O
+self	O
+,	O
+title	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+title	O
+=	O
+title	O
+
+def	O
+set_owner	O
+(	O
+self	O
+,	O
+owner	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+owner	O
+=	O
+owner	O
+
+def	O
+set_theme	O
+(	O
+self	O
+,	O
+theme	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+theme	O
+=	O
+theme	O
+
+def	O
+set_layout	O
+(	O
+self	O
+,	O
+layout	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+layout	O
+=	O
+layout	O
+
+def	O
+set_cover_path	O
+(	O
+self	O
+,	O
+cover_path	O
+:	O
+str	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+cover_path	O
+=	O
+cover_path	O
+
+def	O
+generate_preview	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+f"	O
+{	O
+self	O
+.	O
+title	O
+}	O
+:	O
+{	O
+self	O
+.	O
+cover_path	O
+}	O
+"	O
+
+[file]	-100
+path=image_organizer/layout.py	-100
+
+class	O
+LayoutPicker	O
+:	O
+
+    	B
+def	I
+select	I
+(	I
+self	I
+,	I
+mode	I
+:	I
+str	I
+)	I
+:	I
+
+        	I
+if	I
+mode	I
+==	I
+"timeline"	I
+:	I
+
+            	I
+return	I
+"timeline"	I
+
+elif	I
+mode	I
+==	I
+"grid"	I
+:	I
+
+            	I
+return	I
+"grid"	I
+
+elif	I
+mode	I
+==	I
+"mosaic"	I
+:	I
+
+            	I
+return	I
+"mosaic"	I
+
+elif	I
+mode	I
+==	I
+"map"	I
+:	I
+
+            	I
+return	I
+"map"	I
+
+elif	I
+mode	I
+==	I
+"story"	I
+:	I
+
+            	I
+return	I
+"story"	I
+
+elif	I
+mode	I
+==	I
+"album"	I
+:	I
+
+            	I
+return	I
+"album"	I
+
+elif	I
+mode	I
+==	I
+"highlight"	I
+:	I
+
+            	I
+return	I
+"highlight"	I
+
+elif	I
+mode	I
+==	I
+"favorites"	I
+:	I
+
+            	I
+return	I
+"favorites"	I
+
+elif	I
+mode	I
+==	I
+"trip"	I
+:	I
+
+            	I
+return	I
+"trip"	I
+
+elif	I
+mode	I
+==	I
+"year"	I
+:	I
+
+            	I
+return	I
+"year"	I
+
+else	I
+:	I
+
+            	I
+return	I
+"default"	I
+
+[file]	-100
+path=image_organizer/lifecycle.py	-100
+
+class	O
+GalleryLifecycle	O
+:	O
+
+    	O
+def	O
+start_import	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_import"	O
+
+return	O
+state	O
+
+def	O
+stop_import	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_import"	O
+
+return	O
+state	O
+
+def	O
+start_sync	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_sync"	O
+
+return	O
+state	O
+
+def	O
+stop_sync	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_sync"	O
+
+return	O
+state	O
+
+def	O
+start_share	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_share"	O
+
+return	O
+state	O
+
+def	O
+stop_share	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_share"	O
+
+return	O
+state	O
+
+def	O
+start_backup	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_backup"	O
+
+return	O
+state	O
+
+def	O
+stop_backup	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_backup"	O
+
+return	O
+state	O
+
+def	O
+start_cleanup	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_cleanup"	O
+
+return	O
+state	O
+
+def	O
+stop_cleanup	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_cleanup"	O
+
+return	O
+state	O
+
+def	O
+start_scan	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_scan"	O
+
+return	O
+state	O
+
+def	O
+stop_scan	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_scan"	O
+
+return	O
+state	O
+
+def	O
+start_sort	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_sort"	O
+
+return	O
+state	O
+
+def	O
+stop_sort	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_sort"	O
+
+return	O
+state	O
+
+def	O
+start_rebuild	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"start_rebuild"	O
+
+return	O
+state	O
+
+def	O
+stop_rebuild	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+state	O
+=	O
+"stop_rebuild"	O
+
+return	O
+state	O
+
+[file]	-100
+path=image_organizer/rules.py	-100
+
+class	O
+RetentionPolicy	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+keep_raw	O
+:	O
+bool	O
+,	O
+keep_edits	O
+:	O
+bool	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+keep_raw	O
+=	O
+keep_raw	O
+
+self	O
+.	O
+keep_edits	O
+=	O
+keep_edits	O
+
+self	O
+.	O
+_cache_hint	O
+=	O
+"hot"	O
+
+def	O
+apply	O
+(	O
+self	O
+,	O
+album	O
+)	O
+:	O
+
+        	O
+if	O
+self	O
+.	O
+keep_raw	O
+:	O
+
+            	O
+album	O
+.	O
+raw	O
+=	O
+True	O
+
+if	O
+self	O
+.	O
+keep_edits	O
+:	O
+
+            	O
+album	O
+.	O
+edits	O
+=	O
+True	O
+
+return	O
+album	O
+

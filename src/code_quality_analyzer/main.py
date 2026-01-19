@@ -149,7 +149,13 @@ Function: {error['function']}
 
     return detector.architectural_smells
 
-def analyze_project(debug=False, smell_type=None):
+def _resolve_metadata_output(base_output, metadata_output):
+    if metadata_output:
+        return metadata_output
+    return os.path.join(os.path.dirname(base_output) or ".", "code_metadata.json")
+
+
+def analyze_project(debug=False, smell_type=None, metadata_output=None):
     """
     Analyze a Python project for code, architectural, and structural smells.
 
@@ -161,6 +167,7 @@ def analyze_project(debug=False, smell_type=None):
     parser.add_argument("directory", help="Directory path to analyze")
     parser.add_argument("--config", default="code_quality_config.yaml", help="Path to the configuration file")
     parser.add_argument("--output", help="Path to the output file (supports .txt and .csv extensions)")
+    parser.add_argument("--metadata-output", help="Path to the metadata JSON output file")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
     parser.add_argument("--type", choices=['code', 'architectural', 'structural'], 
                        help="Type of smell to analyze (default: all)")
@@ -211,8 +218,8 @@ def analyze_project(debug=False, smell_type=None):
             metadata["structural"] = getattr(struct_detector, "metadata", {})
 
         generate_report(code_smells, architectural_smells, structural_smells, output_json)
-        metadata_output = os.path.join(os.path.dirname(output_json) or ".", "code_metadata.json")
-        generate_metadata_report(metadata, metadata_output)
+        metadata_path = _resolve_metadata_output(output_json, args.metadata_output or metadata_output)
+        generate_metadata_report(metadata, metadata_path)
 
     except Exception as e:
         logger.error(f"Error during analysis: {str(e)}", exc_info=True)
@@ -263,7 +270,12 @@ def analyze_structural_smells(directory_path, detector):
 
     return detector.structural_smells
 
-def analyze_structural_smells_only(directory_path, config_path="code_quality_config.yaml", output=None):
+def analyze_structural_smells_only(
+    directory_path,
+    config_path="code_quality_config.yaml",
+    output=None,
+    metadata_output=None,
+):
     """
     Analyze only structural smells in a Python project.
 
@@ -290,8 +302,8 @@ def analyze_structural_smells_only(directory_path, config_path="code_quality_con
             json_file = "structural_smells_report.json"
             
         generate_report([], [], structural_smells, json_file)
-        metadata_output = os.path.join(os.path.dirname(json_file) or ".", "code_metadata.json")
-        generate_metadata_report(getattr(struct_detector, "metadata", {}), metadata_output)
+        metadata_path = _resolve_metadata_output(json_file, metadata_output)
+        generate_metadata_report(getattr(struct_detector, "metadata", {}), metadata_path)
         return structural_smells
     
     except Exception as e:
@@ -501,7 +513,7 @@ def generate_metadata_report(metadata, json_file):
 
     logger.info(f"Metadata report generated and saved to {json_file}")
 
-def analyze_code_smells_only(directory_path, config_path="code_quality_config.yaml"):
+def analyze_code_smells_only(directory_path, config_path="code_quality_config.yaml", output=None):
     """
     Analyze only code smells in a Python project.
     
@@ -516,14 +528,20 @@ def analyze_code_smells_only(directory_path, config_path="code_quality_config.ya
         print("Analyzing Code Smells...")
         code_smells = analyze_code_smells(directory_path, code_detector)
         
-        generate_report(code_smells, [], [], "code_smells_report.txt")
+        report_path = output or "code_smells_report.txt"
+        generate_report(code_smells, [], [], report_path)
         return code_smells
         
     except Exception as e:
         logger.error(f"Error analyzing code smells: {str(e)}", exc_info=True)
         raise
 
-def analyze_architectural_smells_only(directory_path, config_path="code_quality_config.yaml"):
+def analyze_architectural_smells_only(
+    directory_path,
+    config_path="code_quality_config.yaml",
+    output=None,
+    metadata_output=None,
+):
     """
     Analyze only architectural smells in a Python project.
     
@@ -538,8 +556,10 @@ def analyze_architectural_smells_only(directory_path, config_path="code_quality_
         print("Analyzing Architectural Smells...")
         architectural_smells = analyze_architectural_smells(directory_path, arch_detector)
         
-        generate_report([], architectural_smells, [], "architectural_smells_report.txt")
-        generate_metadata_report(getattr(arch_detector, "metadata", {}), "code_metadata.json")
+        report_path = output or "architectural_smells_report.txt"
+        generate_report([], architectural_smells, [], report_path)
+        metadata_path = _resolve_metadata_output(report_path, metadata_output)
+        generate_metadata_report(getattr(arch_detector, "metadata", {}), metadata_path)
         return architectural_smells
         
     except Exception as e:
@@ -551,6 +571,7 @@ if __name__ == "__main__":
     parser.add_argument("directory", help="Directory path to analyze")
     parser.add_argument("--config", default="code_quality_config.yaml", help="Path to the configuration file")
     parser.add_argument("--output", help="Path to the output file (supports .txt and .csv extensions)")
+    parser.add_argument("--metadata-output", help="Path to the metadata JSON output file")
     parser.add_argument("--type", choices=['code', 'architectural', 'structural'], 
                        help="Type of smell to analyze (default: all)")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
@@ -569,10 +590,20 @@ if __name__ == "__main__":
         output_json = "code_quality_report.json"
     
     if args.type == 'structural':
-        analyze_structural_smells_only(args.directory, args.config, args.output)
+        analyze_structural_smells_only(
+            args.directory,
+            args.config,
+            args.output,
+            args.metadata_output,
+        )
     elif args.type == 'code':
         analyze_code_smells_only(args.directory, args.config, args.output)
     elif args.type == 'architectural':
-        analyze_architectural_smells_only(args.directory, args.config, args.output)
+        analyze_architectural_smells_only(
+            args.directory,
+            args.config,
+            args.output,
+            args.metadata_output,
+        )
     else:
-        analyze_project(args.debug, args.type)
+        analyze_project(args.debug, args.type, args.metadata_output)

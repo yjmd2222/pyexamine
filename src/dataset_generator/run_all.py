@@ -27,6 +27,8 @@ def main():
     parser.add_argument("--config", required=True, help="Path to code quality config YAML")
     parser.add_argument("--report", default="code_quality_report.json",
                         help="Output path for code_quality_report.json")
+    parser.add_argument("--metadata-output", default=None,
+                        help="Output path for code_metadata.json")
     parser.add_argument("--output-dir", default=None,
                         help="Output directory for per-smell CoNLL files")
     args = parser.parse_args()
@@ -46,6 +48,8 @@ def main():
         sys.executable, "-m", "code_quality_analyzer.main",
         args.code_path, "--config", args.config, "--output", args.report
     ]
+    if args.metadata_output:
+        analyze_cmd.extend(["--metadata-output", args.metadata_output])
     run_command(analyze_cmd, env)
 
     dataset_cmd = [
