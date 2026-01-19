@@ -449,26 +449,60 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
     """
     all_smells_data = []
 
+    def _normalize_keys(value):
+        key_map = {
+            "Type": "type",
+            "Name": "name",
+            "Description": "description",
+            "File": "file_path",
+            "Class": "class_name",
+            "Function": "function",
+            "Method/Function": "method/function",
+            "Methods/Functions": "methods/functions",
+            "Start Line Number": "start_line_number",
+            "End Line Number": "end_line_number",
+            "Instance Lines": "instance_lines",
+            "Outgoing Instance Lines": "outgoing_instance_lines",
+            "Incoming Instance Lines": "incoming_instance_lines",
+            "Lines": "lines",
+            "Files": "files",
+            "Classes": "classes",
+            "Severity": "severity",
+            "method_function": "method/function",
+            "methods_functions": "methods/functions",
+        }
+
+        if isinstance(value, list):
+            return [_normalize_keys(item) for item in value]
+        if isinstance(value, dict):
+            normalized = {}
+            for key, item in value.items():
+                normalized[key_map.get(key, key)] = _normalize_keys(item)
+            return normalized
+        return value
+
     def _format_payload(payload):
         if payload is None:
             return None
         if is_dataclass(payload):
-            return asdict(payload)
-        return payload
+            return _normalize_keys(asdict(payload))
+        if isinstance(payload, dict):
+            return _normalize_keys(payload)
+        return _normalize_keys(payload)
 
     def _payload_entry(smell):
         payload = _format_payload(getattr(smell, 'payload', None))
         if isinstance(payload, dict):
             return payload
         return {
-            'Type': 'Unknown',
-            'Name': smell.name,
-            'Description': smell.description,
-            'File': smell.file_path,
-            'Module/Class': smell.module_class,
-            'Start Line Number': smell.start_line_number,
-            'End Line Number': smell.end_line_number,
-            'Severity': smell.severity
+            'type': 'unknown',
+            'name': smell.name,
+            'description': smell.description,
+            'file_path': smell.file_path,
+            'module_class': smell.module_class,
+            'start_line_number': smell.start_line_number,
+            'end_line_number': smell.end_line_number,
+            'severity': smell.severity,
         }
 
     with open(json_file, 'w', newline='') as jsonfile:

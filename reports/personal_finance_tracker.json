@@ -45,7 +45,7 @@
         "description": "'categorize_income' has 5 primitive parameters in ./samples/personal_finance_tracker/categories.py",
         "file_path": "./samples/personal_finance_tracker/categories.py",
         "class_name": "",
-        "method_function": "categorize_income",
+        "method/function": "categorize_income",
         "start_line_number": 4,
         "end_line_number": 22,
         "severity": "medium"
@@ -56,7 +56,7 @@
         "description": "'categorize_expense' has 5 primitive parameters in ./samples/personal_finance_tracker/categories.py",
         "file_path": "./samples/personal_finance_tracker/categories.py",
         "class_name": "",
-        "method_function": "categorize_expense",
+        "method/function": "categorize_expense",
         "start_line_number": 24,
         "end_line_number": 42,
         "severity": "medium"
@@ -67,7 +67,7 @@
         "description": "'categorize_income' has 6 parameters in ./samples/personal_finance_tracker/categories.py",
         "file_path": "./samples/personal_finance_tracker/categories.py",
         "class_name": "",
-        "method_function": "categorize_income",
+        "method/function": "categorize_income",
         "start_line_number": 4,
         "end_line_number": 22,
         "severity": "medium"
@@ -78,7 +78,7 @@
         "description": "'categorize_expense' has 6 parameters in ./samples/personal_finance_tracker/categories.py",
         "file_path": "./samples/personal_finance_tracker/categories.py",
         "class_name": "",
-        "method_function": "categorize_expense",
+        "method/function": "categorize_expense",
         "start_line_number": 24,
         "end_line_number": 42,
         "severity": "medium"
@@ -88,7 +88,7 @@
         "name": "Data Clumps",
         "description": "Parameters amount, category_code, currency, description, received_at, source appear together in functions: categorize_income (lines 4-22), categorize_expense (lines 24-42) in ./samples/personal_finance_tracker/categories.py",
         "file_path": "./samples/personal_finance_tracker/categories.py",
-        "methods_functions": [
+        "methods/functions": [
             {
                 "name": "categorize_income",
                 "start_line_number": 4,
@@ -108,7 +108,7 @@
         "description": "'add_transaction' has 11 primitive parameters in ./samples/personal_finance_tracker/ledger.py",
         "file_path": "./samples/personal_finance_tracker/ledger.py",
         "class_name": "",
-        "method_function": "add_transaction",
+        "method/function": "add_transaction",
         "start_line_number": 3,
         "end_line_number": 26,
         "severity": "medium"
@@ -119,7 +119,7 @@
         "description": "'add_transaction' has 11 parameters in ./samples/personal_finance_tracker/ledger.py",
         "file_path": "./samples/personal_finance_tracker/ledger.py",
         "class_name": "",
-        "method_function": "add_transaction",
+        "method/function": "add_transaction",
         "start_line_number": 3,
         "end_line_number": 26,
         "severity": "medium"
@@ -127,7 +127,7 @@
     {
         "type": "Code",
         "name": "Potential Divergent Change",
-        "description": "Class 'FinanceDirector' has 8 different method prefixes: reconcile, audit, generate, manage, export, import, sync, summarize in ./samples/personal_finance_tracker/monolith.py",
+        "description": "Class 'FinanceDirector' has 8 different method prefixes: summarize, audit, manage, import, generate, reconcile, export, sync in ./samples/personal_finance_tracker/monolith.py",
         "file_path": "./samples/personal_finance_tracker/monolith.py",
         "class_name": "FinanceDirector",
         "start_line_number": 1,

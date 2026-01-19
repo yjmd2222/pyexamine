@@ -45,7 +45,7 @@
         "description": "Method 'select' has cyclomatic complexity of 20",
         "file_path": "./samples/image_organizer/layout.py",
         "class_name": "layout.LayoutPicker",
-        "method_function": "select",
+        "method/function": "select",
         "start_line_number": 2,
         "end_line_number": 25,
         "severity": "High"
@@ -56,7 +56,7 @@
         "description": "Method 'select' has 19 branches with max nesting of 10",
         "file_path": "./samples/image_organizer/layout.py",
         "class_name": "layout.LayoutPicker",
-        "method_function": "select",
+        "method/function": "select",
         "start_line_number": 2,
         "end_line_number": 25,
         "severity": "High"

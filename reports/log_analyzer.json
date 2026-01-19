@@ -42,7 +42,7 @@
     {
         "type": "Structural",
         "name": "High Response for a Class (RFC)",
-        "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_05(103-104), do_14(112-113), do_21(119-120), do_20(118-119), do_04(102-103), do_02(100-101), do_26(124-125), do_01(99-100), do_10(108-109), join(138-139), do_06(104-105), do_25(123-124), do_22(120-121), do_12(110-111), do_24(122-123), do_23(121-122), do_07(105-106), do_11(109-110), do_09(107-108), do_08(106-107), do_13(111-112), do_29(127-128), do_27(125-126), do_30(128-129), do_18(116-117), do_15(113-114), do_16(114-115), do_03(101-102), do_19(117-118), do_17(115-116), do_28(126-127)",
+        "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_16(114-115), do_13(111-112), do_20(118-119), do_19(117-118), do_24(122-123), do_15(113-114), do_22(120-121), do_10(108-109), do_23(121-122), do_18(116-117), do_27(125-126), do_02(100-101), do_04(102-103), do_12(110-111), do_25(123-124), do_30(128-129), do_29(127-128), join(138-139), do_26(124-125), do_17(115-116), do_07(105-106), do_21(119-120), do_05(103-104), do_11(109-110), do_08(106-107), do_14(112-113), do_01(99-100), do_28(126-127), do_03(101-102), do_09(107-108), do_06(104-105)",
         "file_path": "./samples/log_analyzer/aggregator.py",
         "class_name": "aggregator.LogAggregator",
         "start_line_number": 93,
@@ -52,131 +52,131 @@
     {
         "type": "Structural",
         "name": "High Message Passing Coupling (MPC)",
-        "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_05': 1, 'do_14': 1, 'do_21': 1}\nExternal call instances: do_05(103-104), do_14(112-113), do_21(119-120), do_20(118-119), do_04(102-103), do_02(100-101), do_28(126-127), do_26(124-125), do_10(108-109), do_01(99-100), do_06(104-105), do_25(123-124), do_22(120-121), do_12(110-111), do_24(122-123), do_23(121-122), do_07(105-106), do_11(109-110), do_09(107-108), do_08(106-107), do_13(111-112), do_29(127-128), do_27(125-126), do_30(128-129), do_18(116-117), do_15(113-114), do_16(114-115), do_19(117-118), do_17(115-116), do_03(101-102), join(138-139)\nInternal call instances: None",
+        "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_13': 1, 'do_16': 1, 'do_20': 1}\nExternal call instances: do_13(111-112), do_16(114-115), do_20(118-119), do_19(117-118), do_24(122-123), do_15(113-114), do_22(120-121), do_10(108-109), do_23(121-122), do_18(116-117), do_27(125-126), do_02(100-101), do_04(102-103), do_12(110-111), do_25(123-124), do_30(128-129), do_29(127-128), do_26(124-125), do_17(115-116), do_07(105-106), do_21(119-120), do_05(103-104), do_11(109-110), do_08(106-107), do_14(112-113), do_01(99-100), do_28(126-127), do_03(101-102), do_09(107-108), do_06(104-105), join(138-139)\nInternal call instances: None",
         "file_path": "./samples/log_analyzer/aggregator.py",
         "class_name": "aggregator.LogAggregator",
         "start_line_number": 93,
         "end_line_number": 142,
         "instance_lines": [
             {
-                "start_line_number": 103,
-                "end_line_number": 104
-            },
-            {
-                "start_line_number": 112,
-                "end_line_number": 113
-            },
-            {
-                "start_line_number": 119,
-                "end_line_number": 120
-            },
-            {
-                "start_line_number": 118,
-                "end_line_number": 119
-            },
-            {
-                "start_line_number": 102,
-                "end_line_number": 103
-            },
-            {
-                "start_line_number": 100,
-                "end_line_number": 101
-            },
-            {
-                "start_line_number": 126,
-                "end_line_number": 127
-            },
-            {
-                "start_line_number": 124,
-                "end_line_number": 125
-            },
-            {
-                "start_line_number": 108,
-                "end_line_number": 109
-            },
-            {
-                "start_line_number": 99,
-                "end_line_number": 100
-            },
-            {
-                "start_line_number": 104,
-                "end_line_number": 105
-            },
-            {
-                "start_line_number": 123,
-                "end_line_number": 124
-            },
-            {
-                "start_line_number": 120,
-                "end_line_number": 121
-            },
-            {
-                "start_line_number": 110,
-                "end_line_number": 111
-            },
-            {
-                "start_line_number": 122,
-                "end_line_number": 123
-            },
-            {
-                "start_line_number": 121,
-                "end_line_number": 122
-            },
-            {
-                "start_line_number": 105,
-                "end_line_number": 106
-            },
-            {
-                "start_line_number": 109,
-                "end_line_number": 110
-            },
-            {
-                "start_line_number": 107,
-                "end_line_number": 108
-            },
-            {
-                "start_line_number": 106,
-                "end_line_number": 107
-            },
-            {
                 "start_line_number": 111,
                 "end_line_number": 112
-            },
-            {
-                "start_line_number": 127,
-                "end_line_number": 128
-            },
-            {
-                "start_line_number": 125,
-                "end_line_number": 126
-            },
-            {
-                "start_line_number": 128,
-                "end_line_number": 129
-            },
-            {
-                "start_line_number": 116,
-                "end_line_number": 117
-            },
-            {
-                "start_line_number": 113,
-                "end_line_number": 114
             },
             {
                 "start_line_number": 114,
                 "end_line_number": 115
             },
             {
+                "start_line_number": 118,
+                "end_line_number": 119
+            },
+            {
                 "start_line_number": 117,
                 "end_line_number": 118
+            },
+            {
+                "start_line_number": 122,
+                "end_line_number": 123
+            },
+            {
+                "start_line_number": 113,
+                "end_line_number": 114
+            },
+            {
+                "start_line_number": 120,
+                "end_line_number": 121
+            },
+            {
+                "start_line_number": 108,
+                "end_line_number": 109
+            },
+            {
+                "start_line_number": 121,
+                "end_line_number": 122
+            },
+            {
+                "start_line_number": 116,
+                "end_line_number": 117
+            },
+            {
+                "start_line_number": 125,
+                "end_line_number": 126
+            },
+            {
+                "start_line_number": 100,
+                "end_line_number": 101
+            },
+            {
+                "start_line_number": 102,
+                "end_line_number": 103
+            },
+            {
+                "start_line_number": 110,
+                "end_line_number": 111
+            },
+            {
+                "start_line_number": 123,
+                "end_line_number": 124
+            },
+            {
+                "start_line_number": 128,
+                "end_line_number": 129
+            },
+            {
+                "start_line_number": 127,
+                "end_line_number": 128
+            },
+            {
+                "start_line_number": 124,
+                "end_line_number": 125
             },
             {
                 "start_line_number": 115,
                 "end_line_number": 116
             },
             {
+                "start_line_number": 105,
+                "end_line_number": 106
+            },
+            {
+                "start_line_number": 119,
+                "end_line_number": 120
+            },
+            {
+                "start_line_number": 103,
+                "end_line_number": 104
+            },
+            {
+                "start_line_number": 109,
+                "end_line_number": 110
+            },
+            {
+                "start_line_number": 106,
+                "end_line_number": 107
+            },
+            {
+                "start_line_number": 112,
+                "end_line_number": 113
+            },
+            {
+                "start_line_number": 99,
+                "end_line_number": 100
+            },
+            {
+                "start_line_number": 126,
+                "end_line_number": 127
+            },
+            {
                 "start_line_number": 101,
                 "end_line_number": 102
+            },
+            {
+                "start_line_number": 107,
+                "end_line_number": 108
+            },
+            {
+                "start_line_number": 104,
+                "end_line_number": 105
             },
             {
                 "start_line_number": 138,
@@ -411,7 +411,7 @@
     {
         "type": "Code",
         "name": "Speculative Generality",
-        "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: user in schedule (lines 2-4), priority in schedule (lines 2-4), channel in schedule (lines 2-4), user in retry (lines 5-7), priority in retry (lines 5-7), channel in retry (lines 5-7), user in cancel (lines 8-10), priority in cancel (lines 8-10), channel in cancel (lines 8-10), user in defer (lines 11-13), priority in defer (lines 11-13), channel in defer (lines 11-13) in ./samples/log_analyzer/design.py",
+        "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: channel in schedule (lines 2-4), priority in schedule (lines 2-4), user in schedule (lines 2-4), channel in retry (lines 5-7), priority in retry (lines 5-7), user in retry (lines 5-7), channel in cancel (lines 8-10), priority in cancel (lines 8-10), user in cancel (lines 8-10), channel in defer (lines 11-13), priority in defer (lines 11-13), user in defer (lines 11-13) in ./samples/log_analyzer/design.py",
         "file_path": "./samples/log_analyzer/design.py",
         "class_name": "FutureNotifier",
         "start_line_number": 1,
@@ -490,7 +490,7 @@
         "description": "'build_report' has 61 lines in ./samples/log_analyzer/reports.py at line 2",
         "file_path": "./samples/log_analyzer/reports.py",
         "class_name": "",
-        "method_function": "build_report",
+        "method/function": "build_report",
         "start_line_number": 2,
         "end_line_number": 63,
         "severity": "medium"

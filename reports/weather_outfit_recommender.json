@@ -5,7 +5,7 @@
         "description": "Method 'score' has cyclomatic complexity of 19",
         "file_path": "./samples/weather_outfit_recommender/analyzer.py",
         "class_name": "analyzer.ForecastAnalyzer",
-        "method_function": "score",
+        "method/function": "score",
         "start_line_number": 2,
         "end_line_number": 17,
         "severity": "High"
@@ -16,7 +16,7 @@
         "description": "Method 'score' has 6 branches with max nesting of 6",
         "file_path": "./samples/weather_outfit_recommender/analyzer.py",
         "class_name": "analyzer.ForecastAnalyzer",
-        "method_function": "score",
+        "method/function": "score",
         "start_line_number": 2,
         "end_line_number": 17,
         "severity": "Medium"
@@ -24,7 +24,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields wind_kph, condition, self, temp_c in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+        "description": "Potentially unused fields wind_kph, temp_c, condition, self in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
         "file_path": "./samples/weather_outfit_recommender/models.py",
         "class_name": "WeatherSnapshot",
         "start_line_number": 1,
@@ -93,7 +93,7 @@
         "description": "'score' has 6 primitive parameters in ./samples/weather_outfit_recommender/analyzer.py",
         "file_path": "./samples/weather_outfit_recommender/analyzer.py",
         "class_name": "ForecastAnalyzer",
-        "method_function": "score",
+        "method/function": "score",
         "start_line_number": 2,
         "end_line_number": 17,
         "severity": "medium"
@@ -104,7 +104,7 @@
         "description": "'score' has 6 parameters in ./samples/weather_outfit_recommender/analyzer.py",
         "file_path": "./samples/weather_outfit_recommender/analyzer.py",
         "class_name": "ForecastAnalyzer",
-        "method_function": "score",
+        "method/function": "score",
         "start_line_number": 2,
         "end_line_number": 17,
         "severity": "medium"
@@ -122,7 +122,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields wind, condition, temp, self in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+        "description": "Potentially unused fields wind, temp, condition, self in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
         "file_path": "./samples/weather_outfit_recommender/advisor.py",
         "class_name": "WeatherProfile",
         "start_line_number": 1,
