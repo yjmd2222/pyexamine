@@ -602,19 +602,19 @@ str	I
 str	I
 :	I
 
-    	I
-banner	I
-=	I
-f"	I
-{	I
-day	I
-}	I
- | 	I
-{	I
-summary	I
-}	I
-"	I
+    	I-CALLFROM
+banner	I-CALLFROM
+=	I-CALLFROM
+f"	I-CALLFROM
+{	I-CALLFROM
+day	I-CALLFROM
+}	I-CALLFROM
+ | 	I-CALLFROM
+{	I-CALLFROM
+summary	I-CALLFROM
+}	I-CALLFROM
+"	I-CALLFROM
 
-return	I
-banner	I
+return	I-CALLFROM
+banner	I-CALLFROM
 

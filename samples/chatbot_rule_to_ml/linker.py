@@ -1,3 +1,4 @@
+import graph
 import shared
 
 
@@ -12,6 +13,7 @@ class IntentRoute:
 class IntentHandler:
     def __init__(self, name):
         self.name = name
+        self.graph_seed = graph.GraphBuilder(3).seed
 
     def score(self):
         return 0.0

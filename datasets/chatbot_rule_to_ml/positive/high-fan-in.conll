@@ -1,6 +1,9 @@
 [file]	-100
 path=chatbot_rule_to_ml/bridge.py	-100
 
+import	O
+graph	O
+
 import	B-CALLFROM
 shared	I-CALLFROM
 
@@ -24,6 +27,19 @@ self	O
 name	O
 =	O
 name	O
+
+self	O
+.	O
+graph_seed	O
+=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+2	O
+)	O
+.	O
+seed	O
 
 def	O
 score	O
@@ -511,6 +527,9 @@ shared_score	O
 [file]	-100
 path=chatbot_rule_to_ml/linker.py	-100
 
+import	O
+graph	O
+
 import	B-CALLFROM
 shared	I-CALLFROM
 
@@ -567,6 +586,19 @@ name	O
 =	O
 name	O
 
+self	O
+.	O
+graph_seed	O
+=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+3	O
+)	O
+.	O
+seed	O
+
 def	O
 score	O
 (	O
@@ -616,6 +648,9 @@ path=chatbot_rule_to_ml/runner.py	-100
 import	O
 json	O
 
+import	O
+graph	O
+
 import	B-CALLFROM
 shared	I-CALLFROM
 
@@ -630,6 +665,17 @@ samples	O
 total	O
 =	O
 0	O
+
+total	O
++=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+0	O
+)	O
+.	O
+seed	O
 
 for	O
 sample	O
@@ -690,6 +736,9 @@ payload	I
 path=chatbot_rule_to_ml/trainer.py	-100
 
 import	O
+graph	O
+
+import	O
 math	O
 
 import	B-CALLFROM
@@ -706,6 +755,17 @@ samples	O
 total	O
 =	O
 0	O
+
+total	O
++=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+1	O
+)	O
+.	O
+seed	O
 
 for	O
 sample	O

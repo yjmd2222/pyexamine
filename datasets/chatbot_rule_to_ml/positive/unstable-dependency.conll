@@ -1,6 +1,9 @@
 [file]	-100
 path=chatbot_rule_to_ml/bridge.py	-100
 
+import	B-CALLFROM
+graph	I-CALLFROM
+
 import	O
 shared	O
 
@@ -24,6 +27,19 @@ self	O
 name	O
 =	O
 name	O
+
+self	O
+.	O
+graph_seed	O
+=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+2	O
+)	O
+.	O
+seed	O
 
 def	O
 score	O
@@ -106,107 +122,107 @@ path=chatbot_rule_to_ml/graph.py	-100
 import	B
 os	I
 
-import	B
-sys	I
+import	I-WITHIN
+sys	I-WITHIN
 
-import	B
-json	I
+import	I-WITHIN
+json	I-WITHIN
 
-import	B
-math	I
+import	I-WITHIN
+math	I-WITHIN
 
-import	B
-re	I
+import	I-WITHIN
+re	I-WITHIN
 
-import	B
-collections	I
+import	I-WITHIN
+collections	I-WITHIN
 
-import	B
-datetime	I
+import	I-WITHIN
+datetime	I-WITHIN
 
-import	B
-shared	I
+import	I-WITHIN
+shared	I-WITHIN
 
-import	B
-feature_a	I
+import	I-WITHIN
+feature_a	I-WITHIN
 
-import	B
-feature_b	I
+import	I-WITHIN
+feature_b	I-WITHIN
 
-import	B
-feature_c	I
+import	I-WITHIN
+feature_c	I-WITHIN
 
-import	B
-feature_d	I
+import	I-WITHIN
+feature_d	I-WITHIN
 
-import	B
-feature_e	I
+import	I-WITHIN
+feature_e	I-WITHIN
 
-import	B
-feature_f	I
+import	I-WITHIN
+feature_f	I-WITHIN
 
-import	B
-feature_g	I
+import	I-WITHIN
+feature_g	I-WITHIN
 
-import	B
-feature_h	I
+import	I-WITHIN
+feature_h	I-WITHIN
 
-import	B
-feature_i	I
+import	I-WITHIN
+feature_i	I-WITHIN
 
-import	B
-feature_j	I
+import	I-WITHIN
+feature_j	I-WITHIN
 
-import	B
-feature_k	I
+import	I-WITHIN
+feature_k	I-WITHIN
 
-import	B
-feature_l	I
+import	I-WITHIN
+feature_l	I-WITHIN
 
-import	B
-feature_m	I
+import	I-WITHIN
+feature_m	I-WITHIN
 
-import	B
-feature_n	I
+import	I-WITHIN
+feature_n	I-WITHIN
 
-import	B
-feature_o	I
+import	I-WITHIN
+feature_o	I-WITHIN
 
-import	B
-feature_p	I
+import	I-WITHIN
+feature_p	I-WITHIN
 
-import	B
-feature_q	I
+import	I-WITHIN
+feature_q	I-WITHIN
 
-import	B
-feature_r	I
+import	I-WITHIN
+feature_r	I-WITHIN
 
-import	B
-feature_s	I
+import	I-WITHIN
+feature_s	I-WITHIN
 
-import	B
-feature_t	I
+import	I-WITHIN
+feature_t	I-WITHIN
 
-class	O
-GraphBuilder	O
-:	O
+class	I
+GraphBuilder	I
+:	I
 
-    	O
-def	O
-__init__	O
-(	O
-self	O
-,	O
-seed	O
-)	O
-:	O
+    	I
+def	I
+__init__	I
+(	I
+self	I
+,	I
+seed	I
+)	I
+:	I
 
-        	O
-self	O
-.	O
-seed	O
-=	O
-seed	O
+        	I
+self	I
+.	I
+seed	I
+=	I
+seed	I
 
 [file]	-100
 path=chatbot_rule_to_ml/helper_01.py	-100
@@ -511,6 +527,9 @@ shared_score	O
 [file]	-100
 path=chatbot_rule_to_ml/linker.py	-100
 
+import	B-CALLFROM
+graph	I-CALLFROM
+
 import	O
 shared	O
 
@@ -567,6 +586,19 @@ name	O
 =	O
 name	O
 
+self	O
+.	O
+graph_seed	O
+=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+3	O
+)	O
+.	O
+seed	O
+
 def	O
 score	O
 (	O
@@ -616,6 +648,9 @@ path=chatbot_rule_to_ml/runner.py	-100
 import	O
 json	O
 
+import	B-CALLFROM
+graph	I-CALLFROM
+
 import	O
 shared	O
 
@@ -630,6 +665,17 @@ samples	O
 total	O
 =	O
 0	O
+
+total	O
++=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+0	O
+)	O
+.	O
+seed	O
 
 for	O
 sample	O
@@ -689,6 +735,9 @@ payload	O
 [file]	-100
 path=chatbot_rule_to_ml/trainer.py	-100
 
+import	B-CALLFROM
+graph	I-CALLFROM
+
 import	O
 math	O
 
@@ -706,6 +755,17 @@ samples	O
 total	O
 =	O
 0	O
+
+total	O
++=	O
+graph	O
+.	O
+GraphBuilder	O
+(	O
+1	O
+)	O
+.	O
+seed	O
 
 for	O
 sample	O

@@ -225,86 +225,86 @@ path=mini_search_engine/registry.py	-100
 import	B
 indexer	I
 
-import	B
+import	I-WITHIN
+tokenizer	I-WITHIN
+
+import	I-WITHIN
+storage	I-WITHIN
+
+import	I-WITHIN
+cache	I-WITHIN
+
+import	I-WITHIN
+ranking	I-WITHIN
+
+import	I-WITHIN
+queries	I-WITHIN
+
+def	I
+build_registry	I
+(	I
+)	I
+:	I
+
+    	I
+return	I
+{	I
+
+"indexer"	I
+:	I
+indexer	I
+.	I
+Indexer	I
+(	I
+)	I
+,	I
+
+"tokenizer"	I
+:	I
 tokenizer	I
+.	I
+Tokenizer	I
+(	I
+)	I
+,	I
 
-import	B
+"storage"	I
+:	I
 storage	I
+.	I
+Storage	I
+(	I
+)	I
+,	I
 
-import	B
+"cache"	I
+:	I
 cache	I
+.	I
+Cache	I
+(	I
+)	I
+,	I
 
-import	B
+"ranking"	I
+:	I
 ranking	I
+.	I
+Ranker	I
+(	I
+)	I
+,	I
 
-import	B
+"queries"	I
+:	I
 queries	I
+.	I
+QueryStore	I
+(	I
+)	I
+,	I
 
-def	O
-build_registry	O
-(	O
-)	O
-:	O
-
-    	O
-return	O
-{	O
-
-"indexer"	O
-:	O
-indexer	O
-.	O
-Indexer	O
-(	O
-)	O
-,	O
-
-"tokenizer"	O
-:	O
-tokenizer	O
-.	O
-Tokenizer	O
-(	O
-)	O
-,	O
-
-"storage"	O
-:	O
-storage	O
-.	O
-Storage	O
-(	O
-)	O
-,	O
-
-"cache"	O
-:	O
-cache	O
-.	O
-Cache	O
-(	O
-)	O
-,	O
-
-"ranking"	O
-:	O
-ranking	O
-.	O
-Ranker	O
-(	O
-)	O
-,	O
-
-"queries"	O
-:	O
-queries	O
-.	O
-QueryStore	O
-(	O
-)	O
-,	O
-
-}	O
+}	I
 
 [file]	-100
 path=mini_search_engine/relations.py	-100

@@ -293,11 +293,12 @@ def _extract_spans(entry, scheme, code_root):
 
     outgoing_lines = _get_value(entry, "outgoing_instance_lines", "Outgoing Instance Lines") or []
     if file_path and outgoing_lines:
+        label_type = "within" if has_within else "primary"
         for span in outgoing_lines:
             span_start = _get_value(span, "start_line_number", "Start Line Number")
             span_end = _get_value(span, "end_line_number", "End Line Number")
             if span_start and span_end:
-                spans.append((file_path, span_start, span_end, "primary"))
+                spans.append((file_path, span_start, span_end, label_type))
 
     files = _get_value(entry, "files", "Files") or []
     for file_entry in files:
@@ -357,6 +358,9 @@ def _label_for_token(line_number, spans, scheme_labels):
             matching.append((label_type, start, end))
     if not matching:
         return "O"
+    for label_type, start, _ in matching:
+        if label_type == "primary" and line_number == start:
+            return "B"
     matching.sort(key=lambda item: (-LABEL_PRIORITY[item[0]], item[1], item[2]))
     label_type, start, _ = matching[0]
     if label_type == "callfrom":
@@ -374,7 +378,13 @@ def _write_conll(handle, display_path, content, spans, scheme_labels, label_full
     first_row = min(token_lines) if token_lines else None
     for row in sorted(token_lines):
         if label_full_file:
-            label = "B" if row == first_row else "I"
+            if row == first_row:
+                label = "B"
+            else:
+                label = "I"
+                span_label = _label_for_token(row, spans, scheme_labels)
+                if span_label in {"I-WITHIN", "B-CALLFROM", "I-CALLFROM"}:
+                    label = span_label
         else:
             label = _label_for_token(row, spans, scheme_labels)
         if label not in scheme_labels:
@@ -406,7 +416,12 @@ def build_dataset(code_root, report_path, labels_data, output_dir):
     spans_by_smell = _build_smell_spans(report_entries, smell_schemes, name_to_slug, code_root)
     all_files = sorted(_iter_code_files(code_root))
     all_smells = sorted(smell_schemes.keys())
-    full_file_smells = {"high-fan-in", "scattered-functionality"}
+    full_file_smells = {
+        "high-fan-in",
+        "scattered-functionality",
+        "hub-like-dependency",
+        "unstable-dependency",
+    }
     full_file_by_smell = {slug: set() for slug in full_file_smells}
 
     normalized_name_to_slug = {

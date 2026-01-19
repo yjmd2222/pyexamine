@@ -50,6 +50,10 @@
         "edges": [
             {
                 "from": "bridge",
+                "to": "graph"
+            },
+            {
+                "from": "bridge",
                 "to": "shared"
             },
             {
@@ -214,7 +218,15 @@
             },
             {
                 "from": "linker",
+                "to": "graph"
+            },
+            {
+                "from": "linker",
                 "to": "shared"
+            },
+            {
+                "from": "runner",
+                "to": "graph"
             },
             {
                 "from": "runner",
@@ -231,6 +243,10 @@
             {
                 "from": "shared",
                 "to": "math"
+            },
+            {
+                "from": "trainer",
+                "to": "graph"
             },
             {
                 "from": "trainer",
