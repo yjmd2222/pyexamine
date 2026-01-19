@@ -588,19 +588,19 @@ cleaned	O
 path=weather_outfit_recommender/ui.py	-100
 
 def	B
-format_forecast	I
-(	I
-day	I
-:	I
-str	I
-,	I
-summary	I
-:	I
-str	I
-)	I
-->	I
-str	I
-:	I
+format_forecast	I-CALLFROM
+(	I-CALLFROM
+day	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+,	I-CALLFROM
+summary	I-CALLFROM
+:	I-CALLFROM
+str	I-CALLFROM
+)	I-CALLFROM
+->	I-CALLFROM
+str	I-CALLFROM
+:	I-CALLFROM
 
     	I-CALLFROM
 banner	I-CALLFROM

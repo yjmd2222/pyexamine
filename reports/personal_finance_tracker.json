@@ -127,7 +127,7 @@
     {
         "type": "Code",
         "name": "Potential Divergent Change",
-        "description": "Class 'FinanceDirector' has 8 different method prefixes: generate, manage, reconcile, export, sync, audit, summarize, import in ./samples/personal_finance_tracker/monolith.py",
+        "description": "Class 'FinanceDirector' has 8 different method prefixes: reconcile, summarize, manage, export, import, sync, generate, audit in ./samples/personal_finance_tracker/monolith.py",
         "file_path": "./samples/personal_finance_tracker/monolith.py",
         "class_name": "FinanceDirector",
         "start_line_number": 1,

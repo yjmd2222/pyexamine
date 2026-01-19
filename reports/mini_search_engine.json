@@ -127,7 +127,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields self, tier, limit, balance, status in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+        "description": "Potentially unused fields self, balance, limit, tier, status in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
         "file_path": "./samples/mini_search_engine/relations.py",
         "class_name": "ProfileState",
         "start_line_number": 1,

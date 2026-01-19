@@ -120,7 +120,7 @@ return	O
 path=chatbot_rule_to_ml/graph.py	-100
 
 import	B
-os	I
+os	I-WITHIN
 
 import	I-WITHIN
 sys	I-WITHIN

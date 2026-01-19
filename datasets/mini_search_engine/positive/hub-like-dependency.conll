@@ -223,7 +223,7 @@ True	O
 path=mini_search_engine/registry.py	-100
 
 import	B
-indexer	I
+indexer	I-WITHIN
 
 import	I-WITHIN
 tokenizer	I-WITHIN

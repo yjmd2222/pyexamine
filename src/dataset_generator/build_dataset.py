@@ -377,14 +377,22 @@ def _write_conll(handle, display_path, content, spans, scheme_labels, label_full
     token_lines = _tokenize_by_line(content)
     first_row = min(token_lines) if token_lines else None
     for row in sorted(token_lines):
+        continuation_label = None
         if label_full_file:
             if row == first_row:
                 label = "B"
+                continuation_label = "I"
             else:
                 label = "I"
                 span_label = _label_for_token(row, spans, scheme_labels)
                 if span_label in {"I-WITHIN", "B-CALLFROM", "I-CALLFROM"}:
                     label = span_label
+            if row == first_row:
+                span_label = _label_for_token(row, spans, scheme_labels)
+                if span_label == "I-WITHIN":
+                    continuation_label = "I-WITHIN"
+                elif span_label in {"B-CALLFROM", "I-CALLFROM"}:
+                    continuation_label = "I-CALLFROM"
         else:
             label = _label_for_token(row, spans, scheme_labels)
         if label not in scheme_labels:
@@ -394,7 +402,7 @@ def _write_conll(handle, display_path, content, spans, scheme_labels, label_full
             if label == "B-CALLFROM":
                 continuation = "I-CALLFROM"
             else:
-                continuation = "I"
+                continuation = continuation_label or "I"
             handle.write(f"{tokens[0]}\t{label}\n")
             for token_str in tokens[1:]:
                 handle.write(f"{token_str}\t{continuation}\n")
