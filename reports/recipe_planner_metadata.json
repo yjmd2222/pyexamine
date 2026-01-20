@@ -1,0 +1,123 @@
+{
+    "module_dependency_graph": {
+        "nodes": [
+            "adapters",
+            "app",
+            "batch_ops",
+            "grocery",
+            "inventory",
+            "maintenance",
+            "models",
+            "planner",
+            "recipes",
+            "schedule",
+            "transformers"
+        ],
+        "edges": [
+            {
+                "from": "app",
+                "to": "grocery"
+            },
+            {
+                "from": "app",
+                "to": "planner"
+            },
+            {
+                "from": "app",
+                "to": "recipes"
+            },
+            {
+                "from": "inventory",
+                "to": "planner"
+            },
+            {
+                "from": "planner",
+                "to": "recipes"
+            },
+            {
+                "from": "planner",
+                "to": "schedule"
+            },
+            {
+                "from": "schedule",
+                "to": "inventory"
+            },
+            {
+                "from": "schedule",
+                "to": "planner"
+            }
+        ]
+    },
+    "dit": {
+        "classes": [
+            {
+                "class_name": "grocery.GroceryList",
+                "base_classes": []
+            },
+            {
+                "class_name": "grocery.Shopper",
+                "base_classes": []
+            },
+            {
+                "class_name": "inventory.PantryIndex",
+                "base_classes": []
+            },
+            {
+                "class_name": "inventory.StockTracker",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.Ingredient",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.Meal",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.PantryItem",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.Recipe",
+                "base_classes": []
+            },
+            {
+                "class_name": "models.Report",
+                "base_classes": []
+            },
+            {
+                "class_name": "planner.PlanBoard",
+                "base_classes": []
+            },
+            {
+                "class_name": "planner.PlanEngine",
+                "base_classes": []
+            },
+            {
+                "class_name": "planner.Slot",
+                "base_classes": []
+            },
+            {
+                "class_name": "planner.StepIndex",
+                "base_classes": []
+            },
+            {
+                "class_name": "recipes.Metric",
+                "base_classes": []
+            },
+            {
+                "class_name": "recipes.PortionScaler",
+                "base_classes": []
+            },
+            {
+                "class_name": "recipes.RecipeBook",
+                "base_classes": []
+            },
+            {
+                "class_name": "schedule.SlotAllocator",
+                "base_classes": []
+            }
+        ]
+    }
+}

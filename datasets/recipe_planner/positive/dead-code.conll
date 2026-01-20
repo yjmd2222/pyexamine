@@ -1,0 +1,2296 @@
+[file]	-100
+path=recipe_planner/adapters.py	-100
+
+"""Lightweight format adapters."""	O
+
+def	O
+format_line	O
+(	O
+parts	O
+)	O
+:	O
+
+    	O
+joined	O
+=	O
+","	O
+.	O
+join	O
+(	O
+str	O
+(	O
+p	O
+)	O
+for	O
+p	O
+in	O
+parts	O
+)	O
+
+return	O
+joined	O
+.	O
+strip	O
+(	O
+)	O
+
+def	O
+parse_line	O
+(	O
+text	O
+)	O
+:	O
+
+    	O
+items	O
+=	O
+[	O
+p	O
+.	O
+strip	O
+(	O
+)	O
+for	O
+p	O
+in	O
+text	O
+.	O
+split	O
+(	O
+","	O
+)	O
+]	O
+
+return	O
+[	O
+p	O
+for	O
+p	O
+in	O
+items	O
+if	O
+p	O
+]	O
+
+def	O
+merge_rows	O
+(	O
+rows	O
+)	O
+:	O
+
+    	O
+merged	O
+=	O
+[	O
+]	O
+
+for	O
+row	O
+in	O
+rows	O
+:	O
+
+        	O
+merged	O
+.	O
+extend	O
+(	O
+row	O
+)	O
+
+return	O
+merged	O
+
+def	O
+normalize_block	O
+(	O
+lines	O
+)	O
+:	O
+
+    	O
+cleaned	O
+=	O
+[	O
+line	O
+.	O
+strip	O
+(	O
+)	O
+.	O
+lower	O
+(	O
+)	O
+for	O
+line	O
+in	O
+lines	O
+]	O
+
+return	O
+[	O
+line	O
+for	O
+line	O
+in	O
+cleaned	O
+if	O
+line	O
+]	O
+
+[file]	-100
+path=recipe_planner/app.py	-100
+
+"""Recipe planner CLI-like entrypoint."""	O
+
+from	O
+planner	O
+import	O
+PlanEngine	O
+
+from	O
+recipes	O
+import	O
+RecipeBook	O
+
+from	O
+grocery	O
+import	O
+GroceryList	O
+
+def	O
+build_weekly_plan	O
+(	O
+)	O
+:	O
+
+    	O
+book	O
+=	O
+RecipeBook	O
+(	O
+)	O
+
+engine	O
+=	O
+PlanEngine	O
+(	O
+book	O
+)	O
+
+week	O
+=	O
+engine	O
+.	O
+make_week	O
+(	O
+"default"	O
+)	O
+
+list_maker	O
+=	O
+GroceryList	O
+(	O
+)	O
+
+items	O
+=	O
+list_maker	O
+.	O
+from_week	O
+(	O
+week	O
+)	O
+
+return	O
+items	O
+
+if	O
+__name__	O
+==	O
+"__main__"	O
+:	O
+
+    	O
+groceries	O
+=	O
+build_weekly_plan	O
+(	O
+)	O
+
+for	O
+item	O
+in	O
+groceries	O
+:	O
+
+        	O
+print	O
+(	O
+item	O
+)	O
+
+[file]	-100
+path=recipe_planner/batch_ops.py	-100
+
+"""Batch operations for list processing."""	O
+
+def	O
+action_01	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_02	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_03	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_04	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_05	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_06	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_07	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_08	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_09	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_10	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_11	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_12	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_13	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_14	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+def	O
+action_15	O
+(	O
+items	O
+)	O
+:	O
+
+    	O
+total	O
+=	O
+0	O
+
+count	O
+=	O
+0	O
+
+for	O
+item	O
+in	O
+items	O
+:	O
+
+        	O
+total	O
++=	O
+item	O
+
+count	O
++=	O
+1	O
+
+average	O
+=	O
+total	O
+/	O
+count	O
+if	O
+count	O
+else	O
+0	O
+
+return	O
+average	O
+
+[file]	-100
+path=recipe_planner/grocery.py	-100
+
+"""Grocery list generation."""	O
+
+class	O
+GroceryList	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+items	O
+=	O
+[	O
+]	O
+
+def	O
+add	O
+(	O
+self	O
+,	O
+name	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+items	O
+.	O
+append	O
+(	O
+name	O
+)	O
+
+def	O
+from_week	O
+(	O
+self	O
+,	O
+board	O
+)	O
+:	O
+
+        	O
+for	O
+name	O
+in	O
+board	O
+.	O
+summarize	O
+(	O
+)	O
+:	O
+
+            	O
+self	O
+.	O
+add	O
+(	O
+name	O
+)	O
+
+return	O
+list	O
+(	O
+self	O
+.	O
+items	O
+)	O
+
+class	O
+Shopper	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+history	O
+=	O
+[	O
+]	O
+
+def	O
+record	O
+(	O
+self	O
+,	O
+item	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+history	O
+.	O
+append	O
+(	O
+item	O
+)	O
+
+def	O
+last	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+history	O
+[	O
+-	O
+1	O
+]	O
+if	O
+self	O
+.	O
+history	O
+else	O
+None	O
+
+[file]	-100
+path=recipe_planner/inventory.py	-100
+
+"""Inventory helpers for pantry tracking."""	O
+
+import	O
+planner	O
+
+class	O
+PantryIndex	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+items	O
+=	O
+{	O
+}	O
+
+def	O
+add	O
+(	O
+self	O
+,	O
+name	O
+,	O
+count	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+items	O
+[	O
+name	O
+]	O
+=	O
+self	O
+.	O
+items	O
+.	O
+get	O
+(	O
+name	O
+,	O
+0	O
+)	O
++	O
+count	O
+
+def	O
+has	O
+(	O
+self	O
+,	O
+name	O
+)	O
+:	O
+
+        	O
+return	O
+self	O
+.	O
+items	O
+.	O
+get	O
+(	O
+name	O
+,	O
+0	O
+)	O
+>	O
+0	O
+
+class	O
+StockTracker	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+records	O
+=	O
+[	O
+]	O
+
+def	O
+record	O
+(	O
+self	O
+,	O
+item	O
+,	O
+qty	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+records	O
+.	O
+append	O
+(	O
+(	O
+item	O
+,	O
+qty	O
+)	O
+)	O
+
+def	O
+totals	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+{	O
+item	O
+:	O
+qty	O
+for	O
+item	O
+,	O
+qty	O
+in	O
+self	O
+.	O
+records	O
+}	O
+
+def	O
+availability_map	O
+(	O
+)	O
+:	O
+
+    	O
+board	O
+=	O
+planner	O
+.	O
+PlanBoard	O
+(	O
+"inventory"	O
+)	O
+
+board	O
+.	O
+add_slot	O
+(	O
+planner	O
+.	O
+Slot	O
+(	O
+"default"	O
+,	O
+0	O
+)	O
+)	O
+
+return	O
+{	O
+slot	O
+.	O
+name	O
+:	O
+True	O
+for	O
+slot	O
+in	O
+board	O
+.	O
+slots	O
+}	O
+
+[file]	-100
+path=recipe_planner/maintenance.py	-100
+
+"""Maintenance helpers and checks."""	O
+
+def	B
+_unused_cleanup	I
+(	I
+path	I
+)	I
+:	I
+
+    	I
+cleaned	I
+=	I
+path	I
+.	I
+strip	I
+(	I
+)	I
+
+return	I
+cleaned	I
+.	I
+upper	I
+(	I
+)	I
+
+def	B
+_unused_probe	I
+(	I
+items	I
+)	I
+:	I
+
+    	I
+total	I
+=	I
+0	I
+
+for	I
+item	I
+in	I
+items	I
+:	I
+
+        	I
+total	I
++=	I
+len	I
+(	I
+str	I
+(	I
+item	I
+)	I
+)	I
+
+return	I
+total	I
+
+def	B
+_unused_rebuild	I
+(	I
+value	I
+)	I
+:	I
+
+    	I
+return	I
+value	I
+*	I
+2	I
++	I
+1	I
+
+def	O
+run_checks	O
+(	O
+values	O
+)	O
+:	O
+
+    	O
+summary	O
+=	O
+0	O
+
+for	O
+value	O
+in	O
+values	O
+:	O
+
+        	O
+summary	O
++=	O
+value	O
+
+return	O
+summary	O
+
+[file]	-100
+path=recipe_planner/models.py	-100
+
+"""Data containers and domain models."""	O
+
+class	O
+Ingredient	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+,	O
+unit	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+self	O
+.	O
+unit	O
+=	O
+unit	O
+
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+f"	O
+{	O
+self	O
+.	O
+name	O
+}	O
+:	O
+{	O
+self	O
+.	O
+unit	O
+}	O
+"	O
+
+class	O
+Recipe	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+,	O
+ingredients	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+self	O
+.	O
+ingredients	O
+=	O
+list	O
+(	O
+ingredients	O
+)	O
+
+def	O
+size	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+len	O
+(	O
+self	O
+.	O
+ingredients	O
+)	O
+
+class	O
+Meal	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+,	O
+recipe	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+self	O
+.	O
+recipe	O
+=	O
+recipe	O
+
+def	O
+label	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+f"	O
+{	O
+self	O
+.	O
+name	O
+}	O
+:	O
+{	O
+self	O
+.	O
+recipe	O
+.	O
+name	O
+}	O
+"	O
+
+class	O
+PantryItem	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+,	O
+amount	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+self	O
+.	O
+amount	O
+=	O
+amount	O
+
+def	O
+update	O
+(	O
+self	O
+,	O
+delta	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+amount	O
++=	O
+delta	O
+
+class	O
+Report	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+lines	O
+=	O
+[	O
+]	O
+
+def	O
+add_line	O
+(	O
+self	O
+,	O
+text	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+lines	O
+.	O
+append	O
+(	O
+text	O
+)	O
+
+def	O
+dump	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+"\n"	O
+.	O
+join	O
+(	O
+self	O
+.	O
+lines	O
+)	O
+
+[file]	-100
+path=recipe_planner/planner.py	-100
+
+"""Planning logic for building weekly meal plans."""	O
+
+from	O
+schedule	O
+import	O
+build_schedule	O
+
+from	O
+recipes	O
+import	O
+RecipeBook	O
+
+class	O
+PlanBoard	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+label	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+label	O
+=	O
+label	O
+
+self	O
+.	O
+slots	O
+=	O
+[	O
+]	O
+
+def	O
+add_slot	O
+(	O
+self	O
+,	O
+slot	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+slots	O
+.	O
+append	O
+(	O
+slot	O
+)	O
+
+def	O
+summarize	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+[	O
+slot	O
+.	O
+name	O
+for	O
+slot	O
+in	O
+self	O
+.	O
+slots	O
+]	O
+
+class	O
+PlanEngine	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+book	O
+:	O
+RecipeBook	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+book	O
+=	O
+book	O
+
+def	O
+make_week	O
+(	O
+self	O
+,	O
+label	O
+)	O
+:	O
+
+        	O
+board	O
+=	O
+PlanBoard	O
+(	O
+label	O
+)	O
+
+slots	O
+=	O
+build_schedule	O
+(	O
+self	O
+.	O
+book	O
+)	O
+
+for	O
+slot	O
+in	O
+slots	O
+:	O
+
+            	O
+board	O
+.	O
+add_slot	O
+(	O
+slot	O
+)	O
+
+return	O
+board	O
+
+class	O
+Slot	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+name	O
+,	O
+day_index	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+name	O
+=	O
+name	O
+
+self	O
+.	O
+day_index	O
+=	O
+day_index	O
+
+def	O
+key	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+f"	O
+{	O
+self	O
+.	O
+day_index	O
+}	O
+:	O
+{	O
+self	O
+.	O
+name	O
+}	O
+"	O
+
+class	O
+StepIndex	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+index	O
+=	O
+{	O
+}	O
+
+def	O
+track	O
+(	O
+self	O
+,	O
+recipe_name	O
+,	O
+count	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+index	O
+[	O
+recipe_name	O
+]	O
+=	O
+count	O
+
+def	O
+total	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+sum	O
+(	O
+self	O
+.	O
+index	O
+.	O
+values	O
+(	O
+)	O
+)	O
+
+[file]	-100
+path=recipe_planner/recipes.py	-100
+
+"""Recipe storage and retrieval."""	O
+
+class	O
+RecipeBook	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+_recipes	O
+=	O
+[	O
+
+"pasta_bowl"	O
+,	O
+
+"rice_plate"	O
+,	O
+
+"salad_box"	O
+,	O
+
+"soup_pot"	O
+,	O
+
+]	O
+
+def	O
+list_recipes	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+list	O
+(	O
+self	O
+.	O
+_recipes	O
+)	O
+
+def	O
+has	O
+(	O
+self	O
+,	O
+name	O
+)	O
+:	O
+
+        	O
+return	O
+name	O
+in	O
+self	O
+.	O
+_recipes	O
+
+class	O
+PortionScaler	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+base_size	O
+=	O
+2	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+base_size	O
+=	O
+base_size	O
+
+def	O
+scale	O
+(	O
+self	O
+,	O
+target	O
+)	O
+:	O
+
+        	O
+return	O
+max	O
+(	O
+1	O
+,	O
+int	O
+(	O
+target	O
+/	O
+self	O
+.	O
+base_size	O
+)	O
+)	O
+
+class	O
+Metric	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+,	O
+label	O
+,	O
+value	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+label	O
+=	O
+label	O
+
+self	O
+.	O
+value	O
+=	O
+value	O
+
+def	O
+as_tuple	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+return	O
+(	O
+self	O
+.	O
+label	O
+,	O
+self	O
+.	O
+value	O
+)	O
+
+[file]	-100
+path=recipe_planner/schedule.py	-100
+
+"""Schedule assembly for meal slots."""	O
+
+import	O
+inventory	O
+
+from	O
+planner	O
+import	O
+Slot	O
+
+class	O
+SlotAllocator	O
+:	O
+
+    	O
+def	O
+__init__	O
+(	O
+self	O
+)	O
+:	O
+
+        	O
+self	O
+.	O
+cursor	O
+=	O
+0	O
+
+def	O
+next_slot	O
+(	O
+self	O
+,	O
+name	O
+)	O
+:	O
+
+        	O
+slot	O
+=	O
+Slot	O
+(	O
+name	O
+,	O
+self	O
+.	O
+cursor	O
+)	O
+
+self	O
+.	O
+cursor	O
++=	O
+1	O
+
+return	O
+slot	O
+
+def	O
+build_schedule	O
+(	O
+book	O
+)	O
+:	O
+
+    	O
+allocator	O
+=	O
+SlotAllocator	O
+(	O
+)	O
+
+availability	O
+=	O
+inventory	O
+.	O
+availability_map	O
+(	O
+)	O
+
+slots	O
+=	O
+[	O
+]	O
+
+for	O
+name	O
+in	O
+book	O
+.	O
+list_recipes	O
+(	O
+)	O
+:	O
+
+        	O
+if	O
+availability	O
+.	O
+get	O
+(	O
+name	O
+,	O
+True	O
+)	O
+:	O
+
+            	O
+slots	O
+.	O
+append	O
+(	O
+allocator	O
+.	O
+next_slot	O
+(	O
+name	O
+)	O
+)	O
+
+return	O
+slots	O
+
+[file]	-100
+path=recipe_planner/transformers.py	-100
+
+"""Text transformations for exports."""	O
+
+def	O
+format_line	O
+(	O
+parts	O
+)	O
+:	O
+
+    	O
+joined	O
+=	O
+","	O
+.	O
+join	O
+(	O
+str	O
+(	O
+p	O
+)	O
+for	O
+p	O
+in	O
+parts	O
+)	O
+
+return	O
+joined	O
+.	O
+strip	O
+(	O
+)	O
+
+def	O
+parse_line	O
+(	O
+text	O
+)	O
+:	O
+
+    	O
+items	O
+=	O
+[	O
+p	O
+.	O
+strip	O
+(	O
+)	O
+for	O
+p	O
+in	O
+text	O
+.	O
+split	O
+(	O
+","	O
+)	O
+]	O
+
+return	O
+[	O
+p	O
+for	O
+p	O
+in	O
+items	O
+if	O
+p	O
+]	O
+
+def	O
+merge_rows	O
+(	O
+rows	O
+)	O
+:	O
+
+    	O
+merged	O
+=	O
+[	O
+]	O
+
+for	O
+row	O
+in	O
+rows	O
+:	O
+
+        	O
+merged	O
+.	O
+extend	O
+(	O
+row	O
+)	O
+
+return	O
+merged	O
+
+def	O
+normalize_block	O
+(	O
+lines	O
+)	O
+:	O
+
+    	O
+cleaned	O
+=	O
+[	O
+line	O
+.	O
+strip	O
+(	O
+)	O
+.	O
+lower	O
+(	O
+)	O
+for	O
+line	O
+in	O
+lines	O
+]	O
+
+return	O
+[	O
+line	O
+for	O
+line	O
+in	O
+cleaned	O
+if	O
+line	O
+]	O
+

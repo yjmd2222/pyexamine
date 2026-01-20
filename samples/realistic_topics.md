@@ -37,3 +37,7 @@
 10) **Mini Search Engine**
    - The app indexes a set of documents and returns ranked results for a query.
    - Extensions: TF-IDF/BM25 ranking, snippet highlighting, web UI, language-specific tokenization.
+
+11) **Recipe Planner + Grocery List**
+   - The app stores recipes, suggests weekly meal plans, and generates a consolidated shopping list.
+   - Extensions: dietary filters, serving-size scaling, pantry inventory, export to calendar.

@@ -24,7 +24,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields wind_kph, condition, temp_c, self in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+        "description": "Potentially unused fields condition, self, wind_kph, temp_c in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
         "file_path": "./samples/weather_outfit_recommender/models.py",
         "class_name": "WeatherSnapshot",
         "start_line_number": 1,
@@ -122,7 +122,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields temp, wind, self, condition in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+        "description": "Potentially unused fields condition, self, temp, wind in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
         "file_path": "./samples/weather_outfit_recommender/advisor.py",
         "class_name": "WeatherProfile",
         "start_line_number": 1,
