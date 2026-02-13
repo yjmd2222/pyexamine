@@ -45,7 +45,9 @@ def main():
     dataset_parser.add_argument("--metadata-output", default=None,
                                 help="Output path for code_metadata.json")
     dataset_parser.add_argument("--output-dir", default=None,
-                                help="Output directory for per-smell CoNLL files")
+                                help="Output directory for generated dataset artifacts")
+    dataset_parser.add_argument("--format", default="conll", choices=["conll", "detr"],
+                                help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-instances JSON)")
 
     index_parser = subparsers.add_parser(
         "build_smell_index",
@@ -89,6 +91,8 @@ def main():
             cmd.extend(["--metadata-output", args.metadata_output])
         if args.output_dir:
             cmd.extend(["--output-dir", args.output_dir])
+        if getattr(args, "format", None):
+            cmd.extend(["--format", args.format])
         _run(cmd)
         return
 

@@ -27,3 +27,21 @@ python -m pyexamine build_smell_index samples \
   --output samples/smell_index.json \
   --no-analyze
 ```
+
+
+## Generate DETR-style Dataset (Single JSON per Sample)
+
+This outputs one file per sample directory:
+- `datasets/<sample>/detr_dataset.json`
+
+```bash
+for d in ./samples/*/; do
+  name="$(basename "$d")"
+  report="reports/${name}.json"
+  metadata="reports/${name}_metadata.json"
+  outdir="datasets/${name}"
+  mkdir -p "$outdir"
+
+  python -m pyexamine smell_dataset "$d"         --config code_quality_config_new.yaml         --report "$report"         --metadata-output "$metadata"         --output-dir "$outdir"         --format detr
+done
+```

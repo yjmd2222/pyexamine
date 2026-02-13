@@ -21,7 +21,7 @@ def _default_output_dir(code_path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run code quality analysis and generate per-smell CoNLL datasets."
+        description="Run code quality analysis and generate datasets (CoNLL or DETR-style)."
     )
     parser.add_argument("code_path", help="Path to a code file or directory to include.")
     parser.add_argument("--config", required=True, help="Path to code quality config YAML")
@@ -30,7 +30,9 @@ def main():
     parser.add_argument("--metadata-output", default=None,
                         help="Output path for code_metadata.json")
     parser.add_argument("--output-dir", default=None,
-                        help="Output directory for per-smell CoNLL files")
+                        help="Output directory for generated dataset artifacts")
+    parser.add_argument("--format", default="conll", choices=["conll", "detr"],
+                        help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-instances JSON)")
     args = parser.parse_args()
 
     output_dir = args.output_dir or _default_output_dir(args.code_path)
@@ -52,11 +54,24 @@ def main():
         analyze_cmd.extend(["--metadata-output", args.metadata_output])
     run_command(analyze_cmd, env)
 
+
+if args.format == "conll":
     dataset_cmd = [
         sys.executable, "-m", "dataset_generator",
         args.code_path,
         "--report", args.report,
         "--output-dir", output_dir
+    ]
+    run_command(dataset_cmd, env)
+else:
+    # Single JSON artifact per analyzed code_path
+    detr_output = os.path.join(output_dir, "detr_dataset.json")
+    os.makedirs(output_dir, exist_ok=True)
+    dataset_cmd = [
+        sys.executable, "-m", "dataset_generator.build_detr_dataset",
+        args.code_path,
+        "--report", args.report,
+        "--output", detr_output
     ]
     run_command(dataset_cmd, env)
 
