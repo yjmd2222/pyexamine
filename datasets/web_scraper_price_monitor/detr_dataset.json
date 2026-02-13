@@ -1,0 +1,1014 @@
+{
+  "sample_id": "web_scraper_price_monitor",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\web_scraper_price_monitor",
+  "text": "[file]\npath=web_scraper_price_monitor/client.py\n\nclass FetchSession:\n    def __init__(self):\n        self.calls = []\n\n    def get(self, url: str):\n        self.calls.append(url)\n        return {\"url\": url}\n\n    def post(self, url: str, payload):\n        self.calls.append(url)\n        return {\"url\": url, \"payload\": payload}\n\n\ndef fetch_prices(session: FetchSession, base_url: str, product_ids):\n    results = []\n    for product_id in product_ids:\n        results.append(session.get(f\"{base_url}/p/{product_id}\"))\n    results.append(session.get(f\"{base_url}/p/extra-1\"))\n    results.append(session.get(f\"{base_url}/p/extra-2\"))\n    results.append(session.get(f\"{base_url}/p/extra-3\"))\n    results.append(session.get(f\"{base_url}/p/extra-4\"))\n    results.append(session.get(f\"{base_url}/p/extra-5\"))\n    results.append(session.get(f\"{base_url}/p/extra-6\"))\n    results.append(session.get(f\"{base_url}/p/extra-7\"))\n    results.append(session.get(f\"{base_url}/p/extra-8\"))\n    results.append(session.post(f\"{base_url}/log\", {\"count\": len(results)}))\n    return results\n\n[file]\npath=web_scraper_price_monitor/extractors.py\n\nclass HtmlExtractor:\n    def open(self, path: str):\n        return f\"html:{path}\"\n\n    def extract(self, payload: str):\n        return payload.lower()\n\n\nclass JsonExtractor:\n    def open(self, path: str):\n        return f\"json:{path}\"\n\n    def extract(self, payload: str):\n        return payload.strip()\n\n\nclass TextExtractor:\n    def open(self, path: str):\n        return f\"text:{path}\"\n\n    def extract(self, payload: str):\n        return payload.replace(\" \", \"\")\n\n[file]\npath=web_scraper_price_monitor/notes.py\n\n# Pricing notes\n# - Cache values are stored per vendor.\n# - We only reconcile once per hour.\n# - Discounts are ignored if the seller is unknown.\n# - Shipping fees are tracked separately.\n# - Price drops smaller than 1% are ignored.\n# - Coupons are applied after tax rules.\n# - Manual overrides require operator approval.\n# - Scrapes during maintenance windows are skipped.\nflag_one = True\n\n# Inventory notes\n# - Backorders are tracked separately.\n# - Warehouse holds are recorded in tickets.\n# - Inventory locks expire after 15 minutes.\n# - Vendor blocks are kept for 30 days.\n# - Sync retries happen every 5 minutes.\n# - Stock overrides require supervisor approval.\nflag_two = True\n\n# Alert notes\n# - Pagers are used for critical alerts.\n# - SMS is used when email bounces.\n# - Night shifts have separate rotations.\n# - Alerts are suppressed during outages.\n# - Escalations happen after 3 attempts.\n# - Suppression windows expire at midnight.\nflag_three = True\n\n# Audit notes\n# - Price edits are logged with operator IDs.\n# - Audit trails are archived monthly.\n# - Anomaly checks run daily.\n# - Fraud checks are scheduled weekly.\n# - Chargebacks are reviewed quarterly.\n# - Policy changes require two approvals.\nflag_four = True\n\n# Compliance notes\n# - Retention rules differ by region.\n# - GDPR exports run on request.\n# - HIPAA rules apply to health vendors.\n# - PCI scans run after release.\n# - Tokens are rotated every 90 days.\n# - External audits happen annually.\nflag_five = True\n\n# Operations notes\n# - Rollbacks are manual during outages.\n# - Maintenance windows are scheduled.\n# - Vendor rates change without notice.\n# - Contract renewals are quarterly.\n# - Canary deploys take 2 hours.\n# - Hotfixes require approvals.\nflag_six = True\n\n# Support notes\n# - On-call rotations are monthly.\n# - Escalation docs are in the handbook.\n# - Vendor bridges are recorded.\n# - Major incidents require postmortems.\n# - Incident reviews happen weekly.\n# - Pager overrides expire in 24 hours.\nflag_seven = True\n\n# Metrics notes\n# - Latency percentiles are stored hourly.\n# - Error rates are sampled per region.\n# - Throughput is averaged by vendor.\n# - Backoff rates are recorded.\n# - Retry storms are throttled.\n# - Cache hit ratios are persisted.\nflag_eight = True\n\n\ndef store_note(product_id: str, message: str):\n    return {\"product_id\": product_id, \"message\": message}\n\n[file]\npath=web_scraper_price_monitor/pipeline.py\n\nclass MonitorPipeline:\n    def __init__(self, client, parser, cache, limiter, policy):\n        self.client = client\n        self.parser = parser\n        self.cache = cache\n        self.limiter = limiter\n        self.policy = policy\n\n    def run(self, url: str):\n        client = self.client\n        parser = self.parser\n        cache = self.cache\n        limiter = self.limiter\n        policy = self.policy\n\n        if not limiter.allow(url):\n            return None\n\n        html = client.get(url)\n        data = parser.parse(html)\n        cache.store(url, data)\n        policy.check(data)\n        return data\n\n[file]\npath=web_scraper_price_monitor/state.py\n\nclass MonitorState:\n    last_price = 0.0\n    last_seen = None\n    highest_price = 0.0\n    lowest_price = 0.0\n    currency = \"USD\"\n    store = \"\"\n    product_id = \"\"\n    category = \"\"\n    brand = \"\"\n    region = \"\"\n    snapshot_id = \"\"\n    retries = 0\n    def __init__(self):\n        self.last_price = 0.0\n        self.last_seen = None\n        self.highest_price = 0.0\n        self.lowest_price = 0.0\n        self.currency = \"USD\"\n        self.store = \"\"\n        self.product_id = \"\"\n        self.category = \"\"\n        self.brand = \"\"\n        self.region = \"\"\n        self.snapshot_id = \"\"\n        self.retries = 0\n        self.vendor_id = \"\"\n        self.offer_id = \"\"\n        self.country_code = \"\"\n        self.city = \"\"\n        self.zip_code = \"\"\n        self.sku = \"\"\n        self.upc = \"\"\n        self.ean = \"\"\n        self.inventory = 0\n        self.on_sale = False\n        self.sale_price = 0.0\n        self.list_price = 0.0\n        self.tax_rate = 0.0\n        self.shipping_fee = 0.0\n        self.discount_code = \"\"\n        self.discount_amount = 0.0\n        self.coupon_count = 0\n\n    def summary(self):\n        return f\"{self.product_id}:{self.last_price}\"\n\n    def touch_fields(self):\n        total = 0\n        total += int(self.inventory)\n        total += int(self.retries)\n        total += int(self.coupon_count)\n        total += int(self.on_sale)\n        total += int(bool(self.vendor_id))\n        total += int(bool(self.offer_id))\n        total += int(bool(self.country_code))\n        total += int(bool(self.city))\n        total += int(bool(self.zip_code))\n        total += int(bool(self.sku))\n        total += int(bool(self.upc))\n        total += int(bool(self.ean))\n        total += int(bool(self.category))\n        total += int(bool(self.brand))\n        total += int(bool(self.region))\n        total += int(bool(self.snapshot_id))\n        total += int(bool(self.discount_code))\n        total += int(self.discount_amount > 0)\n        total += int(self.sale_price > 0)\n        total += int(self.list_price > 0)\n        total += int(self.shipping_fee > 0)\n        total += int(self.tax_rate > 0)\n        total += int(self.last_price > 0)\n        total += int(self.highest_price > 0)\n        total += int(self.lowest_price > 0)\n        return total\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "web_scraper_price_monitor/client.py",
+      "content_start_char": 49,
+      "content_end_char": 1066,
+      "num_lines": 28
+    },
+    {
+      "segment_id": 1,
+      "path": "web_scraper_price_monitor/extractors.py",
+      "content_start_char": 1120,
+      "content_end_char": 1586,
+      "num_lines": 23
+    },
+    {
+      "segment_id": 2,
+      "path": "web_scraper_price_monitor/notes.py",
+      "content_start_char": 1635,
+      "content_end_char": 4004,
+      "num_lines": 78
+    },
+    {
+      "segment_id": 3,
+      "path": "web_scraper_price_monitor/pipeline.py",
+      "content_start_char": 4056,
+      "content_end_char": 4667,
+      "num_lines": 24
+    },
+    {
+      "segment_id": 4,
+      "path": "web_scraper_price_monitor/state.py",
+      "content_start_char": 4716,
+      "content_end_char": 6979,
+      "num_lines": 76
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Weight of a Class (WAC)",
+      "severity": "Medium",
+      "description": "Class 'state.MonitorState' has 12 significant attributes (excluding constants and unused private fields)",
+      "primary_file": "./samples/web_scraper_price_monitor/state.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/state.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 76,
+        "start_char": 4716,
+        "end_char": 6979
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/state.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 76,
+          "start_char": 4716,
+          "end_char": 6979
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "High Coupling Between Object Classes (CBO)",
+      "severity": "High",
+      "description": "Class 'pipeline.MonitorPipeline' has weighted CBO of 10.5\nDirect coupling: 5 classes\nIndirect coupling: 6 classes\nDirect coupling instances: client(19-20), parser(20-21), cache(21-22), policy(22-23), limiter(16-17)\nIndirect coupling instances: self(3-4), self(4-5), self(5-6), self(6-7), self(7-8), self(10-11), self(11-12), self(12-13), self(13-14), self(14-15), client(19-20), parser(20-21), cache(21-22), policy(22-23), limiter(16-17)",
+      "primary_file": "./samples/web_scraper_price_monitor/pipeline.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/pipeline.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 4056,
+        "end_char": 4667
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 4056,
+          "end_char": 4667
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 4524,
+          "end_char": 4555
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 4555,
+          "end_char": 4589
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 4589,
+          "end_char": 4620
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 4620,
+          "end_char": 4647
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 4464,
+          "end_char": 4499
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 4143,
+          "end_char": 4172
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 4172,
+          "end_char": 4201
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 4201,
+          "end_char": 4228
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 4228,
+          "end_char": 4259
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 7,
+          "end_line": 8,
+          "start_char": 4259,
+          "end_char": 4288
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 10,
+          "end_line": 11,
+          "start_char": 4318,
+          "end_char": 4347
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 4347,
+          "end_char": 4376
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 12,
+          "end_line": 13,
+          "start_char": 4376,
+          "end_char": 4403
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 13,
+          "end_line": 14,
+          "start_char": 4403,
+          "end_char": 4434
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 14,
+          "end_line": 15,
+          "start_char": 4434,
+          "end_char": 4463
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 4524,
+          "end_char": 4555
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 4555,
+          "end_char": 4589
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 4589,
+          "end_char": 4620
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 4620,
+          "end_char": 4647
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 4464,
+          "end_char": 4499
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'FetchSession' has only 2 non-trivial methods with 4 total lines in ./samples/web_scraper_price_monitor/client.py",
+      "primary_file": "./samples/web_scraper_price_monitor/client.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/client.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 12,
+        "start_char": 49,
+        "end_char": 325
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 12,
+          "start_char": 49,
+          "end_char": 325
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Code",
+      "smell_name": "Feature Envy",
+      "severity": "medium",
+      "description": "Method 'fetch_prices' makes 10 calls to 'results' at lines 17-18, 18-19, 19-20, 20-21, 21-22, 22-23, 23-24, 24-25, 25-26, 26-27 but only 0 local calls at lines  in ./samples/web_scraper_price_monitor/client.py",
+      "primary_file": "./samples/web_scraper_price_monitor/client.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/client.py",
+        "segment_id": 0,
+        "start_line": 14,
+        "end_line": 28,
+        "start_char": 327,
+        "end_char": 1066
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 14,
+          "end_line": 28,
+          "start_char": 327,
+          "end_char": 1066
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 448,
+          "end_char": 514
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 514,
+          "end_char": 571
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 571,
+          "end_char": 628
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 628,
+          "end_char": 685
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 685,
+          "end_char": 742
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 742,
+          "end_char": 799
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 799,
+          "end_char": 856
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 856,
+          "end_char": 913
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 913,
+          "end_char": 970
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 26,
+          "end_line": 27,
+          "start_char": 970,
+          "end_char": 1047
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Alternative Classes with Different Interfaces",
+      "severity": "medium",
+      "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods open, extract in ./samples/web_scraper_price_monitor/extractors.py",
+      "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "CLASSES",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1120,
+          "end_char": 1271
+        },
+        {
+          "role": "CLASSES",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 15,
+          "start_char": 1273,
+          "end_char": 1424
+        },
+        {
+          "role": "CLASSES",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 17,
+          "end_line": 23,
+          "start_char": 1426,
+          "end_char": 1586
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HtmlExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+      "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/extractors.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 7,
+        "start_char": 1120,
+        "end_char": 1271
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1120,
+          "end_char": 1271
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'JsonExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+      "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/extractors.py",
+        "segment_id": 1,
+        "start_line": 9,
+        "end_line": 15,
+        "start_char": 1273,
+        "end_char": 1424
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 15,
+          "start_char": 1273,
+          "end_char": 1424
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'TextExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+      "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/extractors.py",
+        "segment_id": 1,
+        "start_line": 17,
+        "end_line": 23,
+        "start_char": 1426,
+        "end_char": 1586
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 17,
+          "end_line": 23,
+          "start_char": 1426,
+          "end_char": 1586
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Excessive Comments",
+      "severity": "low",
+      "description": "File has 490.0% comment ratio with 7 large comment blocks in ./samples/web_scraper_price_monitor/notes.py",
+      "primary_file": "./samples/web_scraper_price_monitor/notes.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 12,
+          "end_line": 19,
+          "start_char": 2025,
+          "end_char": 2302
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 21,
+          "end_line": 28,
+          "start_char": 2319,
+          "end_char": 2579
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 30,
+          "end_line": 37,
+          "start_char": 2598,
+          "end_char": 2848
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 39,
+          "end_line": 46,
+          "start_char": 2866,
+          "end_char": 3105
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 48,
+          "end_line": 55,
+          "start_char": 3123,
+          "end_char": 3364
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 57,
+          "end_line": 64,
+          "start_char": 3381,
+          "end_char": 3623
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 66,
+          "end_line": 73,
+          "start_char": 3642,
+          "end_char": 3879
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'MonitorPipeline' has only 1 non-trivial methods with 14 total lines in ./samples/web_scraper_price_monitor/pipeline.py",
+      "primary_file": "./samples/web_scraper_price_monitor/pipeline.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/pipeline.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 4056,
+        "end_char": 4667
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 4056,
+          "end_char": 4667
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'MonitorState' has only 1 non-trivial methods with 27 total lines in ./samples/web_scraper_price_monitor/state.py",
+      "primary_file": "./samples/web_scraper_price_monitor/state.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/state.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 76,
+        "start_char": 4716,
+        "end_char": 6979
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/state.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 76,
+          "start_char": 4716,
+          "end_char": 6979
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Architectural",
+      "smell_name": "Potential Improper API Usage",
+      "severity": "medium",
+      "description": "Module 'client' has repetitive API calls: append(12x), get(9x)\nRepetitive call instances: append(18-19), append(19-20), append(20-21), append(21-22), append(22-23), append(23-24), append(24-25), append(25-26), append(26-27), append(6-7), append(10-11), append(17-18), get(18-19), get(19-20), get(20-21), get(21-22), get(22-23), get(23-24), get(24-25), get(25-26), get(17-18)",
+      "primary_file": "./samples/web_scraper_price_monitor/client.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 514,
+          "end_char": 571
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 571,
+          "end_char": 628
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 628,
+          "end_char": 685
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 685,
+          "end_char": 742
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 742,
+          "end_char": 799
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 799,
+          "end_char": 856
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 856,
+          "end_char": 913
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 913,
+          "end_char": 970
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 26,
+          "end_line": 27,
+          "start_char": 970,
+          "end_char": 1047
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 147,
+          "end_char": 178
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 10,
+          "end_line": 11,
+          "start_char": 246,
+          "end_char": 277
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 448,
+          "end_char": 514
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 514,
+          "end_char": 571
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 571,
+          "end_char": 628
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 628,
+          "end_char": 685
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 685,
+          "end_char": 742
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 742,
+          "end_char": 799
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 799,
+          "end_char": 856
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 856,
+          "end_char": 913
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 913,
+          "end_char": 970
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 448,
+          "end_char": 514
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'client' is isolated from other modules",
+      "primary_file": "./samples/web_scraper_price_monitor/client.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/client.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 28,
+        "start_char": 49,
+        "end_char": 1066
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/client.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 28,
+          "start_char": 49,
+          "end_char": 1066
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'extractors' is isolated from other modules",
+      "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/extractors.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 23,
+        "start_char": 1120,
+        "end_char": 1586
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/extractors.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 23,
+          "start_char": 1120,
+          "end_char": 1586
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'notes' is isolated from other modules",
+      "primary_file": "./samples/web_scraper_price_monitor/notes.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/notes.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 78,
+        "start_char": 1635,
+        "end_char": 4004
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/notes.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 78,
+          "start_char": 1635,
+          "end_char": 4004
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'pipeline' is isolated from other modules",
+      "primary_file": "./samples/web_scraper_price_monitor/pipeline.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/pipeline.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 4056,
+        "end_char": 4667
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/pipeline.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 4056,
+          "end_char": 4667
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'state' is isolated from other modules",
+      "primary_file": "./samples/web_scraper_price_monitor/state.py",
+      "anchor": {
+        "file": "web_scraper_price_monitor/state.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 76,
+        "start_char": 4716,
+        "end_char": 6979
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "web_scraper_price_monitor/state.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 76,
+          "start_char": 4716,
+          "end_char": 6979
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "CLASSES",
+      "INSTANCE_LINES"
+    ],
+    "num_instances": 17,
+    "dropped_instances_without_resolved_spans": 0
+  }
+}

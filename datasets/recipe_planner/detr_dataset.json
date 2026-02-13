@@ -1,0 +1,1175 @@
+{
+  "sample_id": "recipe_planner",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\recipe_planner",
+  "text": "[file]\npath=recipe_planner/adapters.py\n\n\"\"\"Lightweight format adapters.\"\"\"\n\n\ndef format_line(parts):\n    joined = \",\".join(str(p) for p in parts)\n    return joined.strip()\n\n\ndef parse_line(text):\n    items = [p.strip() for p in text.split(\",\")]\n    return [p for p in items if p]\n\n\ndef merge_rows(rows):\n    merged = []\n    for row in rows:\n        merged.extend(row)\n    return merged\n\n\ndef normalize_block(lines):\n    cleaned = [line.strip().lower() for line in lines]\n    return [line for line in cleaned if line]\n\n[file]\npath=recipe_planner/app.py\n\n\"\"\"Recipe planner CLI-like entrypoint.\"\"\"\n\nfrom planner import PlanEngine\nfrom recipes import RecipeBook\nfrom grocery import GroceryList\n\n\ndef build_weekly_plan():\n    book = RecipeBook()\n    engine = PlanEngine(book)\n    week = engine.make_week(\"default\")\n    list_maker = GroceryList()\n    items = list_maker.from_week(week)\n    return items\n\n\nif __name__ == \"__main__\":\n    groceries = build_weekly_plan()\n    for item in groceries:\n        print(item)\n\n[file]\npath=recipe_planner/batch_ops.py\n\n\"\"\"Batch operations for list processing.\"\"\"\n\n\ndef action_01(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_02(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_03(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_04(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_05(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_06(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_07(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_08(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_09(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_10(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_11(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_12(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_13(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_14(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n\ndef action_15(items):\n    total = 0\n    count = 0\n    for item in items:\n        total += item\n        count += 1\n    average = total / count if count else 0\n    return average\n\n[file]\npath=recipe_planner/grocery.py\n\n\"\"\"Grocery list generation.\"\"\"\n\n\nclass GroceryList:\n    def __init__(self):\n        self.items = []\n\n    def add(self, name):\n        self.items.append(name)\n\n    def from_week(self, board):\n        for name in board.summarize():\n            self.add(name)\n        return list(self.items)\n\n\nclass Shopper:\n    def __init__(self):\n        self.history = []\n\n    def record(self, item):\n        self.history.append(item)\n\n    def last(self):\n        return self.history[-1] if self.history else None\n\n[file]\npath=recipe_planner/inventory.py\n\n\"\"\"Inventory helpers for pantry tracking.\"\"\"\n\nimport planner\n\n\nclass PantryIndex:\n    def __init__(self):\n        self.items = {}\n\n    def add(self, name, count):\n        self.items[name] = self.items.get(name, 0) + count\n\n    def has(self, name):\n        return self.items.get(name, 0) > 0\n\n\nclass StockTracker:\n    def __init__(self):\n        self.records = []\n\n    def record(self, item, qty):\n        self.records.append((item, qty))\n\n    def totals(self):\n        return {item: qty for item, qty in self.records}\n\n\ndef availability_map():\n    board = planner.PlanBoard(\"inventory\")\n    board.add_slot(planner.Slot(\"default\", 0))\n    return {slot.name: True for slot in board.slots}\n\n[file]\npath=recipe_planner/maintenance.py\n\n\"\"\"Maintenance helpers and checks.\"\"\"\n\n\ndef _unused_cleanup(path):\n    cleaned = path.strip()\n    return cleaned.upper()\n\n\ndef _unused_probe(items):\n    total = 0\n    for item in items:\n        total += len(str(item))\n    return total\n\n\ndef _unused_rebuild(value):\n    return value * 2 + 1\n\n\ndef run_checks(values):\n    summary = 0\n    for value in values:\n        summary += value\n    return summary\n\n[file]\npath=recipe_planner/models.py\n\n\"\"\"Data containers and domain models.\"\"\"\n\n\nclass Ingredient:\n    def __init__(self, name, unit):\n        self.name = name\n        self.unit = unit\n\n    def key(self):\n        return f\"{self.name}:{self.unit}\"\n\n\nclass Recipe:\n    def __init__(self, name, ingredients):\n        self.name = name\n        self.ingredients = list(ingredients)\n\n    def size(self):\n        return len(self.ingredients)\n\n\nclass Meal:\n    def __init__(self, name, recipe):\n        self.name = name\n        self.recipe = recipe\n\n    def label(self):\n        return f\"{self.name}:{self.recipe.name}\"\n\n\nclass PantryItem:\n    def __init__(self, name, amount):\n        self.name = name\n        self.amount = amount\n\n    def update(self, delta):\n        self.amount += delta\n\n\nclass Report:\n    def __init__(self):\n        self.lines = []\n\n    def add_line(self, text):\n        self.lines.append(text)\n\n    def dump(self):\n        return \"\\n\".join(self.lines)\n\n[file]\npath=recipe_planner/planner.py\n\n\"\"\"Planning logic for building weekly meal plans.\"\"\"\n\nfrom schedule import build_schedule\nfrom recipes import RecipeBook\n\n\nclass PlanBoard:\n    def __init__(self, label):\n        self.label = label\n        self.slots = []\n\n    def add_slot(self, slot):\n        self.slots.append(slot)\n\n    def summarize(self):\n        return [slot.name for slot in self.slots]\n\n\nclass PlanEngine:\n    def __init__(self, book: RecipeBook):\n        self.book = book\n\n    def make_week(self, label):\n        board = PlanBoard(label)\n        slots = build_schedule(self.book)\n        for slot in slots:\n            board.add_slot(slot)\n        return board\n\n\nclass Slot:\n    def __init__(self, name, day_index):\n        self.name = name\n        self.day_index = day_index\n\n    def key(self):\n        return f\"{self.day_index}:{self.name}\"\n\n\nclass StepIndex:\n    def __init__(self):\n        self.index = {}\n\n    def track(self, recipe_name, count):\n        self.index[recipe_name] = count\n\n    def total(self):\n        return sum(self.index.values())\n\n[file]\npath=recipe_planner/recipes.py\n\n\"\"\"Recipe storage and retrieval.\"\"\"\n\n\nclass RecipeBook:\n    def __init__(self):\n        self._recipes = [\n            \"pasta_bowl\",\n            \"rice_plate\",\n            \"salad_box\",\n            \"soup_pot\",\n        ]\n\n    def list_recipes(self):\n        return list(self._recipes)\n\n    def has(self, name):\n        return name in self._recipes\n\n\nclass PortionScaler:\n    def __init__(self, base_size=2):\n        self.base_size = base_size\n\n    def scale(self, target):\n        return max(1, int(target / self.base_size))\n\n\nclass Metric:\n    def __init__(self, label, value):\n        self.label = label\n        self.value = value\n\n    def as_tuple(self):\n        return (self.label, self.value)\n\n[file]\npath=recipe_planner/schedule.py\n\n\"\"\"Schedule assembly for meal slots.\"\"\"\n\nimport inventory\nfrom planner import Slot\n\n\nclass SlotAllocator:\n    def __init__(self):\n        self.cursor = 0\n\n    def next_slot(self, name):\n        slot = Slot(name, self.cursor)\n        self.cursor += 1\n        return slot\n\n\ndef build_schedule(book):\n    allocator = SlotAllocator()\n    availability = inventory.availability_map()\n    slots = []\n    for name in book.list_recipes():\n        if availability.get(name, True):\n            slots.append(allocator.next_slot(name))\n    return slots\n\n[file]\npath=recipe_planner/transformers.py\n\n\"\"\"Text transformations for exports.\"\"\"\n\n\ndef format_line(parts):\n    joined = \",\".join(str(p) for p in parts)\n    return joined.strip()\n\n\ndef parse_line(text):\n    items = [p.strip() for p in text.split(\",\")]\n    return [p for p in items if p]\n\n\ndef merge_rows(rows):\n    merged = []\n    for row in rows:\n        merged.extend(row)\n    return merged\n\n\ndef normalize_block(lines):\n    cleaned = [line.strip().lower() for line in lines]\n    return [line for line in cleaned if line]\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "recipe_planner/adapters.py",
+      "content_start_char": 40,
+      "content_end_char": 517,
+      "num_lines": 24
+    },
+    {
+      "segment_id": 1,
+      "path": "recipe_planner/app.py",
+      "content_start_char": 553,
+      "content_end_char": 1009,
+      "num_lines": 21
+    },
+    {
+      "segment_id": 2,
+      "path": "recipe_planner/batch_ops.py",
+      "content_start_char": 1051,
+      "content_end_char": 3780,
+      "num_lines": 152
+    },
+    {
+      "segment_id": 3,
+      "path": "recipe_planner/grocery.py",
+      "content_start_char": 3820,
+      "content_end_char": 4318,
+      "num_lines": 26
+    },
+    {
+      "segment_id": 4,
+      "path": "recipe_planner/inventory.py",
+      "content_start_char": 4360,
+      "content_end_char": 5047,
+      "num_lines": 32
+    },
+    {
+      "segment_id": 5,
+      "path": "recipe_planner/maintenance.py",
+      "content_start_char": 5091,
+      "content_end_char": 5492,
+      "num_lines": 25
+    },
+    {
+      "segment_id": 6,
+      "path": "recipe_planner/models.py",
+      "content_start_char": 5531,
+      "content_end_char": 6460,
+      "num_lines": 49
+    },
+    {
+      "segment_id": 7,
+      "path": "recipe_planner/planner.py",
+      "content_start_char": 6500,
+      "content_end_char": 7530,
+      "num_lines": 49
+    },
+    {
+      "segment_id": 8,
+      "path": "recipe_planner/recipes.py",
+      "content_start_char": 7570,
+      "content_end_char": 8264,
+      "num_lines": 35
+    },
+    {
+      "segment_id": 9,
+      "path": "recipe_planner/schedule.py",
+      "content_start_char": 8305,
+      "content_end_char": 8845,
+      "num_lines": 25
+    },
+    {
+      "segment_id": 10,
+      "path": "recipe_planner/transformers.py",
+      "content_start_char": 8890,
+      "content_end_char": 9372,
+      "num_lines": 24
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Number of classes per Project",
+      "severity": "High",
+      "description": "Project has 17.0 weighted classes:\n- Regular classes: 17\n- Abstract/Interface classes: 0\n- Utility classes: 0\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- grocery: GroceryList(4-15), Shopper(17-26)\n- inventory: PantryIndex(6-15), StockTracker(17-26)\n- models: Ingredient(4-11), Recipe(13-20), Meal(22-29), PantryItem(31-38), Report(40-49)\n- planner: PlanBoard(7-17), PlanEngine(19-29), Slot(31-38), StepIndex(40-49)\n- recipes: RecipeBook(4-18), PortionScaler(20-26), Metric(28-35)\n- schedule: SlotAllocator(7-15)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/grocery.py",
+          "segment_id": 3,
+          "start_line": 4,
+          "end_line": 15,
+          "start_char": 3853,
+          "end_char": 4109
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/grocery.py",
+          "segment_id": 3,
+          "start_line": 17,
+          "end_line": 26,
+          "start_char": 4111,
+          "end_char": 4318
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/inventory.py",
+          "segment_id": 4,
+          "start_line": 6,
+          "end_line": 15,
+          "start_char": 4423,
+          "end_char": 4651
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/inventory.py",
+          "segment_id": 4,
+          "start_line": 17,
+          "end_line": 26,
+          "start_char": 4653,
+          "end_char": 4878
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 4,
+          "end_line": 11,
+          "start_char": 5574,
+          "end_char": 5740
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 13,
+          "end_line": 20,
+          "start_char": 5742,
+          "end_char": 5927
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 22,
+          "end_line": 29,
+          "start_char": 5929,
+          "end_char": 6104
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 31,
+          "end_line": 38,
+          "start_char": 6106,
+          "end_char": 6275
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 40,
+          "end_line": 49,
+          "start_char": 6277,
+          "end_char": 6460
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 7,
+          "end_line": 17,
+          "start_char": 6623,
+          "end_char": 6861
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 19,
+          "end_line": 29,
+          "start_char": 6863,
+          "end_char": 7137
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 31,
+          "end_line": 38,
+          "start_char": 7139,
+          "end_char": 7319
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 40,
+          "end_line": 49,
+          "start_char": 7321,
+          "end_char": 7530
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 4,
+          "end_line": 18,
+          "start_char": 7608,
+          "end_char": 7914
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 20,
+          "end_line": 26,
+          "start_char": 7916,
+          "end_char": 8091
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 28,
+          "end_line": 35,
+          "start_char": 8093,
+          "end_char": 8264
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/schedule.py",
+          "segment_id": 9,
+          "start_line": 7,
+          "end_line": 15,
+          "start_char": 8390,
+          "end_char": 8575
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Code",
+      "smell_name": "Duplicate Code",
+      "severity": "high",
+      "description": "Similar code found in functions: action_01, action_02, action_03, action_04, action_05, action_06, action_07, action_08, action_09, action_10, action_11, action_12, action_13, action_14, action_15 (75 total lines) in ./samples/recipe_planner/batch_ops.py",
+      "primary_file": "./samples/recipe_planner/batch_ops.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 4,
+          "end_line": 12,
+          "start_char": 1097,
+          "end_char": 1274
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 22,
+          "start_char": 1276,
+          "end_char": 1453
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 24,
+          "end_line": 32,
+          "start_char": 1455,
+          "end_char": 1632
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 34,
+          "end_line": 42,
+          "start_char": 1634,
+          "end_char": 1811
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 44,
+          "end_line": 52,
+          "start_char": 1813,
+          "end_char": 1990
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 54,
+          "end_line": 62,
+          "start_char": 1992,
+          "end_char": 2169
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 64,
+          "end_line": 72,
+          "start_char": 2171,
+          "end_char": 2348
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 74,
+          "end_line": 82,
+          "start_char": 2350,
+          "end_char": 2527
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 84,
+          "end_line": 92,
+          "start_char": 2529,
+          "end_char": 2706
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 94,
+          "end_line": 102,
+          "start_char": 2708,
+          "end_char": 2885
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 104,
+          "end_line": 112,
+          "start_char": 2887,
+          "end_char": 3064
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 114,
+          "end_line": 122,
+          "start_char": 3066,
+          "end_char": 3243
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 124,
+          "end_line": 132,
+          "start_char": 3245,
+          "end_char": 3422
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 134,
+          "end_line": 142,
+          "start_char": 3424,
+          "end_char": 3601
+        },
+        {
+          "role": "LINES",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 144,
+          "end_line": 152,
+          "start_char": 3603,
+          "end_char": 3780
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'GroceryList' has only 2 non-trivial methods with 4 total lines in ./samples/recipe_planner/grocery.py",
+      "primary_file": "./samples/recipe_planner/grocery.py",
+      "anchor": {
+        "file": "recipe_planner/grocery.py",
+        "segment_id": 3,
+        "start_line": 4,
+        "end_line": 15,
+        "start_char": 3853,
+        "end_char": 4109
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/grocery.py",
+          "segment_id": 3,
+          "start_line": 4,
+          "end_line": 15,
+          "start_char": 3853,
+          "end_char": 4109
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Shopper' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/grocery.py",
+      "primary_file": "./samples/recipe_planner/grocery.py",
+      "anchor": {
+        "file": "recipe_planner/grocery.py",
+        "segment_id": 3,
+        "start_line": 17,
+        "end_line": 26,
+        "start_char": 4111,
+        "end_char": 4318
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/grocery.py",
+          "segment_id": 3,
+          "start_line": 17,
+          "end_line": 26,
+          "start_char": 4111,
+          "end_char": 4318
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'PantryIndex' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/inventory.py",
+      "primary_file": "./samples/recipe_planner/inventory.py",
+      "anchor": {
+        "file": "recipe_planner/inventory.py",
+        "segment_id": 4,
+        "start_line": 6,
+        "end_line": 15,
+        "start_char": 4423,
+        "end_char": 4651
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/inventory.py",
+          "segment_id": 4,
+          "start_line": 6,
+          "end_line": 15,
+          "start_char": 4423,
+          "end_char": 4651
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'StockTracker' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/inventory.py",
+      "primary_file": "./samples/recipe_planner/inventory.py",
+      "anchor": {
+        "file": "recipe_planner/inventory.py",
+        "segment_id": 4,
+        "start_line": 17,
+        "end_line": 26,
+        "start_char": 4653,
+        "end_char": 4878
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/inventory.py",
+          "segment_id": 4,
+          "start_line": 17,
+          "end_line": 26,
+          "start_char": 4653,
+          "end_char": 4878
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_unused_cleanup' in ./samples/recipe_planner/maintenance.py",
+      "primary_file": "./samples/recipe_planner/maintenance.py",
+      "anchor": {
+        "file": "recipe_planner/maintenance.py",
+        "segment_id": 5,
+        "start_line": 4,
+        "end_line": 7,
+        "start_char": 5131,
+        "end_char": 5212
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/maintenance.py",
+          "segment_id": 5,
+          "start_line": 4,
+          "end_line": 7,
+          "start_char": 5131,
+          "end_char": 5212
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_unused_probe' in ./samples/recipe_planner/maintenance.py",
+      "primary_file": "./samples/recipe_planner/maintenance.py",
+      "anchor": {
+        "file": "recipe_planner/maintenance.py",
+        "segment_id": 5,
+        "start_line": 9,
+        "end_line": 14,
+        "start_char": 5214,
+        "end_char": 5326
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/maintenance.py",
+          "segment_id": 5,
+          "start_line": 9,
+          "end_line": 14,
+          "start_char": 5214,
+          "end_char": 5326
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_unused_rebuild' in ./samples/recipe_planner/maintenance.py",
+      "primary_file": "./samples/recipe_planner/maintenance.py",
+      "anchor": {
+        "file": "recipe_planner/maintenance.py",
+        "segment_id": 5,
+        "start_line": 16,
+        "end_line": 18,
+        "start_char": 5328,
+        "end_char": 5381
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/maintenance.py",
+          "segment_id": 5,
+          "start_line": 16,
+          "end_line": 18,
+          "start_char": 5328,
+          "end_char": 5381
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Temporary Field",
+      "severity": "low",
+      "description": "Potentially unused fields amount, self, name in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 31,
+        "end_line": 38,
+        "start_char": 6106,
+        "end_char": 6275
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 31,
+          "end_line": 38,
+          "start_char": 6106,
+          "end_char": 6275
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Ingredient' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 4,
+        "end_line": 11,
+        "start_char": 5574,
+        "end_char": 5740
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 4,
+          "end_line": 11,
+          "start_char": 5574,
+          "end_char": 5740
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Recipe' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 13,
+        "end_line": 20,
+        "start_char": 5742,
+        "end_char": 5927
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 13,
+          "end_line": 20,
+          "start_char": 5742,
+          "end_char": 5927
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Meal' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 22,
+        "end_line": 29,
+        "start_char": 5929,
+        "end_char": 6104
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 22,
+          "end_line": 29,
+          "start_char": 5929,
+          "end_char": 6104
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'PantryItem' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 31,
+        "end_line": 38,
+        "start_char": 6106,
+        "end_char": 6275
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 31,
+          "end_line": 38,
+          "start_char": 6106,
+          "end_char": 6275
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Report' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/models.py",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 40,
+        "end_line": 49,
+        "start_char": 6277,
+        "end_char": 6460
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 40,
+          "end_line": 49,
+          "start_char": 6277,
+          "end_char": 6460
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'PlanBoard' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/planner.py",
+      "primary_file": "./samples/recipe_planner/planner.py",
+      "anchor": {
+        "file": "recipe_planner/planner.py",
+        "segment_id": 7,
+        "start_line": 7,
+        "end_line": 17,
+        "start_char": 6623,
+        "end_char": 6861
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 7,
+          "end_line": 17,
+          "start_char": 6623,
+          "end_char": 6861
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'PlanEngine' has only 1 non-trivial methods with 5 total lines in ./samples/recipe_planner/planner.py",
+      "primary_file": "./samples/recipe_planner/planner.py",
+      "anchor": {
+        "file": "recipe_planner/planner.py",
+        "segment_id": 7,
+        "start_line": 19,
+        "end_line": 29,
+        "start_char": 6863,
+        "end_char": 7137
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 19,
+          "end_line": 29,
+          "start_char": 6863,
+          "end_char": 7137
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Slot' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/planner.py",
+      "primary_file": "./samples/recipe_planner/planner.py",
+      "anchor": {
+        "file": "recipe_planner/planner.py",
+        "segment_id": 7,
+        "start_line": 31,
+        "end_line": 38,
+        "start_char": 7139,
+        "end_char": 7319
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 31,
+          "end_line": 38,
+          "start_char": 7139,
+          "end_char": 7319
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'StepIndex' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/planner.py",
+      "primary_file": "./samples/recipe_planner/planner.py",
+      "anchor": {
+        "file": "recipe_planner/planner.py",
+        "segment_id": 7,
+        "start_line": 40,
+        "end_line": 49,
+        "start_char": 7321,
+        "end_char": 7530
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 40,
+          "end_line": 49,
+          "start_char": 7321,
+          "end_char": 7530
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'RecipeBook' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
+      "primary_file": "./samples/recipe_planner/recipes.py",
+      "anchor": {
+        "file": "recipe_planner/recipes.py",
+        "segment_id": 8,
+        "start_line": 4,
+        "end_line": 18,
+        "start_char": 7608,
+        "end_char": 7914
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 4,
+          "end_line": 18,
+          "start_char": 7608,
+          "end_char": 7914
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'PortionScaler' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
+      "primary_file": "./samples/recipe_planner/recipes.py",
+      "anchor": {
+        "file": "recipe_planner/recipes.py",
+        "segment_id": 8,
+        "start_line": 20,
+        "end_line": 26,
+        "start_char": 7916,
+        "end_char": 8091
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 20,
+          "end_line": 26,
+          "start_char": 7916,
+          "end_char": 8091
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Metric' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
+      "primary_file": "./samples/recipe_planner/recipes.py",
+      "anchor": {
+        "file": "recipe_planner/recipes.py",
+        "segment_id": 8,
+        "start_line": 28,
+        "end_line": 35,
+        "start_char": 8093,
+        "end_char": 8264
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/recipes.py",
+          "segment_id": 8,
+          "start_line": 28,
+          "end_line": 35,
+          "start_char": 8093,
+          "end_char": 8264
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'SlotAllocator' has only 1 non-trivial methods with 3 total lines in ./samples/recipe_planner/schedule.py",
+      "primary_file": "./samples/recipe_planner/schedule.py",
+      "anchor": {
+        "file": "recipe_planner/schedule.py",
+        "segment_id": 9,
+        "start_line": 7,
+        "end_line": 15,
+        "start_char": 8390,
+        "end_char": 8575
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/schedule.py",
+          "segment_id": 9,
+          "start_line": 7,
+          "end_line": 15,
+          "start_char": 8390,
+          "end_char": 8575
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'adapters' is isolated from other modules",
+      "primary_file": "./samples/recipe_planner/adapters.py",
+      "anchor": {
+        "file": "recipe_planner/adapters.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 40,
+        "end_char": 517
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/adapters.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 40,
+          "end_char": 517
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'batch_ops' is isolated from other modules",
+      "primary_file": "./samples/recipe_planner/batch_ops.py",
+      "anchor": {
+        "file": "recipe_planner/batch_ops.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 152,
+        "start_char": 1051,
+        "end_char": 3780
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/batch_ops.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 152,
+          "start_char": 1051,
+          "end_char": 3780
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'maintenance' is isolated from other modules",
+      "primary_file": "./samples/recipe_planner/maintenance.py",
+      "anchor": {
+        "file": "recipe_planner/maintenance.py",
+        "segment_id": 5,
+        "start_line": 1,
+        "end_line": 25,
+        "start_char": 5091,
+        "end_char": 5492
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/maintenance.py",
+          "segment_id": 5,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 5091,
+          "end_char": 5492
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'models' is isolated from other modules",
+      "primary_file": "./samples/recipe_planner/models.py",
+      "anchor": {
+        "file": "recipe_planner/models.py",
+        "segment_id": 6,
+        "start_line": 1,
+        "end_line": 49,
+        "start_char": 5531,
+        "end_char": 6460
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/models.py",
+          "segment_id": 6,
+          "start_line": 1,
+          "end_line": 49,
+          "start_char": 5531,
+          "end_char": 6460
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'transformers' is isolated from other modules",
+      "primary_file": "./samples/recipe_planner/transformers.py",
+      "anchor": {
+        "file": "recipe_planner/transformers.py",
+        "segment_id": 10,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 8890,
+        "end_char": 9372
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "recipe_planner/transformers.py",
+          "segment_id": 10,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 8890,
+          "end_char": 9372
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "category": "Architectural",
+      "smell_name": "Cyclic Dependency",
+      "severity": "high",
+      "description": "Strong cyclic dependency detected: planner -> schedule -> inventory -> planner\nCycle strength: 3 mutual dependencies",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 6554,
+          "end_char": 6590
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/schedule.py",
+          "segment_id": 9,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 8346,
+          "end_char": 8363
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/inventory.py",
+          "segment_id": 4,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 4406,
+          "end_char": 4421
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "category": "Architectural",
+      "smell_name": "Cyclic Dependency",
+      "severity": "medium",
+      "description": "Strong cyclic dependency detected: planner -> schedule -> planner\nCycle strength: 3 mutual dependencies",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 6554,
+          "end_char": 6590
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/schedule.py",
+          "segment_id": 9,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 8363,
+          "end_char": 8388
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "LINES",
+      "RELATED_INSTANCE_LINES"
+    ],
+    "num_instances": 30,
+    "dropped_instances_without_resolved_spans": 1
+  }
+}

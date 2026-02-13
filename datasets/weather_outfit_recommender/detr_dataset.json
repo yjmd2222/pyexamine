@@ -1,0 +1,672 @@
+{
+  "sample_id": "weather_outfit_recommender",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\weather_outfit_recommender",
+  "text": "[file]\npath=weather_outfit_recommender/advisor.py\n\nclass WeatherProfile:\n    def __init__(self, temp: float, wind: float, condition: str):\n        self.temp = temp\n        self.wind = wind\n        self.condition = condition\n        self.is_precip = condition in {\"rain\", \"snow\"}\n\n\nclass OutfitAdvisor:\n    def recommend(self, profile: WeatherProfile):\n        score = profile.temp - (profile.wind * 0.1)\n        if profile.is_precip:\n            score -= 3\n        if profile.condition == \"hail\":\n            score -= 6\n        if profile.temp < 0:\n            return [\"parka\", \"boots\", \"gloves\"]\n        if score < 5:\n            return [\"coat\", \"scarf\"]\n        return [\"jacket\"]\n\n[file]\npath=weather_outfit_recommender/alerts.py\n\n\ndef format_forecast(day: str, summary: str) -> str:\n    return f\"{day}: {summary}\"\n\n[file]\npath=weather_outfit_recommender/analyzer.py\n\nclass ForecastAnalyzer:\n    def score(self, temp: float, wind: float, humidity: float, precip: float, uv: float, cloud: float):\n        score = 0\n        if temp < 0 and wind > 15 and humidity > 70:\n            score -= 2\n        if temp < 5 and wind > 10 and precip > 0.2:\n            score -= 2\n        if temp < 10 and humidity > 80 and cloud > 0.6:\n            score -= 1\n        if temp > 30 and uv > 7 and humidity > 50:\n            score += 2\n        if temp > 25 and wind < 5 and cloud < 0.2:\n            score += 1\n        if temp > 20 and precip == 0 and uv > 6:\n            score += 1\n        return score\n\n[file]\npath=weather_outfit_recommender/exports.py\n\n\ndef format_forecast(day: str, summary: str) -> str:\n    return f\"{day},{summary}\"\n\n[file]\npath=weather_outfit_recommender/models.py\n\nclass WeatherSnapshot:\n    def __init__(self, temp_c: float, wind_kph: float, condition: str):\n        self._temp_c = temp_c\n        self._wind_kph = wind_kph\n        self._condition = condition\n\n    def get_temp_c(self):\n        return self._temp_c\n\n    def set_temp_c(self, temp_c: float):\n        self._temp_c = temp_c\n\n    def get_wind_kph(self):\n        return self._wind_kph\n\n    def set_wind_kph(self, wind_kph: float):\n        self._wind_kph = wind_kph\n\n    def get_condition(self):\n        return self._condition\n\n    def set_condition(self, condition: str):\n        self._condition = condition\n\n\nclass UnitLookup:\n    def __init__(self, symbol: str):\n        self.symbol = symbol\n\n    def to_label(self):\n        cleaned = self.symbol.strip().lower()\n        if cleaned in {\"c\", \"celsius\"}:\n            return \"celsius\"\n        if cleaned in {\"f\", \"fahrenheit\"}:\n            return \"fahrenheit\"\n        return cleaned\n\n[file]\npath=weather_outfit_recommender/ui.py\n\n\ndef format_forecast(day: str, summary: str) -> str:\n    banner = f\"{day} | {summary}\"\n    return banner\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "weather_outfit_recommender/advisor.py",
+      "content_start_char": 51,
+      "content_end_char": 682,
+      "num_lines": 21
+    },
+    {
+      "segment_id": 1,
+      "path": "weather_outfit_recommender/alerts.py",
+      "content_start_char": 733,
+      "content_end_char": 817,
+      "num_lines": 4
+    },
+    {
+      "segment_id": 2,
+      "path": "weather_outfit_recommender/analyzer.py",
+      "content_start_char": 870,
+      "content_end_char": 1487,
+      "num_lines": 17
+    },
+    {
+      "segment_id": 3,
+      "path": "weather_outfit_recommender/exports.py",
+      "content_start_char": 1539,
+      "content_end_char": 1622,
+      "num_lines": 4
+    },
+    {
+      "segment_id": 4,
+      "path": "weather_outfit_recommender/models.py",
+      "content_start_char": 1673,
+      "content_end_char": 2601,
+      "num_lines": 37
+    },
+    {
+      "segment_id": 5,
+      "path": "weather_outfit_recommender/ui.py",
+      "content_start_char": 2648,
+      "content_end_char": 2753,
+      "num_lines": 5
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Cyclomatic Complexity",
+      "severity": "High",
+      "description": "Method 'score' has cyclomatic complexity of 19",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 17,
+        "start_char": 894,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 17,
+          "start_char": 894,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "Too Many Branches",
+      "severity": "Medium",
+      "description": "Method 'score' has 6 branches with max nesting of 6",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 17,
+        "start_char": 894,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 17,
+          "start_char": 894,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Code",
+      "smell_name": "Temporary Field",
+      "severity": "low",
+      "description": "Potentially unused fields temp, condition, wind, self in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+      "primary_file": "./samples/weather_outfit_recommender/advisor.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/advisor.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 7,
+        "start_char": 51,
+        "end_char": 279
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 51,
+          "end_char": 279
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'WeatherProfile' has only 0 non-trivial methods with 0 total lines in ./samples/weather_outfit_recommender/advisor.py",
+      "primary_file": "./samples/weather_outfit_recommender/advisor.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/advisor.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 7,
+        "start_char": 51,
+        "end_char": 279
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 51,
+          "end_char": 279
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'OutfitAdvisor' has only 1 non-trivial methods with 10 total lines in ./samples/weather_outfit_recommender/advisor.py",
+      "primary_file": "./samples/weather_outfit_recommender/advisor.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/advisor.py",
+        "segment_id": 0,
+        "start_line": 9,
+        "end_line": 21,
+        "start_char": 281,
+        "end_char": 682
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 9,
+          "end_line": 21,
+          "start_char": 281,
+          "end_char": 682
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Feature Envy",
+      "severity": "medium",
+      "description": "Method 'recommend' makes 5 calls to 'profile' at lines 11-12, 11-12, 12-13, 14-15, 16-17 but only 0 local calls at lines  in ./samples/weather_outfit_recommender/advisor.py",
+      "primary_file": "./samples/weather_outfit_recommender/advisor.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/advisor.py",
+        "segment_id": 0,
+        "start_line": 10,
+        "end_line": 21,
+        "start_char": 302,
+        "end_char": 682
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 10,
+          "end_line": 21,
+          "start_char": 302,
+          "end_char": 682
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 352,
+          "end_char": 404
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 352,
+          "end_char": 404
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 12,
+          "end_line": 13,
+          "start_char": 404,
+          "end_char": 434
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 14,
+          "end_line": 15,
+          "start_char": 457,
+          "end_char": 497
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 520,
+          "end_char": 549
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Primitive Obsession",
+      "severity": "medium",
+      "description": "'score' has 6 primitive parameters in ./samples/weather_outfit_recommender/analyzer.py",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 17,
+        "start_char": 894,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 17,
+          "start_char": 894,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Long Parameter List",
+      "severity": "medium",
+      "description": "'score' has 6 parameters in ./samples/weather_outfit_recommender/analyzer.py",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 17,
+        "start_char": 894,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 17,
+          "start_char": 894,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'ForecastAnalyzer' has only 1 non-trivial methods with 14 total lines in ./samples/weather_outfit_recommender/analyzer.py",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 17,
+        "start_char": 870,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 17,
+          "start_char": 870,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Temporary Field",
+      "severity": "low",
+      "description": "Potentially unused fields condition, temp_c, wind_kph, self in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+      "primary_file": "./samples/weather_outfit_recommender/models.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/models.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 1673,
+        "end_char": 2277
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 1673,
+          "end_char": 2277
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Data Class",
+      "severity": "medium",
+      "description": "Class 'WeatherSnapshot' has 3 getters and 3 setters with no other methods in ./samples/weather_outfit_recommender/models.py",
+      "primary_file": "./samples/weather_outfit_recommender/models.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/models.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 1673,
+        "end_char": 2277
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 1673,
+          "end_char": 2277
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 7,
+          "end_line": 9,
+          "start_char": 1869,
+          "end_char": 1923
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 10,
+          "end_line": 12,
+          "start_char": 1924,
+          "end_char": 1995
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 13,
+          "end_line": 15,
+          "start_char": 1996,
+          "end_char": 2054
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 16,
+          "end_line": 18,
+          "start_char": 2055,
+          "end_char": 2134
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 19,
+          "end_line": 21,
+          "start_char": 2135,
+          "end_char": 2195
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 22,
+          "end_line": 24,
+          "start_char": 2196,
+          "end_char": 2277
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'WeatherSnapshot' has only 0 non-trivial methods with 0 total lines in ./samples/weather_outfit_recommender/models.py",
+      "primary_file": "./samples/weather_outfit_recommender/models.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/models.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 1673,
+        "end_char": 2277
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 1673,
+          "end_char": 2277
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'UnitLookup' has only 1 non-trivial methods with 6 total lines in ./samples/weather_outfit_recommender/models.py",
+      "primary_file": "./samples/weather_outfit_recommender/models.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/models.py",
+        "segment_id": 4,
+        "start_line": 26,
+        "end_line": 37,
+        "start_char": 2279,
+        "end_char": 2601
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 26,
+          "end_line": 37,
+          "start_char": 2279,
+          "end_char": 2601
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'advisor' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/advisor.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/advisor.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 21,
+        "start_char": 51,
+        "end_char": 682
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/advisor.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 21,
+          "start_char": 51,
+          "end_char": 682
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'alerts' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/alerts.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/alerts.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 733,
+        "end_char": 817
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/alerts.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 733,
+          "end_char": 817
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'analyzer' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/analyzer.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/analyzer.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 17,
+        "start_char": 870,
+        "end_char": 1487
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/analyzer.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 17,
+          "start_char": 870,
+          "end_char": 1487
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'exports' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/exports.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/exports.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 1539,
+        "end_char": 1622
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/exports.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 1539,
+          "end_char": 1622
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'models' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/models.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/models.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 37,
+        "start_char": 1673,
+        "end_char": 2601
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/models.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 37,
+          "start_char": 1673,
+          "end_char": 2601
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'ui' is isolated from other modules",
+      "primary_file": "./samples/weather_outfit_recommender/ui.py",
+      "anchor": {
+        "file": "weather_outfit_recommender/ui.py",
+        "segment_id": 5,
+        "start_line": 1,
+        "end_line": 5,
+        "start_char": 2648,
+        "end_char": 2753
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "weather_outfit_recommender/ui.py",
+          "segment_id": 5,
+          "start_line": 1,
+          "end_line": 5,
+          "start_char": 2648,
+          "end_char": 2753
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES"
+    ],
+    "num_instances": 19,
+    "dropped_instances_without_resolved_spans": 1
+  }
+}

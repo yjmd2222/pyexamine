@@ -1,0 +1,1151 @@
+{
+  "sample_id": "chatbot_rule_to_ml",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\chatbot_rule_to_ml",
+  "text": "[file]\npath=chatbot_rule_to_ml/bridge.py\n\nimport graph\nimport shared\n\n\nclass IntentRoute:\n    def __init__(self, name):\n        self.name = name\n        self.graph_seed = graph.GraphBuilder(2).seed\n\n    def score(self):\n        return 0.0\n\n\nclass IntentHandler:\n    def __init__(self, name):\n        self.name = name\n\n    def score(self):\n        return 0.0\n\n\nclass IntentPlanner:\n    def __init__(self, name):\n        self.name = name\n\n    def score(self):\n        return 0.0\n\n[file]\npath=chatbot_rule_to_ml/graph.py\n\nimport os\nimport sys\nimport json\nimport math\nimport re\nimport collections\nimport datetime\nimport shared\nimport feature_a\nimport feature_b\nimport feature_c\nimport feature_d\nimport feature_e\nimport feature_f\nimport feature_g\nimport feature_h\nimport feature_i\nimport feature_j\nimport feature_k\nimport feature_l\nimport feature_m\nimport feature_n\nimport feature_o\nimport feature_p\nimport feature_q\nimport feature_r\nimport feature_s\nimport feature_t\n\nclass GraphBuilder:\n    def __init__(self, seed):\n        self.seed = seed\n\n[file]\npath=chatbot_rule_to_ml/helper_01.py\n\nimport shared\n\ndef use_shared_01():\n    return shared.shared_score({\"idx\": 1})\n\n[file]\npath=chatbot_rule_to_ml/helper_02.py\n\nimport shared\n\ndef use_shared_02():\n    return shared.shared_score({\"idx\": 2})\n\n[file]\npath=chatbot_rule_to_ml/helper_03.py\n\nimport shared\n\ndef use_shared_03():\n    return shared.shared_score({\"idx\": 3})\n\n[file]\npath=chatbot_rule_to_ml/helper_04.py\n\nimport shared\n\ndef use_shared_04():\n    return shared.shared_score({\"idx\": 4})\n\n[file]\npath=chatbot_rule_to_ml/helper_05.py\n\nimport shared\n\ndef use_shared_05():\n    return shared.shared_score({\"idx\": 5})\n\n[file]\npath=chatbot_rule_to_ml/helper_06.py\n\nimport shared\n\ndef use_shared_06():\n    return shared.shared_score({\"idx\": 6})\n\n[file]\npath=chatbot_rule_to_ml/helper_07.py\n\nimport shared\n\ndef use_shared_07():\n    return shared.shared_score({\"idx\": 7})\n\n[file]\npath=chatbot_rule_to_ml/helper_08.py\n\nimport shared\n\ndef use_shared_08():\n    return shared.shared_score({\"idx\": 8})\n\n[file]\npath=chatbot_rule_to_ml/helper_09.py\n\nimport shared\n\ndef use_shared_09():\n    return shared.shared_score({\"idx\": 9})\n\n[file]\npath=chatbot_rule_to_ml/helper_10.py\n\nimport shared\n\ndef use_shared_10():\n    return shared.shared_score({\"idx\": 10})\n\n[file]\npath=chatbot_rule_to_ml/helper_11.py\n\nimport shared\n\ndef use_shared_11():\n    return shared.shared_score({\"idx\": 11})\n\n[file]\npath=chatbot_rule_to_ml/helper_12.py\n\nimport shared\n\ndef use_shared_12():\n    return shared.shared_score({\"idx\": 12})\n\n[file]\npath=chatbot_rule_to_ml/linker.py\n\nimport graph\nimport shared\n\n\nclass IntentRoute:\n    def __init__(self, name):\n        self.name = name\n\n    def score(self):\n        return 0.0\n\n\nclass IntentHandler:\n    def __init__(self, name):\n        self.name = name\n        self.graph_seed = graph.GraphBuilder(3).seed\n\n    def score(self):\n        return 0.0\n\n\nclass IntentPlanner:\n    def __init__(self, name):\n        self.name = name\n\n    def score(self):\n        return 0.0\n\n[file]\npath=chatbot_rule_to_ml/runner.py\n\nimport json\nimport graph\nimport shared\n\n\ndef run_model(samples):\n    total = 0\n    total += graph.GraphBuilder(0).seed\n    for sample in samples:\n        total += len(json.dumps(sample))\n    return total\n\n[file]\npath=chatbot_rule_to_ml/shared.py\n\nimport math\nimport json\n\n\ndef shared_score(payload):\n    return math.sqrt(len(json.dumps(payload)))\n\n[file]\npath=chatbot_rule_to_ml/trainer.py\n\nimport graph\nimport math\nimport shared\n\n\ndef train_model(samples):\n    total = 0\n    total += graph.GraphBuilder(1).seed\n    for sample in samples:\n        total += math.sqrt(len(sample))\n    return total\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "chatbot_rule_to_ml/bridge.py",
+      "content_start_char": 42,
+      "content_end_char": 477,
+      "num_lines": 28
+    },
+    {
+      "segment_id": 1,
+      "path": "chatbot_rule_to_ml/graph.py",
+      "content_start_char": 519,
+      "content_end_char": 1039,
+      "num_lines": 33
+    },
+    {
+      "segment_id": 2,
+      "path": "chatbot_rule_to_ml/helper_01.py",
+      "content_start_char": 1085,
+      "content_end_char": 1164,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 3,
+      "path": "chatbot_rule_to_ml/helper_02.py",
+      "content_start_char": 1210,
+      "content_end_char": 1289,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 4,
+      "path": "chatbot_rule_to_ml/helper_03.py",
+      "content_start_char": 1335,
+      "content_end_char": 1414,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 5,
+      "path": "chatbot_rule_to_ml/helper_04.py",
+      "content_start_char": 1460,
+      "content_end_char": 1539,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 6,
+      "path": "chatbot_rule_to_ml/helper_05.py",
+      "content_start_char": 1585,
+      "content_end_char": 1664,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 7,
+      "path": "chatbot_rule_to_ml/helper_06.py",
+      "content_start_char": 1710,
+      "content_end_char": 1789,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 8,
+      "path": "chatbot_rule_to_ml/helper_07.py",
+      "content_start_char": 1835,
+      "content_end_char": 1914,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 9,
+      "path": "chatbot_rule_to_ml/helper_08.py",
+      "content_start_char": 1960,
+      "content_end_char": 2039,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 10,
+      "path": "chatbot_rule_to_ml/helper_09.py",
+      "content_start_char": 2085,
+      "content_end_char": 2164,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 11,
+      "path": "chatbot_rule_to_ml/helper_10.py",
+      "content_start_char": 2210,
+      "content_end_char": 2290,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 12,
+      "path": "chatbot_rule_to_ml/helper_11.py",
+      "content_start_char": 2336,
+      "content_end_char": 2416,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 13,
+      "path": "chatbot_rule_to_ml/helper_12.py",
+      "content_start_char": 2462,
+      "content_end_char": 2542,
+      "num_lines": 5
+    },
+    {
+      "segment_id": 14,
+      "path": "chatbot_rule_to_ml/linker.py",
+      "content_start_char": 2585,
+      "content_end_char": 3020,
+      "num_lines": 28
+    },
+    {
+      "segment_id": 15,
+      "path": "chatbot_rule_to_ml/runner.py",
+      "content_start_char": 3063,
+      "content_end_char": 3267,
+      "num_lines": 12
+    },
+    {
+      "segment_id": 16,
+      "path": "chatbot_rule_to_ml/shared.py",
+      "content_start_char": 3310,
+      "content_end_char": 3410,
+      "num_lines": 7
+    },
+    {
+      "segment_id": 17,
+      "path": "chatbot_rule_to_ml/trainer.py",
+      "content_start_char": 3454,
+      "content_end_char": 3659,
+      "num_lines": 12
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Fan-out",
+      "severity": "High",
+      "description": "Module 'graph' has 23 significant outgoing dependencies\nOutgoing dependency instances: math(4-5), re(5-6), shared(8-9), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29)",
+      "primary_file": "./samples/chatbot_rule_to_ml/graph.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 552,
+          "end_char": 564
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 564,
+          "end_char": 574
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 8,
+          "end_line": 9,
+          "start_char": 609,
+          "end_char": 623
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 10,
+          "start_char": 623,
+          "end_char": 640
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 10,
+          "end_line": 11,
+          "start_char": 640,
+          "end_char": 657
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 657,
+          "end_char": 674
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 12,
+          "end_line": 13,
+          "start_char": 674,
+          "end_char": 691
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 13,
+          "end_line": 14,
+          "start_char": 691,
+          "end_char": 708
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 15,
+          "start_char": 708,
+          "end_char": 725
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 15,
+          "end_line": 16,
+          "start_char": 725,
+          "end_char": 742
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 742,
+          "end_char": 759
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 759,
+          "end_char": 776
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 776,
+          "end_char": 793
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 793,
+          "end_char": 810
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 810,
+          "end_char": 827
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 827,
+          "end_char": 844
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 844,
+          "end_char": 861
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 861,
+          "end_char": 878
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 878,
+          "end_char": 895
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 895,
+          "end_char": 912
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 26,
+          "end_line": 27,
+          "start_char": 912,
+          "end_char": 929
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 27,
+          "end_line": 28,
+          "start_char": 929,
+          "end_char": 946
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 28,
+          "end_line": 29,
+          "start_char": 946,
+          "end_char": 963
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentRoute' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/bridge.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/bridge.py",
+        "segment_id": 0,
+        "start_line": 5,
+        "end_line": 12,
+        "start_char": 71,
+        "end_char": 239
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 5,
+          "end_line": 12,
+          "start_char": 71,
+          "end_char": 239
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentHandler' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/bridge.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/bridge.py",
+        "segment_id": 0,
+        "start_line": 14,
+        "end_line": 20,
+        "start_char": 241,
+        "end_char": 358
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 14,
+          "end_line": 20,
+          "start_char": 241,
+          "end_char": 358
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentPlanner' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/bridge.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/bridge.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/bridge.py",
+        "segment_id": 0,
+        "start_line": 22,
+        "end_line": 28,
+        "start_char": 360,
+        "end_char": 477
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 22,
+          "end_line": 28,
+          "start_char": 360,
+          "end_char": 477
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'GraphBuilder' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/graph.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/graph.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/graph.py",
+        "segment_id": 1,
+        "start_line": 30,
+        "end_line": 33,
+        "start_char": 964,
+        "end_char": 1039
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 30,
+          "end_line": 33,
+          "start_char": 964,
+          "end_char": 1039
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentRoute' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/linker.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/linker.py",
+        "segment_id": 14,
+        "start_line": 5,
+        "end_line": 11,
+        "start_char": 2614,
+        "end_char": 2729
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 5,
+          "end_line": 11,
+          "start_char": 2614,
+          "end_char": 2729
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentHandler' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/linker.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/linker.py",
+        "segment_id": 14,
+        "start_line": 13,
+        "end_line": 20,
+        "start_char": 2731,
+        "end_char": 2901
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 13,
+          "end_line": 20,
+          "start_char": 2731,
+          "end_char": 2901
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'IntentPlanner' has only 0 non-trivial methods with 0 total lines in ./samples/chatbot_rule_to_ml/linker.py",
+      "primary_file": "./samples/chatbot_rule_to_ml/linker.py",
+      "anchor": {
+        "file": "chatbot_rule_to_ml/linker.py",
+        "segment_id": 14,
+        "start_line": 22,
+        "end_line": 28,
+        "start_char": 2903,
+        "end_char": 3020
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 22,
+          "end_line": 28,
+          "start_char": 2903,
+          "end_char": 3020
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Architectural",
+      "smell_name": "Hub-like Dependency",
+      "severity": "high",
+      "description": "Module 'graph' is a potential hub with 32 connections (in: 4, out: 28, external: 0)\nOutgoing dependency instances: collections(6-7), datetime(7-8), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29), json(3-4), math(4-5), os(1-2), re(5-6), shared(8-9), sys(2-3)\nIncoming dependency instances: bridge(1-2), linker(1-2), runner(2-3), trainer(1-2)",
+      "primary_file": "./samples/chatbot_rule_to_ml/graph.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 519,
+          "end_char": 529
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 529,
+          "end_char": 540
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 540,
+          "end_char": 552
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 552,
+          "end_char": 564
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 564,
+          "end_char": 574
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 574,
+          "end_char": 593
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 7,
+          "end_line": 8,
+          "start_char": 593,
+          "end_char": 609
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 8,
+          "end_line": 9,
+          "start_char": 609,
+          "end_char": 623
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 10,
+          "start_char": 623,
+          "end_char": 640
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 10,
+          "end_line": 11,
+          "start_char": 640,
+          "end_char": 657
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 657,
+          "end_char": 674
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 12,
+          "end_line": 13,
+          "start_char": 674,
+          "end_char": 691
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 13,
+          "end_line": 14,
+          "start_char": 691,
+          "end_char": 708
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 15,
+          "start_char": 708,
+          "end_char": 725
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 15,
+          "end_line": 16,
+          "start_char": 725,
+          "end_char": 742
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 742,
+          "end_char": 759
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 759,
+          "end_char": 776
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 776,
+          "end_char": 793
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 793,
+          "end_char": 810
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 810,
+          "end_char": 827
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 827,
+          "end_char": 844
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 844,
+          "end_char": 861
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 861,
+          "end_char": 878
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 878,
+          "end_char": 895
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 895,
+          "end_char": 912
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 26,
+          "end_line": 27,
+          "start_char": 912,
+          "end_char": 929
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 27,
+          "end_line": 28,
+          "start_char": 929,
+          "end_char": 946
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 28,
+          "end_line": 29,
+          "start_char": 946,
+          "end_char": 963
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 42,
+          "end_char": 55
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2585,
+          "end_char": 2598
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/runner.py",
+          "segment_id": 15,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 3075,
+          "end_char": 3088
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/trainer.py",
+          "segment_id": 17,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 3454,
+          "end_char": 3467
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Architectural",
+      "smell_name": "Unstable Dependency",
+      "severity": "medium",
+      "description": "Module 'graph' has high instability (0.88) with 28 outgoing and 4 incoming dependencies\nOutgoing dependency instances: collections(6-7), datetime(7-8), feature_a(9-10), feature_b(10-11), feature_c(11-12), feature_d(12-13), feature_e(13-14), feature_f(14-15), feature_g(15-16), feature_h(16-17), feature_i(17-18), feature_j(18-19), feature_k(19-20), feature_l(20-21), feature_m(21-22), feature_n(22-23), feature_o(23-24), feature_p(24-25), feature_q(25-26), feature_r(26-27), feature_s(27-28), feature_t(28-29), json(3-4), math(4-5), os(1-2), re(5-6), shared(8-9), sys(2-3)\nIncoming dependency instances: bridge(1-2), linker(1-2), runner(2-3), trainer(1-2)",
+      "primary_file": "./samples/chatbot_rule_to_ml/graph.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 519,
+          "end_char": 529
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 529,
+          "end_char": 540
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 540,
+          "end_char": 552
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 552,
+          "end_char": 564
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 564,
+          "end_char": 574
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 574,
+          "end_char": 593
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 7,
+          "end_line": 8,
+          "start_char": 593,
+          "end_char": 609
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 8,
+          "end_line": 9,
+          "start_char": 609,
+          "end_char": 623
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 10,
+          "start_char": 623,
+          "end_char": 640
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 10,
+          "end_line": 11,
+          "start_char": 640,
+          "end_char": 657
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 11,
+          "end_line": 12,
+          "start_char": 657,
+          "end_char": 674
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 12,
+          "end_line": 13,
+          "start_char": 674,
+          "end_char": 691
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 13,
+          "end_line": 14,
+          "start_char": 691,
+          "end_char": 708
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 15,
+          "start_char": 708,
+          "end_char": 725
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 15,
+          "end_line": 16,
+          "start_char": 725,
+          "end_char": 742
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 16,
+          "end_line": 17,
+          "start_char": 742,
+          "end_char": 759
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 17,
+          "end_line": 18,
+          "start_char": 759,
+          "end_char": 776
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 18,
+          "end_line": 19,
+          "start_char": 776,
+          "end_char": 793
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 20,
+          "start_char": 793,
+          "end_char": 810
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 20,
+          "end_line": 21,
+          "start_char": 810,
+          "end_char": 827
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 21,
+          "end_line": 22,
+          "start_char": 827,
+          "end_char": 844
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 22,
+          "end_line": 23,
+          "start_char": 844,
+          "end_char": 861
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 23,
+          "end_line": 24,
+          "start_char": 861,
+          "end_char": 878
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 25,
+          "start_char": 878,
+          "end_char": 895
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 25,
+          "end_line": 26,
+          "start_char": 895,
+          "end_char": 912
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 26,
+          "end_line": 27,
+          "start_char": 912,
+          "end_char": 929
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 27,
+          "end_line": 28,
+          "start_char": 929,
+          "end_char": 946
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 28,
+          "end_line": 29,
+          "start_char": 946,
+          "end_char": 963
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 42,
+          "end_char": 55
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2585,
+          "end_char": 2598
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/runner.py",
+          "segment_id": 15,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 3075,
+          "end_char": 3088
+        },
+        {
+          "role": "INCOMING_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/trainer.py",
+          "segment_id": 17,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 3454,
+          "end_char": 3467
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INCOMING_INSTANCE_LINES",
+      "INSTANCE_LINES",
+      "OUTGOING_INSTANCE_LINES"
+    ],
+    "num_instances": 10,
+    "dropped_instances_without_resolved_spans": 1
+  }
+}

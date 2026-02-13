@@ -1,0 +1,126 @@
+{
+  "sample_id": "simple_recommender",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\simple_recommender",
+  "text": "[file]\npath=simple_recommender/corpus.py\n\nDOCS = [\n    \"doc_001\",\n    \"doc_002\",\n    \"doc_003\",\n    \"doc_004\",\n    \"doc_005\",\n    \"doc_006\",\n    \"doc_007\",\n    \"doc_008\",\n    \"doc_009\",\n    \"doc_010\",\n    \"doc_011\",\n    \"doc_012\",\n    \"doc_013\",\n    \"doc_014\",\n    \"doc_015\",\n    \"doc_016\",\n    \"doc_017\",\n    \"doc_018\",\n    \"doc_019\",\n    \"doc_020\",\n    \"doc_021\",\n    \"doc_022\",\n    \"doc_023\",\n    \"doc_024\",\n    \"doc_025\",\n    \"doc_026\",\n    \"doc_027\",\n    \"doc_028\",\n    \"doc_029\",\n    \"doc_030\",\n    \"doc_031\",\n    \"doc_032\",\n    \"doc_033\",\n    \"doc_034\",\n    \"doc_035\",\n    \"doc_036\",\n    \"doc_037\",\n    \"doc_038\",\n    \"doc_039\",\n    \"doc_040\",\n    \"doc_041\",\n    \"doc_042\",\n    \"doc_043\",\n    \"doc_044\",\n    \"doc_045\",\n    \"doc_046\",\n    \"doc_047\",\n    \"doc_048\",\n    \"doc_049\",\n    \"doc_050\",\n    \"doc_051\",\n    \"doc_052\",\n    \"doc_053\",\n    \"doc_054\",\n    \"doc_055\",\n    \"doc_056\",\n    \"doc_057\",\n    \"doc_058\",\n    \"doc_059\",\n    \"doc_060\",\n    \"doc_061\",\n    \"doc_062\",\n    \"doc_063\",\n    \"doc_064\",\n    \"doc_065\",\n    \"doc_066\",\n    \"doc_067\",\n    \"doc_068\",\n    \"doc_069\",\n    \"doc_070\",\n    \"doc_071\",\n    \"doc_072\",\n    \"doc_073\",\n    \"doc_074\",\n    \"doc_075\",\n    \"doc_076\",\n    \"doc_077\",\n    \"doc_078\",\n    \"doc_079\",\n    \"doc_080\",\n    \"doc_081\",\n    \"doc_082\",\n    \"doc_083\",\n    \"doc_084\",\n    \"doc_085\",\n    \"doc_086\",\n    \"doc_087\",\n    \"doc_088\",\n    \"doc_089\",\n    \"doc_090\",\n    \"doc_091\",\n    \"doc_092\",\n    \"doc_093\",\n    \"doc_094\",\n    \"doc_095\",\n    \"doc_096\",\n    \"doc_097\",\n    \"doc_098\",\n    \"doc_099\",\n    \"doc_100\",\n    \"doc_101\",\n    \"doc_102\",\n    \"doc_103\",\n    \"doc_104\",\n    \"doc_105\",\n    \"doc_106\",\n    \"doc_107\",\n    \"doc_108\",\n    \"doc_109\",\n    \"doc_110\",\n    \"doc_111\",\n    \"doc_112\",\n    \"doc_113\",\n    \"doc_114\",\n    \"doc_115\",\n    \"doc_116\",\n    \"doc_117\",\n    \"doc_118\",\n    \"doc_119\",\n    \"doc_120\",\n    \"doc_121\",\n    \"doc_122\",\n    \"doc_123\",\n    \"doc_124\",\n    \"doc_125\",\n    \"doc_126\",\n    \"doc_127\",\n    \"doc_128\",\n    \"doc_129\",\n    \"doc_130\",\n    \"doc_131\",\n    \"doc_132\",\n    \"doc_133\",\n    \"doc_134\",\n    \"doc_135\",\n    \"doc_136\",\n    \"doc_137\",\n    \"doc_138\",\n    \"doc_139\",\n    \"doc_140\",\n    \"doc_141\",\n    \"doc_142\",\n    \"doc_143\",\n    \"doc_144\",\n    \"doc_145\",\n    \"doc_146\",\n    \"doc_147\",\n    \"doc_148\",\n    \"doc_149\",\n    \"doc_150\",\n    \"doc_151\",\n    \"doc_152\",\n    \"doc_153\",\n    \"doc_154\",\n    \"doc_155\",\n    \"doc_156\",\n    \"doc_157\",\n    \"doc_158\",\n    \"doc_159\",\n    \"doc_160\",\n    \"doc_161\",\n    \"doc_162\",\n    \"doc_163\",\n    \"doc_164\",\n    \"doc_165\",\n    \"doc_166\",\n    \"doc_167\",\n    \"doc_168\",\n    \"doc_169\",\n    \"doc_170\",\n    \"doc_171\",\n    \"doc_172\",\n    \"doc_173\",\n    \"doc_174\",\n    \"doc_175\",\n    \"doc_176\",\n    \"doc_177\",\n    \"doc_178\",\n    \"doc_179\",\n    \"doc_180\",\n    \"doc_181\",\n    \"doc_182\",\n    \"doc_183\",\n    \"doc_184\",\n    \"doc_185\",\n    \"doc_186\",\n    \"doc_187\",\n    \"doc_188\",\n    \"doc_189\",\n    \"doc_190\",\n    \"doc_191\",\n    \"doc_192\",\n    \"doc_193\",\n    \"doc_194\",\n    \"doc_195\",\n    \"doc_196\",\n    \"doc_197\",\n    \"doc_198\",\n    \"doc_199\",\n    \"doc_200\",\n    \"doc_201\",\n    \"doc_202\",\n    \"doc_203\",\n    \"doc_204\",\n    \"doc_205\",\n    \"doc_206\",\n    \"doc_207\",\n    \"doc_208\",\n    \"doc_209\",\n    \"doc_210\",\n    \"doc_211\",\n    \"doc_212\",\n    \"doc_213\",\n    \"doc_214\",\n    \"doc_215\",\n    \"doc_216\",\n    \"doc_217\",\n    \"doc_218\",\n    \"doc_219\",\n    \"doc_220\",\n    \"doc_221\",\n    \"doc_222\",\n    \"doc_223\",\n    \"doc_224\",\n    \"doc_225\",\n    \"doc_226\",\n    \"doc_227\",\n    \"doc_228\",\n    \"doc_229\",\n    \"doc_230\",\n    \"doc_231\",\n    \"doc_232\",\n    \"doc_233\",\n    \"doc_234\",\n    \"doc_235\",\n    \"doc_236\",\n    \"doc_237\",\n    \"doc_238\",\n    \"doc_239\",\n    \"doc_240\",\n    \"doc_241\",\n    \"doc_242\",\n    \"doc_243\",\n    \"doc_244\",\n    \"doc_245\",\n    \"doc_246\",\n    \"doc_247\",\n    \"doc_248\",\n    \"doc_249\",\n    \"doc_250\",\n    \"doc_251\",\n    \"doc_252\",\n    \"doc_253\",\n    \"doc_254\",\n    \"doc_255\",\n    \"doc_256\",\n    \"doc_257\",\n    \"doc_258\",\n    \"doc_259\",\n    \"doc_260\",\n    \"doc_261\",\n    \"doc_262\",\n    \"doc_263\",\n    \"doc_264\",\n    \"doc_265\",\n    \"doc_266\",\n    \"doc_267\",\n    \"doc_268\",\n    \"doc_269\",\n    \"doc_270\",\n]\n\n[file]\npath=simple_recommender/scoring.py\n\nclass SimilarityScorer:\n    def score_user(self, a, b, c, d, e):\n        total = 0\n        if a > b:\n            total += 1\n        if b > c:\n            total += 1\n        if c > d:\n            total += 1\n        if d > e:\n            total += 1\n        return total\n\n    def score_item(self, a, b, c, d, e):\n        total = 0\n        if a < b:\n            total += 1\n        if b < c:\n            total += 1\n        if c < d:\n            total += 1\n        if d < e:\n            total += 1\n        return total\n\n    def score_pair(self, a, b, c, d, e):\n        total = 0\n        if a == b:\n            total += 2\n        if b == c:\n            total += 2\n        if c == d:\n            total += 2\n        if d == e:\n            total += 2\n        return total\n\n    def score_context(self, a, b, c, d, e):\n        total = 0\n        if a >= b:\n            total += 1\n        if b >= c:\n            total += 1\n        if c >= d:\n            total += 1\n        if d >= e:\n            total += 1\n        return total\n\n    def score_window(self, a, b, c, d, e):\n        total = 0\n        if a + b > c:\n            total += 1\n        if b + c > d:\n            total += 1\n        if c + d > e:\n            total += 1\n        if d + e > a:\n            total += 1\n        return total\n\n    def score_final(self, a, b, c, d, e):\n        total = 0\n        if a - b > 0:\n            total += 1\n        if b - c > 0:\n            total += 1\n        if c - d > 0:\n            total += 1\n        if d - e > 0:\n            total += 1\n        return total\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "simple_recommender/corpus.py",
+      "content_start_char": 42,
+      "content_end_char": 4103,
+      "num_lines": 273
+    },
+    {
+      "segment_id": 1,
+      "path": "simple_recommender/scoring.py",
+      "content_start_char": 4147,
+      "content_end_char": 5686,
+      "num_lines": 73
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Weighted Methods per Class (WMPC)",
+      "severity": "Medium",
+      "description": "Class 'scoring.SimilarityScorer' has complex methods (WMPC1: 30, WMPC2: 30): score_user (lines 2-13), score_item (lines 14-25), score_pair (lines 26-37), score_context (lines 38-49), score_window (lines 50-61), score_final (lines 62-73)",
+      "primary_file": "./samples/simple_recommender/scoring.py",
+      "anchor": {
+        "file": "simple_recommender/scoring.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 73,
+        "start_char": 4147,
+        "end_char": 5686
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "simple_recommender/scoring.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 73,
+          "start_char": 4147,
+          "end_char": 5686
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "High Lack of Cohesion of Methods (LCOM)",
+      "severity": "Medium",
+      "description": "Class 'scoring.SimilarityScorer' has LCOM of 15 (non-cohesive: 15, cohesive: 0)",
+      "primary_file": "./samples/simple_recommender/scoring.py",
+      "anchor": {
+        "file": "simple_recommender/scoring.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 73,
+        "start_char": 4147,
+        "end_char": 5686
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "simple_recommender/scoring.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 73,
+          "start_char": 4147,
+          "end_char": 5686
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Structural",
+      "smell_name": "High Lines of Code (LOC)",
+      "severity": "High",
+      "description": "Module 'corpus' has 272 effective code lines\n(Total: 272, Code: 272, Doc: 0, Import: 0, Blank: 0)",
+      "primary_file": "./samples/simple_recommender/corpus.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "simple_recommender/corpus.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 273,
+          "start_char": 42,
+          "end_char": 4103
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Structural",
+      "smell_name": "Long File",
+      "severity": "Medium",
+      "description": "File 'corpus' has 272 meaningful lines of code",
+      "primary_file": "./samples/simple_recommender/corpus.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "simple_recommender/corpus.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 273,
+          "start_char": 42,
+          "end_char": 4103
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES"
+    ],
+    "num_instances": 4,
+    "dropped_instances_without_resolved_spans": 0
+  }
+}

@@ -103,117 +103,6 @@
     },
     {
         "type": "Code",
-        "name": "Excessive Comments",
-        "description": "File has 490.0% comment ratio with 7 large comment blocks in ./samples/web_scraper_price_monitor/notes.py",
-        "file_path": "./samples/web_scraper_price_monitor/notes.py",
-        "instance_lines": [
-            {
-                "start_line_number": 12,
-                "end_line_number": 19
-            },
-            {
-                "start_line_number": 21,
-                "end_line_number": 28
-            },
-            {
-                "start_line_number": 30,
-                "end_line_number": 37
-            },
-            {
-                "start_line_number": 39,
-                "end_line_number": 46
-            },
-            {
-                "start_line_number": 48,
-                "end_line_number": 55
-            },
-            {
-                "start_line_number": 57,
-                "end_line_number": 64
-            },
-            {
-                "start_line_number": 66,
-                "end_line_number": 73
-            }
-        ],
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Alternative Classes with Different Interfaces",
-        "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods extract, open in ./samples/web_scraper_price_monitor/extractors.py",
-        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
-        "classes": [
-            {
-                "name": "HtmlExtractor",
-                "start_line_number": 1,
-                "end_line_number": 7
-            },
-            {
-                "name": "JsonExtractor",
-                "start_line_number": 9,
-                "end_line_number": 15
-            },
-            {
-                "name": "TextExtractor",
-                "start_line_number": 17,
-                "end_line_number": 23
-            }
-        ],
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'HtmlExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
-        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
-        "class_name": "HtmlExtractor",
-        "start_line_number": 1,
-        "end_line_number": 7,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'JsonExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
-        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
-        "class_name": "JsonExtractor",
-        "start_line_number": 9,
-        "end_line_number": 15,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'TextExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
-        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
-        "class_name": "TextExtractor",
-        "start_line_number": 17,
-        "end_line_number": 23,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'MonitorPipeline' has only 1 non-trivial methods with 14 total lines in ./samples/web_scraper_price_monitor/pipeline.py",
-        "file_path": "./samples/web_scraper_price_monitor/pipeline.py",
-        "class_name": "MonitorPipeline",
-        "start_line_number": 1,
-        "end_line_number": 24,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'MonitorState' has only 1 non-trivial methods with 27 total lines in ./samples/web_scraper_price_monitor/state.py",
-        "file_path": "./samples/web_scraper_price_monitor/state.py",
-        "class_name": "MonitorState",
-        "start_line_number": 1,
-        "end_line_number": 76,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
         "name": "Lazy Class",
         "description": "Class 'FetchSession' has only 2 non-trivial methods with 4 total lines in ./samples/web_scraper_price_monitor/client.py",
         "file_path": "./samples/web_scraper_price_monitor/client.py",
@@ -273,6 +162,117 @@
             }
         ],
         "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Alternative Classes with Different Interfaces",
+        "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods open, extract in ./samples/web_scraper_price_monitor/extractors.py",
+        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
+        "classes": [
+            {
+                "name": "HtmlExtractor",
+                "start_line_number": 1,
+                "end_line_number": 7
+            },
+            {
+                "name": "JsonExtractor",
+                "start_line_number": 9,
+                "end_line_number": 15
+            },
+            {
+                "name": "TextExtractor",
+                "start_line_number": 17,
+                "end_line_number": 23
+            }
+        ],
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'HtmlExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
+        "class_name": "HtmlExtractor",
+        "start_line_number": 1,
+        "end_line_number": 7,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'JsonExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
+        "class_name": "JsonExtractor",
+        "start_line_number": 9,
+        "end_line_number": 15,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'TextExtractor' has only 0 non-trivial methods with 0 total lines in ./samples/web_scraper_price_monitor/extractors.py",
+        "file_path": "./samples/web_scraper_price_monitor/extractors.py",
+        "class_name": "TextExtractor",
+        "start_line_number": 17,
+        "end_line_number": 23,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Excessive Comments",
+        "description": "File has 490.0% comment ratio with 7 large comment blocks in ./samples/web_scraper_price_monitor/notes.py",
+        "file_path": "./samples/web_scraper_price_monitor/notes.py",
+        "instance_lines": [
+            {
+                "start_line_number": 12,
+                "end_line_number": 19
+            },
+            {
+                "start_line_number": 21,
+                "end_line_number": 28
+            },
+            {
+                "start_line_number": 30,
+                "end_line_number": 37
+            },
+            {
+                "start_line_number": 39,
+                "end_line_number": 46
+            },
+            {
+                "start_line_number": 48,
+                "end_line_number": 55
+            },
+            {
+                "start_line_number": 57,
+                "end_line_number": 64
+            },
+            {
+                "start_line_number": 66,
+                "end_line_number": 73
+            }
+        ],
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'MonitorPipeline' has only 1 non-trivial methods with 14 total lines in ./samples/web_scraper_price_monitor/pipeline.py",
+        "file_path": "./samples/web_scraper_price_monitor/pipeline.py",
+        "class_name": "MonitorPipeline",
+        "start_line_number": 1,
+        "end_line_number": 24,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'MonitorState' has only 1 non-trivial methods with 27 total lines in ./samples/web_scraper_price_monitor/state.py",
+        "file_path": "./samples/web_scraper_price_monitor/state.py",
+        "class_name": "MonitorState",
+        "start_line_number": 1,
+        "end_line_number": 76,
+        "severity": "low"
     },
     {
         "type": "Architectural",
@@ -370,10 +370,10 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
-        "description": "'notes' is isolated from other modules",
-        "file_path": "./samples/web_scraper_price_monitor/notes.py",
+        "description": "'client' is isolated from other modules",
+        "file_path": "./samples/web_scraper_price_monitor/client.py",
         "start_line_number": 1,
-        "end_line_number": 78,
+        "end_line_number": 28,
         "severity": "medium"
     },
     {
@@ -383,6 +383,15 @@
         "file_path": "./samples/web_scraper_price_monitor/extractors.py",
         "start_line_number": 1,
         "end_line_number": 23,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'notes' is isolated from other modules",
+        "file_path": "./samples/web_scraper_price_monitor/notes.py",
+        "start_line_number": 1,
+        "end_line_number": 78,
         "severity": "medium"
     },
     {
@@ -401,15 +410,6 @@
         "file_path": "./samples/web_scraper_price_monitor/state.py",
         "start_line_number": 1,
         "end_line_number": 76,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'client' is isolated from other modules",
-        "file_path": "./samples/web_scraper_price_monitor/client.py",
-        "start_line_number": 1,
-        "end_line_number": 28,
         "severity": "medium"
     }
 ]

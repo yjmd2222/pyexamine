@@ -1,0 +1,11 @@
+{
+  "separator_token": "[file]",
+  "mention_roles": [
+    "ANCHOR",
+    "CLASSES",
+    "INSTANCE_LINES",
+    "RELATED_INSTANCE_LINES"
+  ],
+  "num_instances": 17,
+  "dropped_instances_without_resolved_spans": 0
+}

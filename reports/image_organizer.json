@@ -22,22 +22,22 @@
     {
         "type": "Structural",
         "name": "High Lack of Cohesion of Methods (LCOM)",
-        "description": "Class 'lifecycle.GalleryLifecycle' has LCOM of 120 (non-cohesive: 120, cohesive: 0)",
-        "file_path": "./samples/image_organizer/lifecycle.py",
-        "class_name": "lifecycle.GalleryLifecycle",
-        "start_line_number": 1,
-        "end_line_number": 65,
-        "severity": "High"
-    },
-    {
-        "type": "Structural",
-        "name": "High Lack of Cohesion of Methods (LCOM)",
         "description": "Class 'catalog.AlbumCatalog' has LCOM of 11 (non-cohesive: 13, cohesive: 2)",
         "file_path": "./samples/image_organizer/catalog.py",
         "class_name": "catalog.AlbumCatalog",
         "start_line_number": 1,
         "end_line_number": 32,
         "severity": "Medium"
+    },
+    {
+        "type": "Structural",
+        "name": "High Lack of Cohesion of Methods (LCOM)",
+        "description": "Class 'lifecycle.GalleryLifecycle' has LCOM of 120 (non-cohesive: 120, cohesive: 0)",
+        "file_path": "./samples/image_organizer/lifecycle.py",
+        "class_name": "lifecycle.GalleryLifecycle",
+        "start_line_number": 1,
+        "end_line_number": 65,
+        "severity": "High"
     },
     {
         "type": "Structural",
@@ -60,26 +60,6 @@
         "start_line_number": 2,
         "end_line_number": 25,
         "severity": "High"
-    },
-    {
-        "type": "Code",
-        "name": "Large Class",
-        "description": "'GalleryLifecycle' has 16 non-trivial methods in ./samples/image_organizer/lifecycle.py",
-        "file_path": "./samples/image_organizer/lifecycle.py",
-        "class_name": "GalleryLifecycle",
-        "start_line_number": 1,
-        "end_line_number": 65,
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'LayoutPicker' has only 1 non-trivial methods with 22 total lines in ./samples/image_organizer/layout.py",
-        "file_path": "./samples/image_organizer/layout.py",
-        "class_name": "LayoutPicker",
-        "start_line_number": 1,
-        "end_line_number": 25,
-        "severity": "low"
     },
     {
         "type": "Code",
@@ -114,16 +94,6 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'RetentionPolicy' has only 1 non-trivial methods with 5 total lines in ./samples/image_organizer/rules.py",
-        "file_path": "./samples/image_organizer/rules.py",
-        "class_name": "RetentionPolicy",
-        "start_line_number": 1,
-        "end_line_number": 13,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
         "description": "Class 'AlbumCatalog' has only 0 non-trivial methods with 0 total lines in ./samples/image_organizer/catalog.py",
         "file_path": "./samples/image_organizer/catalog.py",
         "class_name": "AlbumCatalog",
@@ -132,12 +102,51 @@
         "severity": "low"
     },
     {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'lifecycle' is isolated from other modules",
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'LayoutPicker' has only 1 non-trivial methods with 22 total lines in ./samples/image_organizer/layout.py",
+        "file_path": "./samples/image_organizer/layout.py",
+        "class_name": "LayoutPicker",
+        "start_line_number": 1,
+        "end_line_number": 25,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Large Class",
+        "description": "'GalleryLifecycle' has 16 non-trivial methods in ./samples/image_organizer/lifecycle.py",
         "file_path": "./samples/image_organizer/lifecycle.py",
+        "class_name": "GalleryLifecycle",
         "start_line_number": 1,
         "end_line_number": 65,
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'RetentionPolicy' has only 1 non-trivial methods with 5 total lines in ./samples/image_organizer/rules.py",
+        "file_path": "./samples/image_organizer/rules.py",
+        "class_name": "RetentionPolicy",
+        "start_line_number": 1,
+        "end_line_number": 13,
+        "severity": "low"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'brokers' is isolated from other modules",
+        "file_path": "./samples/image_organizer/brokers.py",
+        "start_line_number": 1,
+        "end_line_number": 17,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'catalog' is isolated from other modules",
+        "file_path": "./samples/image_organizer/catalog.py",
+        "start_line_number": 1,
+        "end_line_number": 32,
         "severity": "medium"
     },
     {
@@ -152,10 +161,10 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
-        "description": "'brokers' is isolated from other modules",
-        "file_path": "./samples/image_organizer/brokers.py",
+        "description": "'lifecycle' is isolated from other modules",
+        "file_path": "./samples/image_organizer/lifecycle.py",
         "start_line_number": 1,
-        "end_line_number": 17,
+        "end_line_number": 65,
         "severity": "medium"
     },
     {
@@ -165,15 +174,6 @@
         "file_path": "./samples/image_organizer/rules.py",
         "start_line_number": 1,
         "end_line_number": 13,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'catalog' is isolated from other modules",
-        "file_path": "./samples/image_organizer/catalog.py",
-        "start_line_number": 1,
-        "end_line_number": 32,
         "severity": "medium"
     }
 ]

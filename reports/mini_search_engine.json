@@ -87,19 +87,9 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'Storage' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/storage.py",
-        "file_path": "./samples/mini_search_engine/storage.py",
-        "class_name": "Storage",
-        "start_line_number": 1,
-        "end_line_number": 8,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Tokenizer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/tokenizer.py",
-        "file_path": "./samples/mini_search_engine/tokenizer.py",
-        "class_name": "Tokenizer",
+        "description": "Class 'Indexer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/indexer.py",
+        "file_path": "./samples/mini_search_engine/indexer.py",
+        "class_name": "Indexer",
         "start_line_number": 1,
         "end_line_number": 4,
         "severity": "low"
@@ -127,7 +117,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields limit, self, tier, balance, status in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+        "description": "Potentially unused fields status, tier, limit, self, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
         "file_path": "./samples/mini_search_engine/relations.py",
         "class_name": "ProfileState",
         "start_line_number": 1,
@@ -185,9 +175,19 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'Indexer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/indexer.py",
-        "file_path": "./samples/mini_search_engine/indexer.py",
-        "class_name": "Indexer",
+        "description": "Class 'Storage' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/storage.py",
+        "file_path": "./samples/mini_search_engine/storage.py",
+        "class_name": "Storage",
+        "start_line_number": 1,
+        "end_line_number": 8,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Tokenizer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/tokenizer.py",
+        "file_path": "./samples/mini_search_engine/tokenizer.py",
+        "class_name": "Tokenizer",
         "start_line_number": 1,
         "end_line_number": 4,
         "severity": "low"

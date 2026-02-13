@@ -1,0 +1,681 @@
+{
+  "sample_id": "mini_search_engine",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\mini_search_engine",
+  "text": "[file]\npath=mini_search_engine/cache.py\n\nclass Cache:\n    def __init__(self):\n        self._data = {}\n\n    def remember(self, key, value):\n        self._data[key] = value\n        return value\n\n[file]\npath=mini_search_engine/indexer.py\n\nclass Indexer:\n    def build(self, tokens):\n        return {token: idx for idx, token in enumerate(tokens)}\n\n[file]\npath=mini_search_engine/link_a.py\n\nimport link_b\n\n\ndef follow_a():\n    return link_b.follow_b()\n\n[file]\npath=mini_search_engine/link_b.py\n\nimport link_c\n\n\ndef follow_b():\n    return link_c.follow_c()\n\n[file]\npath=mini_search_engine/link_c.py\n\nimport link_a\n\n\ndef follow_c():\n    return link_a.follow_a()\n\n[file]\npath=mini_search_engine/queries.py\n\nclass QueryStore:\n    def __init__(self):\n        self.history = []\n\n    def add(self, query: str):\n        self.history.append(query)\n        return len(self.history)\n\n[file]\npath=mini_search_engine/ranking.py\n\nclass Ranker:\n    def rank(self, scores):\n        return sorted(scores, reverse=True)\n\n[file]\npath=mini_search_engine/registry.py\n\nimport indexer\nimport tokenizer\nimport storage\nimport cache\nimport ranking\nimport queries\n\n\ndef build_registry():\n    return {\n        \"indexer\": indexer.Indexer(),\n        \"tokenizer\": tokenizer.Tokenizer(),\n        \"storage\": storage.Storage(),\n        \"cache\": cache.Cache(),\n        \"ranking\": ranking.Ranker(),\n        \"queries\": queries.QueryStore(),\n    }\n\n[file]\npath=mini_search_engine/relations.py\n\nclass ProfileState:\n    def __init__(self, balance, status, limit, tier):\n        self.balance = balance\n        self.status = status\n        self.limit = limit\n        self.tier = tier\n\n\nclass ProfileInspector:\n    def balance(self, state: ProfileState):\n        return state.balance\n\n    def status(self, state: ProfileState):\n        return state.status\n\n    def limit(self, state: ProfileState):\n        return state.limit\n\n    def tier(self, state: ProfileState):\n        return state.tier\n\n[file]\npath=mini_search_engine/storage.py\n\nclass Storage:\n    def __init__(self):\n        self.items = {}\n\n    def save(self, key, value):\n        self.items[key] = value\n        return key\n\n[file]\npath=mini_search_engine/tokenizer.py\n\nclass Tokenizer:\n    def split(self, text: str):\n        return [t for t in text.replace(\".\", \" \").split() if t]\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "mini_search_engine/cache.py",
+      "content_start_char": 41,
+      "content_end_char": 192,
+      "num_lines": 8
+    },
+    {
+      "segment_id": 1,
+      "path": "mini_search_engine/indexer.py",
+      "content_start_char": 236,
+      "content_end_char": 344,
+      "num_lines": 4
+    },
+    {
+      "segment_id": 2,
+      "path": "mini_search_engine/link_a.py",
+      "content_start_char": 387,
+      "content_end_char": 448,
+      "num_lines": 6
+    },
+    {
+      "segment_id": 3,
+      "path": "mini_search_engine/link_b.py",
+      "content_start_char": 491,
+      "content_end_char": 552,
+      "num_lines": 6
+    },
+    {
+      "segment_id": 4,
+      "path": "mini_search_engine/link_c.py",
+      "content_start_char": 595,
+      "content_end_char": 656,
+      "num_lines": 6
+    },
+    {
+      "segment_id": 5,
+      "path": "mini_search_engine/queries.py",
+      "content_start_char": 700,
+      "content_end_char": 868,
+      "num_lines": 8
+    },
+    {
+      "segment_id": 6,
+      "path": "mini_search_engine/ranking.py",
+      "content_start_char": 912,
+      "content_end_char": 998,
+      "num_lines": 4
+    },
+    {
+      "segment_id": 7,
+      "path": "mini_search_engine/registry.py",
+      "content_start_char": 1043,
+      "content_end_char": 1406,
+      "num_lines": 18
+    },
+    {
+      "segment_id": 8,
+      "path": "mini_search_engine/relations.py",
+      "content_start_char": 1452,
+      "content_end_char": 1947,
+      "num_lines": 21
+    },
+    {
+      "segment_id": 9,
+      "path": "mini_search_engine/storage.py",
+      "content_start_char": 1991,
+      "content_end_char": 2138,
+      "num_lines": 8
+    },
+    {
+      "segment_id": 10,
+      "path": "mini_search_engine/tokenizer.py",
+      "content_start_char": 2184,
+      "content_end_char": 2297,
+      "num_lines": 4
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Number of classes per Project",
+      "severity": "Medium",
+      "description": "Project has 8.0 weighted classes:\n- Regular classes: 8\n- Abstract/Interface classes: 0\n- Utility classes: 0\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- cache: Cache(1-8)\n- indexer: Indexer(1-4)\n- queries: QueryStore(1-8)\n- ranking: Ranker(1-4)\n- relations: ProfileState(1-7), ProfileInspector(9-21)\n- storage: Storage(1-8)\n- tokenizer: Tokenizer(1-4)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/cache.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 41,
+          "end_char": 192
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/indexer.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 236,
+          "end_char": 344
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/queries.py",
+          "segment_id": 5,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 700,
+          "end_char": 868
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/ranking.py",
+          "segment_id": 6,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 912,
+          "end_char": 998
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1452,
+          "end_char": 1638
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 9,
+          "end_line": 21,
+          "start_char": 1640,
+          "end_char": 1947
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/storage.py",
+          "segment_id": 9,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 1991,
+          "end_char": 2138
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/tokenizer.py",
+          "segment_id": 10,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 2184,
+          "end_char": 2297
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Cache' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/cache.py",
+      "primary_file": "./samples/mini_search_engine/cache.py",
+      "anchor": {
+        "file": "mini_search_engine/cache.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 8,
+        "start_char": 41,
+        "end_char": 192
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/cache.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 41,
+          "end_char": 192
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Indexer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/indexer.py",
+      "primary_file": "./samples/mini_search_engine/indexer.py",
+      "anchor": {
+        "file": "mini_search_engine/indexer.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 236,
+        "end_char": 344
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/indexer.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 236,
+          "end_char": 344
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'QueryStore' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/queries.py",
+      "primary_file": "./samples/mini_search_engine/queries.py",
+      "anchor": {
+        "file": "mini_search_engine/queries.py",
+        "segment_id": 5,
+        "start_line": 1,
+        "end_line": 8,
+        "start_char": 700,
+        "end_char": 868
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/queries.py",
+          "segment_id": 5,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 700,
+          "end_char": 868
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Ranker' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/ranking.py",
+      "primary_file": "./samples/mini_search_engine/ranking.py",
+      "anchor": {
+        "file": "mini_search_engine/ranking.py",
+        "segment_id": 6,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 912,
+        "end_char": 998
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/ranking.py",
+          "segment_id": 6,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 912,
+          "end_char": 998
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Temporary Field",
+      "severity": "low",
+      "description": "Potentially unused fields status, tier, limit, self, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+      "primary_file": "./samples/mini_search_engine/relations.py",
+      "anchor": {
+        "file": "mini_search_engine/relations.py",
+        "segment_id": 8,
+        "start_line": 1,
+        "end_line": 7,
+        "start_char": 1452,
+        "end_char": 1638
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1452,
+          "end_char": 1638
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'ProfileState' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/relations.py",
+      "primary_file": "./samples/mini_search_engine/relations.py",
+      "anchor": {
+        "file": "mini_search_engine/relations.py",
+        "segment_id": 8,
+        "start_line": 1,
+        "end_line": 7,
+        "start_char": 1452,
+        "end_char": 1638
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1452,
+          "end_char": 1638
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'ProfileInspector' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/relations.py",
+      "primary_file": "./samples/mini_search_engine/relations.py",
+      "anchor": {
+        "file": "mini_search_engine/relations.py",
+        "segment_id": 8,
+        "start_line": 9,
+        "end_line": 21,
+        "start_char": 1640,
+        "end_char": 1947
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 9,
+          "end_line": 21,
+          "start_char": 1640,
+          "end_char": 1947
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Inappropriate Intimacy",
+      "severity": "medium",
+      "description": "Class 'ProfileInspector' might be too intimate with 'ProfileState' (4 shared members, 100.0% of methods) at lines 10-12, 13-15, 16-18, 19-21 in ./samples/mini_search_engine/relations.py",
+      "primary_file": "./samples/mini_search_engine/relations.py",
+      "anchor": {
+        "file": "mini_search_engine/relations.py",
+        "segment_id": 8,
+        "start_line": 9,
+        "end_line": 21,
+        "start_char": 1640,
+        "end_char": 1947
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 9,
+          "end_line": 21,
+          "start_char": 1640,
+          "end_char": 1947
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 10,
+          "end_line": 12,
+          "start_char": 1664,
+          "end_char": 1737
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 13,
+          "end_line": 15,
+          "start_char": 1738,
+          "end_char": 1809
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 16,
+          "end_line": 18,
+          "start_char": 1810,
+          "end_char": 1879
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 19,
+          "end_line": 21,
+          "start_char": 1880,
+          "end_char": 1947
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Storage' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/storage.py",
+      "primary_file": "./samples/mini_search_engine/storage.py",
+      "anchor": {
+        "file": "mini_search_engine/storage.py",
+        "segment_id": 9,
+        "start_line": 1,
+        "end_line": 8,
+        "start_char": 1991,
+        "end_char": 2138
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/storage.py",
+          "segment_id": 9,
+          "start_line": 1,
+          "end_line": 8,
+          "start_char": 1991,
+          "end_char": 2138
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'Tokenizer' has only 0 non-trivial methods with 0 total lines in ./samples/mini_search_engine/tokenizer.py",
+      "primary_file": "./samples/mini_search_engine/tokenizer.py",
+      "anchor": {
+        "file": "mini_search_engine/tokenizer.py",
+        "segment_id": 10,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 2184,
+        "end_char": 2297
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/tokenizer.py",
+          "segment_id": 10,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 2184,
+          "end_char": 2297
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Architectural",
+      "smell_name": "Hub-like Dependency",
+      "severity": "medium",
+      "description": "Module 'registry' is a potential hub with 6 connections (in: 0, out: 6, external: 0)\nOutgoing dependency instances: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency instances: None",
+      "primary_file": "./samples/mini_search_engine/registry.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1043,
+          "end_char": 1058
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 1058,
+          "end_char": 1075
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 1075,
+          "end_char": 1090
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 1090,
+          "end_char": 1103
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 1103,
+          "end_char": 1118
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 1118,
+          "end_char": 1133
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'relations' is isolated from other modules",
+      "primary_file": "./samples/mini_search_engine/relations.py",
+      "anchor": {
+        "file": "mini_search_engine/relations.py",
+        "segment_id": 8,
+        "start_line": 1,
+        "end_line": 21,
+        "start_char": 1452,
+        "end_char": 1947
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "mini_search_engine/relations.py",
+          "segment_id": 8,
+          "start_line": 1,
+          "end_line": 21,
+          "start_char": 1452,
+          "end_char": 1947
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Architectural",
+      "smell_name": "Cyclic Dependency",
+      "severity": "high",
+      "description": "Strong cyclic dependency detected: link_c -> link_a -> link_b -> link_c\nCycle strength: 3 mutual dependencies",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/link_c.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 595,
+          "end_char": 609
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/link_a.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 387,
+          "end_char": 401
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "mini_search_engine/link_b.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 491,
+          "end_char": 505
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "Unstable Dependency",
+      "severity": "medium",
+      "description": "Module 'registry' has high instability (1.00) with 6 outgoing and 0 incoming dependencies\nOutgoing dependency instances: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency instances: None",
+      "primary_file": "./samples/mini_search_engine/registry.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1043,
+          "end_char": 1058
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 1058,
+          "end_char": 1075
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 1075,
+          "end_char": 1090
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 4,
+          "end_line": 5,
+          "start_char": 1090,
+          "end_char": 1103
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 5,
+          "end_line": 6,
+          "start_char": 1103,
+          "end_char": 1118
+        },
+        {
+          "role": "OUTGOING_INSTANCE_LINES",
+          "file": "mini_search_engine/registry.py",
+          "segment_id": 7,
+          "start_line": 6,
+          "end_line": 7,
+          "start_char": 1118,
+          "end_char": 1133
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES",
+      "OUTGOING_INSTANCE_LINES",
+      "RELATED_INSTANCE_LINES"
+    ],
+    "num_instances": 15,
+    "dropped_instances_without_resolved_spans": 0
+  }
+}

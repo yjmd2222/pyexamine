@@ -1,0 +1,9 @@
+{
+  "separator_token": "[file]",
+  "mention_roles": [
+    "ANCHOR",
+    "INSTANCE_LINES"
+  ],
+  "num_instances": 4,
+  "dropped_instances_without_resolved_spans": 0
+}

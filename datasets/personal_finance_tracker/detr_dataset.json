@@ -1,0 +1,856 @@
+{
+  "sample_id": "personal_finance_tracker",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\personal_finance_tracker",
+  "text": "[file]\npath=personal_finance_tracker/categories.py\n\nfrom datetime import date\n\n\ndef categorize_income(amount: float,\n                      currency: str,\n                      source: str,\n                      received_at: date,\n                      description: str,\n                      category_code: str):\n    label = \"income\"\n    if source.lower() == \"salary\":\n        label = \"salary\"\n    return {\n        \"amount\": amount,\n        \"currency\": currency,\n        \"source\": source,\n        \"received_at\": received_at,\n        \"description\": description,\n        \"category_code\": category_code,\n        \"label\": label,\n    }\n\n\ndef categorize_expense(amount: float,\n                       currency: str,\n                       source: str,\n                       received_at: date,\n                       description: str,\n                       category_code: str):\n    label = \"expense\"\n    if source.lower() in {\"coffee\", \"snack\"}:\n        label = \"food\"\n    return {\n        \"amount\": amount,\n        \"currency\": currency,\n        \"source\": source,\n        \"received_at\": received_at,\n        \"description\": description,\n        \"category_code\": category_code,\n        \"label\": label,\n    }\n\n[file]\npath=personal_finance_tracker/ledger.py\n\nfrom datetime import date\n\ndef add_transaction(user_id: int,\n                    account_id: int,\n                    amount: float,\n                    currency: str,\n                    category_id: int,\n                    merchant: str,\n                    note: str,\n                    is_recurring: bool,\n                    year: int,\n                    month: int,\n                    day: int):\n    transaction_date = date(year, month, day)\n    return {\n        \"user_id\": user_id,\n        \"account_id\": account_id,\n        \"amount\": amount,\n        \"currency\": currency,\n        \"category_id\": category_id,\n        \"merchant\": merchant,\n        \"note\": note,\n        \"is_recurring\": is_recurring,\n        \"date\": transaction_date,\n    }\n\n[file]\npath=personal_finance_tracker/monolith.py\n\nclass FinanceDirector:\n    def reconcile_day(self):\n        return \"reconcile_day\"\n\n    def reconcile_week(self):\n        return \"reconcile_week\"\n\n    def reconcile_month(self):\n        return \"reconcile_month\"\n\n    def summarize_accounts(self):\n        return \"summarize_accounts\"\n\n    def summarize_categories(self):\n        return \"summarize_categories\"\n\n    def summarize_merchants(self):\n        return \"summarize_merchants\"\n\n    def import_csv(self):\n        return \"import_csv\"\n\n    def import_bank_feed(self):\n        return \"import_bank_feed\"\n\n    def export_csv(self):\n        return \"export_csv\"\n\n    def export_pdf(self):\n        return \"export_pdf\"\n\n    def manage_budgets(self):\n        return \"manage_budgets\"\n\n    def manage_alerts(self):\n        return \"manage_alerts\"\n\n    def manage_rules(self):\n        return \"manage_rules\"\n\n    def manage_categories(self):\n        return \"manage_categories\"\n\n    def manage_merchants(self):\n        return \"manage_merchants\"\n\n    def manage_accounts(self):\n        return \"manage_accounts\"\n\n    def manage_cash_flow(self):\n        return \"manage_cash_flow\"\n\n    def manage_goals(self):\n        return \"manage_goals\"\n\n    def audit_changes(self):\n        return \"audit_changes\"\n\n    def sync_cloud(self):\n        return \"sync_cloud\"\n\n    def generate_report_pack(self):\n        return \"generate_report_pack\"\n\n[file]\npath=personal_finance_tracker/rules.py\n\n\ndef map_category(source: str, description: str):\n    text = f\"{source} {description}\".lower()\n    if \"grocery\" in text:\n        return \"groceries\"\n    elif \"rent\" in text:\n        return \"housing\"\n    elif \"uber\" in text or \"taxi\" in text:\n        return \"transport\"\n    elif \"gym\" in text or \"fitness\" in text:\n        return \"health\"\n    elif \"netflix\" in text or \"spotify\" in text:\n        return \"subscriptions\"\n    elif \"restaurant\" in text or \"cafe\" in text:\n        return \"dining\"\n    else:\n        return \"other\"\n\n\ndef map_priority(tag: str):\n    if tag == \"urgent\":\n        label = \"p0\"\n        rank = 0\n        note = \"urgent\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"high\":\n        label = \"p1\"\n        rank = 1\n        note = \"high\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"medium\":\n        label = \"p2\"\n        rank = 2\n        note = \"medium\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"low\":\n        label = \"p3\"\n        rank = 3\n        note = \"low\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"defer\":\n        label = \"p4\"\n        rank = 4\n        note = \"defer\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"snooze\":\n        label = \"p5\"\n        rank = 5\n        note = \"snooze\"\n        return f\"{label}:{rank}:{note}\"\n    elif tag == \"maybe\":\n        label = \"p6\"\n        rank = 6\n        note = \"maybe\"\n        return f\"{label}:{rank}:{note}\"\n    else:\n        label = \"p7\"\n        rank = 7\n        note = \"other\"\n        return f\"{label}:{rank}:{note}\"\n\n\ndef map_bucket(code: str):\n    if code == \"a0\":\n        return \"alpha\"\n    elif code == \"b1\":\n        return \"bravo\"\n    elif code == \"c2\":\n        return \"charlie\"\n    elif code == \"d3\":\n        return \"delta\"\n    elif code == \"e4\":\n        return \"echo\"\n    elif code == \"f5\":\n        return \"foxtrot\"\n    elif code == \"g6\":\n        return \"golf\"\n    elif code == \"h7\":\n        return \"hotel\"\n    elif code == \"i8\":\n        return \"india\"\n    elif code == \"j9\":\n        return \"juliet\"\n    elif code == \"k10\":\n        return \"kilo\"\n    else:\n        return \"other\"\n\n\ndef map_status(code: str):\n    if code == \"new\":\n        label = \"n1\"\n        score = 1\n        note = \"new\"\n        return f\"{label}:{score}:{note}\"\n    else:\n        if code == \"open\":\n            label = \"o2\"\n            score = 2\n            note = \"open\"\n            return f\"{label}:{score}:{note}\"\n        if code == \"review\":\n            label = \"r3\"\n            score = 3\n            note = \"review\"\n            return f\"{label}:{score}:{note}\"\n        if code == \"blocked\":\n            label = \"b4\"\n            score = 4\n            note = \"blocked\"\n            return f\"{label}:{score}:{note}\"\n        if code == \"closed\":\n            label = \"c5\"\n            score = 5\n            note = \"closed\"\n            return f\"{label}:{score}:{note}\"\n        return \"unknown\"\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "personal_finance_tracker/categories.py",
+      "content_start_char": 52,
+      "content_end_char": 1200,
+      "num_lines": 42
+    },
+    {
+      "segment_id": 1,
+      "path": "personal_finance_tracker/ledger.py",
+      "content_start_char": 1249,
+      "content_end_char": 1998,
+      "num_lines": 26
+    },
+    {
+      "segment_id": 2,
+      "path": "personal_finance_tracker/monolith.py",
+      "content_start_char": 2049,
+      "content_end_char": 3412,
+      "num_lines": 64
+    },
+    {
+      "segment_id": 3,
+      "path": "personal_finance_tracker/rules.py",
+      "content_start_char": 3460,
+      "content_end_char": 6354,
+      "num_lines": 118
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Number of Methods (NOM)",
+      "severity": "High",
+      "description": "Class 'monolith.FinanceDirector' has 21 methods (excluding special methods and properties)",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "Large Class (SIZE2)",
+      "severity": "Medium",
+      "description": "Class 'monolith.FinanceDirector' has 21 significant members (methods: 21, fields: 0)",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Structural",
+      "smell_name": "High Lack of Cohesion of Methods (LCOM)",
+      "severity": "High",
+      "description": "Class 'monolith.FinanceDirector' has LCOM of 210 (non-cohesive: 210, cohesive: 0)",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Structural",
+      "smell_name": "High Response for a Class (RFC)",
+      "severity": "Medium",
+      "description": "Class 'monolith.FinanceDirector' has RFC of 21 (methods: 21, external calls: 0)\nMethod instances: monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.sync_cloud(59-61), monolith.FinanceDirector.generate_report_pack(62-64)\nExternal call instances: None",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Primitive Obsession",
+      "severity": "medium",
+      "description": "'categorize_income' has 5 primitive parameters in ./samples/personal_finance_tracker/categories.py",
+      "primary_file": "./samples/personal_finance_tracker/categories.py",
+      "anchor": {
+        "file": "personal_finance_tracker/categories.py",
+        "segment_id": 0,
+        "start_line": 4,
+        "end_line": 22,
+        "start_char": 80,
+        "end_char": 631
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 4,
+          "end_line": 22,
+          "start_char": 80,
+          "end_char": 631
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Primitive Obsession",
+      "severity": "medium",
+      "description": "'categorize_expense' has 5 primitive parameters in ./samples/personal_finance_tracker/categories.py",
+      "primary_file": "./samples/personal_finance_tracker/categories.py",
+      "anchor": {
+        "file": "personal_finance_tracker/categories.py",
+        "segment_id": 0,
+        "start_line": 24,
+        "end_line": 42,
+        "start_char": 633,
+        "end_char": 1200
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 42,
+          "start_char": 633,
+          "end_char": 1200
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Long Parameter List",
+      "severity": "medium",
+      "description": "'categorize_income' has 6 parameters in ./samples/personal_finance_tracker/categories.py",
+      "primary_file": "./samples/personal_finance_tracker/categories.py",
+      "anchor": {
+        "file": "personal_finance_tracker/categories.py",
+        "segment_id": 0,
+        "start_line": 4,
+        "end_line": 22,
+        "start_char": 80,
+        "end_char": 631
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 4,
+          "end_line": 22,
+          "start_char": 80,
+          "end_char": 631
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Long Parameter List",
+      "severity": "medium",
+      "description": "'categorize_expense' has 6 parameters in ./samples/personal_finance_tracker/categories.py",
+      "primary_file": "./samples/personal_finance_tracker/categories.py",
+      "anchor": {
+        "file": "personal_finance_tracker/categories.py",
+        "segment_id": 0,
+        "start_line": 24,
+        "end_line": 42,
+        "start_char": 633,
+        "end_char": 1200
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 42,
+          "start_char": 633,
+          "end_char": 1200
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Primitive Obsession",
+      "severity": "medium",
+      "description": "'add_transaction' has 11 primitive parameters in ./samples/personal_finance_tracker/ledger.py",
+      "primary_file": "./samples/personal_finance_tracker/ledger.py",
+      "anchor": {
+        "file": "personal_finance_tracker/ledger.py",
+        "segment_id": 1,
+        "start_line": 3,
+        "end_line": 26,
+        "start_char": 1276,
+        "end_char": 1998
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/ledger.py",
+          "segment_id": 1,
+          "start_line": 3,
+          "end_line": 26,
+          "start_char": 1276,
+          "end_char": 1998
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Long Parameter List",
+      "severity": "medium",
+      "description": "'add_transaction' has 11 parameters in ./samples/personal_finance_tracker/ledger.py",
+      "primary_file": "./samples/personal_finance_tracker/ledger.py",
+      "anchor": {
+        "file": "personal_finance_tracker/ledger.py",
+        "segment_id": 1,
+        "start_line": 3,
+        "end_line": 26,
+        "start_char": 1276,
+        "end_char": 1998
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/ledger.py",
+          "segment_id": 1,
+          "start_line": 3,
+          "end_line": 26,
+          "start_char": 1276,
+          "end_char": 1998
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Potential Divergent Change",
+      "severity": "medium",
+      "description": "Class 'FinanceDirector' has 8 different method prefixes: summarize, export, generate, import, audit, sync, manage, reconcile in ./samples/personal_finance_tracker/monolith.py",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 63,
+        "start_char": 2049,
+        "end_char": 3374
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 63,
+          "start_char": 2049,
+          "end_char": 3374
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 2072,
+          "end_char": 2132
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 5,
+          "end_line": 7,
+          "start_char": 2133,
+          "end_char": 2195
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 8,
+          "end_line": 10,
+          "start_char": 2196,
+          "end_char": 2260
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 11,
+          "end_line": 13,
+          "start_char": 2261,
+          "end_char": 2331
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 16,
+          "start_char": 2332,
+          "end_char": 2406
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 17,
+          "end_line": 19,
+          "start_char": 2407,
+          "end_char": 2479
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 20,
+          "end_line": 22,
+          "start_char": 2480,
+          "end_char": 2534
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 23,
+          "end_line": 25,
+          "start_char": 2535,
+          "end_char": 2601
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 26,
+          "end_line": 28,
+          "start_char": 2602,
+          "end_char": 2656
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 29,
+          "end_line": 31,
+          "start_char": 2657,
+          "end_char": 2711
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 32,
+          "end_line": 34,
+          "start_char": 2712,
+          "end_char": 2774
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 35,
+          "end_line": 37,
+          "start_char": 2775,
+          "end_char": 2835
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 38,
+          "end_line": 40,
+          "start_char": 2836,
+          "end_char": 2894
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 41,
+          "end_line": 43,
+          "start_char": 2895,
+          "end_char": 2963
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 44,
+          "end_line": 46,
+          "start_char": 2964,
+          "end_char": 3030
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 47,
+          "end_line": 49,
+          "start_char": 3031,
+          "end_char": 3095
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 50,
+          "end_line": 52,
+          "start_char": 3096,
+          "end_char": 3162
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 53,
+          "end_line": 55,
+          "start_char": 3163,
+          "end_char": 3221
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 56,
+          "end_line": 58,
+          "start_char": 3222,
+          "end_char": 3282
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 59,
+          "end_line": 61,
+          "start_char": 3283,
+          "end_char": 3337
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 62,
+          "end_line": 64,
+          "start_char": 3338,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'FinanceDirector' has only 0 non-trivial methods with 0 total lines in ./samples/personal_finance_tracker/monolith.py",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Code",
+      "smell_name": "Switch Statements",
+      "severity": "medium",
+      "description": "Complex conditional with 5 branches at line 91 in ./samples/personal_finance_tracker/rules.py",
+      "primary_file": "./samples/personal_finance_tracker/rules.py",
+      "anchor": {
+        "file": "personal_finance_tracker/rules.py",
+        "segment_id": 3,
+        "start_line": 91,
+        "end_line": 118,
+        "start_char": 5602,
+        "end_char": 6354
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/rules.py",
+          "segment_id": 3,
+          "start_line": 91,
+          "end_line": 118,
+          "start_char": 5602,
+          "end_char": 6354
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "God Object",
+      "severity": "medium",
+      "description": "Class 'monolith.FinanceDirector' has too many public methods (21)\nPublic function instances: monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.generate_report_pack(62-64), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.sync_cloud(59-61)",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 56,
+          "end_line": 58,
+          "start_char": 3222,
+          "end_char": 3282
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 26,
+          "end_line": 28,
+          "start_char": 2602,
+          "end_char": 2656
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 29,
+          "end_line": 31,
+          "start_char": 2657,
+          "end_char": 2711
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 62,
+          "end_line": 64,
+          "start_char": 3338,
+          "end_char": 3412
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 23,
+          "end_line": 25,
+          "start_char": 2535,
+          "end_char": 2601
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 20,
+          "end_line": 22,
+          "start_char": 2480,
+          "end_char": 2534
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 47,
+          "end_line": 49,
+          "start_char": 3031,
+          "end_char": 3095
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 35,
+          "end_line": 37,
+          "start_char": 2775,
+          "end_char": 2835
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 32,
+          "end_line": 34,
+          "start_char": 2712,
+          "end_char": 2774
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 50,
+          "end_line": 52,
+          "start_char": 3096,
+          "end_char": 3162
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 41,
+          "end_line": 43,
+          "start_char": 2895,
+          "end_char": 2963
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 53,
+          "end_line": 55,
+          "start_char": 3163,
+          "end_char": 3221
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 44,
+          "end_line": 46,
+          "start_char": 2964,
+          "end_char": 3030
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 38,
+          "end_line": 40,
+          "start_char": 2836,
+          "end_char": 2894
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 2072,
+          "end_char": 2132
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 8,
+          "end_line": 10,
+          "start_char": 2196,
+          "end_char": 2260
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 5,
+          "end_line": 7,
+          "start_char": 2133,
+          "end_char": 2195
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 11,
+          "end_line": 13,
+          "start_char": 2261,
+          "end_char": 2331
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 16,
+          "start_char": 2332,
+          "end_char": 2406
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 17,
+          "end_line": 19,
+          "start_char": 2407,
+          "end_char": 2479
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 59,
+          "end_line": 61,
+          "start_char": 3283,
+          "end_char": 3337
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'monolith' is isolated from other modules",
+      "primary_file": "./samples/personal_finance_tracker/monolith.py",
+      "anchor": {
+        "file": "personal_finance_tracker/monolith.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 64,
+        "start_char": 2049,
+        "end_char": 3412
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/monolith.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 64,
+          "start_char": 2049,
+          "end_char": 3412
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'rules' is isolated from other modules",
+      "primary_file": "./samples/personal_finance_tracker/rules.py",
+      "anchor": {
+        "file": "personal_finance_tracker/rules.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 118,
+        "start_char": 3460,
+        "end_char": 6354
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "personal_finance_tracker/rules.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 118,
+          "start_char": 3460,
+          "end_char": 6354
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES"
+    ],
+    "num_instances": 16,
+    "dropped_instances_without_resolved_spans": 1
+  }
+}

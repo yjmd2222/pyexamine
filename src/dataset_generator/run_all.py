@@ -55,25 +55,25 @@ def main():
     run_command(analyze_cmd, env)
 
 
-if args.format == "conll":
-    dataset_cmd = [
-        sys.executable, "-m", "dataset_generator",
-        args.code_path,
-        "--report", args.report,
-        "--output-dir", output_dir
-    ]
-    run_command(dataset_cmd, env)
-else:
-    # Single JSON artifact per analyzed code_path
-    detr_output = os.path.join(output_dir, "detr_dataset.json")
-    os.makedirs(output_dir, exist_ok=True)
-    dataset_cmd = [
-        sys.executable, "-m", "dataset_generator.build_detr_dataset",
-        args.code_path,
-        "--report", args.report,
-        "--output", detr_output
-    ]
-    run_command(dataset_cmd, env)
+    if args.format == "conll":
+        dataset_cmd = [
+            sys.executable, "-m", "dataset_generator",
+            args.code_path,
+            "--report", args.report,
+            "--output-dir", output_dir
+        ]
+        run_command(dataset_cmd, env)
+    else:
+        # Single JSON artifact per analyzed code_path
+        detr_output = os.path.join(output_dir, "detr_dataset.json")
+        os.makedirs(output_dir, exist_ok=True)
+        dataset_cmd = [
+            sys.executable, "-m", "dataset_generator.build_detr_dataset",
+            args.code_path,
+            "--report", args.report,
+            "--output", detr_output
+        ]
+        run_command(dataset_cmd, env)
 
 
 if __name__ == "__main__":

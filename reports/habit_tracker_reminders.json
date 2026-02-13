@@ -309,76 +309,6 @@
     },
     {
         "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_calc_streak_days' in ./samples/habit_tracker_reminders/unused_helpers.py",
-        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
-        "function": "_calc_streak_days",
-        "start_line_number": 2,
-        "end_line_number": 4,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_calc_completion_ratio' in ./samples/habit_tracker_reminders/unused_helpers.py",
-        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
-        "function": "_calc_completion_ratio",
-        "start_line_number": 6,
-        "end_line_number": 8,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_calc_bonus_points' in ./samples/habit_tracker_reminders/unused_helpers.py",
-        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
-        "function": "_calc_bonus_points",
-        "start_line_number": 10,
-        "end_line_number": 12,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'HabitDaily' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
-        "file_path": "./samples/habit_tracker_reminders/habits.py",
-        "class_name": "HabitDaily",
-        "start_line_number": 9,
-        "end_line_number": 12,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'HabitWeekly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
-        "file_path": "./samples/habit_tracker_reminders/habits.py",
-        "class_name": "HabitWeekly",
-        "start_line_number": 14,
-        "end_line_number": 17,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'HabitMonthly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
-        "file_path": "./samples/habit_tracker_reminders/habits.py",
-        "class_name": "HabitMonthly",
-        "start_line_number": 19,
-        "end_line_number": 22,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'HabitAnnual' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
-        "file_path": "./samples/habit_tracker_reminders/habits.py",
-        "class_name": "HabitAnnual",
-        "start_line_number": 24,
-        "end_line_number": 27,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
         "name": "Lazy Class",
         "description": "Class 'HabitType01' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
         "file_path": "./samples/habit_tracker_reminders/catalog.py",
@@ -578,6 +508,76 @@
         "severity": "low"
     },
     {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'HabitDaily' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+        "file_path": "./samples/habit_tracker_reminders/habits.py",
+        "class_name": "HabitDaily",
+        "start_line_number": 9,
+        "end_line_number": 12,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'HabitWeekly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+        "file_path": "./samples/habit_tracker_reminders/habits.py",
+        "class_name": "HabitWeekly",
+        "start_line_number": 14,
+        "end_line_number": 17,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'HabitMonthly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+        "file_path": "./samples/habit_tracker_reminders/habits.py",
+        "class_name": "HabitMonthly",
+        "start_line_number": 19,
+        "end_line_number": 22,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'HabitAnnual' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+        "file_path": "./samples/habit_tracker_reminders/habits.py",
+        "class_name": "HabitAnnual",
+        "start_line_number": 24,
+        "end_line_number": 27,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_calc_streak_days' in ./samples/habit_tracker_reminders/unused_helpers.py",
+        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
+        "function": "_calc_streak_days",
+        "start_line_number": 2,
+        "end_line_number": 4,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_calc_completion_ratio' in ./samples/habit_tracker_reminders/unused_helpers.py",
+        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
+        "function": "_calc_completion_ratio",
+        "start_line_number": 6,
+        "end_line_number": 8,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_calc_bonus_points' in ./samples/habit_tracker_reminders/unused_helpers.py",
+        "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
+        "function": "_calc_bonus_points",
+        "start_line_number": 10,
+        "end_line_number": 12,
+        "severity": "low"
+    },
+    {
         "type": "Architectural",
         "name": "Potential Redundant Abstractions",
         "description": "Modules notifier_a and notifier_b have 100.0% similar functionalities\nOverlapping function instances: notifier_a.format_message(2-4), notifier_a.schedule_next(14-16), notifier_a.send_daily(6-8), notifier_a.send_weekly(10-12), notifier_b.format_message(2-4), notifier_b.schedule_next(14-16), notifier_b.send_daily(6-8), notifier_b.send_weekly(10-12)",
@@ -630,6 +630,24 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
+        "description": "'catalog' is isolated from other modules",
+        "file_path": "./samples/habit_tracker_reminders/catalog.py",
+        "start_line_number": 1,
+        "end_line_number": 99,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'habits' is isolated from other modules",
+        "file_path": "./samples/habit_tracker_reminders/habits.py",
+        "start_line_number": 1,
+        "end_line_number": 27,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
         "description": "'notifier_a' is isolated from other modules",
         "file_path": "./samples/habit_tracker_reminders/notifier_a.py",
         "start_line_number": 1,
@@ -652,24 +670,6 @@
         "file_path": "./samples/habit_tracker_reminders/unused_helpers.py",
         "start_line_number": 1,
         "end_line_number": 12,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'habits' is isolated from other modules",
-        "file_path": "./samples/habit_tracker_reminders/habits.py",
-        "start_line_number": 1,
-        "end_line_number": 27,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'catalog' is isolated from other modules",
-        "file_path": "./samples/habit_tracker_reminders/catalog.py",
-        "start_line_number": 1,
-        "end_line_number": 99,
         "severity": "medium"
     }
 ]

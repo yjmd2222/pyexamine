@@ -1,0 +1,1448 @@
+{
+  "sample_id": "habit_tracker_reminders",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\habit_tracker_reminders",
+  "text": "[file]\npath=habit_tracker_reminders/catalog.py\n\nclass HabitType01:\n    def key(self):\n        return \"habit_01\"\n\n\nclass HabitType02:\n    def key(self):\n        return \"habit_02\"\n\n\nclass HabitType03:\n    def key(self):\n        return \"habit_03\"\n\n\nclass HabitType04:\n    def key(self):\n        return \"habit_04\"\n\n\nclass HabitType05:\n    def key(self):\n        return \"habit_05\"\n\n\nclass HabitType06:\n    def key(self):\n        return \"habit_06\"\n\n\nclass HabitType07:\n    def key(self):\n        return \"habit_07\"\n\n\nclass HabitType08:\n    def key(self):\n        return \"habit_08\"\n\n\nclass HabitType09:\n    def key(self):\n        return \"habit_09\"\n\n\nclass HabitType10:\n    def key(self):\n        return \"habit_10\"\n\n\nclass HabitType11:\n    def key(self):\n        return \"habit_11\"\n\n\nclass HabitType12:\n    def key(self):\n        return \"habit_12\"\n\n\nclass HabitType13:\n    def key(self):\n        return \"habit_13\"\n\n\nclass HabitType14:\n    def key(self):\n        return \"habit_14\"\n\n\nclass HabitType15:\n    def key(self):\n        return \"habit_15\"\n\n\nclass HabitType16:\n    def key(self):\n        return \"habit_16\"\n\n\nclass HabitType17:\n    def key(self):\n        return \"habit_17\"\n\n\nclass HabitType18:\n    def key(self):\n        return \"habit_18\"\n\n\nclass HabitType19:\n    def key(self):\n        return \"habit_19\"\n\n\nclass HabitType20:\n    def key(self):\n        return \"habit_20\"\n\n[file]\npath=habit_tracker_reminders/habits.py\n\nclass HabitBase:\n    def __init__(self, name: str):\n        self.name = name\n\n    def label(self):\n        return self.name.title()\n\n\nclass HabitDaily(HabitBase):\n    def cadence(self):\n        return \"daily\"\n\n\nclass HabitWeekly(HabitDaily):\n    def cadence(self):\n        return \"weekly\"\n\n\nclass HabitMonthly(HabitWeekly):\n    def cadence(self):\n        return \"monthly\"\n\n\nclass HabitAnnual(HabitMonthly):\n    def cadence(self):\n        return \"annual\"\n\n[file]\npath=habit_tracker_reminders/notifier_a.py\n\n\ndef format_message(user: str, habit: str):\n    return f\"Hi {user}, remember {habit}.\"\n\n\ndef send_daily(user: str, habit: str):\n    return format_message(user, habit)\n\n\ndef send_weekly(user: str, habit: str):\n    return format_message(user, habit)\n\n\ndef schedule_next(day: str):\n    return f\"next:{day}\"\n\n[file]\npath=habit_tracker_reminders/notifier_b.py\n\n\ndef format_message(user: str, habit: str):\n    return f\"Hello {user}, keep up with {habit}.\"\n\n\ndef send_daily(user: str, habit: str):\n    return format_message(user, habit)\n\n\ndef send_weekly(user: str, habit: str):\n    return format_message(user, habit)\n\n\ndef schedule_next(day: str):\n    return f\"next:{day}\"\n\n[file]\npath=habit_tracker_reminders/unused_helpers.py\n\n\ndef _calc_streak_days(total: int, missed: int):\n    return max(total - missed, 0)\n\n\ndef _calc_completion_ratio(done: int, planned: int):\n    return done / planned if planned else 0.0\n\n\ndef _calc_bonus_points(streak: int):\n    return min(streak * 2, 100)\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "habit_tracker_reminders/catalog.py",
+      "content_start_char": 48,
+      "content_end_char": 1366,
+      "num_lines": 99
+    },
+    {
+      "segment_id": 1,
+      "path": "habit_tracker_reminders/habits.py",
+      "content_start_char": 1414,
+      "content_end_char": 1868,
+      "num_lines": 27
+    },
+    {
+      "segment_id": 2,
+      "path": "habit_tracker_reminders/notifier_a.py",
+      "content_start_char": 1920,
+      "content_end_char": 2224,
+      "num_lines": 16
+    },
+    {
+      "segment_id": 3,
+      "path": "habit_tracker_reminders/notifier_b.py",
+      "content_start_char": 2276,
+      "content_end_char": 2587,
+      "num_lines": 16
+    },
+    {
+      "segment_id": 4,
+      "path": "habit_tracker_reminders/unused_helpers.py",
+      "content_start_char": 2643,
+      "content_end_char": 2898,
+      "num_lines": 12
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Number of Classes per Module",
+      "severity": "Medium",
+      "description": "Module 'catalog' has 20 significant classes (avg complexity: 0.7)\nClass locations: HabitType01(1-4), HabitType02(6-9), HabitType03(11-14), HabitType04(16-19), HabitType05(21-24), HabitType06(26-29), HabitType07(31-34), HabitType08(36-39), HabitType09(41-44), HabitType10(46-49), HabitType11(51-54), HabitType12(56-59), HabitType13(61-64), HabitType14(66-69), HabitType15(71-74), HabitType16(76-79), HabitType17(81-84), HabitType18(86-89), HabitType19(91-94), HabitType20(96-99)",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 48,
+          "end_char": 112
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 6,
+          "end_line": 9,
+          "start_char": 114,
+          "end_char": 178
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 11,
+          "end_line": 14,
+          "start_char": 180,
+          "end_char": 244
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 16,
+          "end_line": 19,
+          "start_char": 246,
+          "end_char": 310
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 24,
+          "start_char": 312,
+          "end_char": 376
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 26,
+          "end_line": 29,
+          "start_char": 378,
+          "end_char": 442
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 31,
+          "end_line": 34,
+          "start_char": 444,
+          "end_char": 508
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 36,
+          "end_line": 39,
+          "start_char": 510,
+          "end_char": 574
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 41,
+          "end_line": 44,
+          "start_char": 576,
+          "end_char": 640
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 46,
+          "end_line": 49,
+          "start_char": 642,
+          "end_char": 706
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 51,
+          "end_line": 54,
+          "start_char": 708,
+          "end_char": 772
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 56,
+          "end_line": 59,
+          "start_char": 774,
+          "end_char": 838
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 61,
+          "end_line": 64,
+          "start_char": 840,
+          "end_char": 904
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 66,
+          "end_line": 69,
+          "start_char": 906,
+          "end_char": 970
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 71,
+          "end_line": 74,
+          "start_char": 972,
+          "end_char": 1036
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 76,
+          "end_line": 79,
+          "start_char": 1038,
+          "end_char": 1102
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 81,
+          "end_line": 84,
+          "start_char": 1104,
+          "end_char": 1168
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 86,
+          "end_line": 89,
+          "start_char": 1170,
+          "end_char": 1234
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 91,
+          "end_line": 94,
+          "start_char": 1236,
+          "end_char": 1300
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 96,
+          "end_line": 99,
+          "start_char": 1302,
+          "end_char": 1366
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "Deep Inheritance Tree (DIT)",
+      "severity": "Medium",
+      "description": "Class 'habits.HabitMonthly' has DIT of 4\nInheritance path: object->habits.HabitBase->habits.HabitDaily->habits.HabitWeekly->habits.HabitMonthly",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1414,
+          "end_char": 1546
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 1548,
+          "end_char": 1623
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 17,
+          "start_char": 1625,
+          "end_char": 1703
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 22,
+          "start_char": 1705,
+          "end_char": 1786
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Structural",
+      "smell_name": "Deep Inheritance Tree (DIT)",
+      "severity": "High",
+      "description": "Class 'habits.HabitAnnual' has DIT of 5\nInheritance path: object->habits.HabitBase->habits.HabitDaily->habits.HabitWeekly->habits.HabitMonthly->habits.HabitAnnual",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1414,
+          "end_char": 1546
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 1548,
+          "end_char": 1623
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 17,
+          "start_char": 1625,
+          "end_char": 1703
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 22,
+          "start_char": 1705,
+          "end_char": 1786
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 27,
+          "start_char": 1788,
+          "end_char": 1868
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Structural",
+      "smell_name": "High Number of classes per Project",
+      "severity": "High",
+      "description": "Project has 24.3 weighted classes:\n- Regular classes: 24\n- Abstract/Interface classes: 0\n- Utility classes: 1\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- catalog: HabitType01(1-4), HabitType02(6-9), HabitType03(11-14), HabitType04(16-19), HabitType05(21-24), HabitType06(26-29), HabitType07(31-34), HabitType08(36-39), HabitType09(41-44), HabitType10(46-49), HabitType11(51-54), HabitType12(56-59), HabitType13(61-64), HabitType14(66-69), HabitType15(71-74), HabitType16(76-79), HabitType17(81-84), HabitType18(86-89), HabitType19(91-94), HabitType20(96-99)\n- habits: HabitBase(1-7), HabitDaily(9-12), HabitWeekly(14-17), HabitMonthly(19-22), HabitAnnual(24-27)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 48,
+          "end_char": 112
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 6,
+          "end_line": 9,
+          "start_char": 114,
+          "end_char": 178
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 11,
+          "end_line": 14,
+          "start_char": 180,
+          "end_char": 244
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 16,
+          "end_line": 19,
+          "start_char": 246,
+          "end_char": 310
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 24,
+          "start_char": 312,
+          "end_char": 376
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 26,
+          "end_line": 29,
+          "start_char": 378,
+          "end_char": 442
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 31,
+          "end_line": 34,
+          "start_char": 444,
+          "end_char": 508
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 36,
+          "end_line": 39,
+          "start_char": 510,
+          "end_char": 574
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 41,
+          "end_line": 44,
+          "start_char": 576,
+          "end_char": 640
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 46,
+          "end_line": 49,
+          "start_char": 642,
+          "end_char": 706
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 51,
+          "end_line": 54,
+          "start_char": 708,
+          "end_char": 772
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 56,
+          "end_line": 59,
+          "start_char": 774,
+          "end_char": 838
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 61,
+          "end_line": 64,
+          "start_char": 840,
+          "end_char": 904
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 66,
+          "end_line": 69,
+          "start_char": 906,
+          "end_char": 970
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 71,
+          "end_line": 74,
+          "start_char": 972,
+          "end_char": 1036
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 76,
+          "end_line": 79,
+          "start_char": 1038,
+          "end_char": 1102
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 81,
+          "end_line": 84,
+          "start_char": 1104,
+          "end_char": 1168
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 86,
+          "end_line": 89,
+          "start_char": 1170,
+          "end_char": 1234
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 91,
+          "end_line": 94,
+          "start_char": 1236,
+          "end_char": 1300
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 96,
+          "end_line": 99,
+          "start_char": 1302,
+          "end_char": 1366
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 7,
+          "start_char": 1414,
+          "end_char": 1546
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 1548,
+          "end_char": 1623
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 17,
+          "start_char": 1625,
+          "end_char": 1703
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 22,
+          "start_char": 1705,
+          "end_char": 1786
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 27,
+          "start_char": 1788,
+          "end_char": 1868
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType01' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 48,
+        "end_char": 112
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 48,
+          "end_char": 112
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType02' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 6,
+        "end_line": 9,
+        "start_char": 114,
+        "end_char": 178
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 6,
+          "end_line": 9,
+          "start_char": 114,
+          "end_char": 178
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType03' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 11,
+        "end_line": 14,
+        "start_char": 180,
+        "end_char": 244
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 11,
+          "end_line": 14,
+          "start_char": 180,
+          "end_char": 244
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType04' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 16,
+        "end_line": 19,
+        "start_char": 246,
+        "end_char": 310
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 16,
+          "end_line": 19,
+          "start_char": 246,
+          "end_char": 310
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType05' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 21,
+        "end_line": 24,
+        "start_char": 312,
+        "end_char": 376
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 24,
+          "start_char": 312,
+          "end_char": 376
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType06' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 26,
+        "end_line": 29,
+        "start_char": 378,
+        "end_char": 442
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 26,
+          "end_line": 29,
+          "start_char": 378,
+          "end_char": 442
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType07' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 31,
+        "end_line": 34,
+        "start_char": 444,
+        "end_char": 508
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 31,
+          "end_line": 34,
+          "start_char": 444,
+          "end_char": 508
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType08' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 36,
+        "end_line": 39,
+        "start_char": 510,
+        "end_char": 574
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 36,
+          "end_line": 39,
+          "start_char": 510,
+          "end_char": 574
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType09' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 41,
+        "end_line": 44,
+        "start_char": 576,
+        "end_char": 640
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 41,
+          "end_line": 44,
+          "start_char": 576,
+          "end_char": 640
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType10' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 46,
+        "end_line": 49,
+        "start_char": 642,
+        "end_char": 706
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 46,
+          "end_line": 49,
+          "start_char": 642,
+          "end_char": 706
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType11' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 51,
+        "end_line": 54,
+        "start_char": 708,
+        "end_char": 772
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 51,
+          "end_line": 54,
+          "start_char": 708,
+          "end_char": 772
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType12' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 56,
+        "end_line": 59,
+        "start_char": 774,
+        "end_char": 838
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 56,
+          "end_line": 59,
+          "start_char": 774,
+          "end_char": 838
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType13' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 61,
+        "end_line": 64,
+        "start_char": 840,
+        "end_char": 904
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 61,
+          "end_line": 64,
+          "start_char": 840,
+          "end_char": 904
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType14' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 66,
+        "end_line": 69,
+        "start_char": 906,
+        "end_char": 970
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 66,
+          "end_line": 69,
+          "start_char": 906,
+          "end_char": 970
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType15' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 71,
+        "end_line": 74,
+        "start_char": 972,
+        "end_char": 1036
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 71,
+          "end_line": 74,
+          "start_char": 972,
+          "end_char": 1036
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType16' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 76,
+        "end_line": 79,
+        "start_char": 1038,
+        "end_char": 1102
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 76,
+          "end_line": 79,
+          "start_char": 1038,
+          "end_char": 1102
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType17' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 81,
+        "end_line": 84,
+        "start_char": 1104,
+        "end_char": 1168
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 81,
+          "end_line": 84,
+          "start_char": 1104,
+          "end_char": 1168
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType18' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 86,
+        "end_line": 89,
+        "start_char": 1170,
+        "end_char": 1234
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 86,
+          "end_line": 89,
+          "start_char": 1170,
+          "end_char": 1234
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType19' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 91,
+        "end_line": 94,
+        "start_char": 1236,
+        "end_char": 1300
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 91,
+          "end_line": 94,
+          "start_char": 1236,
+          "end_char": 1300
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitType20' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/catalog.py",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 96,
+        "end_line": 99,
+        "start_char": 1302,
+        "end_char": 1366
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 96,
+          "end_line": 99,
+          "start_char": 1302,
+          "end_char": 1366
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitDaily' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/habits.py",
+        "segment_id": 1,
+        "start_line": 9,
+        "end_line": 12,
+        "start_char": 1548,
+        "end_char": 1623
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 1548,
+          "end_char": 1623
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitWeekly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/habits.py",
+        "segment_id": 1,
+        "start_line": 14,
+        "end_line": 17,
+        "start_char": 1625,
+        "end_char": 1703
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 14,
+          "end_line": 17,
+          "start_char": 1625,
+          "end_char": 1703
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitMonthly' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/habits.py",
+        "segment_id": 1,
+        "start_line": 19,
+        "end_line": 22,
+        "start_char": 1705,
+        "end_char": 1786
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 19,
+          "end_line": 22,
+          "start_char": 1705,
+          "end_char": 1786
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'HabitAnnual' has only 0 non-trivial methods with 0 total lines in ./samples/habit_tracker_reminders/habits.py",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/habits.py",
+        "segment_id": 1,
+        "start_line": 24,
+        "end_line": 27,
+        "start_char": 1788,
+        "end_char": 1868
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 24,
+          "end_line": 27,
+          "start_char": 1788,
+          "end_char": 1868
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_calc_streak_days' in ./samples/habit_tracker_reminders/unused_helpers.py",
+      "primary_file": "./samples/habit_tracker_reminders/unused_helpers.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/unused_helpers.py",
+        "segment_id": 4,
+        "start_line": 2,
+        "end_line": 4,
+        "start_char": 2644,
+        "end_char": 2726
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/unused_helpers.py",
+          "segment_id": 4,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 2644,
+          "end_char": 2726
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_calc_completion_ratio' in ./samples/habit_tracker_reminders/unused_helpers.py",
+      "primary_file": "./samples/habit_tracker_reminders/unused_helpers.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/unused_helpers.py",
+        "segment_id": 4,
+        "start_line": 6,
+        "end_line": 8,
+        "start_char": 2728,
+        "end_char": 2827
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/unused_helpers.py",
+          "segment_id": 4,
+          "start_line": 6,
+          "end_line": 8,
+          "start_char": 2728,
+          "end_char": 2827
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "category": "Code",
+      "smell_name": "Dead Code",
+      "severity": "low",
+      "description": "Potentially unused function '_calc_bonus_points' in ./samples/habit_tracker_reminders/unused_helpers.py",
+      "primary_file": "./samples/habit_tracker_reminders/unused_helpers.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/unused_helpers.py",
+        "segment_id": 4,
+        "start_line": 10,
+        "end_line": 12,
+        "start_char": 2829,
+        "end_char": 2898
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/unused_helpers.py",
+          "segment_id": 4,
+          "start_line": 10,
+          "end_line": 12,
+          "start_char": 2829,
+          "end_char": 2898
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'catalog' is isolated from other modules",
+      "primary_file": "./samples/habit_tracker_reminders/catalog.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/catalog.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 99,
+        "start_char": 48,
+        "end_char": 1366
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/catalog.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 99,
+          "start_char": 48,
+          "end_char": 1366
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'habits' is isolated from other modules",
+      "primary_file": "./samples/habit_tracker_reminders/habits.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/habits.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 27,
+        "start_char": 1414,
+        "end_char": 1868
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/habits.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 27,
+          "start_char": 1414,
+          "end_char": 1868
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'notifier_a' is isolated from other modules",
+      "primary_file": "./samples/habit_tracker_reminders/notifier_a.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/notifier_a.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 16,
+        "start_char": 1920,
+        "end_char": 2224
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/notifier_a.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 16,
+          "start_char": 1920,
+          "end_char": 2224
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'notifier_b' is isolated from other modules",
+      "primary_file": "./samples/habit_tracker_reminders/notifier_b.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/notifier_b.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 16,
+        "start_char": 2276,
+        "end_char": 2587
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/notifier_b.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 16,
+          "start_char": 2276,
+          "end_char": 2587
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'unused_helpers' is isolated from other modules",
+      "primary_file": "./samples/habit_tracker_reminders/unused_helpers.py",
+      "anchor": {
+        "file": "habit_tracker_reminders/unused_helpers.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 12,
+        "start_char": 2643,
+        "end_char": 2898
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "habit_tracker_reminders/unused_helpers.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 12,
+          "start_char": 2643,
+          "end_char": 2898
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES",
+      "RELATED_INSTANCE_LINES"
+    ],
+    "num_instances": 36,
+    "dropped_instances_without_resolved_spans": 1
+  }
+}

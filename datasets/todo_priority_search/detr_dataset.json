@@ -1,0 +1,664 @@
+{
+  "sample_id": "todo_priority_search",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\todo_priority_search",
+  "text": "[file]\npath=todo_priority_search/callsites.py\n\nclass AuditLog:\n    def publish(self, message: str):\n        return message\n\n\ndef save_task(log: AuditLog):\n    log.publish(\"saved\")\n\n\ndef update_task(log: AuditLog):\n    log.publish(\"updated\")\n\n\ndef close_task(log: AuditLog):\n    log.publish(\"closed\")\n\n\ndef reopen_task(log: AuditLog):\n    log.publish(\"reopened\")\n\n\ndef assign_task(log: AuditLog):\n    log.publish(\"assigned\")\n\n[file]\npath=todo_priority_search/dispatch.py\n\nclass TaskDispatcher:\n    def trigger(self, command: str):\n        if command == \"add\":\n            return \"add\"\n        elif command == \"edit\":\n            return \"edit\"\n        elif command == \"close\":\n            return \"close\"\n        elif command == \"archive\":\n            return \"archive\"\n        elif command == \"reopen\":\n            return \"reopen\"\n        elif command == \"assign\":\n            return \"assign\"\n        elif command == \"comment\":\n            return \"comment\"\n        elif command == \"label\":\n            return \"label\"\n        elif command == \"sort\":\n            return \"sort\"\n        elif command == \"filter\":\n            return \"filter\"\n        else:\n            return \"unknown\"\n\n[file]\npath=todo_priority_search/templates.py\n\nclass BoardBase:\n    def render(self):\n        return \"base\"\n\n\nclass BoardSimple(BoardBase):\n    def render(self):\n        return \"simple\"\n\n    def export(self):\n        return \"export_simple\"\n\n\nclass BoardAdvanced(BoardBase):\n    def render(self):\n        return \"advanced\"\n\n    def export(self):\n        return \"export_advanced\"\n\n\nclass CardBase:\n    def paint(self):\n        return \"base\"\n\n\nclass CardSimple(CardBase):\n    def paint(self):\n        return \"simple\"\n\n    def export(self):\n        return \"export_simple\"\n\n\nclass CardAdvanced(CardBase):\n    def paint(self):\n        return \"advanced\"\n\n    def export(self):\n        return \"export_advanced\"\n\n[file]\npath=todo_priority_search/workflow.py\n\nclass TaskWorkflow:\n    def sync_state(self):\n        return \"sync_state\"\n\n    def index_state(self):\n        return \"index_state\"\n\n    def export_state(self):\n        return \"export_state\"\n\n    def notify_state(self):\n        return \"notify_state\"\n\n    def audit_state(self):\n        return \"audit_state\"\n\n    def alert_state(self):\n        return \"alert_state\"\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "todo_priority_search/callsites.py",
+      "content_start_char": 47,
+      "content_end_char": 424,
+      "num_lines": 24
+    },
+    {
+      "segment_id": 1,
+      "path": "todo_priority_search/dispatch.py",
+      "content_start_char": 471,
+      "content_end_char": 1177,
+      "num_lines": 25
+    },
+    {
+      "segment_id": 2,
+      "path": "todo_priority_search/templates.py",
+      "content_start_char": 1225,
+      "content_end_char": 1881,
+      "num_lines": 41
+    },
+    {
+      "segment_id": 3,
+      "path": "todo_priority_search/workflow.py",
+      "content_start_char": 1928,
+      "content_end_char": 2291,
+      "num_lines": 19
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Lack of Cohesion of Methods (LCOM)",
+      "severity": "Medium",
+      "description": "Class 'workflow.TaskWorkflow' has LCOM of 15 (non-cohesive: 15, cohesive: 0)",
+      "primary_file": "./samples/todo_priority_search/workflow.py",
+      "anchor": {
+        "file": "todo_priority_search/workflow.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 19,
+        "start_char": 1928,
+        "end_char": 2291
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 19,
+          "start_char": 1928,
+          "end_char": 2291
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "High Number of classes per Project",
+      "severity": "Medium",
+      "description": "Project has 7.6 weighted classes:\n- Regular classes: 7\n- Abstract/Interface classes: 0\n- Utility classes: 2\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- callsites: AuditLog(1-4)\n- dispatch: TaskDispatcher(1-25)\n- templates: BoardBase(1-4), BoardSimple(6-12), BoardAdvanced(14-20), CardBase(22-25), CardSimple(27-33), CardAdvanced(35-41)\n- workflow: TaskWorkflow(1-19)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/callsites.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 47,
+          "end_char": 123
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/dispatch.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 471,
+          "end_char": 1177
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 1225,
+          "end_char": 1286
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 6,
+          "end_line": 12,
+          "start_char": 1288,
+          "end_char": 1418
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 20,
+          "start_char": 1420,
+          "end_char": 1556
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 22,
+          "end_line": 25,
+          "start_char": 1558,
+          "end_char": 1617
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 27,
+          "end_line": 33,
+          "start_char": 1619,
+          "end_char": 1746
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 35,
+          "end_line": 41,
+          "start_char": 1748,
+          "end_char": 1881
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 19,
+          "start_char": 1928,
+          "end_char": 2291
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Structural",
+      "smell_name": "High Cyclomatic Complexity",
+      "severity": "High",
+      "description": "Method 'trigger' has cyclomatic complexity of 20",
+      "primary_file": "./samples/todo_priority_search/dispatch.py",
+      "anchor": {
+        "file": "todo_priority_search/dispatch.py",
+        "segment_id": 1,
+        "start_line": 2,
+        "end_line": 25,
+        "start_char": 493,
+        "end_char": 1177
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/dispatch.py",
+          "segment_id": 1,
+          "start_line": 2,
+          "end_line": 25,
+          "start_char": 493,
+          "end_char": 1177
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Structural",
+      "smell_name": "Too Many Branches",
+      "severity": "High",
+      "description": "Method 'trigger' has 19 branches with max nesting of 10",
+      "primary_file": "./samples/todo_priority_search/dispatch.py",
+      "anchor": {
+        "file": "todo_priority_search/dispatch.py",
+        "segment_id": 1,
+        "start_line": 2,
+        "end_line": 25,
+        "start_char": 493,
+        "end_char": 1177
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/dispatch.py",
+          "segment_id": 1,
+          "start_line": 2,
+          "end_line": 25,
+          "start_char": 493,
+          "end_char": 1177
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'AuditLog' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/callsites.py",
+      "primary_file": "./samples/todo_priority_search/callsites.py",
+      "anchor": {
+        "file": "todo_priority_search/callsites.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 4,
+        "start_char": 47,
+        "end_char": 123
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/callsites.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 47,
+          "end_char": 123
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'TaskDispatcher' has only 1 non-trivial methods with 22 total lines in ./samples/todo_priority_search/dispatch.py",
+      "primary_file": "./samples/todo_priority_search/dispatch.py",
+      "anchor": {
+        "file": "todo_priority_search/dispatch.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 25,
+        "start_char": 471,
+        "end_char": 1177
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/dispatch.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 471,
+          "end_char": 1177
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Parallel Inheritance Hierarchies",
+      "severity": "high",
+      "description": "Parallel hierarchies detected: BoardBase (lines 1-4) -> BoardSimple (lines 6-12) -> BoardAdvanced (lines 14-20) and CardBase (lines 22-25) -> CardSimple (lines 27-33) -> CardAdvanced (lines 35-41) in ./samples/todo_priority_search/templates.py",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 4,
+          "start_char": 1225,
+          "end_char": 1286
+        },
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 6,
+          "end_line": 12,
+          "start_char": 1288,
+          "end_char": 1418
+        },
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 20,
+          "start_char": 1420,
+          "end_char": 1556
+        },
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 22,
+          "end_line": 25,
+          "start_char": 1558,
+          "end_char": 1617
+        },
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 27,
+          "end_line": 33,
+          "start_char": 1619,
+          "end_char": 1746
+        },
+        {
+          "role": "CLASSES",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 35,
+          "end_line": 41,
+          "start_char": 1748,
+          "end_char": 1881
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'BoardSimple' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": {
+        "file": "todo_priority_search/templates.py",
+        "segment_id": 2,
+        "start_line": 6,
+        "end_line": 12,
+        "start_char": 1288,
+        "end_char": 1418
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 6,
+          "end_line": 12,
+          "start_char": 1288,
+          "end_char": 1418
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'BoardAdvanced' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": {
+        "file": "todo_priority_search/templates.py",
+        "segment_id": 2,
+        "start_line": 14,
+        "end_line": 20,
+        "start_char": 1420,
+        "end_char": 1556
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 20,
+          "start_char": 1420,
+          "end_char": 1556
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'CardSimple' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": {
+        "file": "todo_priority_search/templates.py",
+        "segment_id": 2,
+        "start_line": 27,
+        "end_line": 33,
+        "start_char": 1619,
+        "end_char": 1746
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 27,
+          "end_line": 33,
+          "start_char": 1619,
+          "end_char": 1746
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'CardAdvanced' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": {
+        "file": "todo_priority_search/templates.py",
+        "segment_id": 2,
+        "start_line": 35,
+        "end_line": 41,
+        "start_char": 1748,
+        "end_char": 1881
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 35,
+          "end_line": 41,
+          "start_char": 1748,
+          "end_char": 1881
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Potential Divergent Change",
+      "severity": "medium",
+      "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, export, alert, sync, audit, index in ./samples/todo_priority_search/workflow.py",
+      "primary_file": "./samples/todo_priority_search/workflow.py",
+      "anchor": {
+        "file": "todo_priority_search/workflow.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 18,
+        "start_char": 1928,
+        "end_char": 2262
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 18,
+          "start_char": 1928,
+          "end_char": 2262
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 1948,
+          "end_char": 2002
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 5,
+          "end_line": 7,
+          "start_char": 2003,
+          "end_char": 2059
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 8,
+          "end_line": 10,
+          "start_char": 2060,
+          "end_char": 2118
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 11,
+          "end_line": 13,
+          "start_char": 2119,
+          "end_char": 2177
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 14,
+          "end_line": 16,
+          "start_char": 2178,
+          "end_char": 2234
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 17,
+          "end_line": 19,
+          "start_char": 2235,
+          "end_char": 2291
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'TaskWorkflow' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/workflow.py",
+      "primary_file": "./samples/todo_priority_search/workflow.py",
+      "anchor": {
+        "file": "todo_priority_search/workflow.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 19,
+        "start_char": 1928,
+        "end_char": 2291
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 19,
+          "start_char": 1928,
+          "end_char": 2291
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'callsites' is isolated from other modules",
+      "primary_file": "./samples/todo_priority_search/callsites.py",
+      "anchor": {
+        "file": "todo_priority_search/callsites.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 24,
+        "start_char": 47,
+        "end_char": 424
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/callsites.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 24,
+          "start_char": 47,
+          "end_char": 424
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'dispatch' is isolated from other modules",
+      "primary_file": "./samples/todo_priority_search/dispatch.py",
+      "anchor": {
+        "file": "todo_priority_search/dispatch.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 25,
+        "start_char": 471,
+        "end_char": 1177
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/dispatch.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 471,
+          "end_char": 1177
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'templates' is isolated from other modules",
+      "primary_file": "./samples/todo_priority_search/templates.py",
+      "anchor": {
+        "file": "todo_priority_search/templates.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 41,
+        "start_char": 1225,
+        "end_char": 1881
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/templates.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 41,
+          "start_char": 1225,
+          "end_char": 1881
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'workflow' is isolated from other modules",
+      "primary_file": "./samples/todo_priority_search/workflow.py",
+      "anchor": {
+        "file": "todo_priority_search/workflow.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 19,
+        "start_char": 1928,
+        "end_char": 2291
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "todo_priority_search/workflow.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 19,
+          "start_char": 1928,
+          "end_char": 2291
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "CLASSES",
+      "INSTANCE_LINES",
+      "RELATED_INSTANCE_LINES"
+    ],
+    "num_instances": 17,
+    "dropped_instances_without_resolved_spans": 0
+  }
+}

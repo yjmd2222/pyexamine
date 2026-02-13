@@ -1,0 +1,530 @@
+{
+  "sample_id": "image_organizer",
+  "code_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\samples\\image_organizer",
+  "text": "[file]\npath=image_organizer/brokers.py\n\nclass ImportBroker:\n    def __init__(self, reader, scanner):\n        self.reader = reader\n        self.scanner = scanner\n\n    def read(self, path: str):\n        return self.reader.read(path)\n\n    def scan(self, path: str):\n        return self.scanner.scan(path)\n\n    def refresh(self, path: str):\n        return self.reader.read(path)\n\n    def rescan(self, path: str):\n        return self.scanner.scan(path)\n\n[file]\npath=image_organizer/catalog.py\n\nclass AlbumCatalog:\n    def __init__(self):\n        self.cover_path = \"\"\n        self.owner = \"\"\n        self.created = \"\"\n        self.updated = \"\"\n        self.title = \"\"\n        self.subtitle = \"\"\n        self.theme = \"\"\n        self.layout = \"\"\n        self.count = 0\n        self.size = 0\n        self.version = 1\n\n    def set_title(self, title: str):\n        self.title = title\n\n    def set_owner(self, owner: str):\n        self.owner = owner\n\n    def set_theme(self, theme: str):\n        self.theme = theme\n\n    def set_layout(self, layout: str):\n        self.layout = layout\n\n    def set_cover_path(self, cover_path: str):\n        self.cover_path = cover_path\n\n    def generate_preview(self):\n        return f\"{self.title}:{self.cover_path}\"\n\n[file]\npath=image_organizer/layout.py\n\nclass LayoutPicker:\n    def select(self, mode: str):\n        if mode == \"timeline\":\n            return \"timeline\"\n        elif mode == \"grid\":\n            return \"grid\"\n        elif mode == \"mosaic\":\n            return \"mosaic\"\n        elif mode == \"map\":\n            return \"map\"\n        elif mode == \"story\":\n            return \"story\"\n        elif mode == \"album\":\n            return \"album\"\n        elif mode == \"highlight\":\n            return \"highlight\"\n        elif mode == \"favorites\":\n            return \"favorites\"\n        elif mode == \"trip\":\n            return \"trip\"\n        elif mode == \"year\":\n            return \"year\"\n        else:\n            return \"default\"\n\n[file]\npath=image_organizer/lifecycle.py\n\nclass GalleryLifecycle:\n    def start_import(self):\n        state = \"start_import\"\n        return state\n\n    def stop_import(self):\n        state = \"stop_import\"\n        return state\n\n    def start_sync(self):\n        state = \"start_sync\"\n        return state\n\n    def stop_sync(self):\n        state = \"stop_sync\"\n        return state\n\n    def start_share(self):\n        state = \"start_share\"\n        return state\n\n    def stop_share(self):\n        state = \"stop_share\"\n        return state\n\n    def start_backup(self):\n        state = \"start_backup\"\n        return state\n\n    def stop_backup(self):\n        state = \"stop_backup\"\n        return state\n\n    def start_cleanup(self):\n        state = \"start_cleanup\"\n        return state\n\n    def stop_cleanup(self):\n        state = \"stop_cleanup\"\n        return state\n\n    def start_scan(self):\n        state = \"start_scan\"\n        return state\n\n    def stop_scan(self):\n        state = \"stop_scan\"\n        return state\n\n    def start_sort(self):\n        state = \"start_sort\"\n        return state\n\n    def stop_sort(self):\n        state = \"stop_sort\"\n        return state\n\n    def start_rebuild(self):\n        state = \"start_rebuild\"\n        return state\n\n    def stop_rebuild(self):\n        state = \"stop_rebuild\"\n        return state\n\n[file]\npath=image_organizer/rules.py\n\nclass RetentionPolicy:\n    def __init__(self, keep_raw: bool, keep_edits: bool):\n        self.keep_raw = keep_raw\n        self.keep_edits = keep_edits\n        self._cache_hint = \"hot\"\n\n    def apply(self, album):\n        if self.keep_raw:\n            album.raw = True\n        if self.keep_edits:\n            album.edits = True\n        return album\n\n",
+  "files": [
+    {
+      "segment_id": 0,
+      "path": "image_organizer/brokers.py",
+      "content_start_char": 40,
+      "content_end_char": 448,
+      "num_lines": 17
+    },
+    {
+      "segment_id": 1,
+      "path": "image_organizer/catalog.py",
+      "content_start_char": 489,
+      "content_end_char": 1239,
+      "num_lines": 32
+    },
+    {
+      "segment_id": 2,
+      "path": "image_organizer/layout.py",
+      "content_start_char": 1279,
+      "content_end_char": 1957,
+      "num_lines": 25
+    },
+    {
+      "segment_id": 3,
+      "path": "image_organizer/lifecycle.py",
+      "content_start_char": 2000,
+      "content_end_char": 3283,
+      "num_lines": 65
+    },
+    {
+      "segment_id": 4,
+      "path": "image_organizer/rules.py",
+      "content_start_char": 3322,
+      "content_end_char": 3670,
+      "num_lines": 13
+    }
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "category": "Structural",
+      "smell_name": "High Number of Methods (NOM)",
+      "severity": "High",
+      "description": "Class 'lifecycle.GalleryLifecycle' has 16 methods (excluding special methods and properties)",
+      "primary_file": "./samples/image_organizer/lifecycle.py",
+      "anchor": {
+        "file": "image_organizer/lifecycle.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 65,
+        "start_char": 2000,
+        "end_char": 3283
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/lifecycle.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 65,
+          "start_char": 2000,
+          "end_char": 3283
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "Large Class (SIZE2)",
+      "severity": "Medium",
+      "description": "Class 'lifecycle.GalleryLifecycle' has 16 significant members (methods: 16, fields: 0)",
+      "primary_file": "./samples/image_organizer/lifecycle.py",
+      "anchor": {
+        "file": "image_organizer/lifecycle.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 65,
+        "start_char": 2000,
+        "end_char": 3283
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/lifecycle.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 65,
+          "start_char": 2000,
+          "end_char": 3283
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "category": "Structural",
+      "smell_name": "High Lack of Cohesion of Methods (LCOM)",
+      "severity": "Medium",
+      "description": "Class 'catalog.AlbumCatalog' has LCOM of 11 (non-cohesive: 13, cohesive: 2)",
+      "primary_file": "./samples/image_organizer/catalog.py",
+      "anchor": {
+        "file": "image_organizer/catalog.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 32,
+        "start_char": 489,
+        "end_char": 1239
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/catalog.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 32,
+          "start_char": 489,
+          "end_char": 1239
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "category": "Structural",
+      "smell_name": "High Lack of Cohesion of Methods (LCOM)",
+      "severity": "High",
+      "description": "Class 'lifecycle.GalleryLifecycle' has LCOM of 120 (non-cohesive: 120, cohesive: 0)",
+      "primary_file": "./samples/image_organizer/lifecycle.py",
+      "anchor": {
+        "file": "image_organizer/lifecycle.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 65,
+        "start_char": 2000,
+        "end_char": 3283
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/lifecycle.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 65,
+          "start_char": 2000,
+          "end_char": 3283
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "Structural",
+      "smell_name": "High Cyclomatic Complexity",
+      "severity": "High",
+      "description": "Method 'select' has cyclomatic complexity of 20",
+      "primary_file": "./samples/image_organizer/layout.py",
+      "anchor": {
+        "file": "image_organizer/layout.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 25,
+        "start_char": 1299,
+        "end_char": 1957
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/layout.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 25,
+          "start_char": 1299,
+          "end_char": 1957
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "category": "Structural",
+      "smell_name": "Too Many Branches",
+      "severity": "High",
+      "description": "Method 'select' has 19 branches with max nesting of 10",
+      "primary_file": "./samples/image_organizer/layout.py",
+      "anchor": {
+        "file": "image_organizer/layout.py",
+        "segment_id": 2,
+        "start_line": 2,
+        "end_line": 25,
+        "start_char": 1299,
+        "end_char": 1957
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/layout.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 25,
+          "start_char": 1299,
+          "end_char": 1957
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'ImportBroker' has only 0 non-trivial methods with 0 total lines in ./samples/image_organizer/brokers.py",
+      "primary_file": "./samples/image_organizer/brokers.py",
+      "anchor": {
+        "file": "image_organizer/brokers.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 17,
+        "start_char": 40,
+        "end_char": 448
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/brokers.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 17,
+          "start_char": 40,
+          "end_char": 448
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "category": "Code",
+      "smell_name": "Middle Man",
+      "severity": "medium",
+      "description": "Class 'ImportBroker' delegates 4/5 methods (80.0%), mainly to self.reader in ./samples/image_organizer/brokers.py",
+      "primary_file": "./samples/image_organizer/brokers.py",
+      "anchor": {
+        "file": "image_organizer/brokers.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 17,
+        "start_char": 40,
+        "end_char": 448
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/brokers.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 17,
+          "start_char": 40,
+          "end_char": 448
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "image_organizer/brokers.py",
+          "segment_id": 0,
+          "start_line": 6,
+          "end_line": 8,
+          "start_char": 162,
+          "end_char": 231
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "image_organizer/brokers.py",
+          "segment_id": 0,
+          "start_line": 12,
+          "end_line": 14,
+          "start_char": 303,
+          "end_char": 375
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'AlbumCatalog' has only 0 non-trivial methods with 0 total lines in ./samples/image_organizer/catalog.py",
+      "primary_file": "./samples/image_organizer/catalog.py",
+      "anchor": {
+        "file": "image_organizer/catalog.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 32,
+        "start_char": 489,
+        "end_char": 1239
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/catalog.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 32,
+          "start_char": 489,
+          "end_char": 1239
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'LayoutPicker' has only 1 non-trivial methods with 22 total lines in ./samples/image_organizer/layout.py",
+      "primary_file": "./samples/image_organizer/layout.py",
+      "anchor": {
+        "file": "image_organizer/layout.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 25,
+        "start_char": 1279,
+        "end_char": 1957
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/layout.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 1279,
+          "end_char": 1957
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "category": "Code",
+      "smell_name": "Large Class",
+      "severity": "medium",
+      "description": "'GalleryLifecycle' has 16 non-trivial methods in ./samples/image_organizer/lifecycle.py",
+      "primary_file": "./samples/image_organizer/lifecycle.py",
+      "anchor": {
+        "file": "image_organizer/lifecycle.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 65,
+        "start_char": 2000,
+        "end_char": 3283
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/lifecycle.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 65,
+          "start_char": 2000,
+          "end_char": 3283
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "category": "Code",
+      "smell_name": "Lazy Class",
+      "severity": "low",
+      "description": "Class 'RetentionPolicy' has only 1 non-trivial methods with 5 total lines in ./samples/image_organizer/rules.py",
+      "primary_file": "./samples/image_organizer/rules.py",
+      "anchor": {
+        "file": "image_organizer/rules.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 13,
+        "start_char": 3322,
+        "end_char": 3670
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/rules.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 13,
+          "start_char": 3322,
+          "end_char": 3670
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'brokers' is isolated from other modules",
+      "primary_file": "./samples/image_organizer/brokers.py",
+      "anchor": {
+        "file": "image_organizer/brokers.py",
+        "segment_id": 0,
+        "start_line": 1,
+        "end_line": 17,
+        "start_char": 40,
+        "end_char": 448
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/brokers.py",
+          "segment_id": 0,
+          "start_line": 1,
+          "end_line": 17,
+          "start_char": 40,
+          "end_char": 448
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'catalog' is isolated from other modules",
+      "primary_file": "./samples/image_organizer/catalog.py",
+      "anchor": {
+        "file": "image_organizer/catalog.py",
+        "segment_id": 1,
+        "start_line": 1,
+        "end_line": 32,
+        "start_char": 489,
+        "end_char": 1239
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/catalog.py",
+          "segment_id": 1,
+          "start_line": 1,
+          "end_line": 32,
+          "start_char": 489,
+          "end_char": 1239
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'layout' is isolated from other modules",
+      "primary_file": "./samples/image_organizer/layout.py",
+      "anchor": {
+        "file": "image_organizer/layout.py",
+        "segment_id": 2,
+        "start_line": 1,
+        "end_line": 25,
+        "start_char": 1279,
+        "end_char": 1957
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/layout.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 25,
+          "start_char": 1279,
+          "end_char": 1957
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'lifecycle' is isolated from other modules",
+      "primary_file": "./samples/image_organizer/lifecycle.py",
+      "anchor": {
+        "file": "image_organizer/lifecycle.py",
+        "segment_id": 3,
+        "start_line": 1,
+        "end_line": 65,
+        "start_char": 2000,
+        "end_char": 3283
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/lifecycle.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 65,
+          "start_char": 2000,
+          "end_char": 3283
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "category": "Architectural",
+      "smell_name": "Orphan Module",
+      "severity": "medium",
+      "description": "'rules' is isolated from other modules",
+      "primary_file": "./samples/image_organizer/rules.py",
+      "anchor": {
+        "file": "image_organizer/rules.py",
+        "segment_id": 4,
+        "start_line": 1,
+        "end_line": 13,
+        "start_char": 3322,
+        "end_char": 3670
+      },
+      "mentions": [
+        {
+          "role": "ANCHOR",
+          "file": "image_organizer/rules.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 13,
+          "start_char": 3322,
+          "end_char": 3670
+        }
+      ]
+    }
+  ],
+  "schema": {
+    "separator_token": "[file]",
+    "mention_roles": [
+      "ANCHOR",
+      "INSTANCE_LINES"
+    ],
+    "num_instances": 17,
+    "dropped_instances_without_resolved_spans": 0
+  }
+}
