@@ -423,7 +423,7 @@
       "category": "Code",
       "smell_name": "Alternative Classes with Different Interfaces",
       "severity": "medium",
-      "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods open, extract in ./samples/web_scraper_price_monitor/extractors.py",
+      "description": "Classes HtmlExtractor (lines 1-7), JsonExtractor (lines 9-15), TextExtractor (lines 17-23) share similar methods extract, open in ./samples/web_scraper_price_monitor/extractors.py",
       "primary_file": "./samples/web_scraper_price_monitor/extractors.py",
       "anchor": null,
       "mentions": [

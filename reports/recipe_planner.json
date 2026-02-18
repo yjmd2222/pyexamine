@@ -6,7 +6,7 @@
         "files": [
             {
                 "name": "./samples/recipe_planner/grocery.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 15
@@ -19,7 +19,7 @@
             },
             {
                 "name": "./samples/recipe_planner/inventory.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 6,
                         "end_line_number": 15
@@ -32,7 +32,7 @@
             },
             {
                 "name": "./samples/recipe_planner/models.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 11
@@ -57,7 +57,7 @@
             },
             {
                 "name": "./samples/recipe_planner/planner.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 7,
                         "end_line_number": 17
@@ -78,7 +78,7 @@
             },
             {
                 "name": "./samples/recipe_planner/recipes.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 18
@@ -95,7 +95,7 @@
             },
             {
                 "name": "./samples/recipe_planner/schedule.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 7,
                         "end_line_number": 15
@@ -247,7 +247,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields amount, self, name in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
+        "description": "Potentially unused fields name, self, amount in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
         "file_path": "./samples/recipe_planner/models.py",
         "class_name": "PantryItem",
         "start_line_number": 31,
@@ -387,11 +387,11 @@
     {
         "type": "Architectural",
         "name": "Potential Redundant Abstractions",
-        "description": "Modules adapters and transformers have 100.0% similar functionalities\nOverlapping function instances: adapters.format_line(4-7), adapters.merge_rows(14-19), adapters.normalize_block(21-24), adapters.parse_line(9-12), transformers.format_line(4-7), transformers.merge_rows(14-19), transformers.normalize_block(21-24), transformers.parse_line(9-12)",
+        "description": "Modules adapters and transformers have 100.0% similar functionalities\nOverlapping function evidences: adapters.format_line(4-7), adapters.merge_rows(14-19), adapters.normalize_block(21-24), adapters.parse_line(9-12), transformers.format_line(4-7), transformers.merge_rows(14-19), transformers.normalize_block(21-24), transformers.parse_line(9-12)",
         "files": [
             {
                 "name": "adapters",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 7
@@ -412,7 +412,7 @@
             },
             {
                 "name": "transformers",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 7
@@ -486,7 +486,7 @@
         "files": [
             {
                 "name": "./samples/recipe_planner/planner.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 3,
                         "end_line_number": 4
@@ -495,7 +495,7 @@
             },
             {
                 "name": "./samples/recipe_planner/schedule.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 3,
                         "end_line_number": 4
@@ -504,7 +504,7 @@
             },
             {
                 "name": "./samples/recipe_planner/inventory.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 3,
                         "end_line_number": 4
@@ -521,7 +521,7 @@
         "files": [
             {
                 "name": "./samples/recipe_planner/planner.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 3,
                         "end_line_number": 4
@@ -530,7 +530,7 @@
             },
             {
                 "name": "./samples/recipe_planner/schedule.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 4,
                         "end_line_number": 5

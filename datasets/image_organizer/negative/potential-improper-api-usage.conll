@@ -1,5 +1,5 @@
 [file]	-100
-path=image_organizer/brokers.py	-100
+path=image_organizer\brokers.py	-100
 
 class	O
 ImportBroker	O
@@ -119,7 +119,7 @@ path	O
 )	O
 
 [file]	-100
-path=image_organizer/catalog.py	-100
+path=image_organizer\catalog.py	-100
 
 class	O
 AlbumCatalog	O
@@ -314,7 +314,7 @@ cover_path	O
 "	O
 
 [file]	-100
-path=image_organizer/layout.py	-100
+path=image_organizer\layout.py	-100
 
 class	O
 LayoutPicker	O
@@ -441,7 +441,7 @@ return	O
 "default"	O
 
 [file]	-100
-path=image_organizer/lifecycle.py	-100
+path=image_organizer\lifecycle.py	-100
 
 class	O
 GalleryLifecycle	O
@@ -689,7 +689,7 @@ return	O
 state	O
 
 [file]	-100
-path=image_organizer/rules.py	-100
+path=image_organizer\rules.py	-100
 
 class	O
 RetentionPolicy	O

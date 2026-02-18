@@ -1,5 +1,5 @@
 [file]	-100
-path=weather_outfit_recommender/advisor.py	-100
+path=weather_outfit_recommender\advisor.py	-100
 
 class	O
 WeatherProfile	O
@@ -149,9 +149,9 @@ return	O
 ]	O
 
 [file]	-100
-path=weather_outfit_recommender/alerts.py	-100
+path=weather_outfit_recommender\alerts.py	-100
 
-def	B-CALLFROM
+def	B
 format_forecast	I-CALLFROM
 (	I-CALLFROM
 day	I-CALLFROM
@@ -179,7 +179,7 @@ summary	I-CALLFROM
 "	I-CALLFROM
 
 [file]	-100
-path=weather_outfit_recommender/analyzer.py	-100
+path=weather_outfit_recommender\analyzer.py	-100
 
 class	O
 ForecastAnalyzer	O
@@ -340,7 +340,7 @@ return	O
 score	O
 
 [file]	-100
-path=weather_outfit_recommender/exports.py	-100
+path=weather_outfit_recommender\exports.py	-100
 
 def	B-CALLFROM
 format_forecast	I-CALLFROM
@@ -370,7 +370,7 @@ summary	I-CALLFROM
 "	I-CALLFROM
 
 [file]	-100
-path=weather_outfit_recommender/models.py	-100
+path=weather_outfit_recommender\models.py	-100
 
 class	O
 WeatherSnapshot	O
@@ -585,9 +585,9 @@ return	O
 cleaned	O
 
 [file]	-100
-path=weather_outfit_recommender/ui.py	-100
+path=weather_outfit_recommender\ui.py	-100
 
-def	B
+def	B-CALLFROM
 format_forecast	I-CALLFROM
 (	I-CALLFROM
 day	I-CALLFROM

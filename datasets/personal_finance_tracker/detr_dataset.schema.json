@@ -2,8 +2,9 @@
   "separator_token": "[file]",
   "mention_roles": [
     "ANCHOR",
-    "INSTANCE_LINES"
+    "INSTANCE_LINES",
+    "METHODS_FUNCTIONS"
   ],
-  "num_instances": 16,
-  "dropped_instances_without_resolved_spans": 1
+  "num_instances": 17,
+  "dropped_instances_without_resolved_spans": 0
 }

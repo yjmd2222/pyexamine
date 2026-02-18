@@ -1,5 +1,5 @@
 [file]	-100
-path=simple_recommender/corpus.py	-100
+path=simple_recommender\corpus.py	-100
 
 DOCS	O
 =	O
@@ -818,7 +818,7 @@ DOCS	O
 ]	O
 
 [file]	-100
-path=simple_recommender/scoring.py	-100
+path=simple_recommender\scoring.py	-100
 
 class	B
 SimilarityScorer	I

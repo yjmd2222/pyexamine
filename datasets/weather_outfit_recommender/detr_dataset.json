@@ -106,7 +106,7 @@
       "category": "Code",
       "smell_name": "Temporary Field",
       "severity": "low",
-      "description": "Potentially unused fields temp, condition, wind, self in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+      "description": "Potentially unused fields wind, self, condition, temp in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
       "primary_file": "./samples/weather_outfit_recommender/advisor.py",
       "anchor": {
         "file": "weather_outfit_recommender/advisor.py",
@@ -340,7 +340,7 @@
       "category": "Code",
       "smell_name": "Temporary Field",
       "severity": "low",
-      "description": "Potentially unused fields condition, temp_c, wind_kph, self in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+      "description": "Potentially unused fields wind_kph, self, condition, temp_c in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
       "primary_file": "./samples/weather_outfit_recommender/models.py",
       "anchor": {
         "file": "weather_outfit_recommender/models.py",
@@ -494,6 +494,44 @@
           "end_line": 37,
           "start_char": 2279,
           "end_char": 2601
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "category": "Architectural",
+      "smell_name": "Scattered Functionality",
+      "severity": "medium",
+      "description": "Function 'format_forecast' appears in 3 modules: alerts(2-4), exports(2-4), ui(2-5)",
+      "primary_file": "./samples/weather_outfit_recommender/alerts.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "weather_outfit_recommender/alerts.py",
+          "segment_id": 1,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 734,
+          "end_char": 817
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "weather_outfit_recommender/exports.py",
+          "segment_id": 3,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 1540,
+          "end_char": 1622
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "weather_outfit_recommender/ui.py",
+          "segment_id": 5,
+          "start_line": 2,
+          "end_line": 5,
+          "start_char": 2649,
+          "end_char": 2753
         }
       ]
     },
@@ -664,9 +702,10 @@
     "separator_token": "[file]",
     "mention_roles": [
       "ANCHOR",
-      "INSTANCE_LINES"
+      "INSTANCE_LINES",
+      "RELATED_INSTANCE_LINES"
     ],
-    "num_instances": 19,
-    "dropped_instances_without_resolved_spans": 1
+    "num_instances": 20,
+    "dropped_instances_without_resolved_spans": 0
   }
 }

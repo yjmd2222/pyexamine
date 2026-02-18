@@ -16,7 +16,7 @@
         "files": [
             {
                 "name": "./samples/todo_priority_search/callsites.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -25,7 +25,7 @@
             },
             {
                 "name": "./samples/todo_priority_search/dispatch.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 25
@@ -34,7 +34,7 @@
             },
             {
                 "name": "./samples/todo_priority_search/templates.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -63,7 +63,7 @@
             },
             {
                 "name": "./samples/todo_priority_search/workflow.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 19
@@ -197,12 +197,12 @@
     {
         "type": "Code",
         "name": "Potential Divergent Change",
-        "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, export, alert, sync, audit, index in ./samples/todo_priority_search/workflow.py",
+        "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, audit, alert, index, export, sync in ./samples/todo_priority_search/workflow.py",
         "file_path": "./samples/todo_priority_search/workflow.py",
         "class_name": "TaskWorkflow",
         "start_line_number": 1,
         "end_line_number": 18,
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 2,
                 "end_line_number": 4

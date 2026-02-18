@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 from typing import Callable, Dict, List
 
 
@@ -16,15 +16,15 @@ class NamedLineSpan:
 
 
 @dataclass
-class FileInstanceLines:
+class FileEvidenceLines:
     name: str
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
 
 
 @dataclass
-class FileIncomingInstanceLines:
+class FileIncomingEvidenceLines:
     name: str
-    incoming_instance_lines: List[LineSpan]
+    incoming_evidence_lines: List[LineSpan]
 
 
 @dataclass
@@ -85,12 +85,12 @@ class FileLineSpansPayload:
 
 
 @dataclass
-class CodeFileLevelInstanceLinesPayload:
+class CodeFileLevelEvidenceLinesPayload:
     type: str
     name: str
     description: str
     file_path: str
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -112,7 +112,7 @@ class FileClassLineSpansPayload:
     class_name: str
     start_line_number: int
     end_line_number: int
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -135,7 +135,7 @@ class FileFunctionLineSpansPayload:
     function: str
     start_line_number: int
     end_line_number: int
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -195,7 +195,7 @@ class StructuralClassLevelLineSpansPayload:
     class_name: str
     start_line_number: int
     end_line_number: int
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -224,7 +224,7 @@ class StructuralFileLevelConnectedPayload:
     name: str
     description: str
     file_path: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -235,7 +235,7 @@ class StructuralClassLevelConnectedPayload:
     description: str
     file_path: str
     class_name: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -245,7 +245,7 @@ class StructuralFileLevelLineSpansPayload:
     name: str
     description: str
     file_path: str
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -254,7 +254,7 @@ class StructuralProjectLevelFilesPayload:
     type: str
     name: str
     description: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -266,7 +266,7 @@ class ArchitecturalFileLevelConnectedPayload:
     name: str
     description: str
     file_path: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -277,7 +277,7 @@ class ArchitecturalFunctionLevelConnectedPayload:
     description: str
     file_path: str
     function: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -286,7 +286,7 @@ class ArchitecturalFilesPayload:
     type: str
     name: str
     description: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -298,17 +298,17 @@ class ArchitecturalFileLevelLineSpansPayload:
     file_path: str
     start_line_number: int
     end_line_number: int
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
 @dataclass
-class ArchitecturalFileLevelInstanceLinesPayload:
+class ArchitecturalFileLevelEvidenceLinesPayload:
     type: str
     name: str
     description: str
     file_path: str
-    instance_lines: List[LineSpan]
+    evidence_lines: List[LineSpan]
     severity: str
 
 
@@ -327,8 +327,8 @@ class ArchitecturalFileLevelIncomingOutgoingPayload:
     name: str
     description: str
     file_path: str
-    outgoing_instance_lines: List[LineSpan]
-    files: List[FileIncomingInstanceLines]
+    outgoing_evidence_lines: List[LineSpan]
+    files: List[FileIncomingEvidenceLines]
     severity: str
 
 
@@ -348,7 +348,7 @@ class ArchitecturalMultiFilePayload:
     type: str
     name: str
     description: str
-    files: List[FileInstanceLines]
+    files: List[FileEvidenceLines]
     severity: str
 
 
@@ -372,7 +372,7 @@ def render_file_line_spans(payload: FileLineSpansPayload) -> str:
     return payload.description
 
 
-def render_code_file_level_instance_lines(payload: CodeFileLevelInstanceLinesPayload) -> str:
+def render_code_file_level_evidence_lines(payload: CodeFileLevelEvidenceLinesPayload) -> str:
     return payload.description
 
 
@@ -452,7 +452,7 @@ def render_architectural_file_level_line_spans(payload: ArchitecturalFileLevelLi
     return payload.description
 
 
-def render_architectural_file_level_instance_lines(payload: ArchitecturalFileLevelInstanceLinesPayload) -> str:
+def render_architectural_file_level_evidence_lines(payload: ArchitecturalFileLevelEvidenceLinesPayload) -> str:
     return payload.description
 
 
@@ -478,3 +478,5 @@ class TemplateRenderer:
 
     def render(self, template_id: str, payload: object) -> str:
         return self._renderers[template_id](payload)
+
+

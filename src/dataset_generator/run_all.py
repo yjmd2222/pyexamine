@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import os
 import subprocess
 import sys
@@ -32,7 +32,7 @@ def main():
     parser.add_argument("--output-dir", default=None,
                         help="Output directory for generated dataset artifacts")
     parser.add_argument("--format", default="conll", choices=["conll", "detr"],
-                        help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-instances JSON)")
+                        help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-Evidences JSON)")
     args = parser.parse_args()
 
     output_dir = args.output_dir or _default_output_dir(args.code_path)
@@ -78,3 +78,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

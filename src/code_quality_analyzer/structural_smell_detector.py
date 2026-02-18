@@ -1,4 +1,4 @@
-import os
+﻿import os
 import ast
 import networkx as nx
 from collections import defaultdict
@@ -8,7 +8,7 @@ import logging
 from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
-    FileInstanceLines,
+    FileEvidenceLines,
     LineSpan,
     StructuralClassLevelLineSpansPayload,
     StructuralClassLevelPayload,
@@ -738,37 +738,37 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             rfc = len(significant_methods) + len(external_calls)
             if rfc > self.thresholds['RFC_THRESHOLD']:
                 severity = 'High' if rfc > self.thresholds['RFC_THRESHOLD'] * 1.5 else 'Medium'
-                method_instances = []
+                method_evidences = []
                 for method in significant_methods:
                     method_end = getattr(method, "end_lineno", method.lineno)
-                    method_instances.append({
+                    method_evidences.append({
                         "name": f"{class_name}.{method.name}",
                         "start_line_number": method.lineno,
                         "end_line_number": method_end + 1
                     })
-                # method_instances: {name, start_line_number, end_line_number} per significant method
-                external_instances = []
+                # method_evidences: {name, start_line_number, end_line_number} per significant method
+                external_evidences = []
                 for call_name in external_calls:
-                    external_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
-                # external_instances: {name, start_line_number, end_line_number} per external call site
+                    external_evidences.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # external_evidences: {name, start_line_number, end_line_number} per external call site
                 method_detail = (
                     ", ".join(
                         f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                        for entry in method_instances
+                        for entry in method_evidences
                     ) or "None"
                 )
-                instances_detail = (
+                evidences_detail = (
                     ", ".join(
                         f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                        for entry in external_instances
+                        for entry in external_evidences
                     ) or "None"
                 )
                 payload = StructuralClassLevelPayload(
                     type="Structural",
                     name="High Response for a Class (RFC)",
                     description=f"Class '{class_name}' has RFC of {rfc} (methods: {len(significant_methods)}, external calls: {len(external_calls)})\n"
-                    f"Method instances: {method_detail}\n"
-                    f"External call instances: {instances_detail}",
+                    f"Method evidences: {method_detail}\n"
+                    f"External call evidences: {evidences_detail}",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     class_name=class_name,
                     start_line_number=info.get("start_line_number"),
@@ -856,7 +856,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     else f"{name.rsplit('.', 1)[-1]}(?)"
                     for name, _, start, end in sorted_classes
                 )
-                instance_lines = [
+                evidence_lines = [
                     LineSpan(start_line_number=start, end_line_number=end)
                     for _, _, start, end in sorted_classes
                     if start is not None and end is not None
@@ -870,7 +870,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         f"Class locations: {class_locations or 'None'}"
                     ),
                     file_path=self.file_paths.get(module_name, "Unknown"),
-                    instance_lines=instance_lines,
+                    evidence_lines=evidence_lines,
                     severity=severity
                 )
                 self._smell_recorder.record_smell(
@@ -952,9 +952,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                             if start is None or end is None:
                                 continue
                             files.append(
-                                FileInstanceLines(
+                                FileEvidenceLines(
                                     name=self.file_paths.get(node_name.rsplit('.', 1)[0], "Unknown"),
-                                    instance_lines=[LineSpan(start_line_number=start, end_line_number=end)]
+                                    evidence_lines=[LineSpan(start_line_number=start, end_line_number=end)]
                                 )
                             )
                         payload = StructuralClassLevelConnectedPayload(
@@ -1084,7 +1084,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         f"(Total: {len(lines)}, Code: {code_lines}, Doc: {doc_lines}, "
                         f"Import: {import_lines}, Blank: {blank_lines})",
                         file_path=file_path,
-                        instance_lines=_line_spans(code_line_numbers),
+                        evidence_lines=_line_spans(code_line_numbers),
                         severity=severity
                     )
                     self._smell_recorder.record_smell(
@@ -1143,32 +1143,32 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
 
             if weighted_mpc > self.thresholds['MPC_THRESHOLD']:
                 severity = 'High' if weighted_mpc > self.thresholds['MPC_THRESHOLD'] * 1.5 else 'Medium'
-                external_instances = []
+                external_evidences = []
                 for call_name in method_calls:
-                    external_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
-                # external_instances: {name, start_line_number, end_line_number} per external call site
-                internal_instances = []
+                    external_evidences.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # external_evidences: {name, start_line_number, end_line_number} per external call site
+                internal_evidences = []
                 for call_name in internal_calls:
-                    internal_instances.extend(info.get('method_call_lines', {}).get(call_name, []))
-                # internal_instances: {name, start_line_number, end_line_number} per internal call site
-                instances_detail = (
+                    internal_evidences.extend(info.get('method_call_lines', {}).get(call_name, []))
+                # internal_evidences: {name, start_line_number, end_line_number} per internal call site
+                evidences_detail = (
                     ", ".join(
                         f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                        for entry in external_instances
+                        for entry in external_evidences
                     ) or "None"
                 )
                 internal_detail = (
                     ", ".join(
                         f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                        for entry in internal_instances
+                        for entry in internal_evidences
                     ) or "None"
                 )
-                combined_instances = [
+                combined_evidences = [
                     LineSpan(
                         start_line_number=entry["start_line_number"],
                         end_line_number=entry["end_line_number"]
                     )
-                    for entry in external_instances + internal_instances
+                    for entry in external_evidences + internal_evidences
                 ]
                 payload = StructuralClassLevelLineSpansPayload(
                     type="Structural",
@@ -1176,13 +1176,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     description=f"Class '{class_name}' has weighted MPC of {weighted_mpc:.1f}\n"
                     f"(External calls: {external_mpc}, Internal calls: {internal_mpc})\n"
                     f"Most frequent external calls: {dict(sorted(method_calls.items(), key=lambda x: x[1], reverse=True)[:3])}\n"
-                    f"External call instances: {instances_detail}\n"
-                    f"Internal call instances: {internal_detail}",
+                    f"External call evidences: {evidences_detail}\n"
+                    f"Internal call evidences: {internal_detail}",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     class_name=class_name,
                     start_line_number=info.get("start_line_number"),
                     end_line_number=info.get("end_line_number"),
-                    instance_lines=combined_instances,
+                    evidence_lines=combined_evidences,
                     severity=severity
                 )
                 self._smell_recorder.record_smell(
@@ -1212,23 +1212,23 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             # Track different types of coupling
             direct_coupling = set()
             indirect_coupling = set()
-            direct_instances = []
-            indirect_instances = []
+            direct_evidences = []
+            indirect_evidences = []
 
-            def _append_instance(instances, name, node=None, line=None):
+            def _append_evidence(evidences, name, node=None, line=None):
                 if node is not None:
                     start_line_number = getattr(node, "lineno", None)
                     end_line_number = (getattr(node, "end_lineno", None) or start_line_number)
                     if start_line_number is None:
                         return
-                    instances.append({
+                    evidences.append({
                         "name": name,
                         "start_line_number": start_line_number,
                         "end_line_number": end_line_number + 1
                     })
                     return
                 if line is not None:
-                    instances.append({
+                    evidences.append({
                         "name": name,
                         "start_line_number": line,
                         "end_line_number": line + 1
@@ -1243,20 +1243,20 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                             base_obj = self._get_base_object(node.func)
                             if base_obj and not self._is_excluded_dependency(base_obj, standard_libs, framework_patterns):
                                 direct_coupling.add(base_obj)
-                                _append_instance(direct_instances, base_obj, node=node)
+                                _append_evidence(direct_evidences, base_obj, node=node)
                     
                     elif isinstance(node, ast.Attribute):
                         base_obj = self._get_base_object(node)
                         if base_obj and not self._is_excluded_dependency(base_obj, standard_libs, framework_patterns):
                             indirect_coupling.add(base_obj)
-                            _append_instance(indirect_instances, base_obj, node=node)
+                            _append_evidence(indirect_evidences, base_obj, node=node)
             
             # Analyze inheritance and composition
             for base in info['base_classes']:
                 if not self._is_excluded_dependency(base, standard_libs, framework_patterns):
                     direct_coupling.add(base)
                     if info.get("start_line_number") is not None:
-                        _append_instance(direct_instances, base, line=info["start_line_number"])
+                        _append_evidence(direct_evidences, base, line=info["start_line_number"])
             
             # Calculate weighted CBO
             direct_cbo = len(direct_coupling)
@@ -1269,18 +1269,18 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 severity = self._calculate_cbo_severity(weighted_cbo, self.thresholds['CBO_THRESHOLD'])
                 direct_detail = ", ".join(
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
-                    for d in direct_instances
+                    for d in direct_evidences
                 )
                 indirect_detail = ", ".join(
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
-                    for d in indirect_instances
+                    for d in indirect_evidences
                 )
-                combined_instances = [
+                combined_evidences = [
                     LineSpan(
                         start_line_number=entry["start_line_number"],
                         end_line_number=entry["end_line_number"]
                     )
-                    for entry in direct_instances + indirect_instances
+                    for entry in direct_evidences + indirect_evidences
                 ]
                 payload = StructuralClassLevelLineSpansPayload(
                     type="Structural",
@@ -1288,13 +1288,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     description=f"Class '{class_name}' has weighted CBO of {weighted_cbo:.1f}\n"
                     f"Direct coupling: {direct_cbo} classes\n"
                     f"Indirect coupling: {indirect_cbo} classes\n"
-                    f"Direct coupling instances: {direct_detail or 'None'}\n"
-                    f"Indirect coupling instances: {indirect_detail or 'None'}",
+                    f"Direct coupling evidences: {direct_detail or 'None'}\n"
+                    f"Indirect coupling evidences: {indirect_detail or 'None'}",
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     class_name=class_name,
                     start_line_number=info.get("start_line_number"),
                     end_line_number=info.get("end_line_number"),
-                    instance_lines=combined_instances,
+                    evidence_lines=combined_evidences,
                     severity=severity
                 )
                 self._smell_recorder.record_smell(
@@ -1447,15 +1447,15 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     for name, start, end in entries
                 )
                 location_lines.append(f"- {module_name}: {entry_text}")
-                instance_lines = [
+                evidence_lines = [
                     LineSpan(start_line_number=start, end_line_number=end)
                     for _, start, end in entries
                     if start is not None and end is not None
                 ]
                 files.append(
-                    FileInstanceLines(
+                    FileEvidenceLines(
                         name=self.file_paths.get(module_name, module_name),
-                        instance_lines=instance_lines
+                        evidence_lines=evidence_lines
                     )
                 )
 
@@ -1649,7 +1649,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             threshold = self.thresholds.get('MAX_FANOUT', 15)
             if significant_deps > threshold:
                 severity = 'High' if significant_deps > threshold * 1.5 else 'Medium'
-                instance_lines = [
+                evidence_lines = [
                     {
                         "name": successor,
                         "start_line_number": d["start_line_number"],
@@ -1659,22 +1659,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     if not any(successor.startswith(lib) for lib in standard_libs)
                     for d in self.import_lines.get(module, {}).get(successor, [])
                 ]
-                instance_detail = ", ".join(
+                evidence_detail = ", ".join(
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
-                    for d in instance_lines
+                    for d in evidence_lines
                 )
                 payload = StructuralFileLevelLineSpansPayload(
                     type="Structural",
                     name="High Fan-out",
                     description=f"Module '{module}' has {significant_deps} significant outgoing dependencies\n"
-                    f"Outgoing dependency instances: {instance_detail or 'None'}",
+                    f"Outgoing dependency evidences: {evidence_detail or 'None'}",
                     file_path=self.file_paths.get(module, "Unknown"),
-                    instance_lines=[
+                    evidence_lines=[
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
                         )
-                        for entry in instance_lines
+                        for entry in evidence_lines
                     ],
                     severity=severity
                 )
@@ -1701,22 +1701,22 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             
             if fanin > threshold:
                 severity = 'High' if fanin > threshold * 1.5 else 'Medium'
-                instance_lines = []
+                evidence_lines = []
                 for src_module, targets in self.import_lines.items():
-                    for target, instances in targets.items():
+                    for target, evidences in targets.items():
                         if target == module:
-                            for d in instances:
-                                instance_lines.append({
+                            for d in evidences:
+                                evidence_lines.append({
                                     "name": src_module,
                                     "start_line_number": d["start_line_number"],
                                     "end_line_number": d["end_line_number"]
                                 })
-                instance_detail = ", ".join(
+                evidence_detail = ", ".join(
                     f"{d['name']}({d['start_line_number']}-{d['end_line_number']})"
-                    for d in instance_lines
+                    for d in evidence_lines
                 )
                 grouped = defaultdict(list)
-                for entry in instance_lines:
+                for entry in evidence_lines:
                     grouped[entry["name"]].append(
                         LineSpan(
                             start_line_number=entry["start_line_number"],
@@ -1727,10 +1727,10 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     type="Structural",
                     name="High Fan-in",
                     description=f"Module '{module}' has {fanin} incoming dependencies\n"
-                    f"Incoming dependency instances: {instance_detail or 'None'}",
+                    f"Incoming dependency evidences: {evidence_detail or 'None'}",
                     file_path=self.file_paths.get(module, "Unknown"),
                     files=[
-                        FileInstanceLines(name=name, instance_lines=lines)
+                        FileEvidenceLines(name=name, evidence_lines=lines)
                         for name, lines in grouped.items()
                     ],
                     severity=severity
@@ -1808,7 +1808,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         name="Long File",
                         description=f"File '{module_name}' has {meaningful_lines} meaningful lines of code",
                         file_path=file_path,
-                        instance_lines=_line_spans(meaningful_line_numbers),
+                        evidence_lines=_line_spans(meaningful_line_numbers),
                         severity=severity
                     )
                     self._smell_recorder.record_smell(
@@ -1924,3 +1924,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     analyze_structure(args.directory, args.config)
+
+

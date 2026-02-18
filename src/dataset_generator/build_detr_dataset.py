@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import json
 import os
 from typing import Any, Dict, List, Optional, Tuple
@@ -85,35 +85,87 @@ def _build_merged_prompt(code_root: str, files: List[str], separator: str = DEFA
 
 
 def _resolve_report_path(report_path: Optional[str], code_root: str, all_files: List[str]) -> Optional[str]:
+    """Resolve file identifiers used in reports to an absolute file path in `all_files`.
+
+    The report may contain:
+      - absolute paths
+      - repo-relative paths (with ./ prefix)
+      - module-like names without extension (e.g., 'alerts', 'ui', 'pkg.module')
+      - short suffixes that match the tail of the real path
+    """
     if not report_path:
         return None
 
+    code_root_abs = os.path.abspath(code_root)
+
+    # 1) Direct filesystem candidates
     candidates: List[str] = []
     if os.path.isabs(report_path):
         candidates.append(report_path)
-    # current working directory resolution
     candidates.append(os.path.abspath(report_path))
-    # relative to code_root and a couple parents (common when report uses repo-relative paths)
-    code_root_abs = os.path.abspath(code_root)
     candidates.append(os.path.abspath(os.path.join(code_root_abs, report_path)))
     candidates.append(os.path.abspath(os.path.join(os.path.dirname(code_root_abs), report_path)))
     candidates.append(os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(code_root_abs)), report_path)))
 
+    # Try adding .py when report_path has no extension
+    base = os.path.basename(report_path)
+    if "." not in base:
+        candidates.append(os.path.abspath(os.path.join(code_root_abs, report_path + ".py")))
+        # module-like: a.b.c -> a/b/c.py
+        candidates.append(os.path.abspath(os.path.join(code_root_abs, report_path.replace(".", os.path.sep) + ".py")))
+
     for c in candidates:
         if os.path.exists(c):
-            return c
+            # If this exact file is in all_files, return the canonical absolute path from all_files
+            c_abs = os.path.abspath(c)
+            if c_abs in all_files:
+                return c_abs
+            # Otherwise, accept it as-is
+            return c_abs
 
-    rp = report_path.replace("\\", "/").lstrip("./")
+    # 2) Match against enumerated files with scoring
+    rp = str(report_path).replace("\\", "/").lstrip("./")
+    rp_py = rp if rp.endswith(".py") else rp + ".py"
+    rp_mod_py = rp.replace(".", "/")
+    if not rp_mod_py.endswith(".py"):
+        rp_mod_py += ".py"
+    rp_base = os.path.splitext(os.path.basename(rp))[0]
+
+    matches: List[Tuple[int, str]] = []
+
     for f in all_files:
         fp = f.replace("\\", "/")
-        if fp.endswith(rp):
-            return f
         rel = os.path.relpath(f, code_root_abs).replace("\\", "/")
-        if rel == rp or rel.endswith(rp):
-            return f
+        rel_base = os.path.splitext(os.path.basename(rel))[0]
 
-    return None
+        # Strong matches first
+        if fp.endswith(rp) or rel == rp or rel.endswith("/" + rp):
+            matches.append((0, f))
+            continue
+        if fp.endswith(rp_py) or rel == rp_py or rel.endswith("/" + rp_py):
+            matches.append((1, f))
+            continue
+        if fp.endswith(rp_mod_py) or rel == rp_mod_py or rel.endswith("/" + rp_mod_py):
+            matches.append((2, f))
+            continue
 
+        # No-extension match on relpath without '.py'
+        if rel.endswith(".py"):
+            rel_no_ext = rel[:-3]
+            if rel_no_ext == rp or rel_no_ext.endswith("/" + rp):
+                matches.append((3, f))
+                continue
+
+        # Basename-only match (can be ambiguous; lowest priority)
+        if rel_base == rp_base and rp_base:
+            # Prefer shorter relpaths to reduce ambiguity
+            matches.append((10 + rel.count("/"), f))
+
+    if not matches:
+        return None
+
+    matches.sort(key=lambda x: x[0])
+    return matches[0][1]
 
 def _line_range_to_char_span(file_rec: Dict[str, Any], start_line: int, end_line: int) -> Tuple[int, int]:
     """
@@ -199,23 +251,23 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
             })
 
     # Local multi-span evidence
-    add_list_spans(_get_value(entry, "instance_lines", "Instance Lines") or [], "INSTANCE_LINES", abs_primary)
+    add_list_spans(_get_value(entry, "evidence_lines", "Evidence Lines") or [], "EVIDENCE_LINES", abs_primary)
     add_list_spans(_get_value(entry, "lines", "Lines") or [], "LINES", abs_primary)
     add_list_spans(_get_value(entry, "classes", "Classes") or [], "CLASSES", abs_primary)
     add_list_spans(_get_value(entry, "methods_functions", "Methods Functions") or [], "METHODS_FUNCTIONS", abs_primary)
-    add_list_spans(_get_value(entry, "outgoing_instance_lines", "Outgoing Instance Lines") or [], "OUTGOING_INSTANCE_LINES", abs_primary)
+    add_list_spans(_get_value(entry, "outgoing_evidence_lines", "Outgoing Evidence Lines") or [], "OUTGOING_EVIDENCE_LINES", abs_primary)
 
     # Cross-file evidence
     files = _get_value(entry, "files", "Files") or []
     for file_entry in files:
         other_raw = _get_value(file_entry, "name", "Name")
         abs_other = _resolve_report_path(other_raw, code_root, all_files) if other_raw else None
-        incoming = _get_value(file_entry, "incoming_instance_lines", "Incoming Instance Lines") or []
-        inst = _get_value(file_entry, "instance_lines", "Instance Lines") or []
+        incoming = _get_value(file_entry, "incoming_evidence_lines", "Incoming Evidence Lines") or []
+        inst = _get_value(file_entry, "evidence_lines", "Evidence Lines") or []
         if incoming:
-            add_list_spans(incoming, "INCOMING_INSTANCE_LINES", abs_other)
+            add_list_spans(incoming, "INCOMING_EVIDENCE_LINES", abs_other)
         if inst:
-            add_list_spans(inst, "RELATED_INSTANCE_LINES", abs_other)
+            add_list_spans(inst, "RELATED_EVIDENCE_LINES", abs_other)
 
     return anchor, mentions
 
@@ -227,7 +279,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
 
     merged_text, file_records, file_by_abs = _build_merged_prompt(code_root_abs, all_files, separator=separator)
 
-    instances: List[Dict[str, Any]] = []
+    Evidences: List[Dict[str, Any]] = []
     dropped = 0
     for idx, entry in enumerate(report_entries):
         smell_name = _get_value(entry, "name", "Name")
@@ -249,13 +301,13 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
             "anchor": anchor,
             "mentions": mentions,
         }
-        instances.append(inst)
+        Evidences.append(inst)
 
     schema = {
         "separator_token": separator,
-        "mention_roles": sorted({m["role"] for inst in instances for m in inst["mentions"]}),
-        "num_instances": len(instances),
-        "dropped_instances_without_resolved_spans": dropped,
+        "mention_roles": sorted({m["role"] for inst in Evidences for m in inst["mentions"]}),
+        "num_Evidences": len(Evidences),
+        "dropped_Evidences_without_resolved_spans": dropped,
     }
 
     out_obj = {
@@ -272,7 +324,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
             }
             for r in file_records
         ],
-        "instances": instances,
+        "Evidences": Evidences,
         "schema": schema,
     }
 
@@ -299,7 +351,7 @@ def _default_output_path(code_path: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Build a DETR-style dataset (set of smell instances with explicit spans) from a PyExamine report."
+        description="Build a DETR-style dataset (set of smell Evidences with explicit spans) from a PyExamine report."
     )
     parser.add_argument("code_path", help="Path to a code file or directory to include.")
     parser.add_argument("--report", required=True, help="Path to code_quality_report.json")
@@ -313,3 +365,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

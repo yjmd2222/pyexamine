@@ -1,0 +1,49 @@
+# SPN-style set prediction training config for PyExamine DETR datasets.
+
+seed: 42
+
+data:
+  # Directory containing one subdirectory per sample_id, each with detr_dataset.json.
+  dataset_root: "datasets"
+  # Glob pattern (relative to dataset_root) to locate dataset json files.
+  detr_glob: "*/detr_dataset.json"
+  # Train/val split: simple deterministic split by sample_id.
+  val_ratio: 0.2
+  max_instances_per_window: 100
+  max_mentions_per_instance: 16
+  max_length: 1024
+  stride: 256
+  # If true, only keep windows that contain at least 1 gold instance.
+  drop_empty_windows: true
+
+model:
+  # Encoder-only backbone (SPN-style). You will add a non-causal decoder with learnable instance queries.
+  encoder_name: "microsoft/codebert-base"
+  # If your environment does not have this model, use any HF encoder (e.g., roberta-base, longformer-base-4096).
+  # If true, freeze encoder weights (no finetuning). The decoder + heads are still trained.
+  freeze_encoder: false
+  hidden_dim: 256
+  decoder_layers: 6
+  decoder_heads: 8
+  decoder_ffn_dim: 1024
+  dropout: 0.1
+
+loss:
+  type_weight: 1.0
+  mention_role_weight: 1.0
+  mention_span_weight: 1.0
+  no_object_weight: 0.2
+  no_mention_weight: 0.2
+
+train:
+  output_dir: "runs/spn"
+  epochs: 20
+  batch_size: 2
+  grad_accum_steps: 1
+  lr: 0.00005
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  max_grad_norm: 1.0
+  log_every: 20
+  save_every: 1
+  device: "auto"  # auto/cpu/cuda

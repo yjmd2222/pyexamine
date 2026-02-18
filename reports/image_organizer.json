@@ -73,26 +73,6 @@
     },
     {
         "type": "Code",
-        "name": "Middle Man",
-        "description": "Class 'ImportBroker' delegates 4/5 methods (80.0%), mainly to self.reader in ./samples/image_organizer/brokers.py",
-        "file_path": "./samples/image_organizer/brokers.py",
-        "class_name": "ImportBroker",
-        "start_line_number": 1,
-        "end_line_number": 17,
-        "instance_lines": [
-            {
-                "start_line_number": 6,
-                "end_line_number": 8
-            },
-            {
-                "start_line_number": 12,
-                "end_line_number": 14
-            }
-        ],
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
         "name": "Lazy Class",
         "description": "Class 'AlbumCatalog' has only 0 non-trivial methods with 0 total lines in ./samples/image_organizer/catalog.py",
         "file_path": "./samples/image_organizer/catalog.py",

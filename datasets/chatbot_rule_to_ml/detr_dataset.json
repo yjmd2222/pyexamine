@@ -350,6 +350,170 @@
       ]
     },
     {
+      "id": 1,
+      "category": "Structural",
+      "smell_name": "High Fan-in",
+      "severity": "Medium",
+      "description": "Module 'shared' has 17 incoming dependencies\nIncoming dependency instances: bridge(2-3), graph(8-9), helper_01(1-2), helper_02(1-2), helper_03(1-2), helper_04(1-2), helper_05(1-2), helper_06(1-2), helper_07(1-2), helper_08(1-2), helper_09(1-2), helper_10(1-2), helper_11(1-2), helper_12(1-2), linker(2-3), runner(3-4), trainer(3-4)",
+      "primary_file": "./samples/chatbot_rule_to_ml/shared.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/bridge.py",
+          "segment_id": 0,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 55,
+          "end_char": 69
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/graph.py",
+          "segment_id": 1,
+          "start_line": 8,
+          "end_line": 9,
+          "start_char": 609,
+          "end_char": 623
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_01.py",
+          "segment_id": 2,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1085,
+          "end_char": 1099
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_02.py",
+          "segment_id": 3,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1210,
+          "end_char": 1224
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_03.py",
+          "segment_id": 4,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1335,
+          "end_char": 1349
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_04.py",
+          "segment_id": 5,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1460,
+          "end_char": 1474
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_05.py",
+          "segment_id": 6,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1585,
+          "end_char": 1599
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_06.py",
+          "segment_id": 7,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1710,
+          "end_char": 1724
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_07.py",
+          "segment_id": 8,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1835,
+          "end_char": 1849
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_08.py",
+          "segment_id": 9,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 1960,
+          "end_char": 1974
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_09.py",
+          "segment_id": 10,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2085,
+          "end_char": 2099
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_10.py",
+          "segment_id": 11,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2210,
+          "end_char": 2224
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_11.py",
+          "segment_id": 12,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2336,
+          "end_char": 2350
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/helper_12.py",
+          "segment_id": 13,
+          "start_line": 1,
+          "end_line": 2,
+          "start_char": 2462,
+          "end_char": 2476
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/linker.py",
+          "segment_id": 14,
+          "start_line": 2,
+          "end_line": 3,
+          "start_char": 2598,
+          "end_char": 2612
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/runner.py",
+          "segment_id": 15,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 3088,
+          "end_char": 3102
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "chatbot_rule_to_ml/trainer.py",
+          "segment_id": 17,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 3479,
+          "end_char": 3493
+        }
+      ]
+    },
+    {
       "id": 2,
       "category": "Code",
       "smell_name": "Lazy Class",
@@ -1143,9 +1307,10 @@
       "ANCHOR",
       "INCOMING_INSTANCE_LINES",
       "INSTANCE_LINES",
-      "OUTGOING_INSTANCE_LINES"
+      "OUTGOING_INSTANCE_LINES",
+      "RELATED_INSTANCE_LINES"
     ],
-    "num_instances": 10,
-    "dropped_instances_without_resolved_spans": 1
+    "num_instances": 11,
+    "dropped_instances_without_resolved_spans": 0
   }
 }

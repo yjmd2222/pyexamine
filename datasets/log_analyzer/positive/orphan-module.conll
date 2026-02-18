@@ -1,5 +1,5 @@
 [file]	-100
-path=log_analyzer/aggregator.py	-100
+path=log_analyzer\aggregator.py	-100
 
 class	B
 Tooling	I
@@ -707,7 +707,7 @@ return	I
 ]	I
 
 [file]	-100
-path=log_analyzer/chains.py	-100
+path=log_analyzer\chains.py	-100
 
 class	B
 Node	I
@@ -760,7 +760,7 @@ child	I
 value	I
 
 [file]	-100
-path=log_analyzer/design.py	-100
+path=log_analyzer\design.py	-100
 
 class	B
 FutureNotifier	I
@@ -832,7 +832,7 @@ priority	I
 pass	I
 
 [file]	-100
-path=log_analyzer/duplicates.py	-100
+path=log_analyzer\duplicates.py	-100
 
 def	I
 _template	I
@@ -1826,7 +1826,7 @@ return	I
 out	I
 
 [file]	-100
-path=log_analyzer/misc.py	-100
+path=log_analyzer\misc.py	-100
 
 def	I
 scratchpad	I
@@ -1839,7 +1839,7 @@ return	I
 "notes"	I
 
 [file]	-100
-path=log_analyzer/reports.py	-100
+path=log_analyzer\reports.py	-100
 
 def	I
 build_report	I

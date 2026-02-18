@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import io
 import json
 import os
@@ -232,9 +232,24 @@ def _normalize_path(path, code_root):
 
 
 def _get_value(entry, *keys):
+    """Robust field getter.
+
+    The reports in this repo sometimes use both styles:
+      - snake_case: methods_functions
+      - slash keys: methods/functions
+    This helper tries the requested key plus common aliases.
+    """
     for key in keys:
         if key in entry:
             return entry[key]
+        if isinstance(key, str):
+            # Common aliasing between 'methods/functions' and 'methods_functions'
+            k1 = key.replace("/", "_")
+            if k1 in entry:
+                return entry[k1]
+            k2 = key.replace("_", "/")
+            if k2 in entry:
+                return entry[k2]
     return None
 
 
@@ -258,10 +273,10 @@ def _extract_spans(entry, scheme, code_root):
     if file_path and start_line and end_line:
         spans.append((file_path, start_line, end_line, "primary"))
 
-    instance_lines = _get_value(entry, "instance_lines", "Instance Lines") or []
-    if file_path and instance_lines:
+    evidence_lines = _get_value(entry, "evidence_lines", "Evidence Lines") or []
+    if file_path and evidence_lines:
         label_type = "within" if has_within and start_line and end_line else "primary"
-        for span in instance_lines:
+        for span in evidence_lines:
             span_start = _get_value(span, "start_line_number", "Start Line Number")
             span_end = _get_value(span, "end_line_number", "End Line Number")
             if span_start and span_end:
@@ -291,7 +306,7 @@ def _extract_spans(entry, scheme, code_root):
             if span_start and span_end:
                 spans.append((file_path, span_start, span_end, "primary"))
 
-    outgoing_lines = _get_value(entry, "outgoing_instance_lines", "Outgoing Instance Lines") or []
+    outgoing_lines = _get_value(entry, "outgoing_evidence_lines", "Outgoing Evidence Lines") or []
     if file_path and outgoing_lines:
         label_type = "within" if has_within else "primary"
         for span in outgoing_lines:
@@ -308,8 +323,8 @@ def _extract_spans(entry, scheme, code_root):
         other_path = _normalize_path(other_path, code_root)
         if not other_path:
             continue
-        incoming_lines = _get_value(file_entry, "incoming_instance_lines", "Incoming Instance Lines")
-        instance_lines = _get_value(file_entry, "instance_lines", "Instance Lines")
+        incoming_lines = _get_value(file_entry, "incoming_evidence_lines", "Incoming Evidence Lines")
+        evidence_lines = _get_value(file_entry, "evidence_lines", "Evidence Lines")
         if incoming_lines:
             label_type = "callfrom" if has_callfrom else "primary"
             for span in incoming_lines:
@@ -317,9 +332,9 @@ def _extract_spans(entry, scheme, code_root):
                 span_end = _get_value(span, "end_line_number", "End Line Number")
                 if span_start and span_end:
                     spans.append((other_path, span_start, span_end, label_type))
-        elif instance_lines:
+        elif evidence_lines:
             label_type = "callfrom" if has_callfrom else "primary"
-            for span in instance_lines:
+            for span in evidence_lines:
                 span_start = _get_value(span, "start_line_number", "Start Line Number")
                 span_end = _get_value(span, "end_line_number", "End Line Number")
                 if span_start and span_end:
@@ -498,3 +513,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+

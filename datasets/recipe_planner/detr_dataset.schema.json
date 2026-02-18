@@ -5,6 +5,6 @@
     "LINES",
     "RELATED_INSTANCE_LINES"
   ],
-  "num_instances": 30,
-  "dropped_instances_without_resolved_spans": 1
+  "num_instances": 31,
+  "dropped_instances_without_resolved_spans": 0
 }

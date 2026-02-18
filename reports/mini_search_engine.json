@@ -6,7 +6,7 @@
         "files": [
             {
                 "name": "./samples/mini_search_engine/cache.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 8
@@ -15,7 +15,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/indexer.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -24,7 +24,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/queries.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 8
@@ -33,7 +33,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/ranking.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -42,7 +42,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/relations.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 7
@@ -55,7 +55,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/storage.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 8
@@ -64,7 +64,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/tokenizer.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -117,7 +117,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields status, tier, limit, self, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+        "description": "Potentially unused fields tier, status, limit, self, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
         "file_path": "./samples/mini_search_engine/relations.py",
         "class_name": "ProfileState",
         "start_line_number": 1,
@@ -146,34 +146,6 @@
     },
     {
         "type": "Code",
-        "name": "Inappropriate Intimacy",
-        "description": "Class 'ProfileInspector' might be too intimate with 'ProfileState' (4 shared members, 100.0% of methods) at lines 10-12, 13-15, 16-18, 19-21 in ./samples/mini_search_engine/relations.py",
-        "file_path": "./samples/mini_search_engine/relations.py",
-        "class_name": "ProfileInspector",
-        "start_line_number": 9,
-        "end_line_number": 21,
-        "instance_lines": [
-            {
-                "start_line_number": 10,
-                "end_line_number": 12
-            },
-            {
-                "start_line_number": 13,
-                "end_line_number": 15
-            },
-            {
-                "start_line_number": 16,
-                "end_line_number": 18
-            },
-            {
-                "start_line_number": 19,
-                "end_line_number": 21
-            }
-        ],
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
         "name": "Lazy Class",
         "description": "Class 'Storage' has only 1 non-trivial methods with 2 total lines in ./samples/mini_search_engine/storage.py",
         "file_path": "./samples/mini_search_engine/storage.py",
@@ -195,9 +167,9 @@
     {
         "type": "Architectural",
         "name": "Hub-like Dependency",
-        "description": "Module 'registry' is a potential hub with 6 connections (in: 0, out: 6, external: 0)\nOutgoing dependency instances: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency instances: None",
+        "description": "Module 'registry' is a potential hub with 6 connections (in: 0, out: 6, external: 0)\nOutgoing dependency evidences: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency evidences: None",
         "file_path": "./samples/mini_search_engine/registry.py",
-        "outgoing_instance_lines": [
+        "outgoing_evidence_lines": [
             {
                 "start_line_number": 1,
                 "end_line_number": 2
@@ -238,11 +210,20 @@
     {
         "type": "Architectural",
         "name": "Cyclic Dependency",
-        "description": "Strong cyclic dependency detected: link_c -> link_a -> link_b -> link_c\nCycle strength: 3 mutual dependencies",
+        "description": "Strong cyclic dependency detected: link_b -> link_c -> link_a -> link_b\nCycle strength: 3 mutual dependencies",
         "files": [
             {
+                "name": "./samples/mini_search_engine/link_b.py",
+                "evidence_lines": [
+                    {
+                        "start_line_number": 1,
+                        "end_line_number": 2
+                    }
+                ]
+            },
+            {
                 "name": "./samples/mini_search_engine/link_c.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 2
@@ -251,16 +232,7 @@
             },
             {
                 "name": "./samples/mini_search_engine/link_a.py",
-                "instance_lines": [
-                    {
-                        "start_line_number": 1,
-                        "end_line_number": 2
-                    }
-                ]
-            },
-            {
-                "name": "./samples/mini_search_engine/link_b.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 2
@@ -273,9 +245,9 @@
     {
         "type": "Architectural",
         "name": "Unstable Dependency",
-        "description": "Module 'registry' has high instability (1.00) with 6 outgoing and 0 incoming dependencies\nOutgoing dependency instances: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency instances: None",
+        "description": "Module 'registry' has high instability (1.00) with 6 outgoing and 0 incoming dependencies\nOutgoing dependency evidences: cache(4-5), indexer(1-2), queries(6-7), ranking(5-6), storage(3-4), tokenizer(2-3)\nIncoming dependency evidences: None",
         "file_path": "./samples/mini_search_engine/registry.py",
-        "outgoing_instance_lines": [
+        "outgoing_evidence_lines": [
             {
                 "start_line_number": 1,
                 "end_line_number": 2

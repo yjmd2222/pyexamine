@@ -278,7 +278,7 @@
       "category": "Code",
       "smell_name": "Temporary Field",
       "severity": "low",
-      "description": "Potentially unused fields status, tier, limit, self, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
+      "description": "Potentially unused fields limit, self, status, tier, balance in class 'ProfileState' at line 1 in ./samples/mini_search_engine/relations.py",
       "primary_file": "./samples/mini_search_engine/relations.py",
       "anchor": {
         "file": "mini_search_engine/relations.py",

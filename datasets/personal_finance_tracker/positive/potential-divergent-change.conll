@@ -1,5 +1,5 @@
 [file]	-100
-path=personal_finance_tracker/categories.py	-100
+path=personal_finance_tracker\categories.py	-100
 
 from	O
 datetime	O
@@ -199,7 +199,7 @@ label	O
 }	O
 
 [file]	-100
-path=personal_finance_tracker/ledger.py	-100
+path=personal_finance_tracker\ledger.py	-100
 
 from	O
 datetime	O
@@ -328,7 +328,7 @@ transaction_date	O
 }	O
 
 [file]	-100
-path=personal_finance_tracker/monolith.py	-100
+path=personal_finance_tracker\monolith.py	-100
 
 class	B
 FinanceDirector	I
@@ -567,7 +567,7 @@ return	I-WITHIN
 "generate_report_pack"	I-WITHIN
 
 [file]	-100
-path=personal_finance_tracker/rules.py	-100
+path=personal_finance_tracker\rules.py	-100
 
 def	O
 map_category	O

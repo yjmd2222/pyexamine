@@ -1,5 +1,5 @@
 [file]	-100
-path=web_scraper_price_monitor/client.py	-100
+path=web_scraper_price_monitor\client.py	-100
 
 class	O
 FetchSession	O
@@ -297,7 +297,7 @@ return	O
 results	O
 
 [file]	-100
-path=web_scraper_price_monitor/extractors.py	-100
+path=web_scraper_price_monitor\extractors.py	-100
 
 class	B
 HtmlExtractor	I
@@ -435,7 +435,7 @@ replace	I
 )	I
 
 [file]	-100
-path=web_scraper_price_monitor/notes.py	-100
+path=web_scraper_price_monitor\notes.py	-100
 
 # Pricing notes	O
 
@@ -611,7 +611,7 @@ message	O
 }	O
 
 [file]	-100
-path=web_scraper_price_monitor/pipeline.py	-100
+path=web_scraper_price_monitor\pipeline.py	-100
 
 class	O
 MonitorPipeline	O
@@ -760,7 +760,7 @@ return	O
 data	O
 
 [file]	-100
-path=web_scraper_price_monitor/state.py	-100
+path=web_scraper_price_monitor\state.py	-100
 
 class	O
 MonitorState	O

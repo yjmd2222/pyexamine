@@ -32,7 +32,7 @@
     {
         "type": "Structural",
         "name": "High Response for a Class (RFC)",
-        "description": "Class 'monolith.FinanceDirector' has RFC of 21 (methods: 21, external calls: 0)\nMethod instances: monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.sync_cloud(59-61), monolith.FinanceDirector.generate_report_pack(62-64)\nExternal call instances: None",
+        "description": "Class 'monolith.FinanceDirector' has RFC of 21 (methods: 21, external calls: 0)\nMethod evidences: monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.sync_cloud(59-61), monolith.FinanceDirector.generate_report_pack(62-64)\nExternal call evidences: None",
         "file_path": "./samples/personal_finance_tracker/monolith.py",
         "class_name": "monolith.FinanceDirector",
         "start_line_number": 1,
@@ -127,12 +127,12 @@
     {
         "type": "Code",
         "name": "Potential Divergent Change",
-        "description": "Class 'FinanceDirector' has 8 different method prefixes: summarize, export, generate, import, audit, sync, manage, reconcile in ./samples/personal_finance_tracker/monolith.py",
+        "description": "Class 'FinanceDirector' has 8 different method prefixes: generate, audit, reconcile, export, manage, import, summarize, sync in ./samples/personal_finance_tracker/monolith.py",
         "file_path": "./samples/personal_finance_tracker/monolith.py",
         "class_name": "FinanceDirector",
         "start_line_number": 1,
         "end_line_number": 63,
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 2,
                 "end_line_number": 4
@@ -242,11 +242,11 @@
     {
         "type": "Architectural",
         "name": "God Object",
-        "description": "Class 'monolith.FinanceDirector' has too many public methods (21)\nPublic function instances: monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.generate_report_pack(62-64), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.sync_cloud(59-61)",
+        "description": "Class 'monolith.FinanceDirector' has too many public methods (21)\nPublic function evidences: monolith.FinanceDirector.audit_changes(56-58), monolith.FinanceDirector.export_csv(26-28), monolith.FinanceDirector.export_pdf(29-31), monolith.FinanceDirector.generate_report_pack(62-64), monolith.FinanceDirector.import_bank_feed(23-25), monolith.FinanceDirector.import_csv(20-22), monolith.FinanceDirector.manage_accounts(47-49), monolith.FinanceDirector.manage_alerts(35-37), monolith.FinanceDirector.manage_budgets(32-34), monolith.FinanceDirector.manage_cash_flow(50-52), monolith.FinanceDirector.manage_categories(41-43), monolith.FinanceDirector.manage_goals(53-55), monolith.FinanceDirector.manage_merchants(44-46), monolith.FinanceDirector.manage_rules(38-40), monolith.FinanceDirector.reconcile_day(2-4), monolith.FinanceDirector.reconcile_month(8-10), monolith.FinanceDirector.reconcile_week(5-7), monolith.FinanceDirector.summarize_accounts(11-13), monolith.FinanceDirector.summarize_categories(14-16), monolith.FinanceDirector.summarize_merchants(17-19), monolith.FinanceDirector.sync_cloud(59-61)",
         "file_path": "./samples/personal_finance_tracker/monolith.py",
         "start_line_number": 1,
         "end_line_number": 64,
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 56,
                 "end_line_number": 58

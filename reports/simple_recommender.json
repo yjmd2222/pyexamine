@@ -24,7 +24,7 @@
         "name": "High Lines of Code (LOC)",
         "description": "Module 'corpus' has 272 effective code lines\n(Total: 272, Code: 272, Doc: 0, Import: 0, Blank: 0)",
         "file_path": "./samples/simple_recommender/corpus.py",
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 1,
                 "end_line_number": 273
@@ -37,7 +37,7 @@
         "name": "Long File",
         "description": "File 'corpus' has 272 meaningful lines of code",
         "file_path": "./samples/simple_recommender/corpus.py",
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 1,
                 "end_line_number": 273

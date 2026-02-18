@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import json
 import os
 import subprocess
@@ -45,6 +45,13 @@ def _get_value(entry, *keys):
     for key in keys:
         if key in entry:
             return entry[key]
+        if isinstance(key, str):
+            k1 = key.replace("/", "_")
+            if k1 in entry:
+                return entry[k1]
+            k2 = key.replace("_", "/")
+            if k2 in entry:
+                return entry[k2]
     return None
 
 
@@ -157,3 +164,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

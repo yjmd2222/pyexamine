@@ -1300,6 +1300,89 @@
       ]
     },
     {
+      "id": 31,
+      "category": "Architectural",
+      "smell_name": "Potential Redundant Abstractions",
+      "severity": "medium",
+      "description": "Modules notifier_a and notifier_b have 100.0% similar functionalities\nOverlapping function instances: notifier_a.format_message(2-4), notifier_a.schedule_next(14-16), notifier_a.send_daily(6-8), notifier_a.send_weekly(10-12), notifier_b.format_message(2-4), notifier_b.schedule_next(14-16), notifier_b.send_daily(6-8), notifier_b.send_weekly(10-12)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_a.py",
+          "segment_id": 2,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 1921,
+          "end_char": 2007
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_a.py",
+          "segment_id": 2,
+          "start_line": 14,
+          "end_line": 16,
+          "start_char": 2170,
+          "end_char": 2224
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_a.py",
+          "segment_id": 2,
+          "start_line": 6,
+          "end_line": 8,
+          "start_char": 2009,
+          "end_char": 2087
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_a.py",
+          "segment_id": 2,
+          "start_line": 10,
+          "end_line": 12,
+          "start_char": 2089,
+          "end_char": 2168
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_b.py",
+          "segment_id": 3,
+          "start_line": 2,
+          "end_line": 4,
+          "start_char": 2277,
+          "end_char": 2370
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_b.py",
+          "segment_id": 3,
+          "start_line": 14,
+          "end_line": 16,
+          "start_char": 2533,
+          "end_char": 2587
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_b.py",
+          "segment_id": 3,
+          "start_line": 6,
+          "end_line": 8,
+          "start_char": 2372,
+          "end_char": 2450
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "habit_tracker_reminders/notifier_b.py",
+          "segment_id": 3,
+          "start_line": 10,
+          "end_line": 12,
+          "start_char": 2452,
+          "end_char": 2531
+        }
+      ]
+    },
+    {
       "id": 32,
       "category": "Architectural",
       "smell_name": "Orphan Module",
@@ -1442,7 +1525,7 @@
       "INSTANCE_LINES",
       "RELATED_INSTANCE_LINES"
     ],
-    "num_instances": 36,
-    "dropped_instances_without_resolved_spans": 1
+    "num_instances": 37,
+    "dropped_instances_without_resolved_spans": 0
   }
 }

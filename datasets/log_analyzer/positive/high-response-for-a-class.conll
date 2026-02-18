@@ -1,5 +1,5 @@
 [file]	-100
-path=log_analyzer/aggregator.py	-100
+path=log_analyzer\aggregator.py	-100
 
 class	B
 Tooling	I
@@ -707,7 +707,7 @@ return	I
 ]	I
 
 [file]	-100
-path=log_analyzer/chains.py	-100
+path=log_analyzer\chains.py	-100
 
 class	O
 Node	O
@@ -760,7 +760,7 @@ child	O
 value	O
 
 [file]	-100
-path=log_analyzer/design.py	-100
+path=log_analyzer\design.py	-100
 
 class	O
 FutureNotifier	O
@@ -832,7 +832,7 @@ priority	O
 pass	O
 
 [file]	-100
-path=log_analyzer/duplicates.py	-100
+path=log_analyzer\duplicates.py	-100
 
 def	O
 _template	O
@@ -1826,7 +1826,7 @@ return	O
 out	O
 
 [file]	-100
-path=log_analyzer/misc.py	-100
+path=log_analyzer\misc.py	-100
 
 def	O
 scratchpad	O
@@ -1839,7 +1839,7 @@ return	O
 "notes"	O
 
 [file]	-100
-path=log_analyzer/reports.py	-100
+path=log_analyzer\reports.py	-100
 
 def	O
 build_report	O

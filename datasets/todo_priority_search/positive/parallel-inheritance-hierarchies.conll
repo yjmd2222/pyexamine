@@ -1,5 +1,5 @@
 [file]	-100
-path=todo_priority_search/callsites.py	-100
+path=todo_priority_search\callsites.py	-100
 
 class	O
 AuditLog	O
@@ -107,7 +107,7 @@ publish	O
 )	O
 
 [file]	-100
-path=todo_priority_search/dispatch.py	-100
+path=todo_priority_search\dispatch.py	-100
 
 class	O
 TaskDispatcher	O
@@ -234,7 +234,7 @@ return	O
 "unknown"	O
 
 [file]	-100
-path=todo_priority_search/templates.py	-100
+path=todo_priority_search\templates.py	-100
 
 class	B
 BoardBase	I
@@ -389,7 +389,7 @@ return	I
 "export_advanced"	I
 
 [file]	-100
-path=todo_priority_search/workflow.py	-100
+path=todo_priority_search\workflow.py	-100
 
 class	O
 TaskWorkflow	O

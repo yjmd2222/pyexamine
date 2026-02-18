@@ -1,5 +1,5 @@
 [file]	-100
-path=habit_tracker_reminders/catalog.py	-100
+path=habit_tracker_reminders\catalog.py	-100
 
 class	O
 HabitType01	O
@@ -322,7 +322,7 @@ return	O
 "habit_20"	O
 
 [file]	-100
-path=habit_tracker_reminders/habits.py	-100
+path=habit_tracker_reminders\habits.py	-100
 
 class	O
 HabitBase	O
@@ -441,7 +441,7 @@ return	O
 "annual"	O
 
 [file]	-100
-path=habit_tracker_reminders/notifier_a.py	-100
+path=habit_tracker_reminders\notifier_a.py	-100
 
 def	B
 format_message	I
@@ -533,7 +533,7 @@ day	I
 "	I
 
 [file]	-100
-path=habit_tracker_reminders/notifier_b.py	-100
+path=habit_tracker_reminders\notifier_b.py	-100
 
 def	B
 format_message	I
@@ -625,7 +625,7 @@ day	I
 "	I
 
 [file]	-100
-path=habit_tracker_reminders/unused_helpers.py	-100
+path=habit_tracker_reminders\unused_helpers.py	-100
 
 def	O
 _calc_streak_days	O

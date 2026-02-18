@@ -4,8 +4,9 @@
     "ANCHOR",
     "INCOMING_INSTANCE_LINES",
     "INSTANCE_LINES",
-    "OUTGOING_INSTANCE_LINES"
+    "OUTGOING_INSTANCE_LINES",
+    "RELATED_INSTANCE_LINES"
   ],
-  "num_instances": 10,
-  "dropped_instances_without_resolved_spans": 1
+  "num_instances": 11,
+  "dropped_instances_without_resolved_spans": 0
 }

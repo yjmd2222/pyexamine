@@ -250,6 +250,35 @@
       ]
     },
     {
+      "id": 8,
+      "category": "Code",
+      "smell_name": "Data Clumps",
+      "severity": "medium",
+      "description": "Parameters amount, category_code, currency, description, received_at, source appear together in functions: categorize_income (lines 4-22), categorize_expense (lines 24-42) in ./samples/personal_finance_tracker/categories.py",
+      "primary_file": "./samples/personal_finance_tracker/categories.py",
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "METHODS_FUNCTIONS",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 4,
+          "end_line": 22,
+          "start_char": 80,
+          "end_char": 631
+        },
+        {
+          "role": "METHODS_FUNCTIONS",
+          "file": "personal_finance_tracker/categories.py",
+          "segment_id": 0,
+          "start_line": 24,
+          "end_line": 42,
+          "start_char": 633,
+          "end_char": 1200
+        }
+      ]
+    },
+    {
       "id": 9,
       "category": "Code",
       "smell_name": "Primitive Obsession",
@@ -308,7 +337,7 @@
       "category": "Code",
       "smell_name": "Potential Divergent Change",
       "severity": "medium",
-      "description": "Class 'FinanceDirector' has 8 different method prefixes: summarize, export, generate, import, audit, sync, manage, reconcile in ./samples/personal_finance_tracker/monolith.py",
+      "description": "Class 'FinanceDirector' has 8 different method prefixes: summarize, reconcile, import, generate, export, manage, audit, sync in ./samples/personal_finance_tracker/monolith.py",
       "primary_file": "./samples/personal_finance_tracker/monolith.py",
       "anchor": {
         "file": "personal_finance_tracker/monolith.py",
@@ -848,9 +877,10 @@
     "separator_token": "[file]",
     "mention_roles": [
       "ANCHOR",
-      "INSTANCE_LINES"
+      "INSTANCE_LINES",
+      "METHODS_FUNCTIONS"
     ],
-    "num_instances": 16,
-    "dropped_instances_without_resolved_spans": 1
+    "num_instances": 17,
+    "dropped_instances_without_resolved_spans": 0
   }
 }

@@ -1,4 +1,4 @@
-import yaml
+﻿import yaml
 import logging
 
 logger = logging.getLogger(__name__)
@@ -86,3 +86,5 @@ class ConfigHandler:
         thresholds = self.thresholds.get(smell_type, {})
         logger.debug(f"Retrieved {smell_type} thresholds: {thresholds}")
         return thresholds
+
+

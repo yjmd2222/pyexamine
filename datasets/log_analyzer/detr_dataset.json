@@ -160,7 +160,7 @@
       "category": "Structural",
       "smell_name": "High Response for a Class (RFC)",
       "severity": "High",
-      "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_02(100-101), do_01(99-100), do_05(103-104), do_11(109-110), do_17(115-116), do_15(113-114), do_12(110-111), do_16(114-115), do_20(118-119), do_21(119-120), do_26(124-125), do_30(128-129), do_27(125-126), do_22(120-121), do_09(107-108), do_23(121-122), do_07(105-106), do_28(126-127), join(138-139), do_14(112-113), do_18(116-117), do_24(122-123), do_03(101-102), do_25(123-124), do_13(111-112), do_06(104-105), do_08(106-107), do_04(102-103), do_29(127-128), do_10(108-109), do_19(117-118)",
+      "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_13(111-112), do_01(99-100), do_03(101-102), do_20(118-119), do_30(128-129), do_05(103-104), do_07(105-106), do_14(112-113), do_25(123-124), do_27(125-126), do_26(124-125), do_24(122-123), do_06(104-105), do_29(127-128), do_09(107-108), do_02(100-101), do_23(121-122), do_18(116-117), do_04(102-103), do_19(117-118), do_15(113-114), do_17(115-116), do_22(120-121), do_21(119-120), do_11(109-110), do_28(126-127), join(138-139), do_08(106-107), do_12(110-111), do_16(114-115), do_10(108-109)",
       "primary_file": "./samples/log_analyzer/aggregator.py",
       "anchor": {
         "file": "log_analyzer/aggregator.py",
@@ -187,7 +187,7 @@
       "category": "Structural",
       "smell_name": "High Message Passing Coupling (MPC)",
       "severity": "High",
-      "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_02': 1, 'do_01': 1, 'do_05': 1}\nExternal call instances: do_02(100-101), do_01(99-100), do_05(103-104), do_11(109-110), do_17(115-116), do_15(113-114), do_12(110-111), do_16(114-115), do_20(118-119), do_21(119-120), do_26(124-125), do_30(128-129), do_27(125-126), do_22(120-121), do_09(107-108), do_23(121-122), do_07(105-106), do_28(126-127), do_14(112-113), do_18(116-117), do_24(122-123), do_03(101-102), do_25(123-124), do_13(111-112), do_06(104-105), do_08(106-107), do_04(102-103), do_29(127-128), do_10(108-109), do_19(117-118), join(138-139)\nInternal call instances: None",
+      "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_16': 1, 'do_13': 1, 'do_01': 1}\nExternal call instances: do_16(114-115), do_13(111-112), do_01(99-100), do_03(101-102), do_20(118-119), do_30(128-129), do_05(103-104), do_07(105-106), do_14(112-113), do_25(123-124), do_27(125-126), do_26(124-125), do_24(122-123), do_06(104-105), do_29(127-128), do_09(107-108), do_02(100-101), do_23(121-122), do_04(102-103), do_19(117-118), do_15(113-114), do_17(115-116), do_22(120-121), do_21(119-120), do_11(109-110), do_28(126-127), do_08(106-107), do_12(110-111), do_18(116-117), do_10(108-109), join(138-139)\nInternal call instances: None",
       "primary_file": "./samples/log_analyzer/aggregator.py",
       "anchor": {
         "file": "log_analyzer/aggregator.py",
@@ -211,208 +211,10 @@
           "role": "INSTANCE_LINES",
           "file": "log_analyzer/aggregator.py",
           "segment_id": 0,
-          "start_line": 100,
-          "end_line": 101,
-          "start_char": 1477,
-          "end_char": 1509
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 99,
-          "end_line": 100,
-          "start_char": 1445,
-          "end_char": 1477
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 103,
-          "end_line": 104,
-          "start_char": 1573,
-          "end_char": 1605
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 109,
-          "end_line": 110,
-          "start_char": 1765,
-          "end_char": 1797
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 115,
-          "end_line": 116,
-          "start_char": 1957,
-          "end_char": 1989
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 113,
-          "end_line": 114,
-          "start_char": 1893,
-          "end_char": 1925
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 110,
-          "end_line": 111,
-          "start_char": 1797,
-          "end_char": 1829
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
           "start_line": 114,
           "end_line": 115,
           "start_char": 1925,
           "end_char": 1957
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 118,
-          "end_line": 119,
-          "start_char": 2053,
-          "end_char": 2085
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 119,
-          "end_line": 120,
-          "start_char": 2085,
-          "end_char": 2117
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 124,
-          "end_line": 125,
-          "start_char": 2245,
-          "end_char": 2277
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 128,
-          "end_line": 129,
-          "start_char": 2373,
-          "end_char": 2405
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 125,
-          "end_line": 126,
-          "start_char": 2277,
-          "end_char": 2309
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 120,
-          "end_line": 121,
-          "start_char": 2117,
-          "end_char": 2149
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 107,
-          "end_line": 108,
-          "start_char": 1701,
-          "end_char": 1733
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 121,
-          "end_line": 122,
-          "start_char": 2149,
-          "end_char": 2181
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 105,
-          "end_line": 106,
-          "start_char": 1637,
-          "end_char": 1669
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 126,
-          "end_line": 127,
-          "start_char": 2309,
-          "end_char": 2341
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 112,
-          "end_line": 113,
-          "start_char": 1861,
-          "end_char": 1893
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 116,
-          "end_line": 117,
-          "start_char": 1989,
-          "end_char": 2021
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 122,
-          "end_line": 123,
-          "start_char": 2181,
-          "end_char": 2213
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 101,
-          "end_line": 102,
-          "start_char": 1509,
-          "end_char": 1541
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 123,
-          "end_line": 124,
-          "start_char": 2213,
-          "end_char": 2245
         },
         {
           "role": "INSTANCE_LINES",
@@ -427,28 +229,109 @@
           "role": "INSTANCE_LINES",
           "file": "log_analyzer/aggregator.py",
           "segment_id": 0,
+          "start_line": 99,
+          "end_line": 100,
+          "start_char": 1445,
+          "end_char": 1477
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 101,
+          "end_line": 102,
+          "start_char": 1509,
+          "end_char": 1541
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 118,
+          "end_line": 119,
+          "start_char": 2053,
+          "end_char": 2085
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 128,
+          "end_line": 129,
+          "start_char": 2373,
+          "end_char": 2405
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 103,
+          "end_line": 104,
+          "start_char": 1573,
+          "end_char": 1605
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 105,
+          "end_line": 106,
+          "start_char": 1637,
+          "end_char": 1669
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 112,
+          "end_line": 113,
+          "start_char": 1861,
+          "end_char": 1893
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 123,
+          "end_line": 124,
+          "start_char": 2213,
+          "end_char": 2245
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 125,
+          "end_line": 126,
+          "start_char": 2277,
+          "end_char": 2309
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 124,
+          "end_line": 125,
+          "start_char": 2245,
+          "end_char": 2277
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 122,
+          "end_line": 123,
+          "start_char": 2181,
+          "end_char": 2213
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
           "start_line": 104,
           "end_line": 105,
           "start_char": 1605,
           "end_char": 1637
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 106,
-          "end_line": 107,
-          "start_char": 1669,
-          "end_char": 1701
-        },
-        {
-          "role": "INSTANCE_LINES",
-          "file": "log_analyzer/aggregator.py",
-          "segment_id": 0,
-          "start_line": 102,
-          "end_line": 103,
-          "start_char": 1541,
-          "end_char": 1573
         },
         {
           "role": "INSTANCE_LINES",
@@ -463,10 +346,37 @@
           "role": "INSTANCE_LINES",
           "file": "log_analyzer/aggregator.py",
           "segment_id": 0,
-          "start_line": 108,
-          "end_line": 109,
-          "start_char": 1733,
-          "end_char": 1765
+          "start_line": 107,
+          "end_line": 108,
+          "start_char": 1701,
+          "end_char": 1733
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 100,
+          "end_line": 101,
+          "start_char": 1477,
+          "end_char": 1509
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 121,
+          "end_line": 122,
+          "start_char": 2149,
+          "end_char": 2181
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 102,
+          "end_line": 103,
+          "start_char": 1541,
+          "end_char": 1573
         },
         {
           "role": "INSTANCE_LINES",
@@ -476,6 +386,96 @@
           "end_line": 118,
           "start_char": 2021,
           "end_char": 2053
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 113,
+          "end_line": 114,
+          "start_char": 1893,
+          "end_char": 1925
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 115,
+          "end_line": 116,
+          "start_char": 1957,
+          "end_char": 1989
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 120,
+          "end_line": 121,
+          "start_char": 2117,
+          "end_char": 2149
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 119,
+          "end_line": 120,
+          "start_char": 2085,
+          "end_char": 2117
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 109,
+          "end_line": 110,
+          "start_char": 1765,
+          "end_char": 1797
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 126,
+          "end_line": 127,
+          "start_char": 2309,
+          "end_char": 2341
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 106,
+          "end_line": 107,
+          "start_char": 1669,
+          "end_char": 1701
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 110,
+          "end_line": 111,
+          "start_char": 1797,
+          "end_char": 1829
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 116,
+          "end_line": 117,
+          "start_char": 1989,
+          "end_char": 2021
+        },
+        {
+          "role": "INSTANCE_LINES",
+          "file": "log_analyzer/aggregator.py",
+          "segment_id": 0,
+          "start_line": 108,
+          "end_line": 109,
+          "start_char": 1733,
+          "end_char": 1765
         },
         {
           "role": "INSTANCE_LINES",
@@ -628,7 +628,7 @@
       "category": "Code",
       "smell_name": "Speculative Generality",
       "severity": "medium",
-      "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: channel in schedule (lines 2-4), user in schedule (lines 2-4), priority in schedule (lines 2-4), channel in retry (lines 5-7), user in retry (lines 5-7), priority in retry (lines 5-7), channel in cancel (lines 8-10), user in cancel (lines 8-10), priority in cancel (lines 8-10), channel in defer (lines 11-13), user in defer (lines 11-13), priority in defer (lines 11-13) in ./samples/log_analyzer/design.py",
+      "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: channel in schedule (lines 2-4), priority in schedule (lines 2-4), user in schedule (lines 2-4), channel in retry (lines 5-7), priority in retry (lines 5-7), user in retry (lines 5-7), channel in cancel (lines 8-10), priority in cancel (lines 8-10), user in cancel (lines 8-10), channel in defer (lines 11-13), priority in defer (lines 11-13), user in defer (lines 11-13) in ./samples/log_analyzer/design.py",
       "primary_file": "./samples/log_analyzer/design.py",
       "anchor": {
         "file": "log_analyzer/design.py",

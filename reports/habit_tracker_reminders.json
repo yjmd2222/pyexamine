@@ -4,7 +4,7 @@
         "name": "High Number of Classes per Module",
         "description": "Module 'catalog' has 20 significant classes (avg complexity: 0.7)\nClass locations: HabitType01(1-4), HabitType02(6-9), HabitType03(11-14), HabitType04(16-19), HabitType05(21-24), HabitType06(26-29), HabitType07(31-34), HabitType08(36-39), HabitType09(41-44), HabitType10(46-49), HabitType11(51-54), HabitType12(56-59), HabitType13(61-64), HabitType14(66-69), HabitType15(71-74), HabitType16(76-79), HabitType17(81-84), HabitType18(86-89), HabitType19(91-94), HabitType20(96-99)",
         "file_path": "./samples/habit_tracker_reminders/catalog.py",
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 1,
                 "end_line_number": 4
@@ -97,7 +97,7 @@
         "files": [
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 7
@@ -106,7 +106,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 9,
                         "end_line_number": 12
@@ -115,7 +115,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 14,
                         "end_line_number": 17
@@ -124,7 +124,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 19,
                         "end_line_number": 22
@@ -143,7 +143,7 @@
         "files": [
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 7
@@ -152,7 +152,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 9,
                         "end_line_number": 12
@@ -161,7 +161,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 14,
                         "end_line_number": 17
@@ -170,7 +170,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 19,
                         "end_line_number": 22
@@ -179,7 +179,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 24,
                         "end_line_number": 27
@@ -196,7 +196,7 @@
         "files": [
             {
                 "name": "./samples/habit_tracker_reminders/catalog.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 4
@@ -281,7 +281,7 @@
             },
             {
                 "name": "./samples/habit_tracker_reminders/habits.py",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 1,
                         "end_line_number": 7
@@ -580,11 +580,11 @@
     {
         "type": "Architectural",
         "name": "Potential Redundant Abstractions",
-        "description": "Modules notifier_a and notifier_b have 100.0% similar functionalities\nOverlapping function instances: notifier_a.format_message(2-4), notifier_a.schedule_next(14-16), notifier_a.send_daily(6-8), notifier_a.send_weekly(10-12), notifier_b.format_message(2-4), notifier_b.schedule_next(14-16), notifier_b.send_daily(6-8), notifier_b.send_weekly(10-12)",
+        "description": "Modules notifier_a and notifier_b have 100.0% similar functionalities\nOverlapping function evidences: notifier_a.format_message(2-4), notifier_a.schedule_next(14-16), notifier_a.send_daily(6-8), notifier_a.send_weekly(10-12), notifier_b.format_message(2-4), notifier_b.schedule_next(14-16), notifier_b.send_daily(6-8), notifier_b.send_weekly(10-12)",
         "files": [
             {
                 "name": "notifier_a",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 2,
                         "end_line_number": 4
@@ -605,7 +605,7 @@
             },
             {
                 "name": "notifier_b",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 2,
                         "end_line_number": 4

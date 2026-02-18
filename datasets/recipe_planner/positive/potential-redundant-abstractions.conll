@@ -1,5 +1,5 @@
 [file]	-100
-path=recipe_planner/adapters.py	-100
+path=recipe_planner\adapters.py	-100
 
 """Lightweight format adapters."""	O
 
@@ -140,7 +140,7 @@ line	I
 ]	I
 
 [file]	-100
-path=recipe_planner/app.py	-100
+path=recipe_planner\app.py	-100
 
 """Recipe planner CLI-like entrypoint."""	O
 
@@ -232,7 +232,7 @@ item	O
 )	O
 
 [file]	-100
-path=recipe_planner/batch_ops.py	-100
+path=recipe_planner\batch_ops.py	-100
 
 """Batch operations for list processing."""	O
 
@@ -897,7 +897,7 @@ return	O
 average	O
 
 [file]	-100
-path=recipe_planner/grocery.py	-100
+path=recipe_planner\grocery.py	-100
 
 """Grocery list generation."""	O
 
@@ -1039,7 +1039,7 @@ else	O
 None	O
 
 [file]	-100
-path=recipe_planner/inventory.py	-100
+path=recipe_planner\inventory.py	-100
 
 """Inventory helpers for pantry tracking."""	O
 
@@ -1236,7 +1236,7 @@ slots	O
 }	O
 
 [file]	-100
-path=recipe_planner/maintenance.py	-100
+path=recipe_planner\maintenance.py	-100
 
 """Maintenance helpers and checks."""	O
 
@@ -1337,7 +1337,7 @@ return	O
 summary	O
 
 [file]	-100
-path=recipe_planner/models.py	-100
+path=recipe_planner\models.py	-100
 
 """Data containers and domain models."""	O
 
@@ -1598,7 +1598,7 @@ lines	O
 )	O
 
 [file]	-100
-path=recipe_planner/planner.py	-100
+path=recipe_planner\planner.py	-100
 
 """Planning logic for building weekly meal plans."""	O
 
@@ -1860,7 +1860,7 @@ values	O
 )	O
 
 [file]	-100
-path=recipe_planner/recipes.py	-100
+path=recipe_planner\recipes.py	-100
 
 """Recipe storage and retrieval."""	O
 
@@ -2027,7 +2027,7 @@ value	O
 )	O
 
 [file]	-100
-path=recipe_planner/schedule.py	-100
+path=recipe_planner\schedule.py	-100
 
 """Schedule assembly for meal slots."""	O
 
@@ -2154,7 +2154,7 @@ return	O
 slots	O
 
 [file]	-100
-path=recipe_planner/transformers.py	-100
+path=recipe_planner\transformers.py	-100
 
 """Text transformations for exports."""	O
 

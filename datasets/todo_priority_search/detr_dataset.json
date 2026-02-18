@@ -438,7 +438,7 @@
       "category": "Code",
       "smell_name": "Potential Divergent Change",
       "severity": "medium",
-      "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, export, alert, sync, audit, index in ./samples/todo_priority_search/workflow.py",
+      "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, export, sync, audit, alert, index in ./samples/todo_priority_search/workflow.py",
       "primary_file": "./samples/todo_priority_search/workflow.py",
       "anchor": {
         "file": "todo_priority_search/workflow.py",

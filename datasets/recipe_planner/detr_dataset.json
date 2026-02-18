@@ -586,7 +586,7 @@
       "category": "Code",
       "smell_name": "Temporary Field",
       "severity": "low",
-      "description": "Potentially unused fields amount, self, name in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
+      "description": "Potentially unused fields amount, name, self in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
       "primary_file": "./samples/recipe_planner/models.py",
       "anchor": {
         "file": "recipe_planner/models.py",
@@ -960,6 +960,89 @@
       ]
     },
     {
+      "id": 23,
+      "category": "Architectural",
+      "smell_name": "Potential Redundant Abstractions",
+      "severity": "medium",
+      "description": "Modules adapters and transformers have 100.0% similar functionalities\nOverlapping function instances: adapters.format_line(4-7), adapters.merge_rows(14-19), adapters.normalize_block(21-24), adapters.parse_line(9-12), transformers.format_line(4-7), transformers.merge_rows(14-19), transformers.normalize_block(21-24), transformers.parse_line(9-12)",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/adapters.py",
+          "segment_id": 0,
+          "start_line": 4,
+          "end_line": 7,
+          "start_char": 77,
+          "end_char": 172
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/adapters.py",
+          "segment_id": 0,
+          "start_line": 14,
+          "end_line": 19,
+          "start_char": 282,
+          "end_char": 386
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/adapters.py",
+          "segment_id": 0,
+          "start_line": 21,
+          "end_line": 24,
+          "start_char": 388,
+          "end_char": 517
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/adapters.py",
+          "segment_id": 0,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 174,
+          "end_char": 280
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/transformers.py",
+          "segment_id": 10,
+          "start_line": 4,
+          "end_line": 7,
+          "start_char": 8932,
+          "end_char": 9027
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/transformers.py",
+          "segment_id": 10,
+          "start_line": 14,
+          "end_line": 19,
+          "start_char": 9137,
+          "end_char": 9241
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/transformers.py",
+          "segment_id": 10,
+          "start_line": 21,
+          "end_line": 24,
+          "start_char": 9243,
+          "end_char": 9372
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/transformers.py",
+          "segment_id": 10,
+          "start_line": 9,
+          "end_line": 12,
+          "start_char": 9029,
+          "end_char": 9135
+        }
+      ]
+    },
+    {
       "id": 24,
       "category": "Architectural",
       "smell_name": "Orphan Module",
@@ -1099,19 +1182,10 @@
       "category": "Architectural",
       "smell_name": "Cyclic Dependency",
       "severity": "high",
-      "description": "Strong cyclic dependency detected: planner -> schedule -> inventory -> planner\nCycle strength: 3 mutual dependencies",
+      "description": "Strong cyclic dependency detected: schedule -> inventory -> planner -> schedule\nCycle strength: 3 mutual dependencies",
       "primary_file": null,
       "anchor": null,
       "mentions": [
-        {
-          "role": "RELATED_INSTANCE_LINES",
-          "file": "recipe_planner/planner.py",
-          "segment_id": 7,
-          "start_line": 3,
-          "end_line": 4,
-          "start_char": 6554,
-          "end_char": 6590
-        },
         {
           "role": "RELATED_INSTANCE_LINES",
           "file": "recipe_planner/schedule.py",
@@ -1129,18 +1203,7 @@
           "end_line": 4,
           "start_char": 4406,
           "end_char": 4421
-        }
-      ]
-    },
-    {
-      "id": 30,
-      "category": "Architectural",
-      "smell_name": "Cyclic Dependency",
-      "severity": "medium",
-      "description": "Strong cyclic dependency detected: planner -> schedule -> planner\nCycle strength: 3 mutual dependencies",
-      "primary_file": null,
-      "anchor": null,
-      "mentions": [
+        },
         {
           "role": "RELATED_INSTANCE_LINES",
           "file": "recipe_planner/planner.py",
@@ -1149,7 +1212,18 @@
           "end_line": 4,
           "start_char": 6554,
           "end_char": 6590
-        },
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "category": "Architectural",
+      "smell_name": "Cyclic Dependency",
+      "severity": "medium",
+      "description": "Strong cyclic dependency detected: schedule -> planner -> schedule\nCycle strength: 3 mutual dependencies",
+      "primary_file": null,
+      "anchor": null,
+      "mentions": [
         {
           "role": "RELATED_INSTANCE_LINES",
           "file": "recipe_planner/schedule.py",
@@ -1158,6 +1232,15 @@
           "end_line": 5,
           "start_char": 8363,
           "end_char": 8388
+        },
+        {
+          "role": "RELATED_INSTANCE_LINES",
+          "file": "recipe_planner/planner.py",
+          "segment_id": 7,
+          "start_line": 3,
+          "end_line": 4,
+          "start_char": 6554,
+          "end_char": 6590
         }
       ]
     }
@@ -1169,7 +1252,7 @@
       "LINES",
       "RELATED_INSTANCE_LINES"
     ],
-    "num_instances": 30,
-    "dropped_instances_without_resolved_spans": 1
+    "num_instances": 31,
+    "dropped_instances_without_resolved_spans": 0
   }
 }

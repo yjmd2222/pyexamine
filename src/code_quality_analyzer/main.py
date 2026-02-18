@@ -1,4 +1,4 @@
-import os
+﻿import os
 import argparse
 import csv
 import json
@@ -27,7 +27,7 @@ def analyze_code_smells(directory_path, detector):
 
     Args:
         directory_path (str): The path to the directory to analyze
-        detector (CodeSmellDetector): The detector instance to use
+        detector (CodeSmellDetector): The detector Evidence to use
 
     Returns:
         list: A list of detected code smells
@@ -98,7 +98,7 @@ def analyze_architectural_smells(directory_path, detector):
 
     Args:
         directory_path (str): The path to the directory to analyze
-        detector (ArchitecturalSmellDetector): The detector instance to use
+        detector (ArchitecturalSmellDetector): The detector Evidence to use
 
     Returns:
         list: A list of detected architectural smells
@@ -231,7 +231,7 @@ def analyze_structural_smells(directory_path, detector):
 
     Args:
         directory_path (str): The path to the directory to analyze
-        detector (StructuralSmellDetector): The detector instance to use
+        detector (StructuralSmellDetector): The detector Evidence to use
 
     Returns:
         list: A list of detected structural smells
@@ -461,9 +461,9 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
             "Methods/Functions": "methods/functions",
             "Start Line Number": "start_line_number",
             "End Line Number": "end_line_number",
-            "Instance Lines": "instance_lines",
-            "Outgoing Instance Lines": "outgoing_instance_lines",
-            "Incoming Instance Lines": "incoming_instance_lines",
+            "Evidence Lines": "evidence_lines",
+            "Outgoing Evidence Lines": "outgoing_evidence_lines",
+            "Incoming Evidence Lines": "incoming_evidence_lines",
             "Lines": "lines",
             "Files": "files",
             "Classes": "classes",
@@ -641,3 +641,6 @@ if __name__ == "__main__":
         )
     else:
         analyze_project(args.debug, args.type, args.metadata_output)
+
+
+

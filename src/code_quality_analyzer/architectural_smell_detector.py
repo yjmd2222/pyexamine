@@ -1,4 +1,4 @@
-import os
+﻿import os
 import ast
 import networkx as nx
 from collections import defaultdict
@@ -11,20 +11,20 @@ from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
     ArchitecturalFileLevelIncomingOutgoingPayload,
-    ArchitecturalFileLevelInstanceLinesPayload,
+    ArchitecturalFileLevelEvidenceLinesPayload,
     ArchitecturalFileLevelLineSpansPayload,
     ArchitecturalFileLevelPayload,
     ArchitecturalFileLevelRangePayload,
     ArchitecturalFilesPayload,
     ArchitecturalFunctionLevelConnectedPayload,
     ArchitecturalMultiFilePayload,
-    FileIncomingInstanceLines,
-    FileInstanceLines,
+    FileIncomingEvidenceLines,
+    FileEvidenceLines,
     LineSpan,
     TemplateRenderer,
     render_architectural_file_level,
     render_architectural_file_level_incoming_outgoing,
-    render_architectural_file_level_instance_lines,
+    render_architectural_file_level_evidence_lines,
     render_architectural_file_level_line_spans,
     render_architectural_file_level_range,
     render_architectural_files,
@@ -121,7 +121,7 @@ class ArchitecturalSmellDetector:
             "architectural_function_level_connected": render_architectural_function_level_connected,
             "architectural_files": render_architectural_files,
             "architectural_file_level_line_spans": render_architectural_file_level_line_spans,
-            "architectural_file_level_instance_lines": render_architectural_file_level_instance_lines,
+            "architectural_file_level_evidence_lines": render_architectural_file_level_evidence_lines,
             "architectural_file_level": render_architectural_file_level,
             "architectural_file_level_incoming_outgoing": render_architectural_file_level_incoming_outgoing,
             "architectural_file_level_range": render_architectural_file_level_range,
@@ -414,9 +414,9 @@ class ArchitecturalSmellDetector:
         min_connections = self.thresholds.get('MIN_HUB_CONNECTIONS', 5)
         min_project_modules = self.thresholds.get('HUB_MIN_PROJECT_MODULES', 3)
 
-        def _format_instances(instances):
+        def _format_evidences(evidences):
             grouped = defaultdict(list)
-            for entry in instances:
+            for entry in evidences:
                 grouped[entry["name"]].append(
                     (entry["start_line_number"], entry["end_line_number"])
                 )
@@ -474,38 +474,38 @@ class ArchitecturalSmellDetector:
                     is_balanced = (bal_min <= ratio <= bal_max)
 
                     if not is_balanced:
-                        outgoing_instances = [
+                        outgoing_evidences = [
                             entry for entry in self.import_lines.get(node, [])
                             if (
                                 entry["name"] in self.module_dependencies.successors(node) or
                                 any(entry["name"] == dep for _, dep in self.external_dependencies[node])
                             )
                         ]
-                        # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
-                        incoming_instances = []
+                        # outgoing_evidences: {name, start_line_number, end_line_number} per import in this module
+                        incoming_evidences = []
                         for predecessor in self.module_dependencies.predecessors(node):
                             if predecessor not in nodes:
                                 continue
                             for entry in self.import_lines.get(predecessor, []):
                                 if entry["name"] == node:
-                                    incoming_instances.append({
+                                    incoming_evidences.append({
                                         "name": predecessor,
                                         "start_line_number": entry["start_line_number"],
                                         "end_line_number": entry["end_line_number"]
                                     })
-                        # incoming_instances: {name, start_line_number, end_line_number} per import of this module
+                        # incoming_evidences: {name, start_line_number, end_line_number} per import of this module
 
-                        outgoing_detail = _format_instances(outgoing_instances) or "None"
-                        incoming_detail = _format_instances(incoming_instances) or "None"
-                        outgoing_instance_lines = [
+                        outgoing_detail = _format_evidences(outgoing_evidences) or "None"
+                        incoming_detail = _format_evidences(incoming_evidences) or "None"
+                        outgoing_evidence_lines = [
                             LineSpan(
                                 start_line_number=entry["start_line_number"],
                                 end_line_number=entry["end_line_number"]
                             )
-                            for entry in outgoing_instances
+                            for entry in outgoing_evidences
                         ]
                         incoming_grouped = defaultdict(list)
-                        for entry in incoming_instances:
+                        for entry in incoming_evidences:
                             incoming_grouped[entry["name"]].append(
                                 LineSpan(
                                     start_line_number=entry["start_line_number"],
@@ -513,9 +513,9 @@ class ArchitecturalSmellDetector:
                                 )
                             )
                         incoming_files = [
-                            FileIncomingInstanceLines(
+                            FileIncomingEvidenceLines(
                                 name=self.file_paths.get(name, name),
-                                incoming_instance_lines=lines
+                                incoming_evidence_lines=lines
                             )
                             for name, lines in incoming_grouped.items()
                         ]
@@ -525,11 +525,11 @@ class ArchitecturalSmellDetector:
                             description=(
                                 f"Module '{node}' is a potential hub with {total_connections} connections "
                                 f"(in: {in_degree}, out: {out_degree}, external: {external_deps})\n"
-                                f"Outgoing dependency instances: {outgoing_detail}\n"
-                                f"Incoming dependency instances: {incoming_detail}"
+                                f"Outgoing dependency evidences: {outgoing_detail}\n"
+                                f"Incoming dependency evidences: {incoming_detail}"
                             ),
                             file_path=self.file_paths.get(node, "Unknown"),
-                            outgoing_instance_lines=outgoing_instance_lines,
+                            outgoing_evidence_lines=outgoing_evidence_lines,
                             files=incoming_files,
                             severity='high' if total_connections > min_connections * 2 else 'medium'
                         )
@@ -574,9 +574,9 @@ class ArchitecturalSmellDetector:
                     parts.append(f"{module}({ranges})")
                 detail = ", ".join(parts) if parts else ", ".join(modules)
                 files = [
-                    FileInstanceLines(
+                    FileEvidenceLines(
                         name=module,
-                        instance_lines=[
+                        evidence_lines=[
                             LineSpan(start_line_number=start, end_line_number=end)
                             for start, end in grouped[module]
                         ]
@@ -633,25 +633,25 @@ class ArchitecturalSmellDetector:
                         similarity = len(module1_funcs & module2_funcs) / len(module1_funcs | module2_funcs)
                         
                         if similarity >= similarity_threshold:
-                            redundant_instances = []
+                            redundant_evidences = []
                             overlap = module1_funcs & module2_funcs
                             for module_name in (modules[i], modules[j]):
                                 for func in sorted(overlap):
                                     for start, end in self.function_lines.get(module_name, {}).get(func, []):
-                                        redundant_instances.append({
+                                        redundant_evidences.append({
                                             "name": f"{module_name}.{func}",
                                             "start_line_number": start,
                                             "end_line_number": end
                                         })
-                            # redundant_instances: {name, start_line_number, end_line_number} per overlapping function
-                            instances_detail = (
+                            # redundant_evidences: {name, start_line_number, end_line_number} per overlapping function
+                            evidences_detail = (
                                 ", ".join(
                                     f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                                    for entry in redundant_instances
+                                    for entry in redundant_evidences
                                 ) or "None"
                             )
                             grouped = defaultdict(list)
-                            for entry in redundant_instances:
+                            for entry in redundant_evidences:
                                 module_name = entry["name"].rsplit('.', 1)[0]
                                 grouped[module_name].append(
                                     LineSpan(
@@ -664,10 +664,10 @@ class ArchitecturalSmellDetector:
                                 name="Potential Redundant Abstractions",
                                 description=(
                                     f"Modules {modules[i]} and {modules[j]} have {similarity:.1%} similar functionalities\n"
-                                    f"Overlapping function instances: {instances_detail}"
+                                    f"Overlapping function evidences: {evidences_detail}"
                                 ),
                                 files=[
-                                    FileInstanceLines(name=module, instance_lines=lines)
+                                    FileEvidenceLines(name=module, evidence_lines=lines)
                                     for module, lines in grouped.items()
                                 ],
                                 severity='medium'
@@ -698,39 +698,39 @@ class ArchitecturalSmellDetector:
             if (len(public_functions) >= min_functions and 
                 len(public_functions) > self.thresholds['GOD_OBJECT_FUNCTIONS']):
                 class_start, class_end = self.class_lines.get(class_key, (None, None))
-                god_instances = []
+                god_evidences = []
                 for func in sorted(public_functions):
                     for start, end in self.class_method_lines.get(class_key, {}).get(func, []):
-                        god_instances.append({
+                        god_evidences.append({
                             "name": f"{class_key}.{func}",
                             "start_line_number": start,
                             "end_line_number": end
                         })
-                # god_instances: {name, start_line_number, end_line_number} per public function
-                instances_detail = (
+                # god_evidences: {name, start_line_number, end_line_number} per public function
+                evidences_detail = (
                     ", ".join(
                         f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                    for entry in god_instances
+                    for entry in god_evidences
                     ) or "None"
                 )
-                instance_lines = [
+                evidence_lines = [
                     LineSpan(
                         start_line_number=entry["start_line_number"],
                         end_line_number=entry["end_line_number"]
                     )
-                    for entry in god_instances
+                    for entry in god_evidences
                 ]
                 payload = ArchitecturalFileLevelLineSpansPayload(
                     type="Architectural",
                     name="God Object",
                     description=(
                         f"Class '{class_key}' has too many public methods ({len(public_functions)})\n"
-                        f"Public function instances: {instances_detail}"
+                        f"Public function evidences: {evidences_detail}"
                     ),
                     file_path=self.file_paths.get(self.class_modules.get(class_key, ""), "Unknown"),
                     start_line_number=class_start,
                     end_line_number=class_end,
-                    instance_lines=instance_lines,
+                    evidence_lines=evidence_lines,
                     severity='medium'
                 )
                 self._smell_recorder.record_smell(
@@ -766,38 +766,38 @@ class ArchitecturalSmellDetector:
                 
                 if (repetitive_calls and 
                     sum(repetitive_calls.values()) / len(api_calls) > repetition_threshold):
-                    repetitive_instances = [
+                    repetitive_evidences = [
                         entry for entry in self.api_call_lines.get(module, [])
                         if entry["name"] in repetitive_calls
                     ]
-                    # repetitive_instances: {name, start_line_number, end_line_number} per call site
-                    instances_detail = (
+                    # repetitive_evidences: {name, start_line_number, end_line_number} per call site
+                    evidences_detail = (
                         ", ".join(
                             f"{entry['name']}({entry['start_line_number']}-{entry['end_line_number']})"
-                            for entry in repetitive_instances
+                            for entry in repetitive_evidences
                         ) or "None"
                     )
-                    instance_lines = [
+                    evidence_lines = [
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
                         )
-                        for entry in repetitive_instances
+                        for entry in repetitive_evidences
                     ]
-                    payload = ArchitecturalFileLevelInstanceLinesPayload(
+                    payload = ArchitecturalFileLevelEvidenceLinesPayload(
                         type="Architectural",
                         name="Potential Improper API Usage",
                         description=(
                             f"Module '{module}' has repetitive API calls: " +
                             ", ".join(f"{call}({count}x)" for call, count in repetitive_calls.items()) +
-                            f"\nRepetitive call instances: {instances_detail}"
+                            f"\nRepetitive call evidences: {evidences_detail}"
                         ),
                         file_path=self.file_paths.get(module, "Unknown"),
-                        instance_lines=instance_lines,
+                        evidence_lines=evidence_lines,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
-                        "architectural_file_level_instance_lines",
+                        "architectural_file_level_evidence_lines",
                         payload,
                         file_path=self.file_paths.get(module, "Unknown"),
                         module_class=module
@@ -903,7 +903,7 @@ class ArchitecturalSmellDetector:
             files = []
             for i, module in enumerate(cycle):
                 next_module = cycle[(i + 1) % len(cycle)]
-                instance_lines = [
+                evidence_lines = [
                     LineSpan(
                         start_line_number=entry["start_line_number"],
                         end_line_number=entry["end_line_number"]
@@ -912,9 +912,9 @@ class ArchitecturalSmellDetector:
                     if entry["name"] == next_module
                 ]
                 files.append(
-                    FileInstanceLines(
+                    FileEvidenceLines(
                         name=self.file_paths.get(module, module),
-                        instance_lines=instance_lines
+                        evidence_lines=evidence_lines
                     )
                 )
             payload = ArchitecturalMultiFilePayload(
@@ -956,9 +956,9 @@ class ArchitecturalSmellDetector:
             if total_dependencies >= min_dependencies:
                 instability = out_degree / total_dependencies
                 if instability > self.thresholds['UNSTABLE_DEPENDENCY_THRESHOLD']:
-                    def _format_instances(instances):
+                    def _format_evidences(evidences):
                         grouped = defaultdict(list)
-                        for entry in instances:
+                        for entry in evidences:
                             grouped[entry["name"]].append(
                                 (entry["start_line_number"], entry["end_line_number"])
                             )
@@ -968,36 +968,36 @@ class ArchitecturalSmellDetector:
                             parts.append(f"{name}({ranges})")
                         return ", ".join(parts)
 
-                    outgoing_instances = [
+                    outgoing_evidences = [
                         entry for entry in self.import_lines.get(node, [])
                         if (
                             entry["name"] in self.module_dependencies.successors(node) or
                             any(entry["name"] == dep for _, dep in self.external_dependencies[node])
                         )
                     ]
-                    # outgoing_instances: {name, start_line_number, end_line_number} per import in this module
-                    incoming_instances = []
+                    # outgoing_evidences: {name, start_line_number, end_line_number} per import in this module
+                    incoming_evidences = []
                     for predecessor in self.module_dependencies.predecessors(node):
                         for entry in self.import_lines.get(predecessor, []):
                             if entry["name"] == node:
-                                incoming_instances.append({
+                                incoming_evidences.append({
                                     "name": predecessor,
                                     "start_line_number": entry["start_line_number"],
                                     "end_line_number": entry["end_line_number"]
                                 })
-                    # incoming_instances: {name, start_line_number, end_line_number} per import of this module
+                    # incoming_evidences: {name, start_line_number, end_line_number} per import of this module
 
-                    outgoing_detail = _format_instances(outgoing_instances) or "None"
-                    incoming_detail = _format_instances(incoming_instances) or "None"
-                    outgoing_instance_lines = [
+                    outgoing_detail = _format_evidences(outgoing_evidences) or "None"
+                    incoming_detail = _format_evidences(incoming_evidences) or "None"
+                    outgoing_evidence_lines = [
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
                         )
-                        for entry in outgoing_instances
+                        for entry in outgoing_evidences
                     ]
                     incoming_grouped = defaultdict(list)
-                    for entry in incoming_instances:
+                    for entry in incoming_evidences:
                         incoming_grouped[entry["name"]].append(
                             LineSpan(
                                 start_line_number=entry["start_line_number"],
@@ -1005,9 +1005,9 @@ class ArchitecturalSmellDetector:
                             )
                         )
                     incoming_files = [
-                        FileIncomingInstanceLines(
+                        FileIncomingEvidenceLines(
                             name=self.file_paths.get(name, name),
-                            incoming_instance_lines=lines
+                            incoming_evidence_lines=lines
                         )
                         for name, lines in incoming_grouped.items()
                     ]
@@ -1017,11 +1017,11 @@ class ArchitecturalSmellDetector:
                         description=(
                             f"Module '{node}' has high instability ({instability:.2f}) "
                             f"with {out_degree} outgoing and {in_degree} incoming dependencies\n"
-                            f"Outgoing dependency instances: {outgoing_detail}\n"
-                            f"Incoming dependency instances: {incoming_detail}"
+                            f"Outgoing dependency evidences: {outgoing_detail}\n"
+                            f"Incoming dependency evidences: {incoming_detail}"
                         ),
                         file_path=self.file_paths.get(node, "Unknown"),
-                        outgoing_instance_lines=outgoing_instance_lines,
+                        outgoing_evidence_lines=outgoing_evidence_lines,
                         files=incoming_files,
                         severity='medium'
                     )
@@ -1065,3 +1065,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     analyze_architecture(args.directory, args.config)
+
+

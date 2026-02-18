@@ -1,4 +1,4 @@
-import astroid
+﻿import astroid
 from astroid import nodes, exceptions as astroid_exceptions
 import os
 from collections import defaultdict
@@ -9,7 +9,7 @@ import logging
 from typing import Any, Optional
 from .exceptions import CodeAnalysisError
 from .smell_templates import (
-    CodeFileLevelInstanceLinesPayload,
+    CodeFileLevelEvidenceLinesPayload,
     FileClassLineSpansPayload,
     FileFunctionLineSpansPayload,
     FileLevelMethodFunctionLineSpansPayload,
@@ -23,7 +23,7 @@ from .smell_templates import (
     LineSpan,
     NamedLineSpan,
     TemplateRenderer,
-    render_code_file_level_instance_lines,
+    render_code_file_level_evidence_lines,
     render_file_class_line_spans,
     render_file_function_line_spans,
     render_file_level_method_function_line_spans,
@@ -128,7 +128,7 @@ class CodeSmellDetector:
             "file_function_line_spans": render_file_function_line_spans,
             "file_multiple_classes": render_file_multiple_classes,
             "flat_class_level": render_flat_class_level,
-            "code_file_level_instance_lines": render_code_file_level_instance_lines,
+            "code_file_level_evidence_lines": render_code_file_level_evidence_lines,
         })
         self._smell_recorder = CodeSmellRecorder(self.code_smells, self._template_renderer)
         self.add_smell = self._smell_recorder.add_smell
@@ -791,7 +791,7 @@ class CodeSmellDetector:
                         class_name=node.name,
                         start_line_number=node.lineno,
                         end_line_number=node.tolineno,
-                        instance_lines=[
+                        evidence_lines=[
                             LineSpan(
                                 start_line_number=entry["start_line_number"],
                                 end_line_number=entry["end_line_number"]
@@ -858,26 +858,26 @@ class CodeSmellDetector:
                                     parallel_hierarchies.append((base2, h2))
 
             if parallel_hierarchies:
-                def build_hierarchy_instances(base, classes):
-                    instances = []
+                def build_hierarchy_evidences(base, classes):
+                    evidences = []
                     for name in [base] + classes:
                         if name in class_entries:
-                            instances.append(class_entries[name])
+                            evidences.append(class_entries[name])
                         else:
-                            instances.append({"name": name})
-                    return instances
-                def format_hierarchy(instances):
+                            evidences.append({"name": name})
+                    return evidences
+                def format_hierarchy(evidences):
                     return " -> ".join(
                         f"{entry['name']} (lines {entry['start_line_number']}-{entry['end_line_number']})"
                         if "start_line_number" in entry else entry["name"]
-                        for entry in instances
+                        for entry in evidences
                     )
                 payload = FileMultipleClassesPayload(
                     type="Code",
                     name="Parallel Inheritance Hierarchies",
                     description=(
                         f"Parallel hierarchies detected: "
-                        f"{' and '.join([format_hierarchy(build_hierarchy_instances(base, h)) for base, h in parallel_hierarchies])} "
+                        f"{' and '.join([format_hierarchy(build_hierarchy_evidences(base, h)) for base, h in parallel_hierarchies])} "
                         f"in {file_path}"
                     ),
                     file_path=file_path,
@@ -994,16 +994,16 @@ class CodeSmellDetector:
         
         if (comment_ratio > self.thresholds["EXCESSIVE_COMMENTS_RATIO"] and
             large_comment_blocks > self.thresholds["LARGE_COMMENT_BLOCKS"]):
-            payload = CodeFileLevelInstanceLinesPayload(
+            payload = CodeFileLevelEvidenceLinesPayload(
                 type="Code",
                 name="Excessive Comments",
                 description=f"File has {comment_ratio:.1%} comment ratio with {large_comment_blocks} large comment blocks in {file_path}",
                 file_path=file_path,
-                instance_lines=comment_line_spans,
+                evidence_lines=comment_line_spans,
                 severity='low'
             )
             self._smell_recorder.record_smell(
-                "code_file_level_instance_lines",
+                "code_file_level_evidence_lines",
                 payload,
                 file_path=file_path,
                 module_class=None,
@@ -1115,7 +1115,7 @@ class CodeSmellDetector:
                 # Only flag if class is predominantly getters/setters
                 if (others == 0 and getters + setters >= self.thresholds["DATA_CLASS_METHODS"] and
                     not node.name.endswith(('DTO', 'Model', 'Entity', 'Record'))):  # Skip known data structures
-                    instance_lines = [
+                    evidence_lines = [
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
@@ -1131,7 +1131,7 @@ class CodeSmellDetector:
                         class_name=node.name,
                         start_line_number=node.lineno,
                         end_line_number=node.tolineno + 1,
-                        instance_lines=instance_lines,
+                        evidence_lines=evidence_lines,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
@@ -1323,7 +1323,7 @@ class CodeSmellDetector:
                             for p in unused_params
                         )
                         description.append(f"has {len(unused_params)} unused parameters: {unused_detail}")
-                    instance_lines = [
+                    evidence_lines = [
                         LineSpan(
                             start_line_number=entry["start_line_number"],
                             end_line_number=entry["end_line_number"]
@@ -1338,7 +1338,7 @@ class CodeSmellDetector:
                         class_name=node.name,
                         start_line_number=node.lineno,
                         end_line_number=node.tolineno + 1,
-                        instance_lines=instance_lines,
+                        evidence_lines=evidence_lines,
                         severity='medium'
                     )
                     
@@ -1430,7 +1430,7 @@ class CodeSmellDetector:
                         function=node.name,
                         start_line_number=node.lineno,
                         end_line_number=node.tolineno + 1,
-                        instance_lines=[
+                        evidence_lines=[
                             LineSpan(
                                 start_line_number=entry["start_line_number"],
                                 end_line_number=entry["end_line_number"]
@@ -1492,7 +1492,7 @@ class CodeSmellDetector:
                     if not n.name.startswith('__')  # Skip magic methods
                 }
                 class_fields[node.name] = {
-                    name for name in node.instance_attrs.keys()
+                    name for name in node.evidence_attrs.keys()
                     if not name.startswith('_')  # Skip private fields
                 }
                 class_ranges[node.name] = (node.lineno, node.tolineno + 1)
@@ -1502,8 +1502,8 @@ class CodeSmellDetector:
                     if isinstance(base, nodes.Name):
                         class_relationships[node.name].add(base.name)
 
-                # Track composition through instance variables
-                for field in node.instance_attrs.values():
+                # Track composition through Evidence variables
+                for field in node.evidence_attrs.values():
                     if isinstance(field, nodes.AssignAttr) and isinstance(field.expr, nodes.Name):
                         class_relationships[node.name].add(field.expr.name)
 
@@ -1575,7 +1575,7 @@ class CodeSmellDetector:
                             class_name=class_name,
                             start_line_number=class_ranges[class_name][0],
                             end_line_number=class_ranges[class_name][1],
-                            instance_lines=[
+                            evidence_lines=[
                                 LineSpan(start_line_number=start, end_line_number=end)
                                 for start, end in collapsed_ranges
                             ],
@@ -1733,7 +1733,7 @@ class CodeSmellDetector:
                 if (delegation_ratio > self.thresholds["MIDDLE_MAN_RATIO"] and
                     len(delegate_targets) <= self.thresholds.get('MIDDLE_MAN_MAX_DELEGATE_TARGETS', 2)):
                     primary_delegate = max(delegate_targets.items(), key=lambda x: len(x[1]))
-                    instance_lines = [
+                    evidence_lines = [
                         LineSpan(
                             start_line_number=method.lineno,
                             end_line_number=method.tolineno + 1
@@ -1750,7 +1750,7 @@ class CodeSmellDetector:
                         class_name=node.name,
                         start_line_number=node.lineno,
                         end_line_number=node.tolineno + 1,
-                        instance_lines=instance_lines,
+                        evidence_lines=evidence_lines,
                         severity='medium'
                     )
                     self._smell_recorder.record_smell(
@@ -1775,3 +1775,5 @@ class CodeSmellDetector:
             print("Detected Code Smells:")
             for smell in self.code_smells:
                 print(f"- {smell.name}: {smell.description}")
+
+

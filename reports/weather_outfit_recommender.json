@@ -24,7 +24,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields temp, condition, wind, self in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
+        "description": "Potentially unused fields self, temp, condition, wind in class 'WeatherProfile' at line 1 in ./samples/weather_outfit_recommender/advisor.py",
         "file_path": "./samples/weather_outfit_recommender/advisor.py",
         "class_name": "WeatherProfile",
         "start_line_number": 1,
@@ -59,7 +59,7 @@
         "function": "recommend",
         "start_line_number": 10,
         "end_line_number": 21,
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 11,
                 "end_line_number": 12
@@ -118,7 +118,7 @@
     {
         "type": "Code",
         "name": "Temporary Field",
-        "description": "Potentially unused fields condition, temp_c, wind_kph, self in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
+        "description": "Potentially unused fields self, wind_kph, temp_c, condition in class 'WeatherSnapshot' at line 1 in ./samples/weather_outfit_recommender/models.py",
         "file_path": "./samples/weather_outfit_recommender/models.py",
         "class_name": "WeatherSnapshot",
         "start_line_number": 1,
@@ -133,7 +133,7 @@
         "class_name": "WeatherSnapshot",
         "start_line_number": 1,
         "end_line_number": 24,
-        "instance_lines": [
+        "evidence_lines": [
             {
                 "start_line_number": 7,
                 "end_line_number": 9
@@ -190,7 +190,7 @@
         "files": [
             {
                 "name": "alerts",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 2,
                         "end_line_number": 4
@@ -199,7 +199,7 @@
             },
             {
                 "name": "exports",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 2,
                         "end_line_number": 4
@@ -208,7 +208,7 @@
             },
             {
                 "name": "ui",
-                "instance_lines": [
+                "evidence_lines": [
                     {
                         "start_line_number": 2,
                         "end_line_number": 5
