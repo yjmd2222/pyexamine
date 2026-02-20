@@ -1,4 +1,8 @@
-# Dataset Commands
+# Analyze
+python -m pyexamine analyze samples --config code_quality_config_new.yaml
+python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml
+
+# Dataset Commands (DEPR)
 
 ## Generate Per-Topic Datasets
 

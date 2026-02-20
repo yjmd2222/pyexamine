@@ -1,4 +1,4 @@
-﻿import os
+import os
 import ast
 import networkx as nx
 from collections import defaultdict
@@ -32,6 +32,7 @@ from .smell_templates import (
     render_structural_project_level_files,
     FileLevelWithoutLineSpansPayload,
 )
+from .ast_graph_emit import build_ast_graph_for_payload, emit_s01_fanout, emit_s01_fanin
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -91,6 +92,8 @@ class StructuralSmellRecorder:
 
     def record_smell(self, template_id, payload, file_path, module_class=None, start_line_number=None,
                      end_line_number=None, severity=None):
+        if getattr(payload, "ast_graph", None) is None:
+            payload.ast_graph = build_ast_graph_for_payload(payload, file_path=file_path)
         description = self._template_renderer.render(template_id, payload)
         resolved_severity = severity or getattr(payload, "severity", "medium")
         self._structural_smells.append(StructuralSmell(
@@ -1678,6 +1681,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     ],
                     severity=severity
                 )
+                payload.ast_graph = emit_s01_fanout(
+                    detector=self,
+                    module_name=module,
+                    payload=payload,
+                    significant_deps=significant_deps,
+                    threshold=threshold,
+                )
                 self._smell_recorder.record_smell(
                     "structural_file_level_line_spans",
                     payload,
@@ -1734,6 +1744,13 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                         for name, lines in grouped.items()
                     ],
                     severity=severity
+                )
+                payload.ast_graph = emit_s01_fanin(
+                    detector=self,
+                    module_name=module,
+                    payload=payload,
+                    fanin=fanin,
+                    threshold=threshold,
                 )
                 self._smell_recorder.record_smell(
                     "structural_file_level_connected",

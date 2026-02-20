@@ -1,4 +1,4 @@
-﻿import yaml
+import yaml
 import logging
 
 logger = logging.getLogger(__name__)

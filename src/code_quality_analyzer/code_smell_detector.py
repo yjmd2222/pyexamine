@@ -1,4 +1,4 @@
-﻿import astroid
+import astroid
 from astroid import nodes, exceptions as astroid_exceptions
 import os
 from collections import defaultdict
@@ -35,6 +35,7 @@ from .smell_templates import (
     render_flat_method_function,
     render_flat_statement,
 )
+from .ast_graph_emit import build_ast_graph_for_payload, emit_c11_long_method, emit_c17_switch_statements
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -82,6 +83,8 @@ class CodeSmellRecorder:
 
     def record_smell(self, template_id, payload, file_path, module_class, start_line_number=None,
                      end_line_number=None, severity=None):
+        if getattr(payload, "ast_graph", None) is None:
+            payload.ast_graph = build_ast_graph_for_payload(payload, file_path=file_path)
         description = self._template_renderer.render(template_id, payload)
         resolved_severity = severity or getattr(payload, "severity", "medium")
         self._code_smells.append(CodeSmell(
@@ -249,6 +252,7 @@ class CodeSmellDetector:
                         actual_lines += 1
             
             if actual_lines > self.thresholds["LONG_METHOD_LINES"]:
+                threshold = self.thresholds["LONG_METHOD_LINES"]
                 payload = FlatMethodFunctionPayload(
                     type="Code",
                     name="Long Method",
@@ -259,6 +263,11 @@ class CodeSmellDetector:
                     start_line_number=node.lineno,
                     end_line_number=node.tolineno + 1,
                     severity="medium"
+                )
+                payload.ast_graph = emit_c11_long_method(
+                    payload=payload,
+                    actual_lines=actual_lines,
+                    threshold=threshold,
                 )
                 self._smell_recorder.record_smell(
                     "flat_method_function",
@@ -546,6 +555,7 @@ class CodeSmellDetector:
             if (condition_count > self.thresholds["COMPLEX_CONDITIONAL"] and 
                 not is_guard_clause and 
                 not is_type_check):
+                threshold = self.thresholds["COMPLEX_CONDITIONAL"]
                 payload = FlatStatementPayload(
                     type="Code",
                     name="Switch Statements",
@@ -554,6 +564,13 @@ class CodeSmellDetector:
                     start_line_number=node.lineno,
                     end_line_number=node.tolineno + 1,
                     severity='medium'
+                )
+                payload.ast_graph = emit_c17_switch_statements(
+                    payload=payload,
+                    condition_count=condition_count,
+                    threshold=threshold,
+                    is_guard_clause=is_guard_clause,
+                    is_type_check=is_type_check,
                 )
                 self._smell_recorder.record_smell(
                     "flat_statement",
@@ -1491,8 +1508,10 @@ class CodeSmellDetector:
                     n.name for n in node.mymethods()
                     if not n.name.startswith('__')  # Skip magic methods
                 }
+                # astroid exposes inferred instance fields via instance_attrs
+                instance_attrs = getattr(node, "instance_attrs", {}) or {}
                 class_fields[node.name] = {
-                    name for name in node.evidence_attrs.keys()
+                    name for name in instance_attrs.keys()
                     if not name.startswith('_')  # Skip private fields
                 }
                 class_ranges[node.name] = (node.lineno, node.tolineno + 1)
@@ -1502,10 +1521,11 @@ class CodeSmellDetector:
                     if isinstance(base, nodes.Name):
                         class_relationships[node.name].add(base.name)
 
-                # Track composition through Evidence variables
-                for field in node.evidence_attrs.values():
-                    if isinstance(field, nodes.AssignAttr) and isinstance(field.expr, nodes.Name):
-                        class_relationships[node.name].add(field.expr.name)
+                # Track composition through assigned instance attributes
+                for assignments in instance_attrs.values():
+                    for assign in assignments:
+                        if isinstance(assign, nodes.AssignAttr) and isinstance(assign.expr, nodes.Name):
+                            class_relationships[node.name].add(assign.expr.name)
 
         for class_name, methods in class_methods.items():
             for other_class, other_fields in class_fields.items():
@@ -1775,5 +1795,4 @@ class CodeSmellDetector:
             print("Detected Code Smells:")
             for smell in self.code_smells:
                 print(f"- {smell.name}: {smell.description}")
-
 

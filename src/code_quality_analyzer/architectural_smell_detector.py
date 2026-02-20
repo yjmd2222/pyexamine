@@ -1,4 +1,4 @@
-﻿import os
+import os
 import ast
 import networkx as nx
 from collections import defaultdict
@@ -31,6 +31,7 @@ from .smell_templates import (
     render_architectural_function_level_connected,
     render_architectural_multi_file,
 )
+from .ast_graph_emit import build_ast_graph_for_payload, emit_a01_hub_like
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -78,6 +79,8 @@ class ArchitecturalSmellRecorder:
 
     def record_smell(self, template_id, payload, file_path, module_class, start_line_number=None,
                      end_line_number=None, severity=None):
+        if getattr(payload, "ast_graph", None) is None:
+            payload.ast_graph = build_ast_graph_for_payload(payload, file_path=file_path)
         description = self._template_renderer.render(template_id, payload)
         resolved_severity = severity or getattr(payload, "severity", "medium")
         self._architectural_smells.append(ArchitecturalSmell(
@@ -532,6 +535,15 @@ class ArchitecturalSmellDetector:
                             outgoing_evidence_lines=outgoing_evidence_lines,
                             files=incoming_files,
                             severity='high' if total_connections > min_connections * 2 else 'medium'
+                        )
+                        payload.ast_graph = emit_a01_hub_like(
+                            detector=self,
+                            module_name=node,
+                            payload=payload,
+                            in_degree=in_degree,
+                            out_degree=out_degree,
+                            external_dep_count=external_deps,
+                            total_modules=total_modules,
                         )
                         self._smell_recorder.record_smell(
                             "architectural_file_level_incoming_outgoing",

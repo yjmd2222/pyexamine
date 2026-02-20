@@ -1,5 +1,5 @@
-﻿from dataclasses import dataclass
-from typing import Callable, Dict, List
+from dataclasses import dataclass
+from typing import Any, Callable, Dict, List, Optional
 
 
 @dataclass
@@ -37,6 +37,7 @@ class FlatFunctionLevelPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -50,6 +51,7 @@ class FlatMethodFunctionPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -61,6 +63,7 @@ class FlatStatementPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -72,6 +75,7 @@ class FlatChainPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -82,6 +86,7 @@ class FileLineSpansPayload:
     file_path: str
     lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -92,6 +97,7 @@ class CodeFileLevelEvidenceLinesPayload:
     file_path: str
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -101,6 +107,7 @@ class FileLevelWithoutLineSpansPayload:
     description: str
     file_path: str
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -114,6 +121,7 @@ class FileClassLineSpansPayload:
     end_line_number: int
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -124,6 +132,7 @@ class FileLevelMethodFunctionLineSpansPayload:
     file_path: str
     methods_functions: List[NamedLineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -137,6 +146,7 @@ class FileFunctionLineSpansPayload:
     end_line_number: int
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -147,6 +157,7 @@ class FileMultipleClassesPayload:
     file_path: str
     classes: List[NamedLineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -159,6 +170,7 @@ class FlatClassLevelPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -172,6 +184,7 @@ class StructuralClassMethodPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -184,6 +197,7 @@ class StructuralClassLevelPayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -197,6 +211,7 @@ class StructuralClassLevelLineSpansPayload:
     end_line_number: int
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -206,6 +221,7 @@ class StructuralFileLevelPayload:
     description: str
     file_path: str
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -216,6 +232,7 @@ class StructuralClassOnlyPayload:
     file_path: str
     class_name: str
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -226,6 +243,7 @@ class StructuralFileLevelConnectedPayload:
     file_path: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -237,6 +255,7 @@ class StructuralClassLevelConnectedPayload:
     class_name: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -247,6 +266,7 @@ class StructuralFileLevelLineSpansPayload:
     file_path: str
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -256,6 +276,7 @@ class StructuralProjectLevelFilesPayload:
     description: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 
@@ -268,6 +289,7 @@ class ArchitecturalFileLevelConnectedPayload:
     file_path: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -279,6 +301,7 @@ class ArchitecturalFunctionLevelConnectedPayload:
     function: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -288,6 +311,7 @@ class ArchitecturalFilesPayload:
     description: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -300,6 +324,7 @@ class ArchitecturalFileLevelLineSpansPayload:
     end_line_number: int
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -310,6 +335,7 @@ class ArchitecturalFileLevelEvidenceLinesPayload:
     file_path: str
     evidence_lines: List[LineSpan]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -319,6 +345,7 @@ class ArchitecturalFileLevelPayload:
     description: str
     file_path: str
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -330,6 +357,7 @@ class ArchitecturalFileLevelIncomingOutgoingPayload:
     outgoing_evidence_lines: List[LineSpan]
     files: List[FileIncomingEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -341,6 +369,7 @@ class ArchitecturalFileLevelRangePayload:
     start_line_number: int
     end_line_number: int
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -350,6 +379,7 @@ class ArchitecturalMultiFilePayload:
     description: str
     files: List[FileEvidenceLines]
     severity: str
+    ast_graph: Optional[Dict[str, Any]] = None
 
 
 def render_flat_function_level(payload: FlatFunctionLevelPayload) -> str:
