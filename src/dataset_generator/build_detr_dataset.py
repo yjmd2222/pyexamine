@@ -1,4 +1,5 @@
 import argparse
+import ast
 import json
 import os
 from typing import Any, Dict, List, Optional, Tuple
@@ -8,6 +9,16 @@ from .build_dataset import _iter_code_files, _read_file, _load_json, _get_value
 
 
 DEFAULT_SEPARATOR = "[file]"
+
+# Smell roles that are statement/line-pattern centered and should be expanded
+# to the immediate higher node (function/method, else class, else module).
+STATEMENT_CENTERED_ROLE_BY_SMELL = {
+    "Switch Statements": {"ROLE0"},
+    "Message Chains": {"ROLE0"},
+    "Excessive Comments": {"ROLE0"},
+    "Duplicate Code": {"ROLE0"},
+    "Potential Shotgun Surgery": {"ROLE0"},
+}
 
 
 def _safe_relpath(path: str, base: str) -> str:
@@ -189,7 +200,122 @@ def _line_range_to_char_span(file_rec: Dict[str, Any], start_line: int, end_line
     return start_char, end_char
 
 
-def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files: List[str], file_by_abs: Dict[str, Dict[str, Any]]) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]]]:
+def _node_index_for_file(abs_path: str, file_rec: Dict[str, Any], cache: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+    cached = cache.get(abs_path)
+    if cached is not None:
+        return cached
+
+    try:
+        text = _read_file(abs_path)
+    except OSError:
+        text = ""
+
+    total_lines = file_rec.get("num_lines", 1)
+    functions: List[Tuple[int, int]] = []
+    classes: List[Tuple[int, int]] = []
+
+    try:
+        tree = ast.parse(text)
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                start = getattr(node, "lineno", None)
+                end = getattr(node, "end_lineno", None)
+                if start and end and end >= start:
+                    functions.append((start, end + 1))
+            elif isinstance(node, ast.ClassDef):
+                start = getattr(node, "lineno", None)
+                end = getattr(node, "end_lineno", None)
+                if start and end and end >= start:
+                    classes.append((start, end + 1))
+    except Exception:
+        pass
+
+    data = {
+        "functions": functions,
+        "classes": classes,
+        "module": (1, max(2, int(total_lines) + 1)),
+    }
+    cache[abs_path] = data
+    return data
+
+
+def _expand_span_to_immediate_higher_node(
+    abs_path: str,
+    file_rec: Dict[str, Any],
+    start_line: int,
+    end_line: int,
+    cache: Dict[str, Dict[str, Any]],
+) -> Tuple[int, int]:
+    index = _node_index_for_file(abs_path, file_rec, cache)
+    # Prefer smallest enclosing function/method, then class, else module.
+    candidates = []
+    for s, e in index["functions"]:
+        if s <= start_line and end_line <= e:
+            candidates.append((e - s, s, e))
+    if candidates:
+        _, s, e = sorted(candidates)[0]
+        return s, e
+
+    candidates = []
+    for s, e in index["classes"]:
+        if s <= start_line and end_line <= e:
+            candidates.append((e - s, s, e))
+    if candidates:
+        _, s, e = sorted(candidates)[0]
+        return s, e
+
+    return index["module"]
+
+
+def _merge_mentions(mentions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    if not mentions:
+        return []
+
+    rows = sorted(
+        mentions,
+        key=lambda m: (
+            m.get("segment_id", -1),
+            m.get("start_char", 0),
+            m.get("end_char", 0),
+        ),
+    )
+    merged: List[Dict[str, Any]] = []
+    for m in rows:
+        src_roles = set(m.get("source_roles", [m.get("role", "UNKNOWN")]))
+        if not merged:
+            row = dict(m)
+            row["source_roles"] = sorted(src_roles)
+            row["role"] = "MERGED"
+            merged.append(row)
+            continue
+
+        last = merged[-1]
+        if (
+            last.get("segment_id") == m.get("segment_id")
+            and m.get("start_char", 0) <= last.get("end_char", 0)
+        ):
+            last["end_char"] = max(last.get("end_char", 0), m.get("end_char", 0))
+            last["end_line"] = max(last.get("end_line", 0), m.get("end_line", 0))
+            last["start_line"] = min(last.get("start_line", 0), m.get("start_line", 0))
+            roles = set(last.get("source_roles", []))
+            roles.update(src_roles)
+            last["source_roles"] = sorted(roles)
+            continue
+
+        row = dict(m)
+        row["source_roles"] = sorted(src_roles)
+        row["role"] = "MERGED"
+        merged.append(row)
+    return merged
+
+
+def _collect_mentions_for_entry(
+    entry: Dict[str, Any],
+    code_root: str,
+    all_files: List[str],
+    file_by_abs: Dict[str, Dict[str, Any]],
+    ast_cache: Dict[str, Dict[str, Any]],
+) -> Tuple[Optional[Dict[str, Any]], List[Dict[str, Any]]]:
     """
     Returns (anchor, mentions).
     - anchor is a dict or None
@@ -215,16 +341,9 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
             "start_char": a_start,
             "end_char": a_end,
         }
-        # Also include as a mention for maximum flexibility
-        mentions.append({
-            "role": "ANCHOR",
-            "file": primary_rec["display_path"],
-            "segment_id": primary_rec["segment_id"],
-            "start_line": int(start_line),
-            "end_line": int(end_line),
-            "start_char": a_start,
-            "end_char": a_end,
-        })
+
+    smell_name = _get_value(entry, "name", "Name") or ""
+    expand_roles = STATEMENT_CENTERED_ROLE_BY_SMELL.get(smell_name, set())
 
     def add_list_spans(container: Any, role: str, abs_path: Optional[str]) -> None:
         if not container:
@@ -239,6 +358,8 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
                 continue
             s_i = int(s)
             e_i = int(e)
+            if role in expand_roles:
+                s_i, e_i = _expand_span_to_immediate_higher_node(abs_path, rec, s_i, e_i, ast_cache)
             c0, c1 = _line_range_to_char_span(rec, s_i, e_i)
             mentions.append({
                 "role": role,
@@ -308,7 +429,20 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
                     "end_char": a_end,
                 }
                 break
-        return anchor, mentions
+        merged_mentions = _merge_mentions(mentions)
+        if anchor is None:
+            for item in merged_mentions:
+                if "ROLE0" in item.get("source_roles", []):
+                    anchor = {
+                        "file": item["file"],
+                        "segment_id": item["segment_id"],
+                        "start_line": item["start_line"],
+                        "end_line": item["end_line"],
+                        "start_char": item["start_char"],
+                        "end_char": item["end_char"],
+                    }
+                    break
+        return anchor, merged_mentions
 
     # Local multi-span evidence
     add_list_spans(_get_value(entry, "evidence_lines", "Evidence Lines") or [], "EVIDENCE_LINES", abs_primary)
@@ -329,7 +463,20 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
         if inst:
             add_list_spans(inst, "RELATED_EVIDENCE_LINES", abs_other)
 
-    return anchor, mentions
+    merged_mentions = _merge_mentions(mentions)
+    if anchor is None:
+        for item in merged_mentions:
+            if "ROLE0" in item.get("source_roles", []):
+                anchor = {
+                    "file": item["file"],
+                    "segment_id": item["segment_id"],
+                    "start_line": item["start_line"],
+                    "end_line": item["end_line"],
+                    "start_char": item["start_char"],
+                    "end_char": item["end_char"],
+                }
+                break
+    return anchor, merged_mentions
 
 
 def build_detr_dataset(code_root: str, report_path: str, output_path: str, separator: str = DEFAULT_SEPARATOR) -> Dict[str, Any]:
@@ -338,6 +485,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
     report_entries = _load_json(report_path)
 
     merged_text, file_records, file_by_abs = _build_merged_prompt(code_root_abs, all_files, separator=separator)
+    ast_cache: Dict[str, Dict[str, Any]] = {}
 
     Evidences: List[Dict[str, Any]] = []
     unresolved = 0
@@ -346,7 +494,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
         if not smell_name:
             continue
 
-        anchor, mentions = _collect_mentions_for_entry(entry, code_root_abs, all_files, file_by_abs)
+        anchor, mentions = _collect_mentions_for_entry(entry, code_root_abs, all_files, file_by_abs, ast_cache)
         if not mentions:
             unresolved += 1
 

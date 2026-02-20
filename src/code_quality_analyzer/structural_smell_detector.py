@@ -423,7 +423,14 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             nom = len(regular_methods)
             if nom > threshold:
                 severity = 'High' if nom > threshold * 1.5 else 'Medium'
-                payload = StructuralClassLevelPayload(
+                method_evidence = [
+                    LineSpan(
+                        start_line_number=m.lineno,
+                        end_line_number=getattr(m, "end_lineno", m.lineno) + 1
+                    )
+                    for m in regular_methods
+                ]
+                payload = StructuralClassLevelLineSpansPayload(
                     type="Structural",
                     name="High Number of Methods (NOM)",
                     description=f"Class '{class_name}' has {nom} methods (excluding special methods and properties)",
@@ -431,10 +438,11 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     class_name=class_name,
                     start_line_number=info.get("start_line_number"),
                     end_line_number=info.get("end_line_number"),
+                    evidence_lines=method_evidence,
                     severity=severity
                 )
                 self._smell_recorder.record_smell(
-                    "structural_class_level",
+                    "structural_class_level_line_spans",
                     payload,
                     file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                     module_class=class_name,
@@ -1710,6 +1718,9 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
             threshold = self.thresholds.get('MAX_FANIN', 15)
             
             if fanin > threshold:
+                file_path = self.file_paths.get(module, "Unknown")
+                if file_path == "Unknown":
+                    continue
                 severity = 'High' if fanin > threshold * 1.5 else 'Medium'
                 evidence_lines = []
                 for src_module, targets in self.import_lines.items():
@@ -1738,7 +1749,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     name="High Fan-in",
                     description=f"Module '{module}' has {fanin} incoming dependencies\n"
                     f"Incoming dependency evidences: {evidence_detail or 'None'}",
-                    file_path=self.file_paths.get(module, "Unknown"),
+                    file_path=file_path,
                     files=[
                         FileEvidenceLines(name=name, evidence_lines=lines)
                         for name, lines in grouped.items()
@@ -1755,7 +1766,7 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                 self._smell_recorder.record_smell(
                     "structural_file_level_connected",
                     payload,
-                    file_path=self.file_paths.get(module, "Unknown"),
+                    file_path=file_path,
                     module_class=module,
                     severity=severity
                 )
@@ -1941,5 +1952,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     analyze_structure(args.directory, args.config)
-
 

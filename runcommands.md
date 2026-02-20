@@ -1,6 +1,9 @@
 # Analyze
-python -m pyexamine analyze samples --config code_quality_config_new.yaml
-python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml
+python -m pyexamine analyze samples --config code_quality_config_new.yaml --output code_quality_report.json
+python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml -- code_quality_report.json
+
+# Dataset commands
+python -m dataset_generator.build_detr_dataset samples --report code_quality_report.json --output code_quality_report_detr.json
 
 # Dataset Commands (DEPR)
 

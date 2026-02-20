@@ -61,21 +61,21 @@ SMELL_ROLES: Dict[str, Tuple[str, str, str, str]] = {
     "High Lack of Cohesion of Methods (LCOM)": ("S04", "node_range", "evidence_lines", "none"),
     "Too Many Branches": ("S05", "node_range", "none", "none"),
     "High Coupling Between Object Classes (CBO)": ("S06", "node_range", "evidence_lines", "none"),
-    "Deep Inheritance Tree": ("S07", "node_range", "none", "files_evidence"),
+    "Deep Inheritance Tree (DIT)": ("S07", "node_range", "none", "files_evidence"),
     "High Message Passing Coupling (MPC)": ("S08", "node_range", "evidence_lines", "none"),
     "High Number of classes per Project": ("S09", "files_evidence", "none", "none"),
-    "High Number of Methods (NOM)": ("S10", "node_range", "methods_functions", "none"),
+    "High Number of Methods (NOM)": ("S10", "node_range", "evidence_lines", "none"),
     "High Response for a Class (RFC)": ("S11", "node_range", "evidence_lines", "none"),
     "Large Class (SIZE2)": ("S12", "node_range", "evidence_lines", "none"),
     "High Weighted Methods per Class (WMPC)": ("S13", "node_range", "evidence_lines", "none"),
     "Long Method": ("C11", "node_range", "none", "none"),
     "Large Class": ("C09", "node_range", "evidence_lines", "none"),
-    "Primitive Obsession": ("C03", "node_range", "none", "none"),
-    "Long Parameter List": ("C12", "node_range", "none", "none"),
+    "Primitive Obsession": ("C03", "node_range", "signature_line", "none"),
+    "Long Parameter List": ("C12", "node_range", "signature_line", "none"),
     "Data Clumps": ("C03", "methods_functions", "none", "none"),
     "Switch Statements": ("C17", "node_range", "none", "none"),
     "Temporary Field": ("C18", "node_range", "evidence_lines", "none"),
-    "Alternative Classes with Different Interfaces": ("C01", "classes", "methods_functions", "none"),
+    "Alternative Classes with Different Interfaces": ("C01", "classes", "classes", "none"),
     "Potential Divergent Change": ("C01", "node_range", "evidence_lines", "none"),
     "Parallel Inheritance Hierarchies": ("C02", "classes", "none", "none"),
     "Potential Shotgun Surgery": ("C15", "lines", "none", "none"),
@@ -173,6 +173,11 @@ def _roles_from_payload(payload, file_path: Optional[str], role_source: str) -> 
         if span:
             return _single_file_role(payload_file, [span])
         return _single_file_role(payload_file, [_file_span(payload_file)])
+    if role_source == "signature_line":
+        start = getattr(payload, "start_line_number", None)
+        if start is not None:
+            return _single_file_role(payload_file, [_span(start, start + 1)])
+        return []
     if role_source == "evidence_lines":
         return _single_file_role(payload_file, _line_spans_to_dict(getattr(payload, "evidence_lines", [])))
     if role_source == "outgoing_evidence":
@@ -205,6 +210,8 @@ def build_ast_graph_for_payload(payload, file_path: Optional[str] = None) -> Opt
     role0 = _roles_from_payload(payload, file_path, role0_source)
     role1 = _roles_from_payload(payload, file_path, role1_source)
     role2 = _roles_from_payload(payload, file_path, role2_source)
+    if smell_name in {"Hub-like Dependency", "Unstable Dependency"} and not role2:
+        role2 = list(role0)
 
     return {
         "group_id": group_id,
@@ -216,6 +223,11 @@ def build_ast_graph_for_payload(payload, file_path: Optional[str] = None) -> Opt
 
 def emit_a01_hub_like(detector, module_name, payload, in_degree, out_degree, external_dep_count, total_modules):
     ast_graph = build_ast_graph_for_payload(payload, file_path=getattr(payload, "file_path", None)) or {}
+    roles = ast_graph.get("roles", {})
+    # Keep ROLE2 present for A01 schema even when incoming evidence is absent.
+    if isinstance(roles, dict) and not roles.get("role2"):
+        roles["role2"] = list(roles.get("role0") or [])
+        ast_graph["roles"] = roles
     ast_graph["component_slice"] = {
         "metrics": {
             "in_degree": in_degree,

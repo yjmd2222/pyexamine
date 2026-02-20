@@ -501,6 +501,7 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
         roles = {}
         if isinstance(ast_graph, dict):
             roles = ast_graph.get("roles", {}) if isinstance(ast_graph.get("roles"), dict) else {}
+        has_ast_roles = bool(roles)
 
         def _wrap(name, spans):
             return [{"name": name, "evidence_lines": spans}] if name and spans else []
@@ -512,17 +513,17 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
         role1 = _spans(roles.get("role1", []))
         role2 = _spans(roles.get("role2", []))
 
-        # Fallback from legacy payload fields when ast_graph roles are missing/empty.
+        # Fallback from legacy payload fields when ast_graph roles are missing.
         file_path = payload.get("file_path")
         start = payload.get("start_line_number")
         end = payload.get("end_line_number")
-        if not role0 and file_path and start and end:
+        if not has_ast_roles and not role0 and file_path and start and end:
             role0 = _wrap(
                 file_path,
                 [{"start_line_number": int(start), "end_line_number": int(end)}],
             )
 
-        if not role1 and file_path:
+        if not has_ast_roles and not role1 and file_path:
             merged_role1 = []
             for key in ("evidence_lines", "outgoing_evidence_lines", "lines", "classes", "methods/functions", "methods_functions"):
                 value = payload.get(key)
@@ -531,7 +532,7 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
             if merged_role1:
                 role1 = _wrap(file_path, merged_role1)
 
-        if not role2:
+        if not has_ast_roles and not role2:
             file_entries = payload.get("files")
             if isinstance(file_entries, list):
                 converted = []
@@ -716,4 +717,3 @@ if __name__ == "__main__":
         )
     else:
         analyze_project(args.debug, args.type, args.metadata_output)
-
