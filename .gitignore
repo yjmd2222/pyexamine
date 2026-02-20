@@ -57,13 +57,11 @@ docs/_build/
 
 # ignore analysis results
 code_quality_report.csv
-code_quality_report.json
 code_quality_report.txt
-code_quality_report_detr.json
-code_quality_report_detr.schema.json
-code_quality_report_excerpts.json
+code_quality_report*.json
 code_metadata.json
 code_analysis.log
+detr_candidates*.json
 
 # ignore temporary files
 _tmp*.py

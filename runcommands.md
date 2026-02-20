@@ -2,6 +2,12 @@
 python -m pyexamine analyze samples --config code_quality_config_new.yaml --output code_quality_report.json
 python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml -- code_quality_report.json
 
+# Candidate detr
+python -m dataset_generator.build_detr_candidates samples --config code_quality_config_new.yaml --output detr_candidates.json
+
+# DEPR
+Deprecation indicating section
+
 # Dataset commands
 python -m dataset_generator.build_detr_dataset samples --report code_quality_report.json --output code_quality_report_detr.json
 

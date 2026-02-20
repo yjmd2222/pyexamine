@@ -31,8 +31,8 @@ def main():
                         help="Output path for code_metadata.json")
     parser.add_argument("--output-dir", default=None,
                         help="Output directory for generated dataset artifacts")
-    parser.add_argument("--format", default="conll", choices=["conll", "detr"],
-                        help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-Evidences JSON)")
+    parser.add_argument("--format", default="conll", choices=["conll", "detr", "detr_candidates"],
+                        help="Dataset format to generate: conll (per-smell token labels), detr (thresholded set-of-Evidences JSON), or detr_candidates (detected+undetected candidates).")
     args = parser.parse_args()
 
     output_dir = args.output_dir or _default_output_dir(args.code_path)
@@ -63,7 +63,7 @@ def main():
             "--output-dir", output_dir
         ]
         run_command(dataset_cmd, env)
-    else:
+    elif args.format == "detr":
         # Single JSON artifact per analyzed code_path
         detr_output = os.path.join(output_dir, "detr_dataset.json")
         os.makedirs(output_dir, exist_ok=True)
@@ -74,8 +74,17 @@ def main():
             "--output", detr_output
         ]
         run_command(dataset_cmd, env)
+    else:
+        detr_output = os.path.join(output_dir, "detr_candidates.json")
+        os.makedirs(output_dir, exist_ok=True)
+        dataset_cmd = [
+            sys.executable, "-m", "dataset_generator.build_detr_candidates",
+            args.code_path,
+            "--config", args.config,
+            "--output", detr_output,
+        ]
+        run_command(dataset_cmd, env)
 
 
 if __name__ == "__main__":
     main()
-

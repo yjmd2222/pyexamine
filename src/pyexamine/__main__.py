@@ -46,8 +46,18 @@ def main():
                                 help="Output path for code_metadata.json")
     dataset_parser.add_argument("--output-dir", default=None,
                                 help="Output directory for generated dataset artifacts")
-    dataset_parser.add_argument("--format", default="conll", choices=["conll", "detr"],
-                                help="Dataset format to generate: conll (per-smell token labels) or detr (set-of-Evidences JSON)")
+    dataset_parser.add_argument("--format", default="conll", choices=["conll", "detr", "detr_candidates"],
+                                help="Dataset format to generate: conll (per-smell token labels), detr (thresholded set-of-Evidences JSON), or detr_candidates (detected+undetected candidates).")
+
+    candidates_parser = subparsers.add_parser(
+        "detr_candidates",
+        help="Generate DETR candidates (detected + undetected) directly from code and config."
+    )
+    candidates_parser.add_argument("code_path", help="Path to a code file or directory to include.")
+    candidates_parser.add_argument("--config", required=True, help="Path to code quality config YAML")
+    candidates_parser.add_argument("--output", default=None, help="Output path for detr_candidates.json")
+    candidates_parser.add_argument("--type", choices=["code", "architectural", "structural"],
+                                   help="Restrict analysis to one smell category")
 
     index_parser = subparsers.add_parser(
         "build_smell_index",
@@ -96,6 +106,19 @@ def main():
         _run(cmd)
         return
 
+    if args.command == "detr_candidates":
+        cmd = [
+            sys.executable, "-m", "dataset_generator.build_detr_candidates",
+            args.code_path,
+            "--config", args.config,
+        ]
+        if args.output:
+            cmd.extend(["--output", args.output])
+        if args.type:
+            cmd.extend(["--type", args.type])
+        _run(cmd)
+        return
+
     if args.command == "build_smell_index":
         cmd = [
             sys.executable, "-m", "dataset_generator.build_smell_index",
@@ -113,4 +136,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
