@@ -61,6 +61,7 @@ code_quality_report.json
 code_quality_report.txt
 code_quality_report_detr.json
 code_quality_report_detr.schema.json
+code_quality_report_excerpts.json
 code_metadata.json
 code_analysis.log
 

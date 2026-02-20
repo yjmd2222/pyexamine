@@ -5,6 +5,9 @@ python -m code_quality_analyzer.main samples  --config code_quality_config_new.y
 # Dataset commands
 python -m dataset_generator.build_detr_dataset samples --report code_quality_report.json --output code_quality_report_detr.json
 
+# Excerpt command
+python -m dataset_generator.build_excerpts --detr code_quality_report_detr.json --output code_quality_report_excerpts.json
+
 # Dataset Commands (DEPR)
 
 ## Generate Per-Topic Datasets

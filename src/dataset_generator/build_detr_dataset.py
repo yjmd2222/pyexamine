@@ -2,7 +2,7 @@ import argparse
 import ast
 import json
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 # Reuse file discovery and robust JSON loading utilities
 from .build_dataset import _iter_code_files, _read_file, _load_json, _get_value
@@ -487,8 +487,31 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
     merged_text, file_records, file_by_abs = _build_merged_prompt(code_root_abs, all_files, separator=separator)
     ast_cache: Dict[str, Dict[str, Any]] = {}
 
+    def _dedup_signature(smell_name: str, anchor: Optional[Dict[str, Any]], mentions: List[Dict[str, Any]]) -> str:
+        norm_mentions = []
+        for m in mentions:
+            item = dict(m)
+            if isinstance(item.get("source_roles"), list):
+                item["source_roles"] = sorted(item["source_roles"])
+            norm_mentions.append(item)
+        norm_mentions.sort(
+            key=lambda m: (
+                str(m.get("file", "")),
+                int(m.get("start_line", 0) or 0),
+                int(m.get("end_line", 0) or 0),
+                int(m.get("start_char", 0) or 0),
+                int(m.get("end_char", 0) or 0),
+                str(m.get("role", "")),
+                json.dumps(m.get("source_roles", []), ensure_ascii=False),
+            )
+        )
+        key_obj = {"smell_name": smell_name, "anchor": anchor, "mentions": norm_mentions}
+        return json.dumps(key_obj, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+
     Evidences: List[Dict[str, Any]] = []
     unresolved = 0
+    dropped_duplicates_within_smell = 0
+    seen_signatures: Set[str] = set()
     for idx, entry in enumerate(report_entries):
         smell_name = _get_value(entry, "name", "Name")
         if not smell_name:
@@ -497,6 +520,12 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
         anchor, mentions = _collect_mentions_for_entry(entry, code_root_abs, all_files, file_by_abs, ast_cache)
         if not mentions:
             unresolved += 1
+
+        signature = _dedup_signature(smell_name, anchor, mentions)
+        if signature in seen_signatures:
+            dropped_duplicates_within_smell += 1
+            continue
+        seen_signatures.add(signature)
 
         inst = {
             "id": idx,
@@ -517,6 +546,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
         "num_Evidences": len(Evidences),
         "dropped_Evidences_without_resolved_spans": 0,
         "Evidences_without_resolved_spans": unresolved,
+        "dropped_duplicates_within_smell": dropped_duplicates_within_smell,
     }
 
     out_obj = {
