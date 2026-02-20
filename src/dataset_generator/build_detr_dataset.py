@@ -250,6 +250,66 @@ def _collect_mentions_for_entry(entry: Dict[str, Any], code_root: str, all_files
                 "end_char": c1,
             })
 
+    def add_role_entries(role_entries: Any, role_name: str) -> None:
+        if not role_entries:
+            return
+        for role_entry in role_entries:
+            role_path = _get_value(role_entry, "name", "Name")
+            abs_role = _resolve_report_path(role_path, code_root, all_files) if role_path else None
+            if not abs_role and primary_rec is not None:
+                # role entry may carry symbol name (class/function) rather than path
+                abs_role = primary_rec["abs_path"]
+            spans = _get_value(role_entry, "evidence_lines", "Evidence Lines") or []
+            add_list_spans(spans, role_name, abs_role)
+
+    # Preferred path: ast_spans / ast_graph.roles
+    ast_spans = _get_value(entry, "ast_spans")
+    role0_entries = _get_value(ast_spans or {}, "role0") if isinstance(ast_spans, dict) else None
+    role1_entries = _get_value(ast_spans or {}, "role1") if isinstance(ast_spans, dict) else None
+    role2_entries = _get_value(ast_spans or {}, "role2") if isinstance(ast_spans, dict) else None
+
+    if role0_entries is None or role1_entries is None or role2_entries is None:
+        ast_graph = _get_value(entry, "ast_graph")
+        roles = _get_value(ast_graph or {}, "roles") if isinstance(ast_graph, dict) else None
+        if isinstance(roles, dict):
+            role0_entries = roles.get("role0")
+            role1_entries = roles.get("role1")
+            role2_entries = roles.get("role2")
+
+    if role0_entries is not None or role1_entries is not None or role2_entries is not None:
+        add_role_entries(role0_entries, "ROLE0")
+        add_role_entries(role1_entries, "ROLE1")
+        add_role_entries(role2_entries, "ROLE2")
+
+        # If no explicit anchor from top-level fields, derive from first ROLE0 span.
+        if anchor is None and role0_entries:
+            for role_entry in role0_entries:
+                role_path = _get_value(role_entry, "name", "Name")
+                abs_role = _resolve_report_path(role_path, code_root, all_files) if role_path else None
+                rec = file_by_abs.get(abs_role) if abs_role else None
+                if not rec:
+                    continue
+                role_spans = _get_value(role_entry, "evidence_lines", "Evidence Lines") or []
+                if not role_spans:
+                    continue
+                s = _get_value(role_spans[0], "start_line_number", "Start Line Number")
+                e = _get_value(role_spans[0], "end_line_number", "End Line Number")
+                if not (s and e):
+                    continue
+                s_i = int(s)
+                e_i = int(e)
+                a_start, a_end = _line_range_to_char_span(rec, s_i, e_i)
+                anchor = {
+                    "file": rec["display_path"],
+                    "segment_id": rec["segment_id"],
+                    "start_line": s_i,
+                    "end_line": e_i,
+                    "start_char": a_start,
+                    "end_char": a_end,
+                }
+                break
+        return anchor, mentions
+
     # Local multi-span evidence
     add_list_spans(_get_value(entry, "evidence_lines", "Evidence Lines") or [], "EVIDENCE_LINES", abs_primary)
     add_list_spans(_get_value(entry, "lines", "Lines") or [], "LINES", abs_primary)
@@ -280,7 +340,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
     merged_text, file_records, file_by_abs = _build_merged_prompt(code_root_abs, all_files, separator=separator)
 
     Evidences: List[Dict[str, Any]] = []
-    dropped = 0
+    unresolved = 0
     for idx, entry in enumerate(report_entries):
         smell_name = _get_value(entry, "name", "Name")
         if not smell_name:
@@ -288,8 +348,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
 
         anchor, mentions = _collect_mentions_for_entry(entry, code_root_abs, all_files, file_by_abs)
         if not mentions:
-            dropped += 1
-            continue
+            unresolved += 1
 
         inst = {
             "id": idx,
@@ -300,6 +359,7 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
             "primary_file": _get_value(entry, "file_path", "File"),
             "anchor": anchor,
             "mentions": mentions,
+            "has_resolved_mentions": bool(mentions),
         }
         Evidences.append(inst)
 
@@ -307,7 +367,8 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
         "separator_token": separator,
         "mention_roles": sorted({m["role"] for inst in Evidences for m in inst["mentions"]}),
         "num_Evidences": len(Evidences),
-        "dropped_Evidences_without_resolved_spans": dropped,
+        "dropped_Evidences_without_resolved_spans": 0,
+        "Evidences_without_resolved_spans": unresolved,
     }
 
     out_obj = {
@@ -365,4 +426,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -485,10 +485,85 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
         if payload is None:
             return None
         if is_dataclass(payload):
-            return _normalize_keys(asdict(payload))
+            normalized = _normalize_keys(asdict(payload))
+            return _to_ast_span_payload(normalized)
         if isinstance(payload, dict):
-            return _normalize_keys(payload)
-        return _normalize_keys(payload)
+            normalized = _normalize_keys(payload)
+            return _to_ast_span_payload(normalized)
+        normalized = _normalize_keys(payload)
+        return _to_ast_span_payload(normalized)
+
+    def _to_ast_span_payload(payload):
+        if not isinstance(payload, dict):
+            return payload
+
+        ast_graph = payload.get("ast_graph")
+        roles = {}
+        if isinstance(ast_graph, dict):
+            roles = ast_graph.get("roles", {}) if isinstance(ast_graph.get("roles"), dict) else {}
+
+        def _wrap(name, spans):
+            return [{"name": name, "evidence_lines": spans}] if name and spans else []
+
+        def _spans(items):
+            return items if isinstance(items, list) else []
+
+        role0 = _spans(roles.get("role0", []))
+        role1 = _spans(roles.get("role1", []))
+        role2 = _spans(roles.get("role2", []))
+
+        # Fallback from legacy payload fields when ast_graph roles are missing/empty.
+        file_path = payload.get("file_path")
+        start = payload.get("start_line_number")
+        end = payload.get("end_line_number")
+        if not role0 and file_path and start and end:
+            role0 = _wrap(
+                file_path,
+                [{"start_line_number": int(start), "end_line_number": int(end)}],
+            )
+
+        if not role1 and file_path:
+            merged_role1 = []
+            for key in ("evidence_lines", "outgoing_evidence_lines", "lines", "classes", "methods/functions", "methods_functions"):
+                value = payload.get(key)
+                if isinstance(value, list):
+                    merged_role1.extend(value)
+            if merged_role1:
+                role1 = _wrap(file_path, merged_role1)
+
+        if not role2:
+            file_entries = payload.get("files")
+            if isinstance(file_entries, list):
+                converted = []
+                for fe in file_entries:
+                    if not isinstance(fe, dict):
+                        continue
+                    name = fe.get("name")
+                    spans = fe.get("incoming_evidence_lines") or fe.get("evidence_lines") or []
+                    if name and isinstance(spans, list) and spans:
+                        converted.append({"name": name, "evidence_lines": spans})
+                role2 = converted
+
+        # Switch to AST-span-facing report keys while preserving core smell metadata.
+        # Legacy evidence fields are removed from the report surface.
+        legacy_keys = {
+            "evidence_lines",
+            "outgoing_evidence_lines",
+            "incoming_evidence_lines",
+            "lines",
+            "files",
+            "classes",
+            "methods/functions",
+            "methods_functions",
+        }
+        transformed = {k: v for k, v in payload.items() if k not in legacy_keys}
+
+        transformed["ast_spans"] = {
+            "role0": role0,
+            "role1": role1,
+            "role2": role2,
+        }
+        return transformed
 
     def _payload_entry(smell):
         payload = _format_payload(getattr(smell, 'payload', None))
@@ -641,6 +716,4 @@ if __name__ == "__main__":
         )
     else:
         analyze_project(args.debug, args.type, args.metadata_output)
-
-
 

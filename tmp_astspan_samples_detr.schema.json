@@ -1,0 +1,12 @@
+{
+  "separator_token": "[file]",
+  "mention_roles": [
+    "ANCHOR",
+    "ROLE0",
+    "ROLE1",
+    "ROLE2"
+  ],
+  "num_Evidences": 219,
+  "dropped_Evidences_without_resolved_spans": 0,
+  "Evidences_without_resolved_spans": 0
+}

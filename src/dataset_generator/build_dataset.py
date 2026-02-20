@@ -268,6 +268,49 @@ def _extract_spans(entry, scheme, code_root):
     has_within = "I-WITHIN" in scheme
     has_callfrom = "B-CALLFROM" in scheme
 
+    def add_role_entries(role_entries, label_type):
+        for role_entry in role_entries or []:
+            role_path = _get_value(role_entry, "name", "Name")
+            abs_role_path = _normalize_path(role_path, code_root) if role_path else None
+            if not abs_role_path and file_path:
+                # role entry may be class/function symbol name, fallback to primary file
+                abs_role_path = file_path
+            if not abs_role_path:
+                continue
+            for span in (_get_value(role_entry, "evidence_lines", "Evidence Lines") or []):
+                span_start = _get_value(span, "start_line_number", "Start Line Number")
+                span_end = _get_value(span, "end_line_number", "End Line Number")
+                if span_start and span_end:
+                    spans.append((abs_role_path, span_start, span_end, label_type))
+
+    # Preferred path: ast_spans / ast_graph.roles
+    ast_spans = _get_value(entry, "ast_spans")
+    role0_entries = _get_value(ast_spans or {}, "role0") if isinstance(ast_spans, dict) else None
+    role1_entries = _get_value(ast_spans or {}, "role1") if isinstance(ast_spans, dict) else None
+    role2_entries = _get_value(ast_spans or {}, "role2") if isinstance(ast_spans, dict) else None
+
+    if role0_entries is None or role1_entries is None or role2_entries is None:
+        ast_graph = _get_value(entry, "ast_graph")
+        roles = _get_value(ast_graph or {}, "roles") if isinstance(ast_graph, dict) else None
+        if isinstance(roles, dict):
+            role0_entries = roles.get("role0")
+            role1_entries = roles.get("role1")
+            role2_entries = roles.get("role2")
+
+    if role0_entries is not None or role1_entries is not None or role2_entries is not None:
+        role1_label = "within" if has_within else "primary"
+        if has_callfrom:
+            role2_label = "callfrom"
+        elif has_within:
+            role2_label = "within"
+        else:
+            role2_label = "primary"
+
+        add_role_entries(role0_entries, "primary")
+        add_role_entries(role1_entries, role1_label)
+        add_role_entries(role2_entries, role2_label)
+        return spans
+
     start_line = _get_value(entry, "start_line_number", "Start Line Number")
     end_line = _get_value(entry, "end_line_number", "End Line Number")
     if file_path and start_line and end_line:
@@ -513,6 +556,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
