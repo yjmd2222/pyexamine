@@ -1,0 +1,1288 @@
+[
+  {
+    "type": "Code",
+    "name": "Long Method",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "method/function": "<method/function name>",
+    "start_line_number": "<method/function start line>",
+    "end_line_number": "<method/function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Large Class",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Primitive Obsession",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "method/function": "<method/function name>",
+    "start_line_number": "<method/function start line>",
+    "end_line_number": "<method/function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Long Parameter List",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "method/function": "<method/function name>",
+    "start_line_number": "<method/function start line>",
+    "end_line_number": "<method/function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Data Clumps",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "methods/functions": [
+      {
+        "name": "<method/function name>",
+        "start_line_number": "<method/function start line>",
+        "end_line_number": "<method/function end line>"
+      },
+      {
+        "name": "<method/function name>",
+        "start_line_number": "<method/function start line>",
+        "end_line_number": "<method/function end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "methods/functions[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Switch Statements",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "start_line_number": "<switch start line>",
+    "end_line_number": "<switch end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Temporary Field",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Alternative Classes with Different Interfaces",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "classes": [
+      {
+        "name": "<class name>",
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      },
+      {
+        "name": "<class name>",
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "classes[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Potential Divergent Change",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Parallel Inheritance Hierarchies",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "classes": [
+      {
+        "name": "<class name>",
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      },
+      {
+        "name": "<class name>",
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "classes[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Potential Shotgun Surgery",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Excessive Comments",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Duplicate Code",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Data Class",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Dead Code",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "function": "<function name>",
+    "start_line_number": "<function start line>",
+    "end_line_number": "<function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Lazy Class",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Speculative Generality",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Feature Envy",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "function": "<function name>",
+    "severity": "<severity>",
+    "start_line_number": "<function start line>",
+    "end_line_number": "<function end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Inappropriate Intimacy",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Message Chains",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "start_line_number": "<start line>",
+    "end_line_number": "<end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Code",
+    "name": "Middle Man",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Hub-like Dependency",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "outgoing_evidence_lines": [
+      {
+        "start_line_number": "<outgoing evidence start line>",
+        "end_line_number": "<outgoing evidence end line>"
+      },
+      {
+        "start_line_number": "<outgoing evidence start line>",
+        "end_line_number": "<outgoing evidence end line>"
+      }
+    ],
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "incoming_evidence_lines": [
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          },
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "incoming_evidence_lines": [
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          },
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "WHOLE_FILE",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "outgoing_evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": [
+      {
+        "line_source": "files[*].incoming_evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "files[*].name"
+      }
+    ]
+  },
+  {
+    "type": "Architectural",
+    "name": "Scattered Functionality",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "function": "<function name>",
+    "severity": "<severity>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "WHOLE_FILE",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Potential Redundant Abstractions",
+    "description": "<description>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "files[*].name"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "God Object",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "start_line_number": "<start line>",
+    "end_line_number": "<end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Potential Improper API Usage",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Orphan Module",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "start_line_number": "<file start line>",
+    "end_line_number": "<file end line>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Cyclic Dependency",
+    "description": "<description>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      }
+    ],
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "files[*].name"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Architectural",
+    "name": "Unstable Dependency",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "outgoing_evidence_lines": [
+      {
+        "start_line_number": "<outgoing evidence start line>",
+        "end_line_number": "<outgoing evidence end line>"
+      },
+      {
+        "start_line_number": "<outgoing evidence start line>",
+        "end_line_number": "<outgoing evidence end line>"
+      }
+    ],
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "incoming_evidence_lines": [
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          },
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "incoming_evidence_lines": [
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          },
+          {
+            "start_line_number": "<incoming evidence start line>",
+            "end_line_number": "<incoming evidence end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "WHOLE_FILE",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "outgoing_evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": [
+      {
+        "line_source": "files[*].incoming_evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "files[*].name"
+      }
+    ]
+  },
+  {
+    "type": "Structural",
+    "name": "High Number of Methods (NOM)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Weighted Methods per Class (WMPC)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "Large Class (SIZE2)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Weight of a Class (WAC)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Lack of Cohesion of Methods (LCOM)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Response for a Class (RFC)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Number of Classes per Module",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      },
+      {
+        "start_line_number": "<class start line>",
+        "end_line_number": "<class end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "Deep Inheritance Tree (DIT)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          },
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          },
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "WHOLE_FILE",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Lines of Code (LOC)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Message Passing Coupling (MPC)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Coupling Between Object Classes (CBO)",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "severity": "<severity>",
+    "start_line_number": "<class start line>",
+    "end_line_number": "<class end line>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Number of classes per Project",
+    "description": "<description>",
+    "severity": "<severity>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          },
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          },
+          {
+            "start_line_number": "<class start line>",
+            "end_line_number": "<class end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "files[*].name"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Cyclomatic Complexity",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "method/function": "<method/function name>",
+    "start_line_number": "<method/function start line>",
+    "end_line_number": "<method/function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Fan-out",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "High Fan-in",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "files": [
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      },
+      {
+        "name": "<path/to/file>",
+        "evidence_lines": [
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          },
+          {
+            "start_line_number": "<evidence start line>",
+            "end_line_number": "<evidence end line>"
+          }
+        ]
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "WHOLE_FILE",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "Long File",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "severity": "<severity>",
+    "evidence_lines": [
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      },
+      {
+        "start_line_number": "<evidence start line>",
+        "end_line_number": "<evidence end line>"
+      }
+    ],
+    "ROLE0": [
+      {
+        "line_source": "evidence_lines[*].start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  },
+  {
+    "type": "Structural",
+    "name": "Too Many Branches",
+    "description": "<description>",
+    "file_path": "<path/to/file>",
+    "class_name": "<class name>",
+    "method/function": "<method/function name>",
+    "start_line_number": "<method/function start line>",
+    "end_line_number": "<method/function end line>",
+    "severity": "<severity>",
+    "ROLE0": [
+      {
+        "line_source": "start_line_number/end_line_number",
+        "file_source": "file_path"
+      }
+    ],
+    "ROLE1": [],
+    "ROLE2": []
+  }
+]

@@ -60,6 +60,22 @@ def main():
     index_parser.add_argument("--no-analyze", action="store_true",
                               help="Skip running analyze_code_quality before building the index.")
 
+    role_excerpt_parser = subparsers.add_parser(
+        "build_role_section_excerpts",
+        help="Build ROLE0/ROLE1/ROLE2 packed excerpt JSONL and sidecar JSONL."
+    )
+    role_excerpt_parser.add_argument("code_path", help="Path to a code file or directory to include.")
+    role_excerpt_parser.add_argument("--report", required=True, help="Path to code_quality_report.json")
+    role_excerpt_parser.add_argument("--templates", required=True,
+                                     help="Path to templates_with_roles.json")
+    role_excerpt_parser.add_argument("--output-jsonl", default="role_section_excerpts.jsonl",
+                                     help="Output path for excerpt JSONL")
+    role_excerpt_parser.add_argument("--output-sidecar-jsonl",
+                                     default="role_section_excerpts.sidecar.jsonl",
+                                     help="Output path for sidecar JSONL")
+    role_excerpt_parser.add_argument("--context-lines", type=int, default=2,
+                                     help="Context lines to include around each role span")
+
     args = parser.parse_args()
 
     if args.command == "analyze":
@@ -103,6 +119,19 @@ def main():
             cmd.append("--no-analyze")
         if args.output:
             cmd.extend(["--output", args.output])
+        _run(cmd)
+        return
+
+    if args.command == "build_role_section_excerpts":
+        cmd = [
+            sys.executable, "-m", "dataset_generator.build_role_section_excerpts",
+            args.code_path,
+            "--report", args.report,
+            "--templates", args.templates,
+            "--output-jsonl", args.output_jsonl,
+            "--output-sidecar-jsonl", args.output_sidecar_jsonl,
+            "--context-lines", str(args.context_lines),
+        ]
         _run(cmd)
         return
 
