@@ -14,6 +14,9 @@ python -m dataset_generator.build_detr_dataset samples --report code_quality_rep
 # Excerpt command
 python -m dataset_generator.build_excerpts --detr code_quality_report_detr.json --output code_quality_report_excerpts.json
 
+# Role-section excerpts (from candidate DETR)
+python -m dataset_generator.build_role_section_excerpts --detr detr_candidates.json --output-jsonl role_section_excerpts.jsonl --output-sidecar-jsonl role_section_excerpts.sidecar.jsonl --tokenizer answerdotai/ModernBERT-large
+
 # Dataset Commands (DEPR)
 
 ## Generate Per-Topic Datasets
