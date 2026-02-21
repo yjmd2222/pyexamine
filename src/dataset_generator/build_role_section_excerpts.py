@@ -400,6 +400,83 @@ def _collect_role_spans(entry: Dict, role_specs: List[Dict], code_root: str) -> 
     return spans
 
 
+def _fallback_role_spans(
+    entry: Dict,
+    role_specs: List[Dict],
+    code_root: str,
+    role0_spans: List[Span],
+) -> List[Span]:
+    # Deterministic fallback used when template expects a role but the entry lacks explicit evidence arrays.
+    fallback = []
+    root_path = _normalize_path(_get_value(entry, "file_path", "File"), code_root)
+    root_start = _get_value(entry, "start_line_number", "Start Line Number")
+    root_end = _get_value(entry, "end_line_number", "End Line Number")
+
+    def _root_span():
+        if root_path and root_start and root_end:
+            return Span(root_path, max(1, int(root_start)), max(int(root_start) + 1, int(root_end)))
+        return None
+
+    for spec in role_specs:
+        line_source = spec.get("line_source", "")
+        file_source = spec.get("file_source", "")
+
+        if file_source == "file_path":
+            if line_source == "WHOLE_FILE":
+                if root_path:
+                    fallback.append(Span(root_path, 1, _line_count(root_path) + 1))
+                else:
+                    files = _get_value(entry, "files", "Files") or []
+                    for child in files:
+                        cp = _normalize_path(_get_value(child, "name", "Name"), code_root)
+                        if cp:
+                            fallback.append(Span(cp, 1, _line_count(cp) + 1))
+                            break
+                continue
+            base = _root_span()
+            if base:
+                fallback.append(base)
+            elif root_path:
+                fallback.append(Span(root_path, 1, _line_count(root_path) + 1))
+            else:
+                files = _get_value(entry, "files", "Files") or []
+                for child in files:
+                    cp = _normalize_path(_get_value(child, "name", "Name"), code_root)
+                    if cp:
+                        fallback.append(Span(cp, 1, _line_count(cp) + 1))
+                        break
+            if role0_spans and not fallback:
+                fallback.extend(role0_spans)
+            continue
+
+        if file_source == "files[*].name":
+            files = _get_value(entry, "files", "Files") or []
+            child_paths = []
+            for child in files:
+                cp = _normalize_path(_get_value(child, "name", "Name"), code_root)
+                if cp:
+                    child_paths.append(cp)
+            # If no explicit children exist, reuse root path so ROLE section is still materialized.
+            if not child_paths and root_path:
+                child_paths.append(root_path)
+            for cp in child_paths:
+                if line_source == "WHOLE_FILE":
+                    fallback.append(Span(cp, 1, _line_count(cp) + 1))
+                else:
+                    # Prefer root range as a compact fallback; otherwise whole file.
+                    if root_start and root_end:
+                        fallback.append(
+                            Span(cp, max(1, int(root_start)), max(int(root_start) + 1, int(root_end)))
+                        )
+                    else:
+                        fallback.append(Span(cp, 1, _line_count(cp) + 1))
+            continue
+
+    if not fallback and role0_spans:
+        fallback.extend(role0_spans)
+    return fallback
+
+
 def _expand_and_merge(spans: List[Span], context_lines: int, file_cache: Dict[str, List[str]]) -> List[Span]:
     grouped: Dict[str, List[Tuple[int, int]]] = {}
     for span in spans:
@@ -668,12 +745,18 @@ def build_role_section_excerpts(
         if not template:
             continue
         role_spans = {}
+        role0_expanded = []
         for role in ("ROLE0", "ROLE1", "ROLE2"):
             specs = template.get(role, [])
             raw_spans = _collect_role_spans(cand.entry, specs, code_root)
             raw_spans = [s for s in raw_spans if s.file_path in file_cache]
+            if specs and not raw_spans:
+                raw_spans = _fallback_role_spans(cand.entry, specs, code_root, role0_expanded)
+                raw_spans = [s for s in raw_spans if s.file_path in file_cache]
             merged = _expand_and_merge(raw_spans, context_lines=context_lines, file_cache=file_cache)
             role_spans[role] = merged
+            if role == "ROLE0":
+                role0_expanded = merged
 
         text, tokens, labels, token_map = _build_text_and_sidecar(role_spans, code_root, file_cache)
 
