@@ -3,8 +3,11 @@ import bisect
 import json
 import os
 import re
+import tempfile
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
+
+from dataset_generator.build_detr_candidates import build_detr_candidates
 
 
 ROLES = ("ROLE0", "ROLE1", "ROLE2")
@@ -295,7 +298,27 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build role-section token-classification training artifacts from DETR candidates."
     )
-    parser.add_argument("--detr", required=True, help="Path to detr_candidates.json (or compatible DETR JSON)")
+    parser.add_argument(
+        "--detr",
+        default=None,
+        help="Path to detr_candidates.json (or compatible DETR JSON)",
+    )
+    parser.add_argument(
+        "--code-path",
+        default=None,
+        help="Code path to analyze when generating candidates inline",
+    )
+    parser.add_argument(
+        "--config",
+        default=None,
+        help="Config YAML path when generating candidates inline",
+    )
+    parser.add_argument(
+        "--type",
+        choices=["code", "architectural", "structural"],
+        default=None,
+        help="Restrict analysis to a smell category (inline candidate mode only)",
+    )
     parser.add_argument("--output-jsonl", default="role_section_excerpts.jsonl", help="Output training JSONL path")
     parser.add_argument(
         "--output-sidecar-jsonl",
@@ -309,12 +332,36 @@ def main():
     )
     args = parser.parse_args()
 
+    if args.detr and args.code_path:
+        raise SystemExit("Use either --detr or --code-path/--config, not both.")
+    if not args.detr and not args.code_path:
+        raise SystemExit("Provide --detr or --code-path with --config.")
+    if args.code_path and not args.config:
+        raise SystemExit("--config is required when using --code-path.")
+
+    temp_ctx: Optional[tempfile.TemporaryDirectory] = None
+    detr_path = args.detr
+    if detr_path is None:
+        temp_ctx = tempfile.TemporaryDirectory(prefix="pyexamine_inline_detr_")
+        detr_path = os.path.join(temp_ctx.name, "detr_candidates.json")
+        build_detr_candidates(
+            code_path=args.code_path,
+            config_path=args.config,
+            output_path=detr_path,
+            smell_type=args.type,
+        )
+
     summary = build_role_section_excerpts(
-        detr_path=args.detr,
+        detr_path=detr_path,
         output_jsonl=args.output_jsonl,
         output_sidecar_jsonl=args.output_sidecar_jsonl,
         tokenizer_name=args.tokenizer,
     )
+    if temp_ctx is not None:
+        summary["detr_source"] = "inline-generated"
+        temp_ctx.cleanup()
+    else:
+        summary["detr_source"] = os.path.abspath(detr_path)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
