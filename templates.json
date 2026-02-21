@@ -8,15 +8,7 @@
     "method/function": "<method/function name>",
     "start_line_number": "<method/function start line>",
     "end_line_number": "<method/function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -26,15 +18,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -45,15 +29,7 @@
     "method/function": "<method/function name>",
     "start_line_number": "<method/function start line>",
     "end_line_number": "<method/function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -64,15 +40,7 @@
     "method/function": "<method/function name>",
     "start_line_number": "<method/function start line>",
     "end_line_number": "<method/function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -91,15 +59,7 @@
         "start_line_number": "<method/function start line>",
         "end_line_number": "<method/function end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "methods/functions[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -108,15 +68,7 @@
     "file_path": "<path/to/file>",
     "start_line_number": "<switch start line>",
     "end_line_number": "<switch end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -126,15 +78,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -153,15 +97,7 @@
         "end_line_number": "<class end line>"
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "classes[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -181,20 +117,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -213,15 +136,7 @@
         "end_line_number": "<class end line>"
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "classes[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -238,15 +153,7 @@
         "end_line_number": "<evidence end line>"
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -263,15 +170,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -288,15 +187,7 @@
         "end_line_number": "<evidence end line>"
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -316,20 +207,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -339,15 +217,7 @@
     "function": "<function name>",
     "start_line_number": "<function start line>",
     "end_line_number": "<function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -357,15 +227,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -385,20 +247,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -418,20 +267,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -451,20 +287,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Code",
@@ -473,15 +296,7 @@
     "file_path": "<path/to/file>",
     "start_line_number": "<start line>",
     "end_line_number": "<end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Code",
@@ -501,20 +316,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Architectural",
@@ -559,24 +361,6 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "WHOLE_FILE",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "outgoing_evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": [
-      {
-        "line_source": "files[*].incoming_evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "files[*].name"
-      }
     ]
   },
   {
@@ -615,15 +399,7 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Architectural",
@@ -657,15 +433,7 @@
         ]
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "files[*].name"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Architectural",
@@ -684,20 +452,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Architectural",
@@ -714,15 +469,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Architectural",
@@ -731,15 +478,7 @@
     "file_path": "<path/to/file>",
     "severity": "<severity>",
     "start_line_number": "<file start line>",
-    "end_line_number": "<file end line>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "end_line_number": "<file end line>"
   },
   {
     "type": "Architectural",
@@ -773,15 +512,7 @@
         ]
       }
     ],
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "files[*].name"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Architectural",
@@ -826,24 +557,6 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "WHOLE_FILE",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "outgoing_evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": [
-      {
-        "line_source": "files[*].incoming_evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "files[*].name"
-      }
     ]
   },
   {
@@ -854,15 +567,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -872,15 +577,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -890,15 +587,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -908,15 +597,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -926,15 +607,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -944,15 +617,7 @@
     "class_name": "<class name>",
     "start_line_number": "<class start line>",
     "end_line_number": "<class end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -969,15 +634,7 @@
         "start_line_number": "<class start line>",
         "end_line_number": "<class end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1015,15 +672,7 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1040,15 +689,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1068,20 +709,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1101,20 +729,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1148,15 +763,7 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "files[*].evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "files[*].name"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1167,15 +774,7 @@
     "method/function": "<method/function name>",
     "start_line_number": "<method/function start line>",
     "end_line_number": "<method/function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   },
   {
     "type": "Structural",
@@ -1192,15 +791,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1235,15 +826,7 @@
           }
         ]
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "WHOLE_FILE",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1260,15 +843,7 @@
         "start_line_number": "<evidence start line>",
         "end_line_number": "<evidence end line>"
       }
-    ],
-    "ROLE0": [
-      {
-        "line_source": "evidence_lines[*].start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    ]
   },
   {
     "type": "Structural",
@@ -1279,14 +854,6 @@
     "method/function": "<method/function name>",
     "start_line_number": "<method/function start line>",
     "end_line_number": "<method/function end line>",
-    "severity": "<severity>",
-    "ROLE0": [
-      {
-        "line_source": "start_line_number/end_line_number",
-        "file_source": "file_path"
-      }
-    ],
-    "ROLE1": [],
-    "ROLE2": []
+    "severity": "<severity>"
   }
 ]
