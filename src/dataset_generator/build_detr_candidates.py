@@ -12,7 +12,12 @@ from code_quality_analyzer.main import (
     analyze_project,
     analyze_structural_smells_only,
 )
-from dataset_generator.build_detr_dataset import build_detr_dataset
+from dataset_generator.build_detr_dataset import (
+    _build_merged_prompt,
+    _collect_mentions_for_entry,
+    build_detr_dataset,
+)
+from dataset_generator.build_dataset import _iter_code_files
 
 
 def _load_yaml(path: str) -> Dict[str, Any]:
@@ -75,6 +80,28 @@ def _signature(entry: Dict[str, Any]) -> str:
     return json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
 
 
+def _detected_signatures_from_report(code_path: str, report_path: str) -> Set[str]:
+    code_root_abs = os.path.abspath(code_path)
+    all_files = sorted(_iter_code_files(code_root_abs))
+    _, _, file_by_abs = _build_merged_prompt(code_root_abs, all_files)
+    ast_cache: Dict[str, Dict[str, Any]] = {}
+    with open(report_path, "r", encoding="utf-8") as f:
+        report_entries = json.load(f)
+
+    detected_signatures: Set[str] = set()
+    for entry in report_entries:
+        if not isinstance(entry, dict):
+            continue
+        smell_name = entry.get("name") or entry.get("Name")
+        if not smell_name:
+            continue
+        anchor, mentions = _collect_mentions_for_entry(entry, code_root_abs, all_files, file_by_abs, ast_cache)
+        detected_signatures.add(
+            _signature({"smell_name": smell_name, "anchor": anchor, "mentions": mentions or []})
+        )
+    return detected_signatures
+
+
 def _run_analysis(
     code_path: str,
     config_path: str,
@@ -126,8 +153,6 @@ def build_detr_candidates(
     detected_report = os.path.join(work_dir, "detected_report.json")
     candidate_report = os.path.join(work_dir, "candidate_report.json")
     relaxed_config = os.path.join(work_dir, "relaxed_config.yaml")
-    detected_detr = os.path.join(work_dir, "detected_detr.json")
-    candidate_detr = os.path.join(work_dir, "candidate_detr.json")
 
     base_cfg = _load_yaml(config_path)
     relaxed_cfg = _relax_thresholds(base_cfg)
@@ -136,10 +161,10 @@ def build_detr_candidates(
     _run_analysis(code_path, config_path, detected_report, smell_type=smell_type)
     _run_analysis(code_path, relaxed_config, candidate_report, smell_type=smell_type)
 
-    detected_obj = build_detr_dataset(code_path, detected_report, detected_detr)
-    candidate_obj = build_detr_dataset(code_path, candidate_report, candidate_detr)
+    # Single DETR export branch: build candidates once, then annotate is_detected in-place.
+    candidate_obj = build_detr_dataset(code_path, candidate_report, output_path)
+    detected_signatures: Set[str] = _detected_signatures_from_report(code_path, detected_report)
 
-    detected_signatures: Set[str] = {_signature(e) for e in detected_obj.get("Evidences", [])}
     detected_count = 0
     for ev in candidate_obj.get("Evidences", []):
         is_detected = _signature(ev) in detected_signatures
@@ -152,10 +177,14 @@ def build_detr_candidates(
     schema["candidate_mode"] = True
     schema["detected_count"] = detected_count
     schema["undetected_count"] = max(0, total - detected_count)
-    schema["detected_report_path"] = os.path.abspath(detected_report) if keep_intermediate else None
-    schema["candidate_report_path"] = os.path.abspath(candidate_report) if keep_intermediate else None
+    if keep_intermediate:
+        schema["detected_report_path"] = os.path.abspath(detected_report)
+        schema["candidate_report_path"] = os.path.abspath(candidate_report)
+    else:
+        schema.pop("detected_report_path", None)
+        schema.pop("candidate_report_path", None)
 
-    os.makedirs(os.path.dirname(os.path.abspath(output_path)) or ".", exist_ok=True)
+    # Rewrite output after adding is_detected and schema counters.
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(candidate_obj, f, ensure_ascii=False, indent=2)
 
@@ -168,10 +197,6 @@ def build_detr_candidates(
             os.remove(detected_report)
             os.remove(candidate_report)
             os.remove(relaxed_config)
-            os.remove(detected_detr)
-            os.remove(os.path.splitext(detected_detr)[0] + ".schema.json")
-            os.remove(candidate_detr)
-            os.remove(os.path.splitext(candidate_detr)[0] + ".schema.json")
         except OSError:
             pass
 
