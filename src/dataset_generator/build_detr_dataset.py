@@ -479,7 +479,12 @@ def _collect_mentions_for_entry(
     return anchor, merged_mentions
 
 
-def build_detr_dataset(code_root: str, report_path: str, output_path: str, separator: str = DEFAULT_SEPARATOR) -> Dict[str, Any]:
+def build_detr_dataset(
+    code_root: str,
+    report_path: str,
+    output_path: Optional[str] = None,
+    separator: str = DEFAULT_SEPARATOR,
+) -> Dict[str, Any]:
     code_root_abs = os.path.abspath(code_root)
     all_files = sorted(_iter_code_files(code_root_abs))
     report_entries = _load_json(report_path)
@@ -567,14 +572,15 @@ def build_detr_dataset(code_root: str, report_path: str, output_path: str, separ
         "schema": schema,
     }
 
-    os.makedirs(os.path.dirname(os.path.abspath(output_path)) or ".", exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(out_obj, f, ensure_ascii=False, indent=2)
+    if output_path:
+        os.makedirs(os.path.dirname(os.path.abspath(output_path)) or ".", exist_ok=True)
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(out_obj, f, ensure_ascii=False, indent=2)
 
-    # also write a sidecar schema for quick inspection
-    schema_path = os.path.splitext(output_path)[0] + ".schema.json"
-    with open(schema_path, "w", encoding="utf-8") as f:
-        json.dump(schema, f, ensure_ascii=False, indent=2)
+        # also write a sidecar schema for quick inspection
+        schema_path = os.path.splitext(output_path)[0] + ".schema.json"
+        with open(schema_path, "w", encoding="utf-8") as f:
+            json.dump(schema, f, ensure_ascii=False, indent=2)
 
     return out_obj
 

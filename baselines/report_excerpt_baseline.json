@@ -1,0 +1,320 @@
+﻿{
+    "created_at":  "2026-02-21T17:24:54.9117869+09:00",
+    "report_path":  "master-thesis-materials/pyexamine/code_quality_report.json",
+    "excerpts_path":  "master-thesis-materials/pyexamine/role_section_excerpts.jsonl",
+    "report_sha256":  "6E4512E55D1AA9E694F3C724AAE39453264E93AC2B4C02B9166163A7FF0FE8B2",
+    "excerpts_sha256":  "9F41F13D19E44224FE6E2BD63ACD840CE7F8543F422E357D568FE1443B9660C2",
+    "report_entries":  218,
+    "excerpts_entries":  1495,
+    "smells_count":  44,
+    "per_smell":  [
+                      {
+                          "smell_name":  "Alternative Classes with Different Interfaces",
+                          "report_count":  1,
+                          "excerpt_count":  22,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Data Class",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Data Clumps",
+                          "report_count":  1,
+                          "excerpt_count":  16,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Dead Code",
+                          "report_count":  6,
+                          "excerpt_count":  6,
+                          "excerpt_detected_count":  6,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Deep Inheritance Tree (DIT)",
+                          "report_count":  2,
+                          "excerpt_count":  2,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  false
+                      },
+                      {
+                          "smell_name":  "Duplicate Code",
+                          "report_count":  2,
+                          "excerpt_count":  30,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Excessive Comments",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Feature Envy",
+                          "report_count":  4,
+                          "excerpt_count":  20,
+                          "excerpt_detected_count":  4,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "God Object",
+                          "report_count":  2,
+                          "excerpt_count":  28,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Coupling Between Object Classes (CBO)",
+                          "report_count":  1,
+                          "excerpt_count":  29,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Cyclomatic Complexity",
+                          "report_count":  3,
+                          "excerpt_count":  16,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Fan-out",
+                          "report_count":  1,
+                          "excerpt_count":  9,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Lack of Cohesion of Methods (LCOM)",
+                          "report_count":  6,
+                          "excerpt_count":  11,
+                          "excerpt_detected_count":  6,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Lines of Code (LOC)",
+                          "report_count":  1,
+                          "excerpt_count":  66,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Message Passing Coupling (MPC)",
+                          "report_count":  1,
+                          "excerpt_count":  21,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Number of Classes per Module",
+                          "report_count":  1,
+                          "excerpt_count":  15,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Number of classes per Project",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Number of Methods (NOM)",
+                          "report_count":  3,
+                          "excerpt_count":  28,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Response for a Class (RFC)",
+                          "report_count":  3,
+                          "excerpt_count":  36,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Weight of a Class (WAC)",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "High Weighted Methods per Class (WMPC)",
+                          "report_count":  1,
+                          "excerpt_count":  11,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Hub-like Dependency",
+                          "report_count":  2,
+                          "excerpt_count":  43,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Inappropriate Intimacy",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Large Class",
+                          "report_count":  1,
+                          "excerpt_count":  5,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Large Class (SIZE2)",
+                          "report_count":  3,
+                          "excerpt_count":  28,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Lazy Class",
+                          "report_count":  83,
+                          "excerpt_count":  85,
+                          "excerpt_detected_count":  83,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Long File",
+                          "report_count":  1,
+                          "excerpt_count":  66,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Long Method",
+                          "report_count":  1,
+                          "excerpt_count":  333,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Long Parameter List",
+                          "report_count":  4,
+                          "excerpt_count":  50,
+                          "excerpt_detected_count":  4,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Message Chains",
+                          "report_count":  1,
+                          "excerpt_count":  47,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Middle Man",
+                          "report_count":  1,
+                          "excerpt_count":  2,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Orphan Module",
+                          "report_count":  49,
+                          "excerpt_count":  49,
+                          "excerpt_detected_count":  49,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Parallel Inheritance Hierarchies",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Potential Divergent Change",
+                          "report_count":  2,
+                          "excerpt_count":  21,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Potential Improper API Usage",
+                          "report_count":  3,
+                          "excerpt_count":  44,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Potential Redundant Abstractions",
+                          "report_count":  2,
+                          "excerpt_count":  8,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Potential Shotgun Surgery",
+                          "report_count":  1,
+                          "excerpt_count":  3,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Primitive Obsession",
+                          "report_count":  4,
+                          "excerpt_count":  20,
+                          "excerpt_detected_count":  4,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Scattered Functionality",
+                          "report_count":  4,
+                          "excerpt_count":  228,
+                          "excerpt_detected_count":  4,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Speculative Generality",
+                          "report_count":  1,
+                          "excerpt_count":  1,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Switch Statements",
+                          "report_count":  1,
+                          "excerpt_count":  10,
+                          "excerpt_detected_count":  1,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Temporary Field",
+                          "report_count":  4,
+                          "excerpt_count":  40,
+                          "excerpt_detected_count":  4,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Too Many Branches",
+                          "report_count":  3,
+                          "excerpt_count":  12,
+                          "excerpt_detected_count":  3,
+                          "detected_count_match":  true
+                      },
+                      {
+                          "smell_name":  "Unstable Dependency",
+                          "report_count":  2,
+                          "excerpt_count":  28,
+                          "excerpt_detected_count":  2,
+                          "detected_count_match":  true
+                      }
+                  ]
+}

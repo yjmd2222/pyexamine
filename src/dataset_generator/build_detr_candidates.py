@@ -2,7 +2,7 @@ import argparse
 import json
 import os
 import tempfile
-from typing import Any, Dict, Set
+from typing import Any, Dict, Optional, Set
 
 import yaml
 
@@ -42,21 +42,41 @@ def _relax_threshold_value(key: str, value: Any) -> Any:
         tiny = 1 if is_int else 1e-9
         huge = 10**9 if is_int else 1e9
 
-        # Explicit "max allowed delegate targets" style keys should stay permissive high.
-        if "MAX_DELEGATE_TARGETS" in upper:
-            return huge
-        if "MAX" in upper or "BOUND_HIGH" in upper:
-            return huge
-        if "MULTIPLIER_HIGH" in upper:
-            return 10**6 if is_int else 1e6
-        if "MULTIPLIER_LOW" in upper:
-            return tiny
+        # Keep metric-shaping knobs intact; they are not threshold gates.
         if (
-            "MIN" in upper
+            "WEIGHT" in upper
+            or "MULTIPLIER" in upper
+            or "BREAKPOINT" in upper
+            or "BOUND_" in upper
+        ):
+            return value
+
+        # Upper-bound gates used as reject filters in a few smells.
+        if upper in {
+            "LAZY_CLASS_METHODS",
+            "LAZY_CLASS_LINES",
+            "MIDDLE_MAN_MAX_DELEGATE_TARGETS",
+            "HUB_BALANCE_RATIO_MAX",
+            "MAX_CYCLE_SIZE",
+        }:
+            return huge
+
+        # Most MAX/MIN/THRESHOLD/RATIO/COUNT/LINES keys are gate thresholds.
+        # For candidate mode we make them permissive so threshold checks don't filter out.
+        if (
+            upper.startswith("MAX_")
+            or upper.startswith("MIN_")
             or "THRESHOLD" in upper
             or "RATIO" in upper
-            or "BOUND_LOW" in upper
-            or "BREAKPOINT" in upper
+            or "COUNT" in upper
+            or upper.endswith("_LINES")
+            or upper.endswith("_METHODS")
+            or upper.endswith("_CALLS")
+            or upper.endswith("_FUNCTIONS")
+            or upper.endswith("_SIZE")
+            or upper.endswith("_OCCURRENCES")
+            or upper.endswith("_ARGS")
+            or upper.endswith("_DEPENDENCIES")
         ):
             return tiny
         return tiny
@@ -65,7 +85,21 @@ def _relax_threshold_value(key: str, value: Any) -> Any:
 
 def _relax_thresholds(node: Any) -> Any:
     if isinstance(node, dict):
-        return {k: _relax_thresholds(_relax_threshold_value(k, v)) for k, v in node.items()}
+        relaxed: Dict[str, Any] = {}
+        for k, v in node.items():
+            # Config shape is typically THRESHOLD_KEY -> {value: <num>, explanation: ...}.
+            # Apply relaxation against THRESHOLD_KEY, not the nested "value" key.
+            if isinstance(v, dict) and "value" in v:
+                vv: Dict[str, Any] = {}
+                for kk, vv_raw in v.items():
+                    if kk == "value":
+                        vv[kk] = _relax_threshold_value(k, vv_raw)
+                    else:
+                        vv[kk] = _relax_thresholds(vv_raw)
+                relaxed[k] = vv
+            else:
+                relaxed[k] = _relax_thresholds(_relax_threshold_value(k, v))
+        return relaxed
     if isinstance(node, list):
         return [_relax_thresholds(v) for v in node]
     return node
@@ -137,7 +171,7 @@ def _run_analysis(
 def build_detr_candidates(
     code_path: str,
     config_path: str,
-    output_path: str,
+    output_path: Optional[str] = None,
     smell_type: str = None,
     keep_intermediate: bool = False,
     intermediate_dir: str = None,
@@ -162,7 +196,7 @@ def build_detr_candidates(
     _run_analysis(code_path, relaxed_config, candidate_report, smell_type=smell_type)
 
     # Single DETR export branch: build candidates once, then annotate is_detected in-place.
-    candidate_obj = build_detr_dataset(code_path, candidate_report, output_path)
+    candidate_obj = build_detr_dataset(code_path, candidate_report, output_path=output_path)
     detected_signatures: Set[str] = _detected_signatures_from_report(code_path, detected_report)
 
     detected_count = 0
@@ -185,12 +219,13 @@ def build_detr_candidates(
         schema.pop("candidate_report_path", None)
 
     # Rewrite output after adding is_detected and schema counters.
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(candidate_obj, f, ensure_ascii=False, indent=2)
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(candidate_obj, f, ensure_ascii=False, indent=2)
 
-    schema_path = os.path.splitext(output_path)[0] + ".schema.json"
-    with open(schema_path, "w", encoding="utf-8") as f:
-        json.dump(schema, f, ensure_ascii=False, indent=2)
+        schema_path = os.path.splitext(output_path)[0] + ".schema.json"
+        with open(schema_path, "w", encoding="utf-8") as f:
+            json.dump(schema, f, ensure_ascii=False, indent=2)
 
     if not keep_intermediate:
         try:

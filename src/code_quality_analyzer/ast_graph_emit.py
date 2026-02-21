@@ -91,6 +91,44 @@ SMELL_ROLES: Dict[str, Tuple[str, str, str, str]] = {
     "Middle Man": ("C14", "node_range", "evidence_lines", "none"),
 }
 
+# Role-source contract policies:
+# - required: role is expected to have an explicit source mapping.
+# - none: role is intentionally empty by design.
+ROLE_CONTRACTS: Dict[str, Dict[str, str]] = {
+    smell: {
+        "role0": role0_source,
+        "role1": role1_source,
+        "role2": role2_source,
+    }
+    for smell, (_, role0_source, role1_source, role2_source) in SMELL_ROLES.items()
+}
+
+
+def validate_role_contracts() -> None:
+    for smell, (group_id, role0_source, role1_source, role2_source) in SMELL_ROLES.items():
+        if group_id not in GROUP_COMPONENTS:
+            raise ValueError(f"Unknown group id in SMELL_ROLES: smell={smell}, group_id={group_id}")
+
+        for role_name, role_source in (
+            ("role0", role0_source),
+            ("role1", role1_source),
+            ("role2", role2_source),
+        ):
+            if not isinstance(role_source, str) or not role_source:
+                raise ValueError(
+                    f"Invalid role source in SMELL_ROLES: smell={smell}, role={role_name}, source={role_source}"
+                )
+
+    for smell, contract in ROLE_CONTRACTS.items():
+        if smell not in SMELL_ROLES:
+            raise ValueError(f"ROLE_CONTRACTS contains unknown smell: {smell}")
+        for role_name in ("role0", "role1", "role2"):
+            if role_name not in contract:
+                raise ValueError(f"ROLE_CONTRACTS missing {role_name}: smell={smell}")
+
+
+validate_role_contracts()
+
 
 def _span(start_line_number: int, end_line_number: int) -> Dict[str, int]:
     return {"start_line_number": int(start_line_number), "end_line_number": int(end_line_number)}

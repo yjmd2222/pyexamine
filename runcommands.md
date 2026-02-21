@@ -1,9 +1,10 @@
 # Analyze
 python -m pyexamine analyze samples --config code_quality_config_new.yaml --output code_quality_report.json
-python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml -- code_quality_report.json
+python -m code_quality_analyzer.main samples  --config code_quality_config_new.yaml --output code_quality_report.json
 
-# Candidate detr
-python -m dataset_generator.build_detr_candidates samples --config code_quality_config_new.yaml --output detr_candidates.json
+# Candidate excerpts
+python -m dataset_generator.build_role_section_excerpts --code-path samples --config code_quality_config_new.yaml --output-jsonl role_section_excerpts.jsonl --output-sidecar-jsonl role_section_excerpts.sidecar.jsonl
+
 
 # DEPR
 Deprecation indicating section

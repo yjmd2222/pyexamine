@@ -3,7 +3,6 @@ import bisect
 import json
 import os
 import re
-import tempfile
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -12,6 +11,7 @@ from dataset_generator.build_detr_candidates import build_detr_candidates
 
 ROLES = ("ROLE0", "ROLE1", "ROLE2")
 ROLE_LABEL = {"ROLE0": "ROLE0-E", "ROLE1": "ROLE1-E", "ROLE2": "ROLE2-E"}
+DEFAULT_TOKENIZER = "answerdotai/ModernBERT-large"
 
 
 @dataclass
@@ -141,12 +141,18 @@ def _map_to_source(span: RoleCodeSpan, token_start: int, token_end: int) -> Tupl
 
 
 def build_role_section_excerpts(
-    detr_path: str,
+    detr_path: Optional[str],
     output_jsonl: str,
     output_sidecar_jsonl: str,
-    tokenizer_name: str = "answerdotai/ModernBERT-large",
+    tokenizer_name: str = DEFAULT_TOKENIZER,
+    detr_obj: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    detr = _load_json(detr_path)
+    if detr_obj is not None:
+        detr = detr_obj
+    else:
+        if not detr_path:
+            raise ValueError("detr_path is required when detr_obj is not provided")
+        detr = _load_json(detr_path)
     code_root = detr.get("code_root") or os.getcwd()
     evidences = detr.get("Evidences", [])
     file_cache: Dict[str, List[str]] = {}
@@ -325,11 +331,6 @@ def main():
         default="role_section_excerpts.sidecar.jsonl",
         help="Output per-token sidecar JSONL path",
     )
-    parser.add_argument(
-        "--tokenizer",
-        default="answerdotai/ModernBERT-large",
-        help="Tokenizer name for per-token labels/sidecar mapping",
-    )
     args = parser.parse_args()
 
     if args.detr and args.code_path:
@@ -339,15 +340,13 @@ def main():
     if args.code_path and not args.config:
         raise SystemExit("--config is required when using --code-path.")
 
-    temp_ctx: Optional[tempfile.TemporaryDirectory] = None
     detr_path = args.detr
+    detr_obj: Optional[Dict[str, Any]] = None
     if detr_path is None:
-        temp_ctx = tempfile.TemporaryDirectory(prefix="pyexamine_inline_detr_")
-        detr_path = os.path.join(temp_ctx.name, "detr_candidates.json")
-        build_detr_candidates(
+        detr_obj = build_detr_candidates(
             code_path=args.code_path,
             config_path=args.config,
-            output_path=detr_path,
+            output_path=None,
             smell_type=args.type,
         )
 
@@ -355,13 +354,13 @@ def main():
         detr_path=detr_path,
         output_jsonl=args.output_jsonl,
         output_sidecar_jsonl=args.output_sidecar_jsonl,
-        tokenizer_name=args.tokenizer,
+        tokenizer_name=DEFAULT_TOKENIZER,
+        detr_obj=detr_obj,
     )
-    if temp_ctx is not None:
+    if detr_obj is not None:
         summary["detr_source"] = "inline-generated"
-        temp_ctx.cleanup()
     else:
-        summary["detr_source"] = os.path.abspath(detr_path)
+        summary["detr_source"] = os.path.abspath(detr_path) if detr_path else "unknown"
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
