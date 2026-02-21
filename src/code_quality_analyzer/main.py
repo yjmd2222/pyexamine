@@ -497,6 +497,30 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
                 payload["start_line_number"] = smell.start_line_number
             if payload.get("end_line_number") is None and getattr(smell, "end_line_number", None) is not None:
                 payload["end_line_number"] = smell.end_line_number
+            # Keep root identity lines before connected evidence arrays for consistency.
+            if (
+                payload.get("name") in {"Deep Inheritance Tree (DIT)", "Scattered Functionality"}
+                and "files" in payload
+                and "start_line_number" in payload
+                and "end_line_number" in payload
+            ):
+                ordered = {}
+                for key in ("type", "name", "description", "file_path"):
+                    if key in payload:
+                        ordered[key] = payload[key]
+                if "class_name" in payload:
+                    ordered["class_name"] = payload["class_name"]
+                if "function" in payload:
+                    ordered["function"] = payload["function"]
+                ordered["start_line_number"] = payload["start_line_number"]
+                ordered["end_line_number"] = payload["end_line_number"]
+                ordered["files"] = payload["files"]
+                if "severity" in payload:
+                    ordered["severity"] = payload["severity"]
+                for key, value in payload.items():
+                    if key not in ordered:
+                        ordered[key] = value
+                payload = ordered
             return payload
         return {
             'type': 'unknown',
