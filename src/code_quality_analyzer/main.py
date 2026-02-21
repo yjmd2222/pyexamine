@@ -493,6 +493,10 @@ def generate_json_report(code_smells, architectural_smells, structural_smells, j
     def _payload_entry(smell):
         payload = _format_payload(getattr(smell, 'payload', None))
         if isinstance(payload, dict):
+            if payload.get("start_line_number") is None and getattr(smell, "start_line_number", None) is not None:
+                payload["start_line_number"] = smell.start_line_number
+            if payload.get("end_line_number") is None and getattr(smell, "end_line_number", None) is not None:
+                payload["end_line_number"] = smell.end_line_number
             return payload
         return {
             'type': 'unknown',

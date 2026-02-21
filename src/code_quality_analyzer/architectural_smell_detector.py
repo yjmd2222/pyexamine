@@ -583,20 +583,28 @@ class ArchitecturalSmellDetector:
                     )
                     for module in sorted(grouped)
                 ]
+                anchor_module = sorted(grouped)[0] if grouped else modules[0]
+                anchor_ranges = sorted(grouped.get(anchor_module, []))
+                anchor_start = anchor_ranges[0][0] if anchor_ranges else None
+                anchor_end = anchor_ranges[0][1] if anchor_ranges else None
                 payload = ArchitecturalFunctionLevelConnectedPayload(
                     type="Architectural",
                     name="Scattered Functionality",
                     description=f"Function '{func}' appears in {len(modules)} modules: {detail}",
-                    file_path=self.file_paths.get(modules[0], "Unknown"),
+                    file_path=self.file_paths.get(anchor_module, "Unknown"),
                     function=func,
                     files=files,
-                    severity='medium'
+                    severity='medium',
+                    start_line_number=anchor_start,
+                    end_line_number=anchor_end
                 )
                 self._smell_recorder.record_smell(
                     "architectural_function_level_connected",
                     payload,
-                    file_path=self.file_paths.get(modules[0], "Unknown"),
-                    module_class=modules[0]
+                    file_path=self.file_paths.get(anchor_module, "Unknown"),
+                    module_class=anchor_module,
+                    start_line_number=anchor_start,
+                    end_line_number=anchor_end
                 )
 
     def detect_redundant_abstractions(self):

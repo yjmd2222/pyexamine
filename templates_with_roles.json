@@ -616,7 +616,7 @@
     ],
     "ROLE0": [
       {
-        "line_source": "WHOLE_FILE",
+        "line_source": "start_line_number/end_line_number",
         "file_source": "file_path"
       }
     ],
@@ -1014,7 +1014,7 @@
     ],
     "ROLE0": [
       {
-        "line_source": "WHOLE_FILE",
+        "line_source": "start_line_number/end_line_number",
         "file_source": "file_path"
       }
     ],

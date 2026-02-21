@@ -964,13 +964,17 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             class_name=class_name,
                             files=files,
-                            severity=severity
+                            severity=severity,
+                            start_line_number=self.class_info.get(class_name, {}).get("start_line_number"),
+                            end_line_number=self.class_info.get(class_name, {}).get("end_line_number")
                         )
                         self._smell_recorder.record_smell(
                             "structural_class_level_connected",
                             payload,
                             file_path=self.file_paths.get(class_name.rsplit('.', 1)[0], "Unknown"),
                             module_class=class_name,
+                            start_line_number=self.class_info.get(class_name, {}).get("start_line_number"),
+                            end_line_number=self.class_info.get(class_name, {}).get("end_line_number"),
                             severity=severity
                         )
                 except nx.NetworkXNoPath:

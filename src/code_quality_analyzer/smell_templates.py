@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Optional
 
 
 @dataclass
@@ -237,6 +237,8 @@ class StructuralClassLevelConnectedPayload:
     class_name: str
     files: List[FileInstanceLines]
     severity: str
+    start_line_number: Optional[int] = None
+    end_line_number: Optional[int] = None
 
 
 @dataclass
@@ -279,6 +281,8 @@ class ArchitecturalFunctionLevelConnectedPayload:
     function: str
     files: List[FileInstanceLines]
     severity: str
+    start_line_number: Optional[int] = None
+    end_line_number: Optional[int] = None
 
 
 @dataclass
