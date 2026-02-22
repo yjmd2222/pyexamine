@@ -19,5 +19,14 @@ for d in samples/*/; do
     --templates templates_with_roles.json \
     --output-jsonl "datasets/${name}/role_section_excerpts.jsonl" \
     --output-sidecar-jsonl "datasets/${name}/role_section_excerpts.sidecar.jsonl" \
-    --context-lines 3
+    --context-lines 3 \
+    --label-granularity line
 done
+
+python -m dataset_generator.build_role_section_excerpts samples \
+  --report code_quality_report.json \
+  --templates templates_with_roles.json \
+  --output-jsonl role_section_excerpts.jsonl \
+  --output-sidecar-jsonl role_section_excerpts.sidecar.jsonl \
+  --context-lines 3 \
+  --label-granularity token

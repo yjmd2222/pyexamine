@@ -6,6 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
+from .token_label_selectors import select_positive_indices
 
 @dataclass(frozen=True)
 class Span:
@@ -68,6 +69,11 @@ def _normalize_path(path: Optional[str], code_root: str) -> Optional[str]:
     candidate = os.path.abspath(os.path.join(code_root, path))
     if os.path.exists(candidate):
         return candidate
+    # Per-project runs can emit paths relative to the parent of code_root
+    # (e.g., "project/file.py" while code_root is ".../samples/project").
+    parent_candidate = os.path.abspath(os.path.join(os.path.dirname(code_root), path))
+    if os.path.exists(parent_candidate):
+        return parent_candidate
     module_candidate = os.path.abspath(
         os.path.join(code_root, path.replace(".", os.path.sep) + ".py")
     )
@@ -646,9 +652,64 @@ def _tokenize_with_sidecar(text: str, code_blocks: List[Dict]):
     return tokens, labels, token_map
 
 
+def _apply_token_granularity(
+    smell_name: str,
+    entry: Dict,
+    tokens: List[str],
+    line_labels: List,
+    token_map: List[Dict],
+) -> List:
+    labels = []
+    for lbl in line_labels:
+        if lbl == -100:
+            labels.append(-100)
+        else:
+            labels.append("O")
+
+    by_role: Dict[str, List[int]] = {"ROLE0": [], "ROLE1": [], "ROLE2": []}
+    for i, lbl in enumerate(line_labels):
+        if isinstance(lbl, str) and lbl.startswith(("B-ROLE", "I-ROLE")):
+            role = lbl.split("-", 1)[1]
+            if role in by_role:
+                by_role[role].append(i)
+
+    for role in ("ROLE0", "ROLE1", "ROLE2"):
+        candidate_indices = by_role[role]
+        if not candidate_indices:
+            continue
+        selected = select_positive_indices(
+            smell_name=smell_name,
+            role=role,
+            tokens=tokens,
+            token_map=token_map,
+            candidate_indices=candidate_indices,
+            entry=entry,
+        )
+
+        # Safety fallback: if selector yields nothing for this role instance,
+        # keep line-level BIO labels for the role.
+        if not selected:
+            for idx in candidate_indices:
+                labels[idx] = line_labels[idx]
+            continue
+
+        prev = None
+        for idx in sorted(selected):
+            if prev is not None and idx == prev + 1:
+                labels[idx] = f"I-{role}"
+            else:
+                labels[idx] = f"B-{role}"
+            prev = idx
+
+    return labels
+
+
 def _build_text_and_sidecar(
     role_spans: Dict[str, List[Span]],
     role_exact_spans: Dict[str, List[Span]],
+    smell_name: str,
+    entry: Dict,
+    label_granularity: str,
     code_root: str,
     file_cache: Dict[str, List[str]],
 ):
@@ -744,6 +805,8 @@ def _build_text_and_sidecar(
         i += 1
 
     tokens, labels, token_map = _tokenize_with_sidecar(text, code_blocks)
+    if label_granularity == "token":
+        labels = _apply_token_granularity(smell_name, entry, tokens, labels, token_map)
     return text, tokens, labels, token_map
 
 
@@ -812,7 +875,13 @@ def build_role_section_excerpts(
                 role0_expanded = merged
 
         text, tokens, labels, token_map = _build_text_and_sidecar(
-            role_spans, role_exact_spans, code_root, file_cache
+            role_spans,
+            role_exact_spans,
+            cand.smell_name,
+            cand.entry,
+            label_granularity,
+            code_root,
+            file_cache,
         )
 
         out_rows.append(
