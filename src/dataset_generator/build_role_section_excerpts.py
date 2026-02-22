@@ -660,7 +660,7 @@ def _apply_token_granularity(
     tokens: List[str],
     line_labels: List,
     token_map: List[Dict],
-) -> List:
+) -> Tuple[List, List[Dict], bool]:
     labels = []
     for lbl in line_labels:
         if lbl == -100:
@@ -668,42 +668,69 @@ def _apply_token_granularity(
         else:
             labels.append("O")
 
-    by_role: Dict[str, List[int]] = {"ROLE0": [], "ROLE1": [], "ROLE2": []}
-    for i, lbl in enumerate(line_labels):
-        if isinstance(lbl, str) and lbl.startswith(("B-ROLE", "I-ROLE")):
-            role = lbl.split("-", 1)[1]
-            if role in by_role:
-                by_role[role].append(i)
-
-    for role in ("ROLE0", "ROLE1", "ROLE2"):
-        candidate_indices = by_role[role]
-        if not candidate_indices:
-            continue
-        selected = select_positive_indices(
-            smell_name=smell_name,
-            role=role,
-            tokens=tokens,
-            token_map=token_map,
-            candidate_indices=candidate_indices,
-            entry=entry,
-        )
-
-        # Safety fallback: if selector yields nothing for this role instance,
-        # keep line-level BIO labels for the role.
-        if not selected:
-            for idx in candidate_indices:
-                labels[idx] = line_labels[idx]
-            continue
-
-        prev = None
-        for idx in sorted(selected):
-            if prev is not None and idx == prev + 1:
-                labels[idx] = f"I-{role}"
+    def _entry_groups(role: str) -> List[List[int]]:
+        groups: List[List[int]] = []
+        current: List[int] = []
+        b_tag = f"B-{role}"
+        i_tag = f"I-{role}"
+        for i, lbl in enumerate(line_labels):
+            if lbl == b_tag:
+                if current:
+                    groups.append(current)
+                current = [i]
+            elif lbl == i_tag:
+                if not current:
+                    # Defensive: malformed BIO; start new group.
+                    current = [i]
+                else:
+                    current.append(i)
             else:
-                labels[idx] = f"B-{role}"
-            prev = idx
+                if current:
+                    groups.append(current)
+                    current = []
+        if current:
+            groups.append(current)
+        return groups
 
-    return labels
+    fallbacks: List[Dict] = []
+    any_fallback = False
+    for role in ("ROLE0", "ROLE1", "ROLE2"):
+        groups = _entry_groups(role)
+        for entry_idx, candidate_indices in enumerate(groups):
+            selected = select_positive_indices(
+                smell_name=smell_name,
+                role=role,
+                tokens=tokens,
+                token_map=token_map,
+                candidate_indices=candidate_indices,
+                entry=entry,
+            )
+
+            # Safety fallback: if selector yields nothing for this role entry,
+            # keep line-level BIO labels for that entry.
+            if not selected:
+                any_fallback = True
+                fallbacks.append(
+                    {
+                        "role": role,
+                        "entry_index": entry_idx,
+                        "applied": "line",
+                        "reason": "selector_empty",
+                    }
+                )
+                for idx in candidate_indices:
+                    labels[idx] = line_labels[idx]
+                continue
+
+            prev = None
+            for idx in sorted(selected):
+                if prev is not None and idx == prev + 1:
+                    labels[idx] = f"I-{role}"
+                else:
+                    labels[idx] = f"B-{role}"
+                prev = idx
+
+    return labels, fallbacks, any_fallback
 
 
 def _build_text_and_sidecar(
@@ -795,9 +822,13 @@ def _build_text_and_sidecar(
         i += 1
 
     tokens, labels, token_map = _tokenize_with_sidecar(text, code_blocks)
+    fallbacks: List[Dict] = []
+    fallback_used = False
     if label_granularity == "token":
-        labels = _apply_token_granularity(smell_name, entry, tokens, labels, token_map)
-    return text, tokens, labels, token_map
+        labels, fallbacks, fallback_used = _apply_token_granularity(
+            smell_name, entry, tokens, labels, token_map
+        )
+    return text, tokens, labels, token_map, fallbacks, fallback_used
 
 
 def build_role_section_excerpts(
@@ -865,7 +896,7 @@ def build_role_section_excerpts(
             if role == "ROLE0":
                 role0_expanded = merged
 
-        text, tokens, labels, token_map = _build_text_and_sidecar(
+        text, tokens, labels, token_map, fallbacks, fallback_used = _build_text_and_sidecar(
             role_spans,
             role_exact_spans,
             cand.smell_name,
@@ -874,13 +905,20 @@ def build_role_section_excerpts(
             code_root,
             file_cache,
         )
+        requested_granularity = label_granularity
+        effective_granularity = (
+            "line" if (requested_granularity == "token" and fallback_used) else requested_granularity
+        )
 
         out_rows.append(
             {
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
-                "label_granularity": label_granularity,
+                "label_granularity": effective_granularity,
+                "requested_label_granularity": requested_granularity,
+                "effective_label_granularity": effective_granularity,
+                "granularity_fallbacks": fallbacks,
                 "text": text,
                 "tokens": tokens,
                 "labels": labels,
@@ -891,7 +929,10 @@ def build_role_section_excerpts(
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
-                "label_granularity": label_granularity,
+                "label_granularity": effective_granularity,
+                "requested_label_granularity": requested_granularity,
+                "effective_label_granularity": effective_granularity,
+                "granularity_fallbacks": fallbacks,
                 "tokenization_backend": "regex-fallback",
                 "token_map": token_map,
             }
