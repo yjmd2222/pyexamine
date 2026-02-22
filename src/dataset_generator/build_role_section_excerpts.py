@@ -562,11 +562,19 @@ def _char_to_source(file_path: str, start_line: int, excerpt_text: str, token_re
     }
 
 
+def _line_in_ranges(line_no: int, ranges: List[Tuple[int, int]]) -> Optional[Tuple[int, int]]:
+    for s, e in ranges:
+        if s <= line_no < e:
+            return (s, e)
+    return None
+
+
 def _tokenize_with_sidecar(text: str, code_blocks: List[Dict]):
     # code_blocks: [{role, file_path, source_line_start, text_start, text_end, source_span_start_line, source_span_end_line}]
     tokens = []
     labels = []
     token_map = []
+    prev_positive = {"role": None, "file_path": None, "range": None}
     for idx, match in enumerate(_TOKEN_RE.finditer(text)):
         tok = match.group(0)
         start = match.start()
@@ -591,8 +599,6 @@ def _tokenize_with_sidecar(text: str, code_blocks: List[Dict]):
             )
             continue
 
-        label = f'{block["role"]}-E'
-        labels.append(label)
         rel_start = start - block["text_start"]
         rel_end = end - block["text_start"]
         src = _char_to_source(
@@ -602,6 +608,26 @@ def _tokenize_with_sidecar(text: str, code_blocks: List[Dict]):
             rel_start,
             rel_end,
         )
+        token_line = src["source_line_start"]
+        line_range = _line_in_ranges(token_line, block.get("exact_ranges", []))
+        if line_range is None:
+            label = "O"
+            prev_positive = {"role": None, "file_path": None, "range": None}
+        else:
+            if (
+                prev_positive["role"] == block["role"]
+                and prev_positive["file_path"] == block["file_path"]
+                and prev_positive["range"] == line_range
+            ):
+                label = f'I-{block["role"]}'
+            else:
+                label = f'B-{block["role"]}'
+            prev_positive = {
+                "role": block["role"],
+                "file_path": block["file_path"],
+                "range": line_range,
+            }
+        labels.append(label)
         token_map.append(
             {
                 "token_idx": idx,
@@ -622,6 +648,7 @@ def _tokenize_with_sidecar(text: str, code_blocks: List[Dict]):
 
 def _build_text_and_sidecar(
     role_spans: Dict[str, List[Span]],
+    role_exact_spans: Dict[str, List[Span]],
     code_root: str,
     file_cache: Dict[str, List[str]],
 ):
@@ -638,6 +665,27 @@ def _build_text_and_sidecar(
             segments.append(meta)
 
     text = "".join(text_parts)
+
+    # Index exact (non-context) ranges for BIO/O labels.
+    exact_index: Dict[str, Dict[str, List[Tuple[int, int]]]] = {}
+    for role in ("ROLE0", "ROLE1", "ROLE2"):
+        by_file: Dict[str, List[Tuple[int, int]]] = {}
+        for span in role_exact_spans.get(role, []):
+            display = _display_path(span.file_path, code_root)
+            by_file.setdefault(display, []).append((span.start_line, span.end_line))
+        for file_path, ranges in by_file.items():
+            ranges.sort()
+            merged = []
+            for s, e in ranges:
+                if not merged:
+                    merged.append([s, e])
+                    continue
+                if s <= merged[-1][1]:
+                    merged[-1][1] = max(merged[-1][1], e)
+                else:
+                    merged.append([s, e])
+            by_file[file_path] = [(s, e) for s, e in merged]
+        exact_index[role] = by_file
 
     # Re-scan text and identify code ranges by parsing deterministic markers.
     role = None
@@ -688,6 +736,7 @@ def _build_text_and_sidecar(
                         "text_start": code_start,
                         "text_end": code_end,
                         "excerpt_text": text[code_start:code_end],
+                        "exact_ranges": exact_index.get(role, {}).get(path, []),
                     }
                 )
             i = sep + len("\n[SEP_EXCERPT]\n")
@@ -745,11 +794,14 @@ def build_role_section_excerpts(
         if not template:
             continue
         role_spans = {}
+        role_exact_spans = {}
         role0_expanded = []
         for role in ("ROLE0", "ROLE1", "ROLE2"):
             specs = template.get(role, [])
             raw_spans = _collect_role_spans(cand.entry, specs, code_root)
             raw_spans = [s for s in raw_spans if s.file_path in file_cache]
+            exact = _expand_and_merge(raw_spans, context_lines=0, file_cache=file_cache)
+            role_exact_spans[role] = exact
             if specs and not raw_spans:
                 raw_spans = _fallback_role_spans(cand.entry, specs, code_root, role0_expanded)
                 raw_spans = [s for s in raw_spans if s.file_path in file_cache]
@@ -758,7 +810,9 @@ def build_role_section_excerpts(
             if role == "ROLE0":
                 role0_expanded = merged
 
-        text, tokens, labels, token_map = _build_text_and_sidecar(role_spans, code_root, file_cache)
+        text, tokens, labels, token_map = _build_text_and_sidecar(
+            role_spans, role_exact_spans, code_root, file_cache
+        )
 
         out_rows.append(
             {
