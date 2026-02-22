@@ -10,7 +10,7 @@ for d in samples/*/; do
 done
 
 # excerpt
-python -m dataset_generator.build_role_section_excerpts samples --report code_quality_report.json --templates templates_with_roles.json --output-jsonl role_section_excerpts.jsonl --output-sidecar-jsonl role_section_excerpts.sidecar.jsonl --context-lines 3
+python -m dataset_generator.build_role_section_excerpts samples --report code_quality_report.json --templates templates_with_roles.json --output-jsonl role_section_excerpts.jsonl --output-sidecar-jsonl role_section_excerpts.sidecar.jsonl --context-lines 3 --label-granularity line
 
 for d in samples/*/; do
   name="$(basename "$d")"
