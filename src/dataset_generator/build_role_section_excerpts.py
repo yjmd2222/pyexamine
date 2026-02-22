@@ -568,10 +568,12 @@ def _char_to_source(file_path: str, start_line: int, excerpt_text: str, token_re
     }
 
 
-def _line_in_ranges(line_no: int, ranges: List[Tuple[int, int]]) -> Optional[Tuple[int, int]]:
-    for s, e in ranges:
+def _line_in_ranges(
+    line_no: int, ranges: List[Tuple[int, int, int]]
+) -> Optional[Tuple[int, int, int]]:
+    for s, e, entry_id in ranges:
         if s <= line_no < e:
-            return (s, e)
+            return (s, e, entry_id)
     return None
 
 
@@ -728,24 +730,12 @@ def _build_text_and_sidecar(
     text = "".join(text_parts)
 
     # Index exact (non-context) ranges for BIO/O labels.
-    exact_index: Dict[str, Dict[str, List[Tuple[int, int]]]] = {}
+    exact_index: Dict[str, Dict[str, List[Tuple[int, int, int]]]] = {}
     for role in ("ROLE0", "ROLE1", "ROLE2"):
-        by_file: Dict[str, List[Tuple[int, int]]] = {}
-        for span in role_exact_spans.get(role, []):
+        by_file: Dict[str, List[Tuple[int, int, int]]] = {}
+        for entry_id, span in enumerate(role_exact_spans.get(role, [])):
             display = _display_path(span.file_path, code_root)
-            by_file.setdefault(display, []).append((span.start_line, span.end_line))
-        for file_path, ranges in by_file.items():
-            ranges.sort()
-            merged = []
-            for s, e in ranges:
-                if not merged:
-                    merged.append([s, e])
-                    continue
-                if s <= merged[-1][1]:
-                    merged[-1][1] = max(merged[-1][1], e)
-                else:
-                    merged.append([s, e])
-            by_file[file_path] = [(s, e) for s, e in merged]
+            by_file.setdefault(display, []).append((span.start_line, span.end_line, entry_id))
         exact_index[role] = by_file
 
     # Re-scan text and identify code ranges by parsing deterministic markers.
@@ -864,7 +854,8 @@ def build_role_section_excerpts(
             specs = template.get(role, [])
             raw_spans = _collect_role_spans(cand.entry, specs, code_root)
             raw_spans = [s for s in raw_spans if s.file_path in file_cache]
-            exact = _expand_and_merge(raw_spans, context_lines=0, file_cache=file_cache)
+            # Keep exact spans unmerged to preserve evidence-entry identity.
+            exact = list(raw_spans)
             role_exact_spans[role] = exact
             if specs and not raw_spans:
                 raw_spans = _fallback_role_spans(cand.entry, specs, code_root, role0_expanded)
