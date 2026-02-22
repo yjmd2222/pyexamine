@@ -754,6 +754,7 @@ def build_role_section_excerpts(
     output_jsonl: str,
     output_sidecar_jsonl: str,
     context_lines: int = 2,
+    label_granularity: str = "line",
 ):
     code_root = os.path.abspath(code_path)
     report_rows = _load_json(report_path)
@@ -819,6 +820,7 @@ def build_role_section_excerpts(
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
+                "label_granularity": label_granularity,
                 "text": text,
                 "tokens": tokens,
                 "labels": labels,
@@ -829,6 +831,7 @@ def build_role_section_excerpts(
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
+                "label_granularity": label_granularity,
                 "tokenization_backend": "regex-fallback",
                 "token_map": token_map,
             }
@@ -843,6 +846,7 @@ def build_role_section_excerpts(
         "detected_rows": sum(1 for x in out_rows if x["is_detected"]),
         "undetected_rows": sum(1 for x in out_rows if not x["is_detected"]),
         "detected_keys": len(detected_keys),
+        "label_granularity": label_granularity,
     }
 
 
@@ -873,6 +877,12 @@ def main():
         default=2,
         help="Context lines to include before/after each span.",
     )
+    parser.add_argument(
+        "--label-granularity",
+        choices=["line", "token"],
+        default="line",
+        help="Labeling granularity metadata written to outputs.",
+    )
     args = parser.parse_args()
 
     stats = build_role_section_excerpts(
@@ -882,6 +892,7 @@ def main():
         output_jsonl=args.output_jsonl,
         output_sidecar_jsonl=args.output_sidecar_jsonl,
         context_lines=max(0, args.context_lines),
+        label_granularity=args.label_granularity,
     )
     print(json.dumps(stats, indent=2))
 
