@@ -275,6 +275,58 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
         elif files_with_errors > 0:
             logger.warning(f"{files_with_errors} files could not be analyzed due to errors")
 
+    def _module_exists_in_project(self, module_name: str) -> bool:
+        """
+        Check whether a dotted module path resolves to a local project module/package.
+        """
+        if not module_name or not self.project_root:
+            return False
+        rel = module_name.replace(".", os.path.sep)
+        py_file = os.path.join(self.project_root, f"{rel}.py")
+        pkg_init = os.path.join(self.project_root, rel, "__init__.py")
+        return os.path.exists(py_file) or os.path.exists(pkg_init)
+
+    def _canonical_import_target(self, current_module: str, imported_module: str, level: int = 0) -> str:
+        """
+        Normalize imported module names to project-qualified dotted names when possible.
+        This keeps dependency graph node names aligned with self.file_paths keys.
+        """
+        imported_module = (imported_module or "").strip()
+        if not imported_module:
+            return imported_module
+
+        current_parts = current_module.split(".")
+        pkg_parts = current_parts[:-1]
+        candidates = []
+
+        # Relative import resolution: from .x import y / from ..x import y
+        if level and pkg_parts:
+            up = max(level - 1, 0)
+            base_parts = pkg_parts[:-up] if up > 0 else pkg_parts
+            if base_parts:
+                candidates.append(".".join(base_parts + [imported_module]))
+                candidates.append(".".join(base_parts))
+
+        # As-written import target.
+        candidates.append(imported_module)
+
+        # Common local short-import pattern: import shared from module pkg.mod
+        if "." not in imported_module and pkg_parts:
+            candidates.append(".".join(pkg_parts + [imported_module]))
+
+        seen = set()
+        deduped = []
+        for cand in candidates:
+            if cand and cand not in seen:
+                seen.add(cand)
+                deduped.append(cand)
+
+        for cand in deduped:
+            if cand in self.file_paths or self._module_exists_in_project(cand):
+                return cand
+
+        return imported_module
+
     def analyze_file(self, file_path):
         """
         Analyze a single Python file for structural information.
@@ -328,20 +380,31 @@ Success rate: {((files_analyzed - files_with_errors) / max(files_analyzed, 1) * 
                     self.analyze_class(node, module_name)
                 elif isinstance(node, ast.Import):
                     for alias in node.names:
-                        self.dependency_graph.add_edge(module_name, alias.name)
-                        self.module_dependencies.add_edge(module_name, alias.name)
-                        self.import_lines[module_name][alias.name].append({
+                        target = self._canonical_import_target(module_name, alias.name, level=0)
+                        self.dependency_graph.add_edge(module_name, target)
+                        self.module_dependencies.add_edge(module_name, target)
+                        self.import_lines[module_name][target].append({
                             "start_line_number": node.lineno,
                             "end_line_number": node.lineno + 1
                         })
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
-                        self.dependency_graph.add_edge(module_name, node.module)
-                        self.module_dependencies.add_edge(module_name, node.module)
-                        self.import_lines[module_name][node.module].append({
+                        target = self._canonical_import_target(module_name, node.module, level=node.level)
+                        self.dependency_graph.add_edge(module_name, target)
+                        self.module_dependencies.add_edge(module_name, target)
+                        self.import_lines[module_name][target].append({
                             "start_line_number": node.lineno,
                             "end_line_number": node.lineno + 1
                         })
+                    elif node.level and node.names:
+                        for alias in node.names:
+                            target = self._canonical_import_target(module_name, alias.name, level=node.level)
+                            self.dependency_graph.add_edge(module_name, target)
+                            self.module_dependencies.add_edge(module_name, target)
+                            self.import_lines[module_name][target].append({
+                                "start_line_number": node.lineno,
+                                "end_line_number": node.lineno + 1
+                            })
                         
         except CodeAnalysisError:
             raise
