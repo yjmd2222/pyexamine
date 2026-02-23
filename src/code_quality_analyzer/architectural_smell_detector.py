@@ -218,6 +218,57 @@ class ArchitecturalSmellDetector:
         # After analyzing all files, resolve external dependencies
         self.resolve_external_dependencies()
 
+    def _module_exists_in_project(self, module_name: str) -> bool:
+        """
+        Check whether a dotted module path resolves to a local module/package.
+        """
+        if not module_name or not self.project_root:
+            return False
+        rel = module_name.replace(".", os.path.sep)
+        py_file = os.path.join(self.project_root, f"{rel}.py")
+        pkg_init = os.path.join(self.project_root, rel, "__init__.py")
+        return os.path.exists(py_file) or os.path.exists(pkg_init)
+
+    def _canonical_import_target(self, current_module: str, imported_module: str, level: int = 0) -> str:
+        """
+        Canonicalize imports so graph nodes match project-qualified module names.
+        """
+        imported_module = (imported_module or "").strip()
+        if not imported_module:
+            return imported_module
+
+        current_parts = current_module.split(".")
+        pkg_parts = current_parts[:-1]
+        candidates = []
+
+        # Relative import resolution (level=1 means same package).
+        if level and pkg_parts:
+            up = max(level - 1, 0)
+            base_parts = pkg_parts[:-up] if up > 0 else pkg_parts
+            if base_parts:
+                candidates.append(".".join(base_parts + [imported_module]))
+                candidates.append(".".join(base_parts))
+
+        # As-written target.
+        candidates.append(imported_module)
+
+        # Common short local import: import x from package module package.y
+        if "." not in imported_module and pkg_parts:
+            candidates.append(".".join(pkg_parts + [imported_module]))
+
+        seen = set()
+        deduped = []
+        for cand in candidates:
+            if cand and cand not in seen:
+                seen.add(cand)
+                deduped.append(cand)
+
+        for cand in deduped:
+            if cand in self.file_paths or self._module_exists_in_project(cand):
+                return cand
+
+        return imported_module
+
     def analyze_file(self, file_path):
         """
         Analyze a single Python file for architectural information with improved
@@ -250,7 +301,11 @@ class ArchitecturalSmellDetector:
             for node in ast.walk(tree):
                 if isinstance(node, ast.Import):
                     for alias in node.names:
-                        import_name = alias.name
+                        import_name = self._canonical_import_target(
+                            current_module=module_name,
+                            imported_module=alias.name,
+                            level=0,
+                        )
                         local_imports.append((import_name, node.lineno))
                         self.module_dependencies.add_edge(module_name, import_name)
                         self.import_lines[module_name].append({
@@ -261,17 +316,11 @@ class ArchitecturalSmellDetector:
                 
                 elif isinstance(node, ast.ImportFrom):
                     if node.module:
-                        # Handle relative imports
-                        if node.level > 0:  # This is a relative import
-                            current_package = module_name.split('.')
-                            # Go up by node.level
-                            parent_package = '.'.join(current_package[:-node.level])
-                            if parent_package:
-                                import_name = f"{parent_package}.{node.module}"
-                            else:
-                                import_name = node.module
-                        else:
-                            import_name = node.module
+                        import_name = self._canonical_import_target(
+                            current_module=module_name,
+                            imported_module=node.module,
+                            level=node.level,
+                        )
                         
                         local_imports.append((import_name, node.lineno))
                         self.module_dependencies.add_edge(module_name, import_name)
@@ -286,6 +335,22 @@ class ArchitecturalSmellDetector:
                             if alias.name != '*':
                                 full_import = f"{import_name}.{alias.name}"
                                 self.module_functions[import_name].add(alias.name)
+                    elif node.level and node.names:
+                        for alias in node.names:
+                            if alias.name == '*':
+                                continue
+                            import_name = self._canonical_import_target(
+                                current_module=module_name,
+                                imported_module=alias.name,
+                                level=node.level,
+                            )
+                            local_imports.append((import_name, node.lineno))
+                            self.module_dependencies.add_edge(module_name, import_name)
+                            self.import_lines[module_name].append({
+                                "name": import_name,
+                                "start_line_number": node.lineno,
+                                "end_line_number": node.lineno + 1
+                            })
                 
                 elif isinstance(node, ast.ClassDef):
                     class_key = f"{module_name}.{node.name}"
