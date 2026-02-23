@@ -66,6 +66,15 @@ def _normalize_path(path: Optional[str], code_root: str) -> Optional[str]:
         return os.path.abspath(path)
     if os.path.exists(path):
         return os.path.abspath(path)
+    # Some reports may emit prefixed paths (e.g. "test_dir\\samples\\proj\\file.py").
+    # Recover by anchoring at the "samples/" segment.
+    parts = path.replace("\\", "/").split("/")
+    if "samples" in parts:
+        idx = parts.index("samples")
+        tail = os.path.join(*parts[idx:])
+        anchored = os.path.abspath(os.path.join(os.path.dirname(code_root), tail))
+        if os.path.exists(anchored):
+            return anchored
     candidate = os.path.abspath(os.path.join(code_root, path))
     if os.path.exists(candidate):
         return candidate
