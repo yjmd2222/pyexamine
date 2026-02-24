@@ -5,7 +5,7 @@
         "description": "Project has 17.0 weighted classes:\n- Regular classes: 17\n- Abstract/Interface classes: 0\n- Utility classes: 0\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- grocery: GroceryList(4-15), Shopper(17-26)\n- inventory: PantryIndex(6-15), StockTracker(17-26)\n- models: Ingredient(4-11), Recipe(13-20), Meal(22-29), PantryItem(31-38), Report(40-49)\n- planner: PlanBoard(7-17), PlanEngine(19-29), Slot(31-38), StepIndex(40-49)\n- recipes: RecipeBook(4-18), PortionScaler(20-26), Metric(28-35)\n- schedule: SlotAllocator(7-15)",
         "files": [
             {
-                "name": "./samples/recipe_planner/grocery.py",
+                "name": "samples\\recipe_planner\\grocery.py",
                 "instance_lines": [
                     {
                         "start_line_number": 4,
@@ -18,7 +18,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/inventory.py",
+                "name": "samples\\recipe_planner\\inventory.py",
                 "instance_lines": [
                     {
                         "start_line_number": 6,
@@ -31,7 +31,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/models.py",
+                "name": "samples\\recipe_planner\\models.py",
                 "instance_lines": [
                     {
                         "start_line_number": 4,
@@ -56,7 +56,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/planner.py",
+                "name": "samples\\recipe_planner\\planner.py",
                 "instance_lines": [
                     {
                         "start_line_number": 7,
@@ -77,7 +77,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/recipes.py",
+                "name": "samples\\recipe_planner\\recipes.py",
                 "instance_lines": [
                     {
                         "start_line_number": 4,
@@ -94,7 +94,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/schedule.py",
+                "name": "samples\\recipe_planner\\schedule.py",
                 "instance_lines": [
                     {
                         "start_line_number": 7,
@@ -107,179 +107,9 @@
     },
     {
         "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_unused_cleanup' in ./samples/recipe_planner/maintenance.py",
-        "file_path": "./samples/recipe_planner/maintenance.py",
-        "function": "_unused_cleanup",
-        "start_line_number": 4,
-        "end_line_number": 7,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_unused_probe' in ./samples/recipe_planner/maintenance.py",
-        "file_path": "./samples/recipe_planner/maintenance.py",
-        "function": "_unused_probe",
-        "start_line_number": 9,
-        "end_line_number": 14,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Dead Code",
-        "description": "Potentially unused function '_unused_rebuild' in ./samples/recipe_planner/maintenance.py",
-        "file_path": "./samples/recipe_planner/maintenance.py",
-        "function": "_unused_rebuild",
-        "start_line_number": 16,
-        "end_line_number": 18,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'PantryIndex' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/inventory.py",
-        "file_path": "./samples/recipe_planner/inventory.py",
-        "class_name": "PantryIndex",
-        "start_line_number": 6,
-        "end_line_number": 15,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'StockTracker' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/inventory.py",
-        "file_path": "./samples/recipe_planner/inventory.py",
-        "class_name": "StockTracker",
-        "start_line_number": 17,
-        "end_line_number": 26,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Temporary Field",
-        "description": "Potentially unused fields name, self, amount in class 'PantryItem' at line 31 in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "PantryItem",
-        "start_line_number": 31,
-        "end_line_number": 38,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Ingredient' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "Ingredient",
-        "start_line_number": 4,
-        "end_line_number": 11,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Recipe' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "Recipe",
-        "start_line_number": 13,
-        "end_line_number": 20,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Meal' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "Meal",
-        "start_line_number": 22,
-        "end_line_number": 29,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'PantryItem' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "PantryItem",
-        "start_line_number": 31,
-        "end_line_number": 38,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Report' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/models.py",
-        "file_path": "./samples/recipe_planner/models.py",
-        "class_name": "Report",
-        "start_line_number": 40,
-        "end_line_number": 49,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'GroceryList' has only 2 non-trivial methods with 4 total lines in ./samples/recipe_planner/grocery.py",
-        "file_path": "./samples/recipe_planner/grocery.py",
-        "class_name": "GroceryList",
-        "start_line_number": 4,
-        "end_line_number": 15,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Shopper' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/grocery.py",
-        "file_path": "./samples/recipe_planner/grocery.py",
-        "class_name": "Shopper",
-        "start_line_number": 17,
-        "end_line_number": 26,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'PlanBoard' has only 1 non-trivial methods with 1 total lines in ./samples/recipe_planner/planner.py",
-        "file_path": "./samples/recipe_planner/planner.py",
-        "class_name": "PlanBoard",
-        "start_line_number": 7,
-        "end_line_number": 17,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'PlanEngine' has only 1 non-trivial methods with 5 total lines in ./samples/recipe_planner/planner.py",
-        "file_path": "./samples/recipe_planner/planner.py",
-        "class_name": "PlanEngine",
-        "start_line_number": 19,
-        "end_line_number": 29,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Slot' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/planner.py",
-        "file_path": "./samples/recipe_planner/planner.py",
-        "class_name": "Slot",
-        "start_line_number": 31,
-        "end_line_number": 38,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'StepIndex' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/planner.py",
-        "file_path": "./samples/recipe_planner/planner.py",
-        "class_name": "StepIndex",
-        "start_line_number": 40,
-        "end_line_number": 49,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
         "name": "Duplicate Code",
-        "description": "Similar code found in functions: action_01, action_02, action_03, action_04, action_05, action_06, action_07, action_08, action_09, action_10, action_11, action_12, action_13, action_14, action_15 (75 total lines) in ./samples/recipe_planner/batch_ops.py",
-        "file_path": "./samples/recipe_planner/batch_ops.py",
+        "description": "Similar code found in functions: action_01, action_02, action_03, action_04, action_05, action_06, action_07, action_08, action_09, action_10, action_11, action_12, action_13, action_14, action_15 (75 total lines) in samples\\recipe_planner\\batch_ops.py",
+        "file_path": "samples\\recipe_planner\\batch_ops.py",
         "lines": [
             {
                 "start_line_number": 4,
@@ -347,18 +177,178 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'SlotAllocator' has only 1 non-trivial methods with 3 total lines in ./samples/recipe_planner/schedule.py",
-        "file_path": "./samples/recipe_planner/schedule.py",
-        "class_name": "SlotAllocator",
-        "start_line_number": 7,
+        "description": "Class 'GroceryList' has only 2 non-trivial methods with 4 total lines in samples\\recipe_planner\\grocery.py",
+        "file_path": "samples\\recipe_planner\\grocery.py",
+        "class_name": "GroceryList",
+        "start_line_number": 4,
         "end_line_number": 15,
         "severity": "low"
     },
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'RecipeBook' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
-        "file_path": "./samples/recipe_planner/recipes.py",
+        "description": "Class 'Shopper' has only 1 non-trivial methods with 1 total lines in samples\\recipe_planner\\grocery.py",
+        "file_path": "samples\\recipe_planner\\grocery.py",
+        "class_name": "Shopper",
+        "start_line_number": 17,
+        "end_line_number": 26,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'PantryIndex' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\inventory.py",
+        "file_path": "samples\\recipe_planner\\inventory.py",
+        "class_name": "PantryIndex",
+        "start_line_number": 6,
+        "end_line_number": 15,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'StockTracker' has only 1 non-trivial methods with 1 total lines in samples\\recipe_planner\\inventory.py",
+        "file_path": "samples\\recipe_planner\\inventory.py",
+        "class_name": "StockTracker",
+        "start_line_number": 17,
+        "end_line_number": 26,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_unused_cleanup' in samples\\recipe_planner\\maintenance.py",
+        "file_path": "samples\\recipe_planner\\maintenance.py",
+        "function": "_unused_cleanup",
+        "start_line_number": 4,
+        "end_line_number": 7,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_unused_probe' in samples\\recipe_planner\\maintenance.py",
+        "file_path": "samples\\recipe_planner\\maintenance.py",
+        "function": "_unused_probe",
+        "start_line_number": 9,
+        "end_line_number": 14,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Dead Code",
+        "description": "Potentially unused function '_unused_rebuild' in samples\\recipe_planner\\maintenance.py",
+        "file_path": "samples\\recipe_planner\\maintenance.py",
+        "function": "_unused_rebuild",
+        "start_line_number": 16,
+        "end_line_number": 18,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Temporary Field",
+        "description": "Potentially unused fields amount, self, name in class 'PantryItem' at line 31 in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "PantryItem",
+        "start_line_number": 31,
+        "end_line_number": 38,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Ingredient' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "Ingredient",
+        "start_line_number": 4,
+        "end_line_number": 11,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Recipe' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "Recipe",
+        "start_line_number": 13,
+        "end_line_number": 20,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Meal' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "Meal",
+        "start_line_number": 22,
+        "end_line_number": 29,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'PantryItem' has only 1 non-trivial methods with 1 total lines in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "PantryItem",
+        "start_line_number": 31,
+        "end_line_number": 38,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Report' has only 1 non-trivial methods with 1 total lines in samples\\recipe_planner\\models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
+        "class_name": "Report",
+        "start_line_number": 40,
+        "end_line_number": 49,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'PlanBoard' has only 1 non-trivial methods with 1 total lines in samples\\recipe_planner\\planner.py",
+        "file_path": "samples\\recipe_planner\\planner.py",
+        "class_name": "PlanBoard",
+        "start_line_number": 7,
+        "end_line_number": 17,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'PlanEngine' has only 1 non-trivial methods with 5 total lines in samples\\recipe_planner\\planner.py",
+        "file_path": "samples\\recipe_planner\\planner.py",
+        "class_name": "PlanEngine",
+        "start_line_number": 19,
+        "end_line_number": 29,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Slot' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\planner.py",
+        "file_path": "samples\\recipe_planner\\planner.py",
+        "class_name": "Slot",
+        "start_line_number": 31,
+        "end_line_number": 38,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'StepIndex' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\planner.py",
+        "file_path": "samples\\recipe_planner\\planner.py",
+        "class_name": "StepIndex",
+        "start_line_number": 40,
+        "end_line_number": 49,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'RecipeBook' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\recipes.py",
+        "file_path": "samples\\recipe_planner\\recipes.py",
         "class_name": "RecipeBook",
         "start_line_number": 4,
         "end_line_number": 18,
@@ -367,8 +357,8 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'PortionScaler' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
-        "file_path": "./samples/recipe_planner/recipes.py",
+        "description": "Class 'PortionScaler' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\recipes.py",
+        "file_path": "samples\\recipe_planner\\recipes.py",
         "class_name": "PortionScaler",
         "start_line_number": 20,
         "end_line_number": 26,
@@ -377,11 +367,21 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'Metric' has only 0 non-trivial methods with 0 total lines in ./samples/recipe_planner/recipes.py",
-        "file_path": "./samples/recipe_planner/recipes.py",
+        "description": "Class 'Metric' has only 0 non-trivial methods with 0 total lines in samples\\recipe_planner\\recipes.py",
+        "file_path": "samples\\recipe_planner\\recipes.py",
         "class_name": "Metric",
         "start_line_number": 28,
         "end_line_number": 35,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'SlotAllocator' has only 1 non-trivial methods with 3 total lines in samples\\recipe_planner\\schedule.py",
+        "file_path": "samples\\recipe_planner\\schedule.py",
+        "class_name": "SlotAllocator",
+        "start_line_number": 7,
+        "end_line_number": 15,
         "severity": "low"
     },
     {
@@ -437,8 +437,26 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
+        "description": "'adapters' is isolated from other modules",
+        "file_path": "samples\\recipe_planner\\adapters.py",
+        "start_line_number": 1,
+        "end_line_number": 24,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'batch_ops' is isolated from other modules",
+        "file_path": "samples\\recipe_planner\\batch_ops.py",
+        "start_line_number": 1,
+        "end_line_number": 152,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
         "description": "'maintenance' is isolated from other modules",
-        "file_path": "./samples/recipe_planner/maintenance.py",
+        "file_path": "samples\\recipe_planner\\maintenance.py",
         "start_line_number": 1,
         "end_line_number": 25,
         "severity": "medium"
@@ -446,26 +464,8 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
-        "description": "'adapters' is isolated from other modules",
-        "file_path": "./samples/recipe_planner/adapters.py",
-        "start_line_number": 1,
-        "end_line_number": 24,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'transformers' is isolated from other modules",
-        "file_path": "./samples/recipe_planner/transformers.py",
-        "start_line_number": 1,
-        "end_line_number": 24,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
         "description": "'models' is isolated from other modules",
-        "file_path": "./samples/recipe_planner/models.py",
+        "file_path": "samples\\recipe_planner\\models.py",
         "start_line_number": 1,
         "end_line_number": 49,
         "severity": "medium"
@@ -473,10 +473,10 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
-        "description": "'batch_ops' is isolated from other modules",
-        "file_path": "./samples/recipe_planner/batch_ops.py",
+        "description": "'transformers' is isolated from other modules",
+        "file_path": "samples\\recipe_planner\\transformers.py",
         "start_line_number": 1,
-        "end_line_number": 152,
+        "end_line_number": 24,
         "severity": "medium"
     },
     {
@@ -485,7 +485,7 @@
         "description": "Strong cyclic dependency detected: schedule -> inventory -> planner -> schedule\nCycle strength: 3 mutual dependencies",
         "files": [
             {
-                "name": "./samples/recipe_planner/schedule.py",
+                "name": "samples\\recipe_planner\\schedule.py",
                 "instance_lines": [
                     {
                         "start_line_number": 3,
@@ -494,7 +494,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/inventory.py",
+                "name": "samples\\recipe_planner\\inventory.py",
                 "instance_lines": [
                     {
                         "start_line_number": 3,
@@ -503,7 +503,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/planner.py",
+                "name": "samples\\recipe_planner\\planner.py",
                 "instance_lines": [
                     {
                         "start_line_number": 3,
@@ -520,7 +520,7 @@
         "description": "Strong cyclic dependency detected: schedule -> planner -> schedule\nCycle strength: 3 mutual dependencies",
         "files": [
             {
-                "name": "./samples/recipe_planner/schedule.py",
+                "name": "samples\\recipe_planner\\schedule.py",
                 "instance_lines": [
                     {
                         "start_line_number": 4,
@@ -529,7 +529,7 @@
                 ]
             },
             {
-                "name": "./samples/recipe_planner/planner.py",
+                "name": "samples\\recipe_planner\\planner.py",
                 "instance_lines": [
                     {
                         "start_line_number": 3,

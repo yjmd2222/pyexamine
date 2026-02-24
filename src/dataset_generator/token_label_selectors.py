@@ -184,12 +184,31 @@ def _select_import_related(
     entry: Dict,
 ) -> Set[int]:
     keys = {"import", "from", "as"}
-    out = set()
+    anchor = set()
     for i in candidate_indices:
         tok = tokens[i]
         if tok in keys or "." in tok:
+            anchor.add(i)
+    if not anchor:
+        return set(candidate_indices)
+
+    # Expand anchor tokens to contiguous in-line evidence so BIO can express
+    # spans (B/I) instead of isolated single-token B labels.
+    selected_lines = {
+        token_map[i].get("source_line_start")
+        for i in anchor
+        if i < len(token_map) and isinstance(token_map[i], dict)
+    }
+    out = set(anchor)
+    for i in candidate_indices:
+        if i >= len(token_map):
+            continue
+        tm = token_map[i]
+        if not isinstance(tm, dict) or tm.get("is_structural"):
+            continue
+        if tm.get("source_line_start") in selected_lines:
             out.add(i)
-    return out or set(candidate_indices)
+    return out
 
 
 def _select_calls_like(

@@ -3,7 +3,7 @@
         "type": "Structural",
         "name": "High Weighted Methods per Class (WMPC)",
         "description": "Class 'scoring.SimilarityScorer' has complex methods (WMPC1: 30, WMPC2: 30): score_user (lines 2-13), score_item (lines 14-25), score_pair (lines 26-37), score_context (lines 38-49), score_window (lines 50-61), score_final (lines 62-73)",
-        "file_path": "./samples/simple_recommender/scoring.py",
+        "file_path": "samples\\simple_recommender\\scoring.py",
         "class_name": "scoring.SimilarityScorer",
         "start_line_number": 1,
         "end_line_number": 73,
@@ -13,7 +13,7 @@
         "type": "Structural",
         "name": "High Lack of Cohesion of Methods (LCOM)",
         "description": "Class 'scoring.SimilarityScorer' has LCOM of 15 (non-cohesive: 15, cohesive: 0)",
-        "file_path": "./samples/simple_recommender/scoring.py",
+        "file_path": "samples\\simple_recommender\\scoring.py",
         "class_name": "scoring.SimilarityScorer",
         "start_line_number": 1,
         "end_line_number": 73,
@@ -23,7 +23,7 @@
         "type": "Structural",
         "name": "High Lines of Code (LOC)",
         "description": "Module 'corpus' has 272 effective code lines\n(Total: 272, Code: 272, Doc: 0, Import: 0, Blank: 0)",
-        "file_path": "./samples/simple_recommender/corpus.py",
+        "file_path": "samples\\simple_recommender\\corpus.py",
         "instance_lines": [
             {
                 "start_line_number": 1,
@@ -36,7 +36,7 @@
         "type": "Structural",
         "name": "Long File",
         "description": "File 'corpus' has 272 meaningful lines of code",
-        "file_path": "./samples/simple_recommender/corpus.py",
+        "file_path": "samples\\simple_recommender\\corpus.py",
         "instance_lines": [
             {
                 "start_line_number": 1,

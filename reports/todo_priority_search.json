@@ -3,7 +3,7 @@
         "type": "Structural",
         "name": "High Lack of Cohesion of Methods (LCOM)",
         "description": "Class 'workflow.TaskWorkflow' has LCOM of 15 (non-cohesive: 15, cohesive: 0)",
-        "file_path": "./samples/todo_priority_search/workflow.py",
+        "file_path": "samples\\todo_priority_search\\workflow.py",
         "class_name": "workflow.TaskWorkflow",
         "start_line_number": 1,
         "end_line_number": 19,
@@ -15,7 +15,7 @@
         "description": "Project has 7.6 weighted classes:\n- Regular classes: 7\n- Abstract/Interface classes: 0\n- Utility classes: 2\n- Test classes: 0 (not counted in weighted total)\nAdjusted threshold: 7\nClass locations:\n- callsites: AuditLog(1-4)\n- dispatch: TaskDispatcher(1-25)\n- templates: BoardBase(1-4), BoardSimple(6-12), BoardAdvanced(14-20), CardBase(22-25), CardSimple(27-33), CardAdvanced(35-41)\n- workflow: TaskWorkflow(1-19)",
         "files": [
             {
-                "name": "./samples/todo_priority_search/callsites.py",
+                "name": "samples\\todo_priority_search\\callsites.py",
                 "instance_lines": [
                     {
                         "start_line_number": 1,
@@ -24,7 +24,7 @@
                 ]
             },
             {
-                "name": "./samples/todo_priority_search/dispatch.py",
+                "name": "samples\\todo_priority_search\\dispatch.py",
                 "instance_lines": [
                     {
                         "start_line_number": 1,
@@ -33,7 +33,7 @@
                 ]
             },
             {
-                "name": "./samples/todo_priority_search/templates.py",
+                "name": "samples\\todo_priority_search\\templates.py",
                 "instance_lines": [
                     {
                         "start_line_number": 1,
@@ -62,7 +62,7 @@
                 ]
             },
             {
-                "name": "./samples/todo_priority_search/workflow.py",
+                "name": "samples\\todo_priority_search\\workflow.py",
                 "instance_lines": [
                     {
                         "start_line_number": 1,
@@ -77,7 +77,7 @@
         "type": "Structural",
         "name": "High Cyclomatic Complexity",
         "description": "Method 'trigger' has cyclomatic complexity of 20",
-        "file_path": "./samples/todo_priority_search/dispatch.py",
+        "file_path": "samples\\todo_priority_search\\dispatch.py",
         "class_name": "dispatch.TaskDispatcher",
         "method/function": "trigger",
         "start_line_number": 2,
@@ -88,7 +88,7 @@
         "type": "Structural",
         "name": "Too Many Branches",
         "description": "Method 'trigger' has 19 branches with max nesting of 10",
-        "file_path": "./samples/todo_priority_search/dispatch.py",
+        "file_path": "samples\\todo_priority_search\\dispatch.py",
         "class_name": "dispatch.TaskDispatcher",
         "method/function": "trigger",
         "start_line_number": 2,
@@ -98,64 +98,8 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'TaskDispatcher' has only 1 non-trivial methods with 22 total lines in ./samples/todo_priority_search/dispatch.py",
-        "file_path": "./samples/todo_priority_search/dispatch.py",
-        "class_name": "TaskDispatcher",
-        "start_line_number": 1,
-        "end_line_number": 25,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Potential Divergent Change",
-        "description": "Class 'TaskWorkflow' has 6 different method prefixes: alert, audit, sync, notify, export, index in ./samples/todo_priority_search/workflow.py",
-        "file_path": "./samples/todo_priority_search/workflow.py",
-        "class_name": "TaskWorkflow",
-        "start_line_number": 1,
-        "end_line_number": 18,
-        "instance_lines": [
-            {
-                "start_line_number": 2,
-                "end_line_number": 4
-            },
-            {
-                "start_line_number": 5,
-                "end_line_number": 7
-            },
-            {
-                "start_line_number": 8,
-                "end_line_number": 10
-            },
-            {
-                "start_line_number": 11,
-                "end_line_number": 13
-            },
-            {
-                "start_line_number": 14,
-                "end_line_number": 16
-            },
-            {
-                "start_line_number": 17,
-                "end_line_number": 19
-            }
-        ],
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'TaskWorkflow' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/workflow.py",
-        "file_path": "./samples/todo_priority_search/workflow.py",
-        "class_name": "TaskWorkflow",
-        "start_line_number": 1,
-        "end_line_number": 19,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'AuditLog' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/callsites.py",
-        "file_path": "./samples/todo_priority_search/callsites.py",
+        "description": "Class 'AuditLog' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\callsites.py",
+        "file_path": "samples\\todo_priority_search\\callsites.py",
         "class_name": "AuditLog",
         "start_line_number": 1,
         "end_line_number": 4,
@@ -163,9 +107,19 @@
     },
     {
         "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'TaskDispatcher' has only 1 non-trivial methods with 22 total lines in samples\\todo_priority_search\\dispatch.py",
+        "file_path": "samples\\todo_priority_search\\dispatch.py",
+        "class_name": "TaskDispatcher",
+        "start_line_number": 1,
+        "end_line_number": 25,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
         "name": "Parallel Inheritance Hierarchies",
-        "description": "Parallel hierarchies detected: BoardBase (lines 1-4) -> BoardSimple (lines 6-12) -> BoardAdvanced (lines 14-20) and CardBase (lines 22-25) -> CardSimple (lines 27-33) -> CardAdvanced (lines 35-41) in ./samples/todo_priority_search/templates.py",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "description": "Parallel hierarchies detected: BoardBase (lines 1-4) -> BoardSimple (lines 6-12) -> BoardAdvanced (lines 14-20) and CardBase (lines 22-25) -> CardSimple (lines 27-33) -> CardAdvanced (lines 35-41) in samples\\todo_priority_search\\templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "classes": [
             {
                 "name": "BoardBase",
@@ -203,8 +157,8 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'BoardSimple' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "description": "Class 'BoardSimple' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "class_name": "BoardSimple",
         "start_line_number": 6,
         "end_line_number": 12,
@@ -213,8 +167,8 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'BoardAdvanced' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "description": "Class 'BoardAdvanced' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "class_name": "BoardAdvanced",
         "start_line_number": 14,
         "end_line_number": 20,
@@ -223,8 +177,8 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'CardSimple' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "description": "Class 'CardSimple' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "class_name": "CardSimple",
         "start_line_number": 27,
         "end_line_number": 33,
@@ -233,36 +187,64 @@
     {
         "type": "Code",
         "name": "Lazy Class",
-        "description": "Class 'CardAdvanced' has only 0 non-trivial methods with 0 total lines in ./samples/todo_priority_search/templates.py",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "description": "Class 'CardAdvanced' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "class_name": "CardAdvanced",
         "start_line_number": 35,
         "end_line_number": 41,
         "severity": "low"
     },
     {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'dispatch' is isolated from other modules",
-        "file_path": "./samples/todo_priority_search/dispatch.py",
+        "type": "Code",
+        "name": "Potential Divergent Change",
+        "description": "Class 'TaskWorkflow' has 6 different method prefixes: notify, audit, export, index, sync, alert in samples\\todo_priority_search\\workflow.py",
+        "file_path": "samples\\todo_priority_search\\workflow.py",
+        "class_name": "TaskWorkflow",
         "start_line_number": 1,
-        "end_line_number": 25,
+        "end_line_number": 18,
+        "instance_lines": [
+            {
+                "start_line_number": 2,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 14,
+                "end_line_number": 16
+            },
+            {
+                "start_line_number": 17,
+                "end_line_number": 19
+            }
+        ],
         "severity": "medium"
     },
     {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'workflow' is isolated from other modules",
-        "file_path": "./samples/todo_priority_search/workflow.py",
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'TaskWorkflow' has only 0 non-trivial methods with 0 total lines in samples\\todo_priority_search\\workflow.py",
+        "file_path": "samples\\todo_priority_search\\workflow.py",
+        "class_name": "TaskWorkflow",
         "start_line_number": 1,
         "end_line_number": 19,
-        "severity": "medium"
+        "severity": "low"
     },
     {
         "type": "Architectural",
         "name": "Orphan Module",
         "description": "'callsites' is isolated from other modules",
-        "file_path": "./samples/todo_priority_search/callsites.py",
+        "file_path": "samples\\todo_priority_search\\callsites.py",
         "start_line_number": 1,
         "end_line_number": 24,
         "severity": "medium"
@@ -270,10 +252,28 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
+        "description": "'dispatch' is isolated from other modules",
+        "file_path": "samples\\todo_priority_search\\dispatch.py",
+        "start_line_number": 1,
+        "end_line_number": 25,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
         "description": "'templates' is isolated from other modules",
-        "file_path": "./samples/todo_priority_search/templates.py",
+        "file_path": "samples\\todo_priority_search\\templates.py",
         "start_line_number": 1,
         "end_line_number": 41,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
+        "description": "'workflow' is isolated from other modules",
+        "file_path": "samples\\todo_priority_search\\workflow.py",
+        "start_line_number": 1,
+        "end_line_number": 19,
         "severity": "medium"
     }
 ]

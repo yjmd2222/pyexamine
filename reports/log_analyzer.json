@@ -3,7 +3,7 @@
         "type": "Structural",
         "name": "High Number of Methods (NOM)",
         "description": "Class 'aggregator.Tooling' has 30 methods (excluding special methods and properties)",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.Tooling",
         "start_line_number": 1,
         "end_line_number": 91,
@@ -13,7 +13,7 @@
         "type": "Structural",
         "name": "Large Class (SIZE2)",
         "description": "Class 'aggregator.Tooling' has 30 significant members (methods: 30, fields: 0)",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.Tooling",
         "start_line_number": 1,
         "end_line_number": 91,
@@ -23,7 +23,7 @@
         "type": "Structural",
         "name": "High Lack of Cohesion of Methods (LCOM)",
         "description": "Class 'aggregator.Tooling' has LCOM of 435 (non-cohesive: 435, cohesive: 0)",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.Tooling",
         "start_line_number": 1,
         "end_line_number": 91,
@@ -33,7 +33,7 @@
         "type": "Structural",
         "name": "High Response for a Class (RFC)",
         "description": "Class 'aggregator.Tooling' has RFC of 30 (methods: 30, external calls: 0)\nMethod instances: aggregator.Tooling.do_01(2-4), aggregator.Tooling.do_02(5-7), aggregator.Tooling.do_03(8-10), aggregator.Tooling.do_04(11-13), aggregator.Tooling.do_05(14-16), aggregator.Tooling.do_06(17-19), aggregator.Tooling.do_07(20-22), aggregator.Tooling.do_08(23-25), aggregator.Tooling.do_09(26-28), aggregator.Tooling.do_10(29-31), aggregator.Tooling.do_11(32-34), aggregator.Tooling.do_12(35-37), aggregator.Tooling.do_13(38-40), aggregator.Tooling.do_14(41-43), aggregator.Tooling.do_15(44-46), aggregator.Tooling.do_16(47-49), aggregator.Tooling.do_17(50-52), aggregator.Tooling.do_18(53-55), aggregator.Tooling.do_19(56-58), aggregator.Tooling.do_20(59-61), aggregator.Tooling.do_21(62-64), aggregator.Tooling.do_22(65-67), aggregator.Tooling.do_23(68-70), aggregator.Tooling.do_24(71-73), aggregator.Tooling.do_25(74-76), aggregator.Tooling.do_26(77-79), aggregator.Tooling.do_27(80-82), aggregator.Tooling.do_28(83-85), aggregator.Tooling.do_29(86-88), aggregator.Tooling.do_30(89-91)\nExternal call instances: None",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.Tooling",
         "start_line_number": 1,
         "end_line_number": 91,
@@ -42,8 +42,8 @@
     {
         "type": "Structural",
         "name": "High Response for a Class (RFC)",
-        "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_18(116-117), do_03(101-102), do_25(123-124), do_17(115-116), do_11(109-110), do_20(118-119), do_05(103-104), do_12(110-111), join(138-139), do_23(121-122), do_24(122-123), do_26(124-125), do_10(108-109), do_21(119-120), do_13(111-112), do_19(117-118), do_06(104-105), do_08(106-107), do_29(127-128), do_01(99-100), do_22(120-121), do_28(126-127), do_27(125-126), do_16(114-115), do_07(105-106), do_09(107-108), do_15(113-114), do_04(102-103), do_02(100-101), do_14(112-113), do_30(128-129)",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "description": "Class 'aggregator.LogAggregator' has RFC of 35 (methods: 4, external calls: 31)\nMethod instances: aggregator.LogAggregator.analyze(97-130), aggregator.LogAggregator.summarize(131-136), aggregator.LogAggregator.export(137-139), aggregator.LogAggregator.reset(140-142)\nExternal call instances: do_09(107-108), do_22(120-121), do_16(114-115), do_20(118-119), do_28(126-127), do_29(127-128), do_23(121-122), do_15(113-114), do_04(102-103), do_30(128-129), do_12(110-111), do_21(119-120), do_14(112-113), do_01(99-100), do_19(117-118), do_05(103-104), do_03(101-102), do_27(125-126), do_02(100-101), do_11(109-110), join(138-139), do_18(116-117), do_26(124-125), do_10(108-109), do_06(104-105), do_07(105-106), do_25(123-124), do_13(111-112), do_08(106-107), do_24(122-123), do_17(115-116)",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.LogAggregator",
         "start_line_number": 93,
         "end_line_number": 142,
@@ -52,111 +52,39 @@
     {
         "type": "Structural",
         "name": "High Message Passing Coupling (MPC)",
-        "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_18': 1, 'do_03': 1, 'do_25': 1}\nExternal call instances: do_18(116-117), do_03(101-102), do_25(123-124), do_17(115-116), do_11(109-110), do_20(118-119), do_12(110-111), do_05(103-104), do_23(121-122), do_24(122-123), do_26(124-125), do_10(108-109), do_21(119-120), do_13(111-112), do_19(117-118), do_06(104-105), do_08(106-107), do_29(127-128), do_01(99-100), do_22(120-121), do_28(126-127), do_27(125-126), do_16(114-115), do_07(105-106), do_09(107-108), do_15(113-114), do_04(102-103), do_02(100-101), do_14(112-113), do_30(128-129), join(138-139)\nInternal call instances: None",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "description": "Class 'aggregator.LogAggregator' has weighted MPC of 46.5\n(External calls: 31, Internal calls: 0)\nMost frequent external calls: {'do_09': 1, 'do_16': 1, 'do_22': 1}\nExternal call instances: do_09(107-108), do_16(114-115), do_22(120-121), do_20(118-119), do_28(126-127), do_29(127-128), do_23(121-122), do_15(113-114), do_04(102-103), do_30(128-129), do_12(110-111), do_21(119-120), do_14(112-113), do_01(99-100), do_19(117-118), do_05(103-104), do_03(101-102), do_27(125-126), do_02(100-101), do_11(109-110), do_18(116-117), do_26(124-125), do_10(108-109), do_06(104-105), do_07(105-106), do_25(123-124), do_13(111-112), do_08(106-107), do_24(122-123), do_17(115-116), join(138-139)\nInternal call instances: None",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "class_name": "aggregator.LogAggregator",
         "start_line_number": 93,
         "end_line_number": 142,
         "instance_lines": [
             {
-                "start_line_number": 116,
-                "end_line_number": 117
-            },
-            {
-                "start_line_number": 101,
-                "end_line_number": 102
-            },
-            {
-                "start_line_number": 123,
-                "end_line_number": 124
-            },
-            {
-                "start_line_number": 115,
-                "end_line_number": 116
-            },
-            {
-                "start_line_number": 109,
-                "end_line_number": 110
-            },
-            {
-                "start_line_number": 118,
-                "end_line_number": 119
-            },
-            {
-                "start_line_number": 110,
-                "end_line_number": 111
-            },
-            {
-                "start_line_number": 103,
-                "end_line_number": 104
-            },
-            {
-                "start_line_number": 121,
-                "end_line_number": 122
-            },
-            {
-                "start_line_number": 122,
-                "end_line_number": 123
-            },
-            {
-                "start_line_number": 124,
-                "end_line_number": 125
-            },
-            {
-                "start_line_number": 108,
-                "end_line_number": 109
-            },
-            {
-                "start_line_number": 119,
-                "end_line_number": 120
-            },
-            {
-                "start_line_number": 111,
-                "end_line_number": 112
-            },
-            {
-                "start_line_number": 117,
-                "end_line_number": 118
-            },
-            {
-                "start_line_number": 104,
-                "end_line_number": 105
-            },
-            {
-                "start_line_number": 106,
-                "end_line_number": 107
-            },
-            {
-                "start_line_number": 127,
-                "end_line_number": 128
-            },
-            {
-                "start_line_number": 99,
-                "end_line_number": 100
-            },
-            {
-                "start_line_number": 120,
-                "end_line_number": 121
-            },
-            {
-                "start_line_number": 126,
-                "end_line_number": 127
-            },
-            {
-                "start_line_number": 125,
-                "end_line_number": 126
+                "start_line_number": 107,
+                "end_line_number": 108
             },
             {
                 "start_line_number": 114,
                 "end_line_number": 115
             },
             {
-                "start_line_number": 105,
-                "end_line_number": 106
+                "start_line_number": 120,
+                "end_line_number": 121
             },
             {
-                "start_line_number": 107,
-                "end_line_number": 108
+                "start_line_number": 118,
+                "end_line_number": 119
+            },
+            {
+                "start_line_number": 126,
+                "end_line_number": 127
+            },
+            {
+                "start_line_number": 127,
+                "end_line_number": 128
+            },
+            {
+                "start_line_number": 121,
+                "end_line_number": 122
             },
             {
                 "start_line_number": 113,
@@ -167,16 +95,88 @@
                 "end_line_number": 103
             },
             {
-                "start_line_number": 100,
-                "end_line_number": 101
+                "start_line_number": 128,
+                "end_line_number": 129
+            },
+            {
+                "start_line_number": 110,
+                "end_line_number": 111
+            },
+            {
+                "start_line_number": 119,
+                "end_line_number": 120
             },
             {
                 "start_line_number": 112,
                 "end_line_number": 113
             },
             {
-                "start_line_number": 128,
-                "end_line_number": 129
+                "start_line_number": 99,
+                "end_line_number": 100
+            },
+            {
+                "start_line_number": 117,
+                "end_line_number": 118
+            },
+            {
+                "start_line_number": 103,
+                "end_line_number": 104
+            },
+            {
+                "start_line_number": 101,
+                "end_line_number": 102
+            },
+            {
+                "start_line_number": 125,
+                "end_line_number": 126
+            },
+            {
+                "start_line_number": 100,
+                "end_line_number": 101
+            },
+            {
+                "start_line_number": 109,
+                "end_line_number": 110
+            },
+            {
+                "start_line_number": 116,
+                "end_line_number": 117
+            },
+            {
+                "start_line_number": 124,
+                "end_line_number": 125
+            },
+            {
+                "start_line_number": 108,
+                "end_line_number": 109
+            },
+            {
+                "start_line_number": 104,
+                "end_line_number": 105
+            },
+            {
+                "start_line_number": 105,
+                "end_line_number": 106
+            },
+            {
+                "start_line_number": 123,
+                "end_line_number": 124
+            },
+            {
+                "start_line_number": 111,
+                "end_line_number": 112
+            },
+            {
+                "start_line_number": 106,
+                "end_line_number": 107
+            },
+            {
+                "start_line_number": 122,
+                "end_line_number": 123
+            },
+            {
+                "start_line_number": 115,
+                "end_line_number": 116
             },
             {
                 "start_line_number": 138,
@@ -187,9 +187,134 @@
     },
     {
         "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Tooling' has only 0 non-trivial methods with 0 total lines in samples\\log_analyzer\\aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
+        "class_name": "Tooling",
+        "start_line_number": 1,
+        "end_line_number": 91,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'LogAggregator' has only 1 non-trivial methods with 4 total lines in samples\\log_analyzer\\aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
+        "class_name": "LogAggregator",
+        "start_line_number": 93,
+        "end_line_number": 142,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'Node' has only 0 non-trivial methods with 0 total lines in samples\\log_analyzer\\chains.py",
+        "file_path": "samples\\log_analyzer\\chains.py",
+        "class_name": "Node",
+        "start_line_number": 1,
+        "end_line_number": 5,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Message Chains",
+        "description": "Long chain (4 calls: child -> child -> child -> value) at lines 8-9 in extract_path in samples\\log_analyzer\\chains.py",
+        "file_path": "samples\\log_analyzer\\chains.py",
+        "start_line_number": 8,
+        "end_line_number": 9,
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
+        "name": "Lazy Class",
+        "description": "Class 'FutureNotifier' has only 4 non-trivial methods with 4 total lines in samples\\log_analyzer\\design.py",
+        "file_path": "samples\\log_analyzer\\design.py",
+        "class_name": "FutureNotifier",
+        "start_line_number": 1,
+        "end_line_number": 13,
+        "severity": "low"
+    },
+    {
+        "type": "Code",
+        "name": "Speculative Generality",
+        "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: user in schedule (lines 2-4), channel in schedule (lines 2-4), priority in schedule (lines 2-4), user in retry (lines 5-7), channel in retry (lines 5-7), priority in retry (lines 5-7), user in cancel (lines 8-10), channel in cancel (lines 8-10), priority in cancel (lines 8-10), user in defer (lines 11-13), channel in defer (lines 11-13), priority in defer (lines 11-13) in samples\\log_analyzer\\design.py",
+        "file_path": "samples\\log_analyzer\\design.py",
+        "class_name": "FutureNotifier",
+        "start_line_number": 1,
+        "end_line_number": 13,
+        "instance_lines": [
+            {
+                "start_line_number": 2,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 2,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 2,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 2,
+                "end_line_number": 4
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 5,
+                "end_line_number": 7
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 8,
+                "end_line_number": 10
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 13
+            },
+            {
+                "start_line_number": 11,
+                "end_line_number": 13
+            }
+        ],
+        "severity": "medium"
+    },
+    {
+        "type": "Code",
         "name": "Potential Shotgun Surgery",
-        "description": "Method '_template' called in 15 different contexts across 15 locations in ./samples/log_analyzer/duplicates.py",
-        "file_path": "./samples/log_analyzer/duplicates.py",
+        "description": "Method '_template' called in 15 different contexts across 15 locations in samples\\log_analyzer\\duplicates.py",
+        "file_path": "samples\\log_analyzer\\duplicates.py",
         "lines": [
             {
                 "start_line_number": 14,
@@ -257,8 +382,8 @@
     {
         "type": "Code",
         "name": "Duplicate Code",
-        "description": "Similar code found in functions: normalize_a, normalize_b, normalize_c, normalize_d, normalize_e, normalize_f, normalize_g, normalize_h, normalize_i, normalize_j, normalize_k, normalize_l, normalize_m, normalize_n, normalize_o (75 total lines) in ./samples/log_analyzer/duplicates.py",
-        "file_path": "./samples/log_analyzer/duplicates.py",
+        "description": "Similar code found in functions: normalize_a, normalize_b, normalize_c, normalize_d, normalize_e, normalize_f, normalize_g, normalize_h, normalize_i, normalize_j, normalize_k, normalize_l, normalize_m, normalize_n, normalize_o (75 total lines) in samples\\log_analyzer\\duplicates.py",
+        "file_path": "samples\\log_analyzer\\duplicates.py",
         "lines": [
             {
                 "start_line_number": 13,
@@ -326,8 +451,8 @@
     {
         "type": "Code",
         "name": "Feature Envy",
-        "description": "Method '_template' makes 6 calls to 'result' at lines 4-5, 5-6, 6-7, 7-8, 8-9, 9-10 but only 0 local calls at lines  in ./samples/log_analyzer/duplicates.py",
-        "file_path": "./samples/log_analyzer/duplicates.py",
+        "description": "Method '_template' makes 6 calls to 'result' at lines 4-5, 5-6, 6-7, 7-8, 8-9, 9-10 but only 0 local calls at lines  in samples\\log_analyzer\\duplicates.py",
+        "file_path": "samples\\log_analyzer\\duplicates.py",
         "function": "_template",
         "start_line_number": 2,
         "end_line_number": 11,
@@ -361,134 +486,9 @@
     },
     {
         "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Node' has only 0 non-trivial methods with 0 total lines in ./samples/log_analyzer/chains.py",
-        "file_path": "./samples/log_analyzer/chains.py",
-        "class_name": "Node",
-        "start_line_number": 1,
-        "end_line_number": 5,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Message Chains",
-        "description": "Long chain (4 calls: child -> child -> child -> value) at lines 8-9 in extract_path in ./samples/log_analyzer/chains.py",
-        "file_path": "./samples/log_analyzer/chains.py",
-        "start_line_number": 8,
-        "end_line_number": 9,
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'Tooling' has only 0 non-trivial methods with 0 total lines in ./samples/log_analyzer/aggregator.py",
-        "file_path": "./samples/log_analyzer/aggregator.py",
-        "class_name": "Tooling",
-        "start_line_number": 1,
-        "end_line_number": 91,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'LogAggregator' has only 1 non-trivial methods with 4 total lines in ./samples/log_analyzer/aggregator.py",
-        "file_path": "./samples/log_analyzer/aggregator.py",
-        "class_name": "LogAggregator",
-        "start_line_number": 93,
-        "end_line_number": 142,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Lazy Class",
-        "description": "Class 'FutureNotifier' has only 4 non-trivial methods with 4 total lines in ./samples/log_analyzer/design.py",
-        "file_path": "./samples/log_analyzer/design.py",
-        "class_name": "FutureNotifier",
-        "start_line_number": 1,
-        "end_line_number": 13,
-        "severity": "low"
-    },
-    {
-        "type": "Code",
-        "name": "Speculative Generality",
-        "description": "Class 'FutureNotifier' has 4 empty methods: schedule (lines 2-4), retry (lines 5-7), cancel (lines 8-10), defer (lines 11-13) and has 12 unused parameters: channel in schedule (lines 2-4), user in schedule (lines 2-4), priority in schedule (lines 2-4), channel in retry (lines 5-7), user in retry (lines 5-7), priority in retry (lines 5-7), channel in cancel (lines 8-10), user in cancel (lines 8-10), priority in cancel (lines 8-10), channel in defer (lines 11-13), user in defer (lines 11-13), priority in defer (lines 11-13) in ./samples/log_analyzer/design.py",
-        "file_path": "./samples/log_analyzer/design.py",
-        "class_name": "FutureNotifier",
-        "start_line_number": 1,
-        "end_line_number": 13,
-        "instance_lines": [
-            {
-                "start_line_number": 2,
-                "end_line_number": 4
-            },
-            {
-                "start_line_number": 5,
-                "end_line_number": 7
-            },
-            {
-                "start_line_number": 8,
-                "end_line_number": 10
-            },
-            {
-                "start_line_number": 11,
-                "end_line_number": 13
-            },
-            {
-                "start_line_number": 2,
-                "end_line_number": 4
-            },
-            {
-                "start_line_number": 2,
-                "end_line_number": 4
-            },
-            {
-                "start_line_number": 2,
-                "end_line_number": 4
-            },
-            {
-                "start_line_number": 5,
-                "end_line_number": 7
-            },
-            {
-                "start_line_number": 5,
-                "end_line_number": 7
-            },
-            {
-                "start_line_number": 5,
-                "end_line_number": 7
-            },
-            {
-                "start_line_number": 8,
-                "end_line_number": 10
-            },
-            {
-                "start_line_number": 8,
-                "end_line_number": 10
-            },
-            {
-                "start_line_number": 8,
-                "end_line_number": 10
-            },
-            {
-                "start_line_number": 11,
-                "end_line_number": 13
-            },
-            {
-                "start_line_number": 11,
-                "end_line_number": 13
-            },
-            {
-                "start_line_number": 11,
-                "end_line_number": 13
-            }
-        ],
-        "severity": "medium"
-    },
-    {
-        "type": "Code",
         "name": "Long Method",
-        "description": "'build_report' has 61 lines in ./samples/log_analyzer/reports.py at line 2",
-        "file_path": "./samples/log_analyzer/reports.py",
+        "description": "'build_report' has 61 lines in samples\\log_analyzer\\reports.py at line 2",
+        "file_path": "samples\\log_analyzer\\reports.py",
         "class_name": "",
         "method/function": "build_report",
         "start_line_number": 2,
@@ -498,8 +498,8 @@
     {
         "type": "Code",
         "name": "Feature Envy",
-        "description": "Method 'build_report' makes 9 calls to 'event' at lines 12-13, 13-14, 14-15, 15-16, 16-17, 17-18, 18-19, 19-20, 20-21 but only 0 local calls at lines  in ./samples/log_analyzer/reports.py",
-        "file_path": "./samples/log_analyzer/reports.py",
+        "description": "Method 'build_report' makes 9 calls to 'event' at lines 12-13, 13-14, 14-15, 15-16, 16-17, 17-18, 18-19, 19-20, 20-21 but only 0 local calls at lines  in samples\\log_analyzer\\reports.py",
+        "file_path": "samples\\log_analyzer\\reports.py",
         "function": "build_report",
         "start_line_number": 2,
         "end_line_number": 63,
@@ -547,7 +547,7 @@
         "type": "Architectural",
         "name": "God Object",
         "description": "Class 'aggregator.Tooling' has too many public methods (30)\nPublic function instances: aggregator.Tooling.do_01(2-4), aggregator.Tooling.do_02(5-7), aggregator.Tooling.do_03(8-10), aggregator.Tooling.do_04(11-13), aggregator.Tooling.do_05(14-16), aggregator.Tooling.do_06(17-19), aggregator.Tooling.do_07(20-22), aggregator.Tooling.do_08(23-25), aggregator.Tooling.do_09(26-28), aggregator.Tooling.do_10(29-31), aggregator.Tooling.do_11(32-34), aggregator.Tooling.do_12(35-37), aggregator.Tooling.do_13(38-40), aggregator.Tooling.do_14(41-43), aggregator.Tooling.do_15(44-46), aggregator.Tooling.do_16(47-49), aggregator.Tooling.do_17(50-52), aggregator.Tooling.do_18(53-55), aggregator.Tooling.do_19(56-58), aggregator.Tooling.do_20(59-61), aggregator.Tooling.do_21(62-64), aggregator.Tooling.do_22(65-67), aggregator.Tooling.do_23(68-70), aggregator.Tooling.do_24(71-73), aggregator.Tooling.do_25(74-76), aggregator.Tooling.do_26(77-79), aggregator.Tooling.do_27(80-82), aggregator.Tooling.do_28(83-85), aggregator.Tooling.do_29(86-88), aggregator.Tooling.do_30(89-91)",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "start_line_number": 1,
         "end_line_number": 91,
         "instance_lines": [
@@ -678,7 +678,7 @@
         "type": "Architectural",
         "name": "Potential Improper API Usage",
         "description": "Module 'duplicates' has repetitive API calls: append(6x), replace(15x), strip(20x)\nRepetitive call instances: append(4-5), append(5-6), append(6-7), append(7-8), append(8-9), append(9-10), replace(15-16), strip(16-17), replace(23-24), strip(24-25), replace(31-32), strip(32-33), replace(39-40), strip(40-41), replace(47-48), strip(48-49), replace(55-56), strip(56-57), replace(63-64), strip(64-65), replace(71-72), strip(72-73), replace(79-80), strip(80-81), replace(87-88), strip(88-89), replace(95-96), strip(96-97), replace(103-104), strip(104-105), replace(111-112), strip(112-113), replace(119-120), strip(120-121), replace(127-128), strip(128-129), strip(4-5), strip(5-6), strip(6-7), strip(7-8), strip(8-9)",
-        "file_path": "./samples/log_analyzer/duplicates.py",
+        "file_path": "samples\\log_analyzer\\duplicates.py",
         "instance_lines": [
             {
                 "start_line_number": 4,
@@ -851,7 +851,7 @@
         "type": "Architectural",
         "name": "Potential Improper API Usage",
         "description": "Module 'reports' has repetitive API calls: get(17x), setdefault(5x), items(3x)\nRepetitive call instances: get(12-13), get(13-14), get(14-15), get(15-16), get(16-17), get(17-18), get(18-19), get(19-20), get(20-21), setdefault(24-25), setdefault(26-27), setdefault(28-29), setdefault(30-31), setdefault(32-33), items(40-41), items(41-42), items(42-43), get(21-22), get(22-23), get(23-24), get(25-26), get(27-28), get(29-30), get(31-32), get(34-35)",
-        "file_path": "./samples/log_analyzer/reports.py",
+        "file_path": "samples\\log_analyzer\\reports.py",
         "instance_lines": [
             {
                 "start_line_number": 12,
@@ -959,26 +959,8 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
-        "description": "'duplicates' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/duplicates.py",
-        "start_line_number": 1,
-        "end_line_number": 131,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
-        "description": "'chains' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/chains.py",
-        "start_line_number": 1,
-        "end_line_number": 9,
-        "severity": "medium"
-    },
-    {
-        "type": "Architectural",
-        "name": "Orphan Module",
         "description": "'aggregator' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/aggregator.py",
+        "file_path": "samples\\log_analyzer\\aggregator.py",
         "start_line_number": 1,
         "end_line_number": 142,
         "severity": "medium"
@@ -986,8 +968,17 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
+        "description": "'chains' is isolated from other modules",
+        "file_path": "samples\\log_analyzer\\chains.py",
+        "start_line_number": 1,
+        "end_line_number": 9,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
         "description": "'design' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/design.py",
+        "file_path": "samples\\log_analyzer\\design.py",
         "start_line_number": 1,
         "end_line_number": 13,
         "severity": "medium"
@@ -995,8 +986,17 @@
     {
         "type": "Architectural",
         "name": "Orphan Module",
+        "description": "'duplicates' is isolated from other modules",
+        "file_path": "samples\\log_analyzer\\duplicates.py",
+        "start_line_number": 1,
+        "end_line_number": 131,
+        "severity": "medium"
+    },
+    {
+        "type": "Architectural",
+        "name": "Orphan Module",
         "description": "'misc' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/misc.py",
+        "file_path": "samples\\log_analyzer\\misc.py",
         "start_line_number": 1,
         "end_line_number": 4,
         "severity": "medium"
@@ -1005,7 +1005,7 @@
         "type": "Architectural",
         "name": "Orphan Module",
         "description": "'reports' is isolated from other modules",
-        "file_path": "./samples/log_analyzer/reports.py",
+        "file_path": "samples\\log_analyzer\\reports.py",
         "start_line_number": 1,
         "end_line_number": 63,
         "severity": "medium"
