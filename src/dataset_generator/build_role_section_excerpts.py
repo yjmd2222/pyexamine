@@ -3,6 +3,7 @@ import ast
 import json
 import os
 import re
+import time
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
@@ -840,6 +841,19 @@ def _build_text_and_sidecar(
     return text, tokens, labels, token_map, fallbacks, fallback_used
 
 
+def _candidate_identity_info(entry: Dict, code_root: str) -> Dict[str, Optional[str]]:
+    file_path = _normalize_path(_get_value(entry, "file_path", "File"), code_root)
+    return {
+        "file_path": _display_path(file_path, code_root) if file_path else None,
+        "class_name": _get_value(entry, "class_name", "Class"),
+        "method_or_function": _get_value(
+            entry, "method/function", "Method/Function", "function", "Function"
+        ),
+        "start_line_number": _get_value(entry, "start_line_number", "Start Line Number"),
+        "end_line_number": _get_value(entry, "end_line_number", "End Line Number"),
+    }
+
+
 def build_role_section_excerpts(
     code_path: str,
     report_path: str,
@@ -848,16 +862,28 @@ def build_role_section_excerpts(
     output_sidecar_jsonl: str,
     context_lines: int = 2,
     label_granularity: str = "line",
+    progress_every: int = 0,
+    slow_row_seconds: float = 0.0,
 ):
     code_root = os.path.abspath(code_path)
+    print(f"[stage] start code_root={code_root}", flush=True)
     report_rows = _load_json(report_path)
+    print(f"[stage] loaded report rows={len(report_rows)}", flush=True)
     templates = _load_json(templates_path)
+    print(f"[stage] loaded templates count={len(templates)}", flush=True)
     smell_template = _template_map(templates)
+    print(f"[stage] normalized templates count={len(smell_template)}", flush=True)
     symbols = _parse_symbols(code_root)
+    print(
+        f"[stage] parsed symbols files={len(symbols['files'])} classes={len(symbols['classes'])} functions={len(symbols['functions'])}",
+        flush=True,
+    )
     detected_map = _build_detected_candidates(report_rows, code_root)
     detected_keys = set(detected_map.keys())
+    print(f"[stage] detected keys={len(detected_keys)}", flush=True)
 
     file_cache = {fp: _read_file(fp).splitlines(keepends=True) for fp in symbols["files"]}
+    print(f"[stage] file cache built files={len(file_cache)}", flush=True)
 
     candidates: List[Candidate] = []
     for smell_name, template in sorted(smell_template.items()):
@@ -878,49 +904,59 @@ def build_role_section_excerpts(
             if key[0] != smell_name or key in seen_keys:
                 continue
             candidates.append(Candidate(smell_name, key, dict(row), True))
+    print(f"[stage] candidates built count={len(candidates)}", flush=True)
 
-    out_rows = []
-    sidecar_rows = []
+    detected_rows = 0
+    undetected_rows = 0
     row_id = 0
-
-    for cand in candidates:
-        template = smell_template.get(cand.smell_name)
-        if not template:
-            continue
-        role_spans = {}
-        role_exact_spans = {}
-        role0_expanded = []
-        for role in ("ROLE0", "ROLE1", "ROLE2"):
-            specs = template.get(role, [])
-            raw_spans = _collect_role_spans(cand.entry, specs, code_root)
-            raw_spans = [s for s in raw_spans if s.file_path in file_cache]
-            # Keep exact spans unmerged to preserve evidence-entry identity.
-            exact = list(raw_spans)
-            role_exact_spans[role] = exact
-            if specs and not raw_spans:
-                raw_spans = _fallback_role_spans(cand.entry, specs, code_root, role0_expanded)
+    started_at = time.time()
+    with open(output_jsonl, "w", encoding="utf-8") as out_handle, open(
+        output_sidecar_jsonl, "w", encoding="utf-8"
+    ) as sidecar_handle:
+        for cand in candidates:
+            row_started_at = time.time()
+            template = smell_template.get(cand.smell_name)
+            if not template:
+                continue
+            role_spans = {}
+            role_exact_spans = {}
+            role_raw_counts: Dict[str, int] = {}
+            role_merged_counts: Dict[str, int] = {}
+            role0_expanded = []
+            for role in ("ROLE0", "ROLE1", "ROLE2"):
+                specs = template.get(role, [])
+                raw_spans = _collect_role_spans(cand.entry, specs, code_root)
                 raw_spans = [s for s in raw_spans if s.file_path in file_cache]
-            merged = _expand_and_merge(raw_spans, context_lines=context_lines, file_cache=file_cache)
-            role_spans[role] = merged
-            if role == "ROLE0":
-                role0_expanded = merged
+                # Keep exact spans unmerged to preserve evidence-entry identity.
+                exact = list(raw_spans)
+                role_exact_spans[role] = exact
+                if specs and not raw_spans:
+                    raw_spans = _fallback_role_spans(cand.entry, specs, code_root, role0_expanded)
+                    raw_spans = [s for s in raw_spans if s.file_path in file_cache]
+                    role_raw_counts[role] = len(raw_spans)
+                else:
+                    role_raw_counts[role] = len(exact)
+                merged = _expand_and_merge(raw_spans, context_lines=context_lines, file_cache=file_cache)
+                role_spans[role] = merged
+                role_merged_counts[role] = len(merged)
+                if role == "ROLE0":
+                    role0_expanded = merged
 
-        text, tokens, labels, token_map, fallbacks, fallback_used = _build_text_and_sidecar(
-            role_spans,
-            role_exact_spans,
-            cand.smell_name,
-            cand.entry,
-            label_granularity,
-            code_root,
-            file_cache,
-        )
-        requested_granularity = label_granularity
-        effective_granularity = (
-            "line" if (requested_granularity == "token" and fallback_used) else requested_granularity
-        )
+            text, tokens, labels, token_map, fallbacks, fallback_used = _build_text_and_sidecar(
+                role_spans,
+                role_exact_spans,
+                cand.smell_name,
+                cand.entry,
+                label_granularity,
+                code_root,
+                file_cache,
+            )
+            requested_granularity = label_granularity
+            effective_granularity = (
+                "line" if (requested_granularity == "token" and fallback_used) else requested_granularity
+            )
 
-        out_rows.append(
-            {
+            out_row = {
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
@@ -932,9 +968,7 @@ def build_role_section_excerpts(
                 "tokens": tokens,
                 "labels": labels,
             }
-        )
-        sidecar_rows.append(
-            {
+            sidecar_row = {
                 "id": row_id,
                 "smell_name": cand.smell_name,
                 "is_detected": cand.is_detected,
@@ -945,16 +979,39 @@ def build_role_section_excerpts(
                 "tokenization_backend": "regex-fallback",
                 "token_map": token_map,
             }
-        )
-        row_id += 1
-
-    _write_jsonl(output_jsonl, out_rows)
-    _write_jsonl(output_sidecar_jsonl, sidecar_rows)
+            out_handle.write(json.dumps(out_row, ensure_ascii=False) + "\n")
+            sidecar_handle.write(json.dumps(sidecar_row, ensure_ascii=False) + "\n")
+            if cand.is_detected:
+                detected_rows += 1
+            else:
+                undetected_rows += 1
+            row_id += 1
+            if progress_every > 0 and (row_id % progress_every == 0):
+                elapsed = max(1e-6, time.time() - started_at)
+                rows_per_sec = row_id / elapsed
+                print(
+                    f"[progress] rows={row_id} detected={detected_rows} undetected={undetected_rows} "
+                    f"last_smell={cand.smell_name} elapsed_sec={elapsed:.1f} rows_per_sec={rows_per_sec:.2f}",
+                    flush=True,
+                )
+            row_elapsed = time.time() - row_started_at
+            if slow_row_seconds > 0 and row_elapsed > slow_row_seconds:
+                ident = _candidate_identity_info(cand.entry, code_root)
+                print(
+                    "[slow-row] "
+                    f"sec={row_elapsed:.2f} smell={cand.smell_name} "
+                    f"file={ident.get('file_path')} class={ident.get('class_name')} "
+                    f"method_or_function={ident.get('method_or_function')} "
+                    f"start={ident.get('start_line_number')} end={ident.get('end_line_number')} "
+                    f"role_raw_counts={role_raw_counts} role_merged_counts={role_merged_counts} "
+                    f"tokens={len(tokens)}",
+                    flush=True,
+                )
 
     return {
-        "rows": len(out_rows),
-        "detected_rows": sum(1 for x in out_rows if x["is_detected"]),
-        "undetected_rows": sum(1 for x in out_rows if not x["is_detected"]),
+        "rows": row_id,
+        "detected_rows": detected_rows,
+        "undetected_rows": undetected_rows,
         "detected_keys": len(detected_keys),
         "label_granularity": label_granularity,
     }
@@ -993,6 +1050,18 @@ def main():
         default="line",
         help="Labeling granularity metadata written to outputs.",
     )
+    parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=0,
+        help="Print periodic progress every N rows (0 disables progress logs).",
+    )
+    parser.add_argument(
+        "--slow-row-seconds",
+        type=float,
+        default=0.0,
+        help="Warn if one row takes longer than this many seconds (0 disables warnings).",
+    )
     args = parser.parse_args()
 
     stats = build_role_section_excerpts(
@@ -1003,6 +1072,8 @@ def main():
         output_sidecar_jsonl=args.output_sidecar_jsonl,
         context_lines=max(0, args.context_lines),
         label_granularity=args.label_granularity,
+        progress_every=max(0, args.progress_every),
+        slow_row_seconds=max(0.0, args.slow_row_seconds),
     )
     print(json.dumps(stats, indent=2))
 

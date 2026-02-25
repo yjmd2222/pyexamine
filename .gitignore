@@ -61,6 +61,11 @@ code_quality_report.json
 code_quality_report.txt
 code_metadata.json
 code_analysis.log
+reports
+datasets
 
 # ignore temporary files
 _tmp*.py
+
+# models
+training_inference/runs

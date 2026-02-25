@@ -41,3 +41,43 @@
 11) **Recipe Planner + Grocery List**
    - The app stores recipes, suggests weekly meal plans, and generates a consolidated shopping list.
    - Extensions: dietary filters, serving-size scaling, pantry inventory, export to calendar.
+
+12) **Clinic Queue Operations**
+   - Appointment queueing, check-in handling, and service desk workload coordination.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+13) **Retail Replenishment**
+   - Stock movement and replenishment planning across stores and warehouses.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+14) **Campus Event Planning**
+   - Event requests, venue scheduling, approvals, and volunteer assignments.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+15) **Warehouse Shift Board**
+   - Shift allocation, handover logs, and inbound/outbound work tracking.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+16) **Municipal Service Portal**
+   - Citizen request intake, routing, status updates, and departmental coordination.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+17) **Subscription Billing Operations**
+   - Billing runs, retries, adjustments, and account status reconciliation.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+18) **Field Maintenance Dispatch**
+   - Work order dispatch, technician assignment, route planning, and completion logs.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+19) **Training Program Administration**
+   - Course scheduling, participant rosters, attendance, and progress reporting.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+20) **Food Delivery Support**
+   - Order support workflows, dispatch exceptions, and customer issue routing.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
+
+21) **Property Booking Backoffice**
+   - Reservation operations, listing updates, settlement checks, and host support flows.
+   - Extensions: reporting dashboards, CSV import/export, audit logs, and role-based workflows.
