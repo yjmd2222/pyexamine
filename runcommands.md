@@ -57,3 +57,11 @@ for d in samples/*/; do
     --label-granularity token \
     --slow-row-seconds 2
 done
+
+# Load
+python -m training_inference.generate_dataset_paths_config \
+  --repo-root . \
+  --dataset-root-dir datasets \
+  --excerpt-name role_section_excerpts.line.jsonl \
+  --sidecar-name role_section_excerpts.line.sidecar.jsonl \
+  --output training_inference/dataset_paths.config.json

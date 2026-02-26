@@ -4,6 +4,7 @@ import json
 import math
 import random
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Mapping, MutableMapping, Optional, Sequence, Tuple
 
@@ -73,6 +74,107 @@ def resolve_dataset_path(repo_root: Path, preferred_name: str = "role_section_ex
     )
 
 
+def resolve_strict_dataset_entries(
+    repo_root: Path,
+    dataset_root_dir: str = "datasets",
+    excerpt_name: str = "excerpt.jsonl",
+    sidecar_name: str = "sidecar.jsonl",
+) -> List[Dict[str, str]]:
+    """Return strict per-dataset entries from `<repo_root>/<dataset_root_dir>/*/`.
+
+    Strict means each dataset directory must contain BOTH `excerpt_name` and `sidecar_name`.
+    No fallback filename behavior is applied.
+    """
+    root = (repo_root / dataset_root_dir).resolve()
+    if not root.exists() or not root.is_dir():
+        raise FileNotFoundError(f"Dataset root dir not found: {root}")
+
+    entries: List[Dict[str, str]] = []
+    missing: List[str] = []
+    for child in sorted(root.iterdir()):
+        if not child.is_dir():
+            continue
+        excerpt = child / excerpt_name
+        sidecar = child / sidecar_name
+        if excerpt.exists() and sidecar.exists():
+            entries.append(
+                {
+                    "dataset_name": child.name,
+                    "excerpt_path": str(excerpt.resolve()),
+                    "sidecar_path": str(sidecar.resolve()),
+                }
+            )
+        else:
+            missing_parts: List[str] = []
+            if not excerpt.exists():
+                missing_parts.append(excerpt_name)
+            if not sidecar.exists():
+                missing_parts.append(sidecar_name)
+            missing.append(f"{child.name}: missing {', '.join(missing_parts)}")
+    if missing:
+        raise FileNotFoundError(
+            "Strict dataset structure violation under "
+            f"{root}:\n" + "\n".join(missing)
+        )
+    return entries
+
+
+def generate_dataset_paths_config(
+    repo_root: Path,
+    output_path: Path,
+    dataset_root_dir: str = "datasets",
+    excerpt_name: str = "excerpt.jsonl",
+    sidecar_name: str = "sidecar.jsonl",
+) -> Dict[str, Any]:
+    """Generate strict dataset path config JSON for training/inference scripts."""
+    repo_root = repo_root.resolve()
+    dataset_entries = resolve_strict_dataset_entries(
+        repo_root=repo_root,
+        dataset_root_dir=dataset_root_dir,
+        excerpt_name=excerpt_name,
+        sidecar_name=sidecar_name,
+    )
+
+    payload = {
+        "repo_root": str(repo_root),
+        "dataset_root_dir": dataset_root_dir,
+        "excerpt_name": excerpt_name,
+        "sidecar_name": sidecar_name,
+        "mode": "strict_per_dataset",
+        "datasets": dataset_entries,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    output_path = output_path.resolve()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return payload
+
+
+def load_dataset_paths_from_config(config_path: Path) -> List[Path]:
+    """Load excerpt JSONL paths from strict dataset config."""
+    obj = json.loads(config_path.read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        raise ValueError(f"Invalid dataset config (expected object): {config_path}")
+    datasets = obj.get("datasets")
+    if not isinstance(datasets, list) or not datasets:
+        raise ValueError(f"Invalid dataset config (missing non-empty datasets): {config_path}")
+    paths: List[Path] = []
+    for row in datasets:
+        if not isinstance(row, dict):
+            raise ValueError(f"Invalid dataset row in config: {row!r}")
+        excerpt = row.get("excerpt_path")
+        sidecar = row.get("sidecar_path")
+        if not excerpt or not sidecar:
+            raise ValueError(f"Invalid dataset row (requires excerpt_path + sidecar_path): {row!r}")
+        paths.append(Path(str(excerpt)).resolve())
+    missing = [str(p) for p in paths if not p.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "Some dataset paths in config do not exist:\n" + "\n".join(missing)
+        )
+    return paths
+
+
 def _normalize_label_value(value: Any) -> Any:
     if value == -100:
         return -100
@@ -107,6 +209,33 @@ def load_role_section_examples(jsonl_path: Path, fail_fast: bool = True) -> List
                 )
             )
     return examples
+
+
+def load_role_section_examples_many(
+    jsonl_paths: Sequence[Path],
+    fail_fast: bool = True,
+) -> List[RawExample]:
+    """Load and merge multiple excerpt JSONL files, remapping IDs to unique global IDs."""
+    merged: List[RawExample] = []
+    next_id = 0
+    for path in jsonl_paths:
+        for ex in load_role_section_examples(path, fail_fast=fail_fast):
+            raw = dict(ex.raw)
+            raw["source_dataset_path"] = str(path)
+            raw["source_local_id"] = ex.id
+            merged.append(
+                RawExample(
+                    id=next_id,
+                    smell_name=ex.smell_name,
+                    is_detected=ex.is_detected,
+                    text=ex.text,
+                    tokens=ex.tokens,
+                    labels=ex.labels,
+                    raw=raw,
+                )
+            )
+            next_id += 1
+    return merged
 
 
 def build_label_maps(examples: Sequence[RawExample]) -> LabelMaps:
@@ -280,6 +409,7 @@ def save_split_manifests(split: SplitResult, out_dir: Path) -> None:
 def create_dataset_build(
     repo_root: Path,
     preferred_dataset_name: str = "role_section_excerpts.line.jsonl",
+    dataset_config_path: Optional[Path] = None,
     train_ratio: float = 0.8,
     val_ratio: float = 0.1,
     test_ratio: float = 0.1,
@@ -288,8 +418,15 @@ def create_dataset_build(
     balance_per_smell: bool = False,
     split_manifest_dir: Optional[Path] = None,
 ) -> DatasetBuildOutput:
-    dataset_path = resolve_dataset_path(repo_root, preferred_name=preferred_dataset_name)
-    examples = load_role_section_examples(dataset_path)
+    if dataset_config_path is not None:
+        dataset_paths = load_dataset_paths_from_config(dataset_config_path)
+    else:
+        dataset_paths = [resolve_dataset_path(repo_root, preferred_name=preferred_dataset_name)]
+
+    if len(dataset_paths) == 1:
+        examples = load_role_section_examples(dataset_paths[0])
+    else:
+        examples = load_role_section_examples_many(dataset_paths)
     label_maps = build_label_maps(examples)
     smell_maps = build_smell_maps(examples)
     split = stratified_split(examples, train_ratio=train_ratio, val_ratio=val_ratio, test_ratio=test_ratio, seed=seed)
