@@ -117,3 +117,18 @@ Recorder-level fallback behavior (all 3 detectors):
 ## Practical takeaway
 - Your statement is accurate: severity in pyexamine is mostly fallback/fixed for code smells and most architectural smells.
 - Severity is genuinely magnitude-aware mainly in structural smells, plus `Hub-like Dependency` and `Cyclic Dependency`.
+
+## Future Training Target
+
+Severity should later be treated as a prediction target for both the existing 46 smells and module complexity.
+
+Current status:
+
+- 	raining_inference does not predict severity
+- severity is only report metadata today
+
+Planned direction:
+
+- severity should be detected/predicted later
+- this is future work and not part of the current implementation pass
+
