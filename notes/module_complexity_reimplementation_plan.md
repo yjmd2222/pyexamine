@@ -17,7 +17,7 @@ The reference sample tree has been copied into the current repo here:
 
 This copied tree is the local source set for reimplementation and later verification.
 
-## 3. Updated Design Decisions
+## 3. Fixed Design Decisions
 
 These are now fixed requirements for the reimplementation.
 
@@ -39,32 +39,61 @@ So the reimplementation should use:
 
 But it does not need a threshold-style decision rule.
 
-### 3.2 Coupling should use only ROLE0 and ROLE1
+### 3.2 Coupling uses only observed interacting pairs
+
+For coupling, the candidate universe is:
+
+- only observed interacting module pairs
+
+Pair existence should come from actual analyzed interaction evidence.
+
+Allowed sources for pair existence:
+
+- AST-derived interactions
+- import relationships
+- call relationships
+- access relationships
+- graph relationships derived from the analyzed source
+
+Do not use all possible module pairs.
+
+### 3.3 Coupling uses only ROLE0 and ROLE1
 
 Coupling should be modeled as a relationship between two modules.
 
-Therefore:
+Use:
 
-- `ROLE0` = evidence from module A
-- `ROLE1` = evidence from module B
+- `ROLE0` = evidence from one module in the pair
+- `ROLE1` = evidence from the other module in the pair
 - `ROLE2` = empty
 
-`ROLE2` is not needed for coupling in the current design.
+There is no need for `ROLE2` in the current coupling design.
 
-### 3.3 Cohesion should use ROLE0 and ROLE1
+### 3.4 Cohesion uses ROLE0 and ROLE1
 
 Cohesion is internal to one module.
 
-For cohesion, use:
+Use:
 
 - `ROLE0` = the module/file anchor span
 - `ROLE1` = the internal evidence lines that justify the assigned cohesion level
 - `ROLE2` = empty
 
-Decision:
+`ROLE1` is required, because the dataset should show not only the module being classified but also the supporting internal evidence.
 
-- `ROLE0` alone is not enough
-- `ROLE1` is required, because the dataset should show not only the module being classified but also the supporting internal evidence
+### 3.5 Output structure should remain the same shape as the current excerpt pipeline
+
+Even though module complexity will have its own implementation modules, the produced output should keep the same shape as the current excerpt/sidecar outputs.
+
+This means:
+
+- same excerpt JSONL row shape
+- same sidecar JSONL row shape
+- same `[ROLE0]` / `[ROLE1]` / `[ROLE2]` section markers
+- same token/label format
+- same downstream loader expectations
+
+Structurally, it should stay very similar to the current 46-style dataset flow.
 
 ## 4. How ChatGPT's Current Implementation Is Done
 
@@ -167,7 +196,7 @@ Coupling is between modules.
 So the anchor-file + outgoing + incoming model is only a convenience shortcut.
 It is not the preferred semantic model for this project.
 
-For our reimplementation, coupling should be modeled as a module pair.
+For our reimplementation, coupling should be modeled as an observed module pair.
 
 ### 5.3 Root cause of the duplicate split
 
@@ -183,7 +212,7 @@ That mismatch caused one semantic candidate to split into:
 
 ## 6. Corrected Reimplementation Direction
 
-## 6.1 Keep module complexity isolated from the shared 46 excerpt core
+### 6.1 Keep module complexity isolated from the shared 46 excerpt core
 
 Do not add module-complexity-specific behavior inside:
 
@@ -193,7 +222,7 @@ This is mandatory.
 
 The existing 46 excerpt generator should remain unchanged for module-complexity-specific concerns.
 
-## 6.2 Use separate module-complexity files
+### 6.2 Use separate module-complexity files
 
 This is mandatory.
 
@@ -201,9 +230,9 @@ Create separate module-complexity-specific files under `src/dataset_generator/`.
 
 The module-complexity integration must live in separate `.py` files, not inside the shared generator.
 
-## 6.3 Use pair-based coupling candidates
+### 6.3 Use pair-based coupling candidates without committing to directedness
 
-For coupling, use canonical module pairs.
+For coupling, use canonical observed module pairs.
 
 Do not commit to directedness unless absolutely required.
 
@@ -211,9 +240,9 @@ Use a canonical pair identity such as:
 
 - sorted `(module_a, module_b)`
 
-This avoids duplicate reversed pairs while keeping coupling as a true relationship.
+This avoids reversed duplicate pairs while keeping coupling as a true relationship.
 
-## 6.4 Use file-based cohesion candidates
+### 6.4 Keep cohesion as file-based candidates
 
 For cohesion, the candidate remains file/module based.
 
@@ -254,8 +283,8 @@ Port or rewrite:
 Initial goal:
 
 - reproduce the current report-building heuristics from the reference implementation
-- keep the report rows mechanically compatible with downstream use
-- do not yet mix in any shared excerpt-generator changes
+- keep the analysis/evidence logic reusable
+- do not carry over the shared-generator key hack
 
 ### Step 2. Define report row shapes for the corrected design
 
@@ -279,7 +308,7 @@ Role mapping:
 
 #### Coupling report rows
 
-Model coupling as a module pair.
+Model coupling as an observed module pair.
 
 Required fields should be pair-oriented, not anchor-only.
 
@@ -290,7 +319,7 @@ Recommended shape:
   - first module entry with evidence lines
   - second module entry with evidence lines
 
-Example conceptually:
+Conceptually:
 
 - `files[0]` = module A + evidence
 - `files[1]` = module B + evidence
@@ -301,11 +330,11 @@ Role mapping:
 - `ROLE1` = module B evidence
 - `ROLE2` = empty
 
-This keeps coupling aligned with the pair concept.
+This keeps coupling aligned with the pair concept while keeping the downstream output shape the same.
 
 ### Step 3. Do not use the shared excerpt generator for module-complexity candidate synthesis
 
-Because coupling is now pair-based, the existing shared generator is no longer the right place to synthesize the module-complexity universe.
+Because coupling is pair-based, the existing shared generator is not the right place to synthesize the module-complexity universe.
 
 Reason:
 
@@ -360,7 +389,7 @@ Undetected truth:
 
 Universe:
 
-- one candidate per canonical module pair per coupling level
+- one candidate per observed interacting canonical module pair per coupling level
 
 Detected truth:
 
@@ -368,21 +397,27 @@ Detected truth:
 
 Undetected truth:
 
-- all other relevant pair + level combinations not present in the report
+- all other coupling-level assignments for that same observed pair not present in the report
 
 Use canonical pair ordering to avoid reversed duplicates.
 
-### Step 6. Keep threshold-free classification semantics
+### Step 6. Preserve training compatibility in the existing shape
 
-The reimplementation should not add artificial threshold-style logic just to imitate the 46 smells.
+If we keep:
 
-Instead:
+- same excerpt JSONL shape
+- same sidecar shape
+- same `smell_name`-driven routing style
+- same BIO/O labeling style
 
-- use classification logic for assigning cohesion/coupling levels
-- attach evidence for the chosen level
-- create detected/undetected dataset rows from candidate coverage
+then the training pipeline should remain structurally compatible.
 
-This preserves the actual nature of module-complexity levels.
+Main thing to verify:
+
+- pair-based coupling rows will contain two files in one example
+- text packing, sidecar mapping, and source trace-back must correctly support both role sections
+
+This is compatible in principle because the current role-section format already supports multi-file sections.
 
 ### Step 7. Verification requirements
 
