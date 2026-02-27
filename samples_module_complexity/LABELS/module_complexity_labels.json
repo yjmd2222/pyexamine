@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message"
+    ]
+  },
+  "projects": {
+    "harbor_manifest": {
+      "package": "harbor_manifest",
+      "project_intent": {
+        "primary_cohesion": "functional",
+        "primary_coupling": [
+          "external",
+          "data"
+        ],
+        "notes": "Modules have focused responsibilities; collaboration happens via small interfaces and primitive parameters."
+      },
+      "module_labels": {
+        "manifest_loader": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "pricing": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "routing": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "store": {
+          "cohesion": "functional",
+          "coupling": [
+            "external"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "data",
+            "external"
+          ]
+        }
+      }
+    },
+    "incident_portal": {
+      "package": "incident_portal",
+      "project_intent": {
+        "primary_cohesion": "logical",
+        "primary_coupling": [
+          "control",
+          "stamp"
+        ],
+        "notes": "Routing decisions are driven by control flags; several modules depend on shared command choices."
+      },
+      "module_labels": {
+        "router": {
+          "cohesion": "logical",
+          "coupling": [
+            "control",
+            "stamp"
+          ]
+        },
+        "handlers": {
+          "cohesion": "communicational",
+          "coupling": [
+            "stamp"
+          ]
+        },
+        "storage": {
+          "cohesion": "functional",
+          "coupling": [
+            "data",
+            "stamp",
+            "external"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "control",
+            "stamp"
+          ]
+        },
+        "models": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        }
+      }
+    },
+    "photo_weaver": {
+      "package": "photo_weaver",
+      "project_intent": {
+        "primary_cohesion": "communicational",
+        "primary_coupling": [
+          "stamp"
+        ],
+        "notes": "Modules exchange shared record structures; most functions operate on the same data set."
+      },
+      "module_labels": {
+        "scan": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "tagging": {
+          "cohesion": "communicational",
+          "coupling": [
+            "stamp"
+          ]
+        },
+        "albums": {
+          "cohesion": "communicational",
+          "coupling": [
+            "stamp"
+          ]
+        },
+        "reporting": {
+          "cohesion": "functional",
+          "coupling": [
+            "stamp"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "stamp",
+            "external"
+          ]
+        }
+      }
+    },
+    "launchpad_schedule": {
+      "package": "launchpad_schedule",
+      "project_intent": {
+        "primary_cohesion": "temporal",
+        "primary_coupling": [
+          "common",
+          "control"
+        ],
+        "notes": "Several modules import and mutate shared global state; startup routines are time-grouped."
+      },
+      "module_labels": {
+        "state": {
+          "cohesion": "functional",
+          "coupling": [
+            "common"
+          ]
+        },
+        "bootstrap": {
+          "cohesion": "temporal",
+          "coupling": [
+            "common",
+            "external"
+          ]
+        },
+        "planner": {
+          "cohesion": "functional",
+          "coupling": [
+            "common"
+          ]
+        },
+        "notifier": {
+          "cohesion": "functional",
+          "coupling": [
+            "common"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "common",
+            "control"
+          ]
+        }
+      }
+    },
+    "market_basket": {
+      "package": "market_basket",
+      "project_intent": {
+        "primary_cohesion": "coincidental",
+        "primary_coupling": [
+          "content",
+          "common"
+        ],
+        "notes": "One module reaches into another module's internals and mutates hidden data; mixed-utility module collects unrelated actions."
+      },
+      "module_labels": {
+        "core": {
+          "cohesion": "functional",
+          "coupling": [
+            "content"
+          ]
+        },
+        "backoffice": {
+          "cohesion": "functional",
+          "coupling": [
+            "content"
+          ]
+        },
+        "checkout": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "misc": {
+          "cohesion": "coincidental",
+          "coupling": [
+            "data",
+            "external"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "content",
+            "data"
+          ]
+        }
+      }
+    },
+    "log_tally": {
+      "package": "log_tally",
+      "project_intent": {
+        "primary_cohesion": "sequential",
+        "primary_coupling": [
+          "data"
+        ],
+        "notes": "Pipeline stages run in order and pass plain data structures between modules."
+      },
+      "module_labels": {
+        "extract": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "transform": {
+          "cohesion": "communicational",
+          "coupling": [
+            "data"
+          ]
+        },
+        "report": {
+          "cohesion": "functional",
+          "coupling": [
+            "data"
+          ]
+        },
+        "pipeline": {
+          "cohesion": "sequential",
+          "coupling": [
+            "data"
+          ]
+        },
+        "cli": {
+          "cohesion": "procedural",
+          "coupling": [
+            "data",
+            "external"
+          ]
+        }
+      }
+    }
+  }
+}

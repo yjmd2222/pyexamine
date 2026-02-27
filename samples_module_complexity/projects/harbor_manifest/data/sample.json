@@ -1,0 +1,21 @@
+{
+  "origin": "KR-INC",
+  "destination": "KR-PUS",
+  "items": [
+    {
+      "sku": "A100",
+      "weight_kg": 120.0,
+      "volume_m3": 2.2
+    },
+    {
+      "sku": "B200",
+      "weight_kg": 80.5,
+      "volume_m3": 1.3
+    },
+    {
+      "sku": "C300",
+      "weight_kg": 40.0,
+      "volume_m3": 0.6
+    }
+  ]
+}
