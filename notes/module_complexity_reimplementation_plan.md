@@ -2,30 +2,81 @@
 
 ## 1. First Step: Re-examine the Reference Repo and the ChatGPT Summary
 
-Before reimplementation, re-read these two sources together:
+Before any reimplementation work, re-read these two sources together:
 
 - Reference repo: `C:\Users\jinmo\Downloads\pyexamine_anchor_key_fixed_ready`
 - Summary note: `C:\Users\jinmo\Downloads\module_complexity_anchor_key_fix_summary.md`
 
-This is necessary because the current reference already shows how ChatGPT integrated module complexity, but the goal here is not to copy that design blindly. The goal is to compare it against our existing 46-smell implementation style and then reimplement it so the structure and generation behavior stay very similar to 46.
+This step is mandatory because the reference repo shows the current ChatGPT implementation, and the summary explains its intent. The goal here is not to copy it directly. The goal is to understand how it currently works, then redesign it so it matches our implementation style more closely and avoids regression in the existing 46-smell path.
 
 ## 2. Copied Sample Source
 
-As requested, the reference sample tree has been copied into the current repo here:
+The reference sample tree has been copied into the current repo here:
 
 - `master-thesis-materials/pyexamine/samples_module_complexity/`
 
-This copied tree should be treated as the local source set for reimplementation and verification.
+This copied tree is the local source set for reimplementation and later verification.
 
-## 3. How ChatGPT's Current Implementation Is Done
+## 3. Updated Design Decisions
 
-### 3.1 Report generation
+These are now fixed requirements for the reimplementation.
+
+### 3.1 Thresholds are not required
+
+Module complexity here is not being treated like a threshold-triggered smell detector.
+
+Reason:
+
+- cohesion and coupling are being modeled as level/class assignments
+- the task is to assign the level and attach evidence
+- not to decide “above threshold => detected” in the same style as many 46 smells
+
+So the reimplementation should use:
+
+- classification logic
+- evidence extraction
+- positive/negative candidate coverage in the dataset
+
+But it does not need a threshold-style decision rule.
+
+### 3.2 Coupling should use only ROLE0 and ROLE1
+
+Coupling should be modeled as a relationship between two modules.
+
+Therefore:
+
+- `ROLE0` = evidence from module A
+- `ROLE1` = evidence from module B
+- `ROLE2` = empty
+
+`ROLE2` is not needed for coupling in the current design.
+
+### 3.3 Cohesion should use ROLE0 and ROLE1
+
+Cohesion is internal to one module.
+
+For cohesion, use:
+
+- `ROLE0` = the module/file anchor span
+- `ROLE1` = the internal evidence lines that justify the assigned cohesion level
+- `ROLE2` = empty
+
+Decision:
+
+- `ROLE0` alone is not enough
+- `ROLE1` is required, because the dataset should show not only the module being classified but also the supporting internal evidence
+
+## 4. How ChatGPT's Current Implementation Is Done
+
+### 4.1 Report generation
 
 ChatGPT added a separate builder:
 
 - `src/dataset_generator/build_module_complexity_report.py`
 
-It is not implemented inside the 46 detector subsystem. It is a separate builder that:
+It is outside the 46 detector subsystem.
+
+It currently:
 
 1. Reads a manifest:
    - `samples/module_complexity/LABELS/module_complexity_labels.json`
@@ -36,13 +87,11 @@ This means module complexity report generation is currently:
 
 - manifest-guided
 - heuristic evidence extraction
-- separate from the 46 threshold detector flow
+- separate from the 46 detector flow
 
-### 3.2 Report row shape
+### 4.2 Report row shape in ChatGPT's implementation
 
-ChatGPT made the row shape compatible with the existing excerpt pipeline.
-
-Cohesion rows:
+Cohesion rows are file-rooted and compatible with the existing excerpt pipeline:
 
 - `name`
 - `file_path`
@@ -50,7 +99,7 @@ Cohesion rows:
 - `end_line_number`
 - `evidence_lines`
 
-Coupling rows:
+Coupling rows are anchor-file oriented in ChatGPT's implementation:
 
 - `name`
 - `file_path`
@@ -59,49 +108,47 @@ Coupling rows:
 - `outgoing_evidence_lines`
 - `files[*].incoming_evidence_lines`
 
-This shape is close enough to the current 46-style template-driven excerpt generator.
+This works mechanically with the existing template-driven excerpt generator, but it models coupling as anchor-file plus related files, not as a pair relationship.
 
-### 3.3 Excerpt generation
+### 4.3 Excerpt generation in ChatGPT's implementation
 
-ChatGPT reused the existing excerpt generator path:
+ChatGPT reused the existing excerpt generator:
 
 - `src/dataset_generator/build_role_section_excerpts.py`
 
-It did not make a separate excerpt generator. Instead it extended templates and fed the module-complexity report rows into the same excerpt pipeline.
+It extended templates and pushed module-complexity report rows through the same shared pipeline.
 
-### 3.4 The specific keying change ChatGPT made
+### 4.4 The specific keying change ChatGPT made
 
 In the anchor-key-fixed reference repo, ChatGPT changed `_candidate_key(...)` inside:
 
 - `src/dataset_generator/build_role_section_excerpts.py`
 
-It added a smell-specific exception:
+It added a smell-specific exception so:
 
 - `Module Cohesion - *`
 - `Module Coupling - *`
 
-These are keyed as:
+are keyed as:
 
 - `(smell_name, file_path)`
 
-instead of using the normal file key shape that includes root `start_line_number/end_line_number`.
+instead of using the normal key shape that includes root `start_line_number/end_line_number`.
 
-That was done to stop duplicate semantic candidates (`false` + `true`) when the module-complexity report uses cropped root spans.
+That fix was added to stop duplicate true/false splits when the module-complexity report used cropped root spans.
 
-## 4. What Must Be Corrected for Our Goal
-
-Our goal is not just “make duplicates disappear.”
+## 5. What Must Be Corrected for Our Goal
 
 Our goal is:
 
 - module complexity dataset added
-- report and excerpt structure very similar to 46
-- generation logic very similar to 46
-- avoid regression in existing 46 flow
+- report and excerpt structure still close to the existing system
+- generation logic close in spirit to the 46 pipeline
+- no regression risk in the shared 46 excerpt generator
 
 Based on that goal, the current ChatGPT implementation is not the correct final design.
 
-### 4.1 The wrong part
+### 5.1 Wrong part: module-specific logic inside the shared excerpt generator
 
 The wrong part is the smell-specific keying exception inside:
 
@@ -109,89 +156,90 @@ The wrong part is the smell-specific keying exception inside:
 
 Why it is wrong for our goal:
 
-- the existing 46 pipeline does not introduce a smell-specific identity exception like this
-- it changes core excerpt behavior for new smells inside the shared 46 generator
-- even if 46 behavior is not directly broken, it increases regression risk by modifying shared identity logic in the main generator
+- it changes shared generator behavior for a new feature
+- it increases regression risk for the existing 46 path
+- it solves a module-complexity problem by patching the shared core instead of isolating module-complexity behavior
 
-### 4.2 The real root problem
+### 5.2 Wrong part: coupling modeled as anchor-file instead of relationship pair
 
-The real problem is not that module complexity needs a special key.
+Coupling is between modules.
 
-The real problem is:
+So the anchor-file + outgoing + incoming model is only a convenience shortcut.
+It is not the preferred semantic model for this project.
+
+For our reimplementation, coupling should be modeled as a module pair.
+
+### 5.3 Root cause of the duplicate split
+
+The duplicate true/false split happened because:
 
 - ChatGPT used cropped root `start_line_number/end_line_number` in module-complexity report rows
-- but the excerpt universe candidate for file-rooted smells is effectively based on the canonical file candidate shape
-- so report identity and universe identity diverged
+- but the universe candidate identity in the shared file-centric generator did not line up with that root identity
 
-That mismatch creates the extra true/false split.
+That mismatch caused one semantic candidate to split into:
 
-### 4.3 The correct fix direction
+- one false row
+- one true row
 
-The correct fix is:
+## 6. Corrected Reimplementation Direction
 
-- keep the normal excerpt generator keying behavior unchanged
-- keep the same general 46-style report/excerpt structure
-- fix module-complexity report generation so the root identity is stable and canonical
+## 6.1 Keep module complexity isolated from the shared 46 excerpt core
 
-For file-rooted module-complexity smells, the root row should use:
-
-- `start_line_number = 1`
-- `end_line_number = total_lines + 1`
-
-or the exact same canonical root span that the file-level universe candidate uses.
-
-Then:
-
-- root `start/end` remains part of identity just like normal file-rooted smells
-- evidence stays in `evidence_lines` / `outgoing_evidence_lines` / `incoming_evidence_lines`
-- no smell-specific key exception is needed
-
-## 5. Reimplementation Requirements
-
-### 5.1 Do not modify `build_role_section_excerpts.py` for module-complexity-specific behavior
-
-This is mandatory.
-
-Reason:
-
-- the existing 46 path must remain isolated
-- module complexity must not rely on smell-specific branching in the shared excerpt generator
-
-The excerpt generator may be reused as-is, but module-complexity-specific logic must not be embedded there.
-
-### 5.2 Make a separate module for module complexity
-
-This is also mandatory.
-
-Create a dedicated Python module for module-complexity integration, instead of writing logic inside:
+Do not add module-complexity-specific behavior inside:
 
 - `src/dataset_generator/build_role_section_excerpts.py`
 
-The separate module should own:
+This is mandatory.
 
-- module complexity report building
-- any report normalization needed to align identity with the current excerpt generator
-- any report merge step needed before excerpt generation
+The existing 46 excerpt generator should remain unchanged for module-complexity-specific concerns.
 
-## 6. Proposed Module Layout
+## 6.2 Use separate module-complexity files
 
-Create dedicated files under `src/dataset_generator/`:
+This is mandatory.
+
+Create separate module-complexity-specific files under `src/dataset_generator/`.
+
+The module-complexity integration must live in separate `.py` files, not inside the shared generator.
+
+## 6.3 Use pair-based coupling candidates
+
+For coupling, use canonical module pairs.
+
+Do not commit to directedness unless absolutely required.
+
+Use a canonical pair identity such as:
+
+- sorted `(module_a, module_b)`
+
+This avoids duplicate reversed pairs while keeping coupling as a true relationship.
+
+## 6.4 Use file-based cohesion candidates
+
+For cohesion, the candidate remains file/module based.
+
+That is natural because cohesion is an internal property of one module.
+
+## 7. Proposed Module Layout
+
+Create separate module-complexity files under `src/dataset_generator/`:
 
 1. `build_module_complexity_report.py`
-- build raw module-complexity rows from labels + source analysis
+- build raw module-complexity report rows from labels + source analysis
 
-2. `normalize_module_complexity_report.py`
-- rewrite module-complexity root identity fields to canonical file-root spans
-- keep cropped ranges only in evidence arrays
-- this is the key file that fixes the current keying mismatch without touching the shared generator
+2. `build_module_complexity_excerpts.py`
+- build excerpt JSONL + sidecar JSONL for module-complexity rows only
+- handle cohesion file-universe synthesis
+- handle coupling pair-universe synthesis
+- emit the same output structure as the existing excerpt pipeline
+- keep all module-complexity-specific candidate logic out of `build_role_section_excerpts.py`
 
 3. `merge_reports.py`
-- combine standard report rows + module-complexity rows when needed
-- plain list concat, no identity logic inside the shared excerpt generator
+- combine standard 46 report rows + module-complexity report rows when needed
+- plain list concat only
 
-This keeps module complexity isolated and avoids modifying the existing 46 excerpt core.
+This keeps module complexity isolated and avoids modifying the shared 46 excerpt core.
 
-## 7. Detailed Reimplementation Plan
+## 8. Detailed Reimplementation Plan
 
 ### Step 1. Rebuild the module-complexity builder locally
 
@@ -205,89 +253,154 @@ Port or rewrite:
 
 Initial goal:
 
-- reproduce ChatGPT's current report row shapes
-- do not yet change the AST/lexical heuristics unless necessary
+- reproduce the current report-building heuristics from the reference implementation
+- keep the report rows mechanically compatible with downstream use
+- do not yet mix in any shared excerpt-generator changes
 
-### Step 2. Change root identity generation in the builder/normalizer
+### Step 2. Define report row shapes for the corrected design
 
-Do not use cropped anchor ranges as root identity.
+#### Cohesion report rows
 
-For each module-complexity row:
+Keep cohesion file-rooted.
 
-- root `start_line_number/end_line_number` must be canonical file-level span
-- cropped ranges remain only in evidence fields
+Required fields:
 
-Concretely:
+- `name`
+- `file_path`
+- `start_line_number`
+- `end_line_number`
+- `evidence_lines`
 
-Cohesion:
+Role mapping:
 
-- root span: full file
-- evidence: `evidence_lines`
+- `ROLE0` = root module span
+- `ROLE1` = evidence lines
+- `ROLE2` = empty
 
-Coupling:
+#### Coupling report rows
 
-- root span: full anchor file
-- evidence:
-  - `outgoing_evidence_lines`
-  - `files[*].incoming_evidence_lines`
+Model coupling as a module pair.
 
-This preserves 46-like identity behavior.
+Required fields should be pair-oriented, not anchor-only.
 
-### Step 3. Keep templates structurally aligned with 46-style excerpt generation
+Recommended shape:
 
-The module-complexity templates can stay in the same format already used by ChatGPT:
+- `name`
+- `files`
+  - first module entry with evidence lines
+  - second module entry with evidence lines
 
-Cohesion:
+Example conceptually:
 
-- `ROLE0 = start_line_number/end_line_number`
-- `ROLE1 = evidence_lines[*]`
-- `ROLE2 = []`
+- `files[0]` = module A + evidence
+- `files[1]` = module B + evidence
 
-Coupling:
+Role mapping:
 
-- `ROLE0 = start_line_number/end_line_number`
-- `ROLE1 = outgoing_evidence_lines[*]`
-- `ROLE2 = files[*].incoming_evidence_lines[*]`
+- `ROLE0` = module A evidence
+- `ROLE1` = module B evidence
+- `ROLE2` = empty
 
-This is already compatible with the current excerpt generator and does not need smell-specific excerpt logic.
+This keeps coupling aligned with the pair concept.
 
-### Step 4. Leave `build_role_section_excerpts.py` unchanged for module-specific behavior
+### Step 3. Do not use the shared excerpt generator for module-complexity candidate synthesis
 
-Reimplementation must verify that:
+Because coupling is now pair-based, the existing shared generator is no longer the right place to synthesize the module-complexity universe.
 
-- no `_candidate_key(...)` special-case for module complexity is added
-- no module-complexity branch is added in role span collection
-- no module-complexity branch is added in dedupe/coverage logic
+Reason:
 
-The shared generator should remain generic.
+- the existing shared generator is file/class/method centered
+- pair-universe generation for coupling is a module-complexity-specific concern
+- pushing that into the shared generator would create exactly the regression risk we want to avoid
 
-### Step 5. Add a local module-complexity report pipeline
+So:
 
-The intended pipeline should be:
+- `build_role_section_excerpts.py` stays unchanged for module-complexity-specific logic
+- `build_module_complexity_excerpts.py` becomes responsible for module-complexity candidate synthesis
 
-1. Generate standard 46 report (existing path)
-2. Generate module-complexity report (new separate module)
-3. Normalize module-complexity root identity if needed (new separate module)
-4. Merge reports (new separate module)
-5. Run existing excerpt generator on the merged report
+### Step 4. Keep the output structure the same as the current excerpt/sidecar outputs
 
-That keeps the excerpt path identical in style to the current 46 pipeline.
+Even though module-complexity excerpt generation is moved to a separate module, the output format should remain the same shape:
 
-### Step 6. Verify against the current 46-like expectations
+- excerpt JSONL row:
+  - `id`
+  - `smell_name`
+  - `is_detected`
+  - `label_granularity`
+  - `text`
+  - `tokens`
+  - `labels`
+
+- sidecar JSONL row:
+  - `id`
+  - `smell_name`
+  - `is_detected`
+  - `label_granularity`
+  - `token_map`
+
+The point is to keep downstream training/inference compatibility unchanged.
+
+### Step 5. Candidate synthesis rules
+
+#### Cohesion
+
+Universe:
+
+- one candidate per module/file per cohesion level
+
+Detected truth:
+
+- report row present for that file + level
+
+Undetected truth:
+
+- all other file + cohesion-level combinations not present in the report
+
+#### Coupling
+
+Universe:
+
+- one candidate per canonical module pair per coupling level
+
+Detected truth:
+
+- report row present for that pair + level
+
+Undetected truth:
+
+- all other relevant pair + level combinations not present in the report
+
+Use canonical pair ordering to avoid reversed duplicates.
+
+### Step 6. Keep threshold-free classification semantics
+
+The reimplementation should not add artificial threshold-style logic just to imitate the 46 smells.
+
+Instead:
+
+- use classification logic for assigning cohesion/coupling levels
+- attach evidence for the chosen level
+- create detected/undetected dataset rows from candidate coverage
+
+This preserves the actual nature of module-complexity levels.
+
+### Step 7. Verification requirements
 
 Verification should check:
 
-1. For module-complexity smells, no duplicate semantic candidate rows
-2. For the same file-level candidate, exactly one truth value
-3. Report row structure matches the existing template-driven excerpt expectations
-4. Excerpt generator works without any module-specific branch in `build_role_section_excerpts.py`
-5. Existing 46 behavior remains unchanged because the shared generator was not modified for module complexity
+1. The shared `build_role_section_excerpts.py` has no module-complexity-specific branches added
+2. Module-complexity excerpt generation works through its own separate module
+3. Cohesion rows use `ROLE0` + `ROLE1`, with `ROLE2` empty
+4. Coupling rows use `ROLE0` + `ROLE1`, with `ROLE2` empty
+5. No duplicate semantic candidates exist for module-complexity rows
+6. Canonical pair ordering prevents reversed duplicate coupling pairs
+7. Existing 46 behavior remains unchanged
 
-## 8. Additional Corrections to Watch
+## 9. Additional Corrections to Watch
 
-### 8.1 Coupling taxonomy mismatch
+### 9.1 Coupling taxonomy mismatch
 
-ChatGPT's labels file includes `message`, but the builder only implements:
+The reference labels file includes `message`, but the builder only implements:
 
 - `data`
 - `stamp`
@@ -301,19 +414,18 @@ So `message` is currently inconsistent and must be resolved by either:
 - implementing it, or
 - removing it from labels/specs
 
-### 8.2 Keep sidecar/output structure unchanged
+### 9.2 Keep sidecar/output structure unchanged
 
-The output dataset structure should remain compatible with the existing excerpt + sidecar convention.
+Do not invent a different dataset output format for module complexity.
 
-Do not invent a separate output format for module complexity.
+Only the candidate synthesis module should differ. The output row shape should remain compatible with the current excerpt + sidecar convention.
 
-## 9. Final Implementation Rule
+## 10. Final Implementation Rule
 
 Module complexity should be added as:
 
 - a separate report-producing module
-- with report rows normalized so they fit the current 46-style excerpt generator
+- a separate module-complexity excerpt-producing module
+- with no module-complexity-specific logic embedded into the shared `build_role_section_excerpts.py`
 
-It should not be added by patching special behavior into the shared excerpt generator core.
-
-That is the safest design and the one least likely to cause regression in the current 46 implementation.
+This is the safest design and the one least likely to cause regression in the current 46 implementation.
