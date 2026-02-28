@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message",
+      "external"
+    ]
+  },
+  "project_name": "incident_portal",
+  "package": "incident_portal",
+  "project_intent": {
+    "primary_cohesion": "logical",
+    "primary_coupling": [
+      "control",
+      "stamp"
+    ],
+    "notes": "Routing decisions are driven by control flags; several modules depend on shared command choices."
+  },
+  "module_labels": {
+    "router": {
+      "cohesion": "logical",
+      "coupling": [
+        "control",
+        "stamp"
+      ]
+    },
+    "handlers": {
+      "cohesion": "communicational",
+      "coupling": [
+        "stamp"
+      ]
+    },
+    "storage": {
+      "cohesion": "functional",
+      "coupling": [
+        "data",
+        "stamp",
+        "external"
+      ]
+    },
+    "cli": {
+      "cohesion": "procedural",
+      "coupling": [
+        "control",
+        "stamp"
+      ]
+    },
+    "models": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    }
+  }
+}

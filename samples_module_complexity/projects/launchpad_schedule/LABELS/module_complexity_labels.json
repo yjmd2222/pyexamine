@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message",
+      "external"
+    ]
+  },
+  "project_name": "launchpad_schedule",
+  "package": "launchpad_schedule",
+  "project_intent": {
+    "primary_cohesion": "temporal",
+    "primary_coupling": [
+      "common",
+      "control"
+    ],
+    "notes": "Several modules import and mutate shared global state; startup routines are time-grouped."
+  },
+  "module_labels": {
+    "state": {
+      "cohesion": "functional",
+      "coupling": [
+        "common"
+      ]
+    },
+    "bootstrap": {
+      "cohesion": "temporal",
+      "coupling": [
+        "common",
+        "external"
+      ]
+    },
+    "planner": {
+      "cohesion": "functional",
+      "coupling": [
+        "common"
+      ]
+    },
+    "notifier": {
+      "cohesion": "functional",
+      "coupling": [
+        "common"
+      ]
+    },
+    "cli": {
+      "cohesion": "procedural",
+      "coupling": [
+        "common",
+        "control"
+      ]
+    }
+  }
+}

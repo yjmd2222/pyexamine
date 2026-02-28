@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message",
+      "external"
+    ]
+  },
+  "project_name": "harbor_manifest",
+  "package": "harbor_manifest",
+  "project_intent": {
+    "primary_cohesion": "functional",
+    "primary_coupling": [
+      "external",
+      "data"
+    ],
+    "notes": "Modules have focused responsibilities; collaboration happens via small interfaces and primitive parameters."
+  },
+  "module_labels": {
+    "manifest_loader": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "pricing": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "routing": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "store": {
+      "cohesion": "functional",
+      "coupling": [
+        "external"
+      ]
+    },
+    "cli": {
+      "cohesion": "procedural",
+      "coupling": [
+        "data",
+        "external"
+      ]
+    }
+  }
+}

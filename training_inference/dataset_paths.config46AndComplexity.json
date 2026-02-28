@@ -1,0 +1,145 @@
+{
+  "repo_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine",
+  "dataset_root_dir": "datasets",
+  "excerpt_name": "role_section_excerpts.line.jsonl",
+  "sidecar_name": "role_section_excerpts.line.sidecar.jsonl",
+  "mode": "strict_per_dataset",
+  "datasets": [
+    {
+      "dataset_name": "campus_event_planning",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\campus_event_planning\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\campus_event_planning\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "chatbot_rule_to_ml",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\chatbot_rule_to_ml\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\chatbot_rule_to_ml\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "clinic_queue_ops",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\clinic_queue_ops\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\clinic_queue_ops\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "field_maintenance_dispatch",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\field_maintenance_dispatch\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\field_maintenance_dispatch\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "food_delivery_support",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\food_delivery_support\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\food_delivery_support\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "habit_tracker_reminders",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\habit_tracker_reminders\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\habit_tracker_reminders\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "harbor_manifest",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\harbor_manifest\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\harbor_manifest\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "image_organizer",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\image_organizer\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\image_organizer\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "incident_portal",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\incident_portal\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\incident_portal\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "launchpad_schedule",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\launchpad_schedule\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\launchpad_schedule\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "log_analyzer",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\log_analyzer\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\log_analyzer\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "log_tally",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\log_tally\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\log_tally\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "market_basket",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\market_basket\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\market_basket\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "mini_search_engine",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\mini_search_engine\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\mini_search_engine\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "municipal_service_portal",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\municipal_service_portal\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\municipal_service_portal\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "personal_finance_tracker",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\personal_finance_tracker\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\personal_finance_tracker\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "photo_weaver",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\photo_weaver\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\photo_weaver\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "property_booking_backoffice",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\property_booking_backoffice\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\property_booking_backoffice\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "recipe_planner",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\recipe_planner\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\recipe_planner\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "retail_replenishment",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\retail_replenishment\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\retail_replenishment\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "simple_recommender",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\simple_recommender\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\simple_recommender\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "subscription_billing_ops",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\subscription_billing_ops\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\subscription_billing_ops\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "todo_priority_search",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\todo_priority_search\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\todo_priority_search\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "training_program_admin",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\training_program_admin\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\training_program_admin\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "warehouse_shift_board",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\warehouse_shift_board\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\warehouse_shift_board\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "weather_outfit_recommender",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\weather_outfit_recommender\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\weather_outfit_recommender\\role_section_excerpts.line.sidecar.jsonl"
+    },
+    {
+      "dataset_name": "web_scraper_price_monitor",
+      "excerpt_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\web_scraper_price_monitor\\role_section_excerpts.line.jsonl",
+      "sidecar_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\datasets\\web_scraper_price_monitor\\role_section_excerpts.line.sidecar.jsonl"
+    }
+  ],
+  "generated_at_utc": "2026-02-28T12:59:01.767335+00:00"
+}

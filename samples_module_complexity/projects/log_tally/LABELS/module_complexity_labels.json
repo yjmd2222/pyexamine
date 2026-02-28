@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message",
+      "external"
+    ]
+  },
+  "project_name": "log_tally",
+  "package": "log_tally",
+  "project_intent": {
+    "primary_cohesion": "sequential",
+    "primary_coupling": [
+      "data"
+    ],
+    "notes": "Pipeline stages run in order and pass plain data structures between modules."
+  },
+  "module_labels": {
+    "extract": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "transform": {
+      "cohesion": "communicational",
+      "coupling": [
+        "data"
+      ]
+    },
+    "report": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "pipeline": {
+      "cohesion": "sequential",
+      "coupling": [
+        "data"
+      ]
+    },
+    "cli": {
+      "cohesion": "procedural",
+      "coupling": [
+        "data",
+        "external"
+      ]
+    }
+  }
+}

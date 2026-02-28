@@ -62,7 +62,9 @@ code_quality_report.txt
 code_metadata.json
 code_analysis.log
 reports
+reports_module_complexity
 datasets
+datasets_module_complexity
 
 # ignore temporary files
 _tmp*.py

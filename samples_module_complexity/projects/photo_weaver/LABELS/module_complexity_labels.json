@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "levels": {
+    "cohesion": [
+      "coincidental",
+      "logical",
+      "temporal",
+      "procedural",
+      "communicational",
+      "sequential",
+      "functional"
+    ],
+    "coupling": [
+      "content",
+      "common",
+      "control",
+      "stamp",
+      "data",
+      "message",
+      "external"
+    ]
+  },
+  "project_name": "photo_weaver",
+  "package": "photo_weaver",
+  "project_intent": {
+    "primary_cohesion": "communicational",
+    "primary_coupling": [
+      "stamp"
+    ],
+    "notes": "Modules exchange shared record structures; most functions operate on the same data set."
+  },
+  "module_labels": {
+    "scan": {
+      "cohesion": "functional",
+      "coupling": [
+        "data"
+      ]
+    },
+    "tagging": {
+      "cohesion": "communicational",
+      "coupling": [
+        "stamp"
+      ]
+    },
+    "albums": {
+      "cohesion": "communicational",
+      "coupling": [
+        "stamp"
+      ]
+    },
+    "reporting": {
+      "cohesion": "functional",
+      "coupling": [
+        "stamp"
+      ]
+    },
+    "cli": {
+      "cohesion": "procedural",
+      "coupling": [
+        "stamp",
+        "external"
+      ]
+    }
+  }
+}
