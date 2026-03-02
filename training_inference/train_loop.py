@@ -10,6 +10,11 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 import torch
 from torch.utils.data import DataLoader
 
+try:
+    from tqdm.auto import tqdm
+except ImportError:  # pragma: no cover - environment dependent
+    tqdm = None
+
 from .metrics_utils import (
     compute_seqeval_metrics,
     compute_token_metrics_from_flat_ids,
@@ -240,6 +245,7 @@ def train_model(
     save_every_epoch: bool = True,
     resume_checkpoint_path: Optional[Path] = None,
     debug_preview_count: int = 3,
+    show_progress_bar: bool = True,
 ) -> TrainingArtifacts:
     output_dir = Path(output_dir)
     ckpt_dir = output_dir / "checkpoints"
@@ -277,7 +283,18 @@ def train_model(
         optimizer.zero_grad(set_to_none=True)
         first_debug_preview_saved = False
 
-        for step, batch in enumerate(train_loader):
+        batch_iter: Iterable = train_loader
+        progress = None
+        if show_progress_bar and tqdm is not None:
+            progress = tqdm(
+                train_loader,
+                desc=f"Epoch {epoch + 1}/{num_epochs}",
+                leave=False,
+                dynamic_ncols=True,
+            )
+            batch_iter = progress
+
+        for step, batch in enumerate(batch_iter):
             total_train_examples += len(batch["ids"])
             trunc_count_train += sum(bool(x) for x in batch.get("was_truncated", []))
             batch = _move_batch_to_device(batch, device)
@@ -318,6 +335,12 @@ def train_model(
             running_loss += float(loss.item()) * grad_accum_steps
             n_batches += 1
 
+            if progress is not None:
+                progress.set_postfix(
+                    loss=f"{running_loss / max(n_batches, 1):.4f}",
+                    trunc=f"{trunc_count_train}/{total_train_examples}",
+                )
+
             if not first_debug_preview_saved:
                 preds = out.routed_logits.argmax(dim=-1)
                 previews = _build_debug_preview_from_batch(batch, preds, id_to_label=id_to_label, n=debug_preview_count)
@@ -326,6 +349,9 @@ def train_model(
                     encoding="utf-8",
                 )
                 first_debug_preview_saved = True
+
+        if progress is not None:
+            progress.close()
 
         train_loss = running_loss / max(n_batches, 1)
 
