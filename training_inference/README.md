@@ -22,5 +22,5 @@ Notebook-first training/inference scaffold for **shared encoder + 46 smell-speci
 - You can pin explicit input files by config:
   - generate config: `python -m training_inference.generate_dataset_paths_config --repo-root . --output training_inference/dataset_paths.config.json`
   - pass to loader: `create_dataset_build(..., dataset_config_path=Path("training_inference/dataset_paths.config.json"))`
-- `role_section_excerpts.sidecar.jsonl` is intentionally **not** used yet (placeholder comments are included for future join-by-`id`).
+- Sidecar files are no longer required by the strict dataset config helper.
 - Right truncation is used, which means sequences over the max length are truncated **from the end**.

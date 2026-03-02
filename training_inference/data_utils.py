@@ -78,11 +78,10 @@ def resolve_strict_dataset_entries(
     repo_root: Path,
     dataset_root_dir: str = "datasets",
     excerpt_name: str = "excerpt.jsonl",
-    sidecar_name: str = "sidecar.jsonl",
 ) -> List[Dict[str, str]]:
     """Return strict per-dataset entries from `<repo_root>/<dataset_root_dir>/*/`.
 
-    Strict means each dataset directory must contain BOTH `excerpt_name` and `sidecar_name`.
+    Strict means each dataset directory must contain `excerpt_name`.
     No fallback filename behavior is applied.
     """
     root = (repo_root / dataset_root_dir).resolve()
@@ -95,22 +94,15 @@ def resolve_strict_dataset_entries(
         if not child.is_dir():
             continue
         excerpt = child / excerpt_name
-        sidecar = child / sidecar_name
-        if excerpt.exists() and sidecar.exists():
+        if excerpt.exists():
             entries.append(
                 {
                     "dataset_name": child.name,
                     "excerpt_path": str(excerpt.resolve()),
-                    "sidecar_path": str(sidecar.resolve()),
                 }
             )
         else:
-            missing_parts: List[str] = []
-            if not excerpt.exists():
-                missing_parts.append(excerpt_name)
-            if not sidecar.exists():
-                missing_parts.append(sidecar_name)
-            missing.append(f"{child.name}: missing {', '.join(missing_parts)}")
+            missing.append(f"{child.name}: missing {excerpt_name}")
     if missing:
         raise FileNotFoundError(
             "Strict dataset structure violation under "
@@ -124,7 +116,6 @@ def generate_dataset_paths_config(
     output_path: Path,
     dataset_root_dir: str = "datasets",
     excerpt_name: str = "excerpt.jsonl",
-    sidecar_name: str = "sidecar.jsonl",
 ) -> Dict[str, Any]:
     """Generate strict dataset path config JSON for training/inference scripts."""
     repo_root = repo_root.resolve()
@@ -132,14 +123,12 @@ def generate_dataset_paths_config(
         repo_root=repo_root,
         dataset_root_dir=dataset_root_dir,
         excerpt_name=excerpt_name,
-        sidecar_name=sidecar_name,
     )
 
     payload = {
         "repo_root": str(repo_root),
         "dataset_root_dir": dataset_root_dir,
         "excerpt_name": excerpt_name,
-        "sidecar_name": sidecar_name,
         "mode": "strict_per_dataset",
         "datasets": dataset_entries,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -163,9 +152,8 @@ def load_dataset_paths_from_config(config_path: Path) -> List[Path]:
         if not isinstance(row, dict):
             raise ValueError(f"Invalid dataset row in config: {row!r}")
         excerpt = row.get("excerpt_path")
-        sidecar = row.get("sidecar_path")
-        if not excerpt or not sidecar:
-            raise ValueError(f"Invalid dataset row (requires excerpt_path + sidecar_path): {row!r}")
+        if not excerpt:
+            raise ValueError(f"Invalid dataset row (requires excerpt_path): {row!r}")
         paths.append(Path(str(excerpt)).resolve())
     missing = [str(p) for p in paths if not p.exists()]
     if missing:

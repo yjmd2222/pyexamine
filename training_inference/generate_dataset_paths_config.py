@@ -28,11 +28,6 @@ def main() -> None:
         help="Strict excerpt filename required in each dataset directory.",
     )
     parser.add_argument(
-        "--sidecar-name",
-        default="sidecar.jsonl",
-        help="Strict sidecar filename required in each dataset directory.",
-    )
-    parser.add_argument(
         "--output",
         type=Path,
         default=Path("training_inference/dataset_paths.config.json"),
@@ -45,7 +40,6 @@ def main() -> None:
         output_path=args.output,
         dataset_root_dir=args.dataset_root_dir,
         excerpt_name=args.excerpt_name,
-        sidecar_name=args.sidecar_name,
     )
     print(json.dumps(payload, ensure_ascii=False, indent=2))
 
