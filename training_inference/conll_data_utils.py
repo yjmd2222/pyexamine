@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -203,14 +204,67 @@ def resolve_strict_conll_entries(
         raise FileNotFoundError(
             "Strict CoNLL dataset structure violation under "
             f"{root}:\n" + "\n".join(missing)
-        )
+    )
     return entries
+
+
+def generate_conll_dataset_paths_config(
+    repo_root: Path,
+    output_path: Path,
+    dataset_root_dir: str = "cdatasets",
+    conll_name: str = "role_section_excerpts.line.conll",
+) -> Dict[str, Any]:
+    repo_root = repo_root.resolve()
+    dataset_entries = resolve_strict_conll_entries(
+        repo_root=repo_root,
+        dataset_root_dir=dataset_root_dir,
+        conll_name=conll_name,
+    )
+
+    payload = {
+        "repo_root": str(repo_root),
+        "dataset_root_dir": dataset_root_dir,
+        "conll_name": conll_name,
+        "mode": "strict_per_dataset_conll",
+        "datasets": dataset_entries,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    output_path = output_path.resolve()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return payload
+
+
+def load_conll_paths_from_config(config_path: Path) -> List[Path]:
+    obj = json.loads(config_path.read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        raise ValueError(f"Invalid CoNLL dataset config (expected object): {config_path}")
+    datasets = obj.get("datasets")
+    if not isinstance(datasets, list) or not datasets:
+        raise ValueError(f"Invalid CoNLL dataset config (missing non-empty datasets): {config_path}")
+
+    paths: List[Path] = []
+    for row in datasets:
+        if not isinstance(row, dict):
+            raise ValueError(f"Invalid CoNLL dataset row in config: {row!r}")
+        conll_path = row.get("conll_path")
+        if not conll_path:
+            raise ValueError(f"Invalid CoNLL dataset row (requires conll_path): {row!r}")
+        paths.append(Path(str(conll_path)).resolve())
+
+    missing = [str(path) for path in paths if not path.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "Some CoNLL dataset paths in config do not exist:\n" + "\n".join(missing)
+        )
+    return paths
 
 
 def create_conll_dataset_build(
     repo_root: Path,
     dataset_root_dir: str = "cdatasets",
     conll_name: str = "role_section_excerpts.line.conll",
+    dataset_config_path: Optional[Path] = None,
     train_ratio: float = 0.8,
     val_ratio: float = 0.1,
     test_ratio: float = 0.1,
@@ -220,12 +274,15 @@ def create_conll_dataset_build(
     split_manifest_dir: Optional[Path] = None,
 ) -> DatasetBuildOutput:
     repo_root = repo_root.resolve()
-    entries = resolve_strict_conll_entries(
-        repo_root=repo_root,
-        dataset_root_dir=dataset_root_dir,
-        conll_name=conll_name,
-    )
-    conll_paths = [Path(row["conll_path"]) for row in entries]
+    if dataset_config_path is not None:
+        conll_paths = load_conll_paths_from_config(dataset_config_path.resolve())
+    else:
+        entries = resolve_strict_conll_entries(
+            repo_root=repo_root,
+            dataset_root_dir=dataset_root_dir,
+            conll_name=conll_name,
+        )
+        conll_paths = [Path(row["conll_path"]) for row in entries]
     examples = load_conll_examples_many(conll_paths)
 
     label_maps = build_label_maps(examples)

@@ -1,0 +1,117 @@
+{
+  "repo_root": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine",
+  "dataset_root_dir": "cdatasets",
+  "conll_name": "role_section_excerpts.line.conll",
+  "mode": "strict_per_dataset_conll",
+  "datasets": [
+    {
+      "dataset_name": "campus_event_planning",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\campus_event_planning\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "chatbot_rule_to_ml",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\chatbot_rule_to_ml\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "clinic_queue_ops",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\clinic_queue_ops\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "field_maintenance_dispatch",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\field_maintenance_dispatch\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "food_delivery_support",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\food_delivery_support\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "habit_tracker_reminders",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\habit_tracker_reminders\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "harbor_manifest",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\harbor_manifest\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "image_organizer",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\image_organizer\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "incident_portal",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\incident_portal\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "launchpad_schedule",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\launchpad_schedule\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "log_analyzer",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\log_analyzer\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "log_tally",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\log_tally\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "market_basket",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\market_basket\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "mini_search_engine",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\mini_search_engine\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "municipal_service_portal",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\municipal_service_portal\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "personal_finance_tracker",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\personal_finance_tracker\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "photo_weaver",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\photo_weaver\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "property_booking_backoffice",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\property_booking_backoffice\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "recipe_planner",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\recipe_planner\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "retail_replenishment",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\retail_replenishment\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "simple_recommender",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\simple_recommender\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "subscription_billing_ops",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\subscription_billing_ops\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "todo_priority_search",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\todo_priority_search\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "training_program_admin",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\training_program_admin\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "warehouse_shift_board",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\warehouse_shift_board\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "weather_outfit_recommender",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\weather_outfit_recommender\\role_section_excerpts.line.conll"
+    },
+    {
+      "dataset_name": "web_scraper_price_monitor",
+      "conll_path": "C:\\Users\\jinmo\\Documents\\Github\\encoder-bio\\master-thesis-materials\\pyexamine\\cdatasets\\web_scraper_price_monitor\\role_section_excerpts.line.conll"
+    }
+  ],
+  "generated_at_utc": "2026-03-02T15:56:00.460227+00:00"
+}
