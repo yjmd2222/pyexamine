@@ -6,8 +6,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from .build_module_complexity_report import build_universe_rows_for_project, load_project_spec, module_complexity_key
-from .depr_build_role_section_excerpts_jsonl import Span, _expand_and_merge, _normalize_path, _read_file
-from .line_conll_common import build_line_conll_artifacts, write_conll_sample
+from .depr_build_role_section_excerpts_jsonl import Span, _build_text_and_sidecar, _expand_and_merge, _normalize_path, _read_file
 
 
 def _load_json(path: str):
@@ -42,21 +41,15 @@ def _exact_role_spans(entry: Dict, code_root: str, file_cache: Dict[str, List[st
     return roles
 
 
-
 def build_module_complexity_excerpts(
     code_path: str,
     labels_json: str | None,
     report_path: str,
-    output_conll: str,
+    output_jsonl: str,
+    output_sidecar_jsonl: str,
     context_lines: int = 2,
     label_granularity: str = "line",
 ):
-    if label_granularity != "line":
-        raise ValueError(
-            "The primary module-complexity generator now supports line granularity only. "
-            "Use depr_build_module_complexity_excerpts_jsonl.py for legacy token/jsonl generation."
-        )
-
     project_root = Path(code_path).resolve()
     project_name = project_root.name
     project_spec, _ = load_project_spec(project_root, labels_json)
@@ -81,62 +74,67 @@ def build_module_complexity_excerpts(
     row_id = 0
     detected_rows = 0
     undetected_rows = 0
-    with open(output_conll, "w", encoding="utf-8") as out_handle:
+    with open(output_jsonl, "w", encoding="utf-8") as out_handle, open(output_sidecar_jsonl, "w", encoding="utf-8") as sidecar_handle:
         for candidate in universe_rows:
             key = module_complexity_key(candidate)
             entry = dict(detected.get(key, candidate))
             is_detected = key in detected
             role_exact = _exact_role_spans(entry, str(project_root), file_cache)
             role_spans = {role: _expand_and_merge(spans, context_lines=context_lines, file_cache=file_cache) for role, spans in role_exact.items()}
-            _, conll_rows = build_line_conll_artifacts(
-                role_spans=role_spans,
-                role_exact_spans=role_exact,
-                code_root=str(project_root),
-                file_cache=file_cache,
+            text, tokens, labels, token_map, fallbacks, fallback_used = _build_text_and_sidecar(
+                role_spans, role_exact, str(entry.get("name", "")), entry, label_granularity, str(project_root), file_cache
             )
-            meta = {
+            effective = "line" if (label_granularity == "token" and fallback_used) else label_granularity
+            out_row = {
                 "id": row_id,
                 "smell_name": entry.get("name"),
                 "is_detected": is_detected,
-                "label_granularity": "line",
-                "requested_label_granularity": "line",
-                "effective_label_granularity": "line",
-                "granularity_fallbacks": [],
+                "label_granularity": effective,
+                "requested_label_granularity": label_granularity,
+                "effective_label_granularity": effective,
+                "granularity_fallbacks": fallbacks,
+                "text": text,
+                "tokens": tokens,
+                "labels": labels,
             }
-            write_conll_sample(out_handle, meta, conll_rows)
+            sidecar_row = {
+                "id": row_id,
+                "smell_name": entry.get("name"),
+                "is_detected": is_detected,
+                "label_granularity": effective,
+                "requested_label_granularity": label_granularity,
+                "effective_label_granularity": effective,
+                "granularity_fallbacks": fallbacks,
+                "tokenization_backend": "regex-fallback",
+                "token_map": token_map,
+            }
+            out_handle.write(json.dumps(out_row, ensure_ascii=False) + "\n")
+            sidecar_handle.write(json.dumps(sidecar_row, ensure_ascii=False) + "\n")
             row_id += 1
             if is_detected:
                 detected_rows += 1
             else:
                 undetected_rows += 1
 
-    return {
-        "rows": row_id,
-        "detected_rows": detected_rows,
-        "undetected_rows": undetected_rows,
-        "project": project_name,
-        "label_granularity": "line",
-        "output_format": "conll",
-    }
-
+    return {"rows": row_id, "detected_rows": detected_rows, "undetected_rows": undetected_rows, "project": project_name, "label_granularity": label_granularity}
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build module complexity role-section excerpts as canonical CoNLL.")
+    parser = argparse.ArgumentParser(description="Build module complexity role-section excerpts.")
     parser.add_argument("code_path", help="Path to a single module-complexity project directory.")
     parser.add_argument("--labels-json", help="Optional labels path. If omitted, uses project-local LABELS/module_complexity_labels.json")
     parser.add_argument("--report", required=True, help="Path to module complexity report JSON")
-    parser.add_argument("--output-conll", default=None, help="Output CoNLL path")
-    parser.add_argument("--output-jsonl", default=None, help="Deprecated alias for output CoNLL path. If provided, the file written is still CoNLL.")
+    parser.add_argument("--output-jsonl", required=True, help="Output JSONL path")
+    parser.add_argument("--output-sidecar-jsonl", required=True, help="Output sidecar JSONL path")
     parser.add_argument("--context-lines", type=int, default=2, help="Context lines before/after each span.")
-    parser.add_argument("--label-granularity", choices=["line"], default="line", help="Only line granularity is supported by the primary CoNLL generator.")
+    parser.add_argument("--label-granularity", choices=["line", "token"], default="line", help="Labeling granularity metadata written to outputs.")
     args = parser.parse_args()
-    output_conll = args.output_conll or args.output_jsonl or "role_section_excerpts.line.conll"
     stats = build_module_complexity_excerpts(
         code_path=args.code_path,
         labels_json=args.labels_json,
         report_path=args.report,
-        output_conll=output_conll,
+        output_jsonl=args.output_jsonl,
+        output_sidecar_jsonl=args.output_sidecar_jsonl,
         context_lines=max(0, args.context_lines),
         label_granularity=args.label_granularity,
     )

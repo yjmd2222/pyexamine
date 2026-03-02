@@ -14,7 +14,6 @@ python -m dataset_generator.build_role_section_excerpts samples \
   --report code_quality_report.json \
   --templates templates_with_roles.json \
   --output-jsonl role_section_excerpts.line.jsonl \
-  --output-sidecar-jsonl role_section_excerpts.line.sidecar.jsonl \
   --context-lines 3 \
   --label-granularity line \
   --slow-row-seconds 2
@@ -23,7 +22,6 @@ python -m dataset_generator.build_role_section_excerpts samples \
   --report code_quality_report.json \
   --templates templates_with_roles.json \
   --output-jsonl role_section_excerpts.token.jsonl \
-  --output-sidecar-jsonl role_section_excerpts.token.sidecar.jsonl \
   --context-lines 3 \
   --label-granularity token \
   --slow-row-seconds 2
@@ -37,7 +35,6 @@ for d in samples/*/; do
     --report "reports/${name}.json" \
     --templates templates_with_roles.json \
     --output-jsonl "datasets/${name}/role_section_excerpts.line.jsonl" \
-    --output-sidecar-jsonl "datasets/${name}/role_section_excerpts.line.sidecar.jsonl" \
     --context-lines 3 \
     --label-granularity line \
     --slow-row-seconds 2
@@ -52,7 +49,6 @@ for d in samples/*/; do
     --report "reports/${name}.json" \
     --templates templates_with_roles.json \
     --output-jsonl "datasets/${name}/role_section_excerpts.token.jsonl" \
-    --output-sidecar-jsonl "datasets/${name}/role_section_excerpts.token.sidecar.jsonl" \
     --context-lines 3 \
     --label-granularity token \
     --slow-row-seconds 2
@@ -73,7 +69,6 @@ for d in samples_module_complexity/projects/*/; do
   python -m dataset_generator.build_module_complexity_excerpts "$d" \
     --report "reports_module_complexity/${name}.module_complexity_report.json" \
     --output-jsonl "datasets/${name}/role_section_excerpts.line.jsonl" \
-    --output-sidecar-jsonl "datasets/${name}/role_section_excerpts.line.sidecar.jsonl" \
     --context-lines 3 \
     --label-granularity line
 done
@@ -85,7 +80,6 @@ for d in samples_module_complexity/projects/*/; do
   python -m dataset_generator.build_module_complexity_excerpts "$d" \
     --report "reports_module_complexity/${name}.module_complexity_report.json" \
     --output-jsonl "datasets/${name}/role_section_excerpts.token.jsonl" \
-    --output-sidecar-jsonl "datasets/${name}/role_section_excerpts.token.sidecar.jsonl" \
     --context-lines 3 \
     --label-granularity token
 done
@@ -95,5 +89,29 @@ python -m training_inference.generate_dataset_paths_config \
   --repo-root . \
   --dataset-root-dir datasets \
   --excerpt-name role_section_excerpts.line.jsonl \
-  --sidecar-name role_section_excerpts.line.sidecar.jsonl \
   --output training_inference/dataset_paths.config46AndComplexity.json
+
+# Canonical CoNLL (per project)
+mkdir -p cdatasets
+for d in samples/*/; do
+  name="$(basename "$d")"
+  mkdir -p "cdatasets/${name}"
+  python -m dataset_generator.build_role_section_excerpts "$d" \
+    --report "creports/${name}.json" \
+    --templates templates_with_roles.json \
+    --output-conll "cdatasets/${name}/role_section_excerpts.line.conll" \
+    --context-lines 3 \
+    --label-granularity line \
+    --slow-row-seconds 2
+done
+
+mkdir -p cdatasets
+for d in samples_module_complexity/projects/*/; do
+  name="$(basename "$d")"
+  mkdir -p "cdatasets/${name}"
+  python -m dataset_generator.build_module_complexity_excerpts "$d" \
+    --report "creports_module_complexity/${name}.module_complexity_report.json" \
+    --output-conll "cdatasets/${name}/role_section_excerpts.line.conll" \
+    --context-lines 3 \
+    --label-granularity line
+done
