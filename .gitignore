@@ -68,6 +68,7 @@ creports_module_complexity
 datasets
 datasets_module_complexity
 cdatasets
+training_inference/conll_dataset_paths.config.json
 
 # ignore temporary files
 _tmp*.py

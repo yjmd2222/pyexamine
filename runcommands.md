@@ -1,12 +1,21 @@
-﻿# Analyze
-python -m code_quality_analyzer.main samples --config code_quality_config_new.yaml --output code_quality_report.json
+﻿# Analyze (original)
+mkdir -p creports
+python -m code_quality_analyzer.main samples --config code_quality_config_new.yaml --output creports/code_quality_report.json
 
-mkdir -p reports
+# Report Generatino (new)
+mkdir -p creports
 for d in samples/*/; do
   name="$(basename "$d")"
   python -m code_quality_analyzer.main "$d" \
     --config code_quality_config_new.yaml \
-    --output "reports/${name}.json"
+    --output "creports/${name}.json"
+done
+
+mkdir -p creports_module_complexity
+for d in samples_module_complexity/projects/*/; do
+  name="$(basename "$d")"
+  python -m dataset_generator.build_module_complexity_report "$d" \
+    --output-dir "creports_module_complexity"
 done
 
 # Canonical CoNLL (per project)
